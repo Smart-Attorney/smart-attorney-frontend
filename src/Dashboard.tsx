@@ -10,7 +10,7 @@ function Dashboard() {
 			<div className="flex flex-row items-center justify-between w-full gap-8">
 				<SortBar />
 				<button
-					className="bg-[#D9D9D9] h-11 rounded-md w-28 flex justify-center items-center pb-[2px]"
+					className="bg-[#D9D9D9] h-11 rounded-md w-28 min-w-[100px] flex justify-center items-center pb-[2px]"
 					type="button"
 				>
 					<span>New Case</span>
