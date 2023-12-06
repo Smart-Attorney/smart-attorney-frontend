@@ -1,12 +1,12 @@
 function SearchBar() {
 	return (
-		<div className="flex flex-row gap-5 items-center">
+		<div className="flex flex-row gap-8 w-full justify-between">
 			<input
-				className="bg-[#D9D9D9] pl-6 pr-3 py-1 rounded-full placeholder-black"
+				className="bg-[#D9D9D9] pl-6 pr-3 h-11 rounded-full placeholder-black w-full"
 				type="search"
 				placeholder="Search..."
-			></input>
-			<button className="bg-[#D9D9D9] py-1 px-3 rounded-md" type="button">
+			/>
+			<button className="bg-[#D9D9D9] h-11 rounded-md w-24" type="button">
 				Search
 			</button>
 		</div>
