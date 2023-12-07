@@ -8,9 +8,9 @@
 ### tasks
 - [x] project gh repo
 - [x] project template
-- [ ] dashboard header
-- [ ] search bar + button
-- [ ] search filters
-- [ ] new case button
-- [ ] folders displayed as tiles
-- [ ] new case page
+- [x] dashboard header
+- [x] search bar + button
+- [x] search filters
+- [x] new case button
+- [x] folders displayed as tiles
+- [x] new case page

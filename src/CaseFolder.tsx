@@ -1,8 +1,8 @@
-import JsonData from "./data";
+import JsonData from "./data-dashboard";
 
 function CaseFolder() {
 	return (
-		<div className="flex flex-row flex-wrap justify-evenly gap-8 w-full">
+		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{JsonData.map((caseInfo) => {
 				return (
 					<div
