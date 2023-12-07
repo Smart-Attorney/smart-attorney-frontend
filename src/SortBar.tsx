@@ -6,17 +6,12 @@ interface Options {
 	name: string;
 }
 
-const options: Options[] = [
-	{ clicked: false, name: "Name" },
-	{ clicked: false, name: "Date Created" },
-	{ clicked: false, name: "Last Opened" },
-	{ clicked: false, name: "Open Cases" },
-	{ clicked: false, name: "Deadline" },
-	{ clicked: false, name: "Labels" },
-];
+function SortBar({ options }: { options: Options[] }) {
+	const optionsArray = options.map((option) => {
+		return option;
+	});
 
-function SortBar() {
-	const [sortOptions, setSortOptions] = useState(options);
+	const [sortOptions, setSortOptions] = useState<Options[]>(optionsArray);
 
 	const handleClick = (event: React.MouseEvent<HTMLParagraphElement>) => {
 		const { id } = event.target as HTMLParagraphElement;
