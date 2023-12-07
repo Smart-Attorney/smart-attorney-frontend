@@ -7,7 +7,7 @@ function SearchBar() {
 				placeholder="Search..."
 			/>
 			<button
-				className="bg-[#D9D9D9] pb-[2px] h-11 rounded-md w-24 flex justify-center items-center"
+				className="bg-[#D9D9D9] pb-[2px] h-11 rounded-md min-w-[100px] flex justify-center items-center"
 				type="button"
 			>
 				<span>Search</span>

@@ -13,7 +13,7 @@ function Dashboard() {
 				<SortBar options={dashboardOptions} />
 
 				<button
-					className="bg-[#D9D9D9] h-11 rounded-md w-32 min-w-[100px] flex justify-center items-center pb-[2px]"
+					className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
 					type="button"
 				>
 					<span>New Case</span>
