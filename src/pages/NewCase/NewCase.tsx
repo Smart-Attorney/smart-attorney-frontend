@@ -1,5 +1,5 @@
-import SearchBar from "./SearchBar";
-import SortBar from "./SortBar";
+import SearchBar from "../../components/SearchBar";
+import SortBar from "../../components/SortBar";
 import CaseFile from "./CaseFile";
 import newCaseSortOptions from "./newCaseSortOptions";
 

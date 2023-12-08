@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import NewCase from "./NewCase";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import NewCase from "./pages/NewCase/NewCase";
 
 function App() {
 	return (

@@ -1,5 +1,5 @@
-import SearchBar from "./SearchBar";
-import SortBar from "./SortBar";
+import SearchBar from "../../components/SearchBar";
+import SortBar from "../../components/SortBar";
 import CaseFolder from "./CaseFolder";
 import dashboardOptions from "./DashboardSortOptions";
 import { useNavigate } from "react-router-dom";
