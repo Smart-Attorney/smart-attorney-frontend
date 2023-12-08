@@ -2,10 +2,10 @@ import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CaseFolder from "./CaseFolder";
 import dashboardOptions from "./DashboardSortOptions";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
-	const navigate = useNavigate();
+
 
 	return (
 		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
@@ -15,13 +15,13 @@ function Dashboard() {
 			<div className="flex flex-row items-center justify-between w-full gap-8">
 				<SortBar options={dashboardOptions} />
 
-				<button
+				<Link
 					className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
 					type="button"
-					onClick={() => navigate("new-case")}
+					to={("/new-case")}
 				>
 					<span>New Case</span>
-				</button>
+				</Link>
 			</div>
 
 			<CaseFolder />
