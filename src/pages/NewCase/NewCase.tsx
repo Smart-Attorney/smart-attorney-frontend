@@ -26,6 +26,7 @@ function NewCase() {
 		const { textContent } = event.nativeEvent.target as HTMLElement;
 
 		setCaseInfo({ name: textContent ? textContent : "" });
+		setEditable(false);
 	};
 
 	return (
