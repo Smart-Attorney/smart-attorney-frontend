@@ -1,6 +1,15 @@
 import JsonData from "./data-dashboard";
 
-function CaseFolder() {
+interface Case {
+	id: number;
+	name: string;
+	deadline: string;
+	status: string;
+}
+
+function CaseFolder({ cases }: { cases: Case[] | undefined }) {
+	console.log(cases);
+
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{JsonData.map((caseInfo) => {
