@@ -7,6 +7,11 @@ import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 
 function NewCase() {
+	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
+	const [caseInfo, setCaseInfo] = useState({
+		name: "New Case",
+	});
+
 	/**
 	 * Holds length of cases array from local storage.
 	 * Used as the id for each newly created case folder.
@@ -30,14 +35,10 @@ function NewCase() {
 		}
 	}, []);
 
-	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
-	const [caseInfo, setCaseInfo] = useState({
-		name: "New Case",
-	});
-
 	const toggleCaseNameEditable = () => {
 		setIsCaseNameEditable(true);
 		const caseName = document.getElementById("case-name");
+
 		setTimeout(() => {
 			caseName?.focus();
 		}, 100);
@@ -52,11 +53,11 @@ function NewCase() {
 
 	const handleCaseCreate = () => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-
 		const newCaseObject = {
 			id: caseID.current,
 			name: caseInfo.name,
 		};
+
 		storedCaseArray.push(newCaseObject);
 		localStorage.setItem("cases", JSON.stringify(storedCaseArray));
 	};
