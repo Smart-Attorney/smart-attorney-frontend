@@ -1,3 +1,5 @@
+import KebabMenu from "../../components/KebabMenu";
+
 interface Case {
 	id: number;
 	name: string;
@@ -18,12 +20,12 @@ function CaseFolder({ cases }: { cases: Case[] | undefined }) {
 						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
 						key={caseInfo.id}
 					>
-						<p>Deadline: {caseInfo.deadline}</p>
-						<div
-							className="h-4 w-4 relative left-[170px] bottom-[84px] rounded-full"
-							style={{ backgroundColor: `${caseInfo.status}` }}
-						></div>
-						<p className="mb-8">{caseInfo.name}</p>
+						<div className="flex flex-row items-center gap-4 w-fit">
+							<p>Deadline: {caseInfo.deadline}</p>
+							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseInfo.status}` }}></div>
+						</div>
+						<KebabMenu />
+						<p className="mb-8 w-fit">{caseInfo.name}</p>
 					</div>
 				);
 			})}
