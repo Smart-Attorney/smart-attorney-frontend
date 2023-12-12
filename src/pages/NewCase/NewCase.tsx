@@ -3,19 +3,40 @@ import SortBar from "../../components/SortBar";
 import CaseFile from "./CaseFile";
 import newCaseSortOptions from "./newCaseSortOptions";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 
 function NewCase() {
-	const [editable, setEditable] = useState(false);
+	/**
+	 * Holds length of cases array from local storage.
+	 * Used as the id for each newly created case folder.
+	 */
+	const caseID = useRef();
+
+	/**
+	 * Gets length of stored cases array in local storage and sets length to useRef.
+	 * If array is null, creates and sets new cases array in local storage.
+	 */
+	useEffect(() => {
+		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
+
+		if (storedCases === null) {
+			const emptyCaseArray: {}[] = [];
+			localStorage.setItem("cases", JSON.stringify(emptyCaseArray));
+			const newlyStoredCaseArray = JSON.parse(localStorage.getItem("cases") as string);
+			caseID.current = newlyStoredCaseArray.length;
+		} else {
+			caseID.current = storedCases.length;
+		}
+	}, []);
+
+	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
 	const [caseInfo, setCaseInfo] = useState({
 		name: "New Case",
 	});
 
-	console.log(caseInfo);
-
-	const toggleEditable = () => {
-		setEditable(true);
+	const toggleCaseNameEditable = () => {
+		setIsCaseNameEditable(true);
 		const caseName = document.getElementById("case-name");
 		setTimeout(() => {
 			caseName?.focus();
@@ -26,7 +47,18 @@ function NewCase() {
 		const { textContent } = event.nativeEvent.target as HTMLElement;
 
 		setCaseInfo({ name: textContent ? textContent : "" });
-		setEditable(false);
+		setIsCaseNameEditable(false);
+	};
+
+	const handleCaseCreate = () => {
+		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
+
+		const newCaseObject = {
+			id: caseID.current,
+			name: caseInfo.name,
+		};
+		storedCaseArray.push(newCaseObject);
+		localStorage.setItem("cases", JSON.stringify(storedCaseArray));
 	};
 
 	return (
@@ -35,14 +67,19 @@ function NewCase() {
 				<span
 					id="case-name"
 					className="relative mt-10 mb-5 text-4xl font-bold border-b border-b-black top-5"
-					contentEditable={editable}
+					contentEditable={isCaseNameEditable}
 					suppressContentEditableWarning={true}
 					onBlur={handleBlur}
 				>
 					{caseInfo.name}
 				</span>
 
-				<img src={EditPenIcon} width="30px" className="cursor-pointer mt-7" onClick={toggleEditable} />
+				<img
+					src={EditPenIcon}
+					width="30px"
+					className="cursor-pointer mt-7"
+					onClick={toggleCaseNameEditable}
+				/>
 			</div>
 			<SearchBar />
 
@@ -66,6 +103,7 @@ function NewCase() {
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
 						to={"/dashboard"}
+						onClick={handleCaseCreate}
 					>
 						<span>Create</span>
 					</Link>
