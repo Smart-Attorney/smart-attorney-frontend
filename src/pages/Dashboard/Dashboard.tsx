@@ -15,8 +15,6 @@ interface Case {
 function Dashboard() {
 	const [cases, setCases] = useState<Case[]>();
 
-	console.log(cases?.length);
-
 	/**
 	 * Retrieves case array from local storage and maps over them to format into
 	 * appropriate object shape.

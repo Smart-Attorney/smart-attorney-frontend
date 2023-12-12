@@ -1,5 +1,3 @@
-import JsonData from "./data-dashboard";
-
 interface Case {
 	id: number;
 	name: string;
@@ -8,11 +6,13 @@ interface Case {
 }
 
 function CaseFolder({ cases }: { cases: Case[] | undefined }) {
-	console.log(cases);
+	const casesArray = cases?.map((eachCase) => {
+		return eachCase;
+	});
 
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
-			{JsonData.map((caseInfo) => {
+			{casesArray?.map((caseInfo) => {
 				return (
 					<div
 						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
