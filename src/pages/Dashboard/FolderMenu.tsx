@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-function KebabMenu() {
+interface FolderMenuProps {
+	deleteFolder: () => void;
+}
+
+function FolderMenu(props: FolderMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const toggleMenuOpen = () => {
@@ -21,10 +25,12 @@ function KebabMenu() {
 			>
 				<li className="cursor-pointer">Add Deadline</li>
 				<li className="cursor-pointer">Add Labels</li>
-				<li className="cursor-pointer">Delete</li>
+				<li className="cursor-pointer" onClick={props.deleteFolder}>
+					Delete
+				</li>
 			</ul>
 		</div>
 	);
 }
 
-export default KebabMenu;
+export default FolderMenu;
