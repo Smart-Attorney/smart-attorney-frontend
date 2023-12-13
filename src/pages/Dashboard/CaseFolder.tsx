@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import FolderMenu from "./FolderMenu";
 
 interface Case {
@@ -7,26 +8,43 @@ interface Case {
 	status: string;
 }
 
-function CaseFolder({ cases }: { cases: Case[] | undefined }) {
-	const casesArray = cases?.map((eachCase) => {
-		return eachCase;
-	});
+function CaseFolder() {
+	const [cases, setCases] = useState<Case[]>();
+
+	/**
+	 * Retrieves case array from local storage and maps over them to format into
+	 * appropriate object shape.
+	 * Sets formattd array into cases state.
+	 */
+	useEffect(() => {
+		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
+		if (storedCases !== null) {
+			const formattedCases = storedCases.map((caseDetails: { id: any; name: any }) => {
+				return {
+					id: caseDetails.id,
+					name: caseDetails.name,
+					deadline: "",
+					status: "#53EF0A",
+				};
+			});
+			setCases(formattedCases);
+		} else {
+			setCases([]);
+		}
+	}, []);
 
 	const handleFolderDelete = (folderID: number) => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-
 		const filteredOutItemAray = storedCaseArray.filter((folder: { id: number }) => {
 			return folder.id !== folderID;
 		});
-
 		localStorage.setItem("cases", JSON.stringify(filteredOutItemAray));
-
-		console.log(filteredOutItemAray);
+		setCases(filteredOutItemAray);
 	};
 
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
-			{casesArray?.map((caseInfo) => {
+			{cases?.map((caseInfo) => {
 				return (
 					<div
 						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
