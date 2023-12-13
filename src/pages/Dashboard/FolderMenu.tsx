@@ -11,6 +11,11 @@ function FolderMenu(props: FolderMenuProps) {
 		setIsMenuOpen((prev) => !prev);
 	};
 
+	const deleteFolder = () => {
+		props.deleteFolder();
+		setIsMenuOpen((prev) => !prev);
+	};
+
 	return (
 		<div className="relative left-[175px] bottom-[84px] w-28">
 			<div className="p-1 cursor-pointer w-fit " onClick={toggleMenuOpen}>
@@ -20,12 +25,12 @@ function FolderMenu(props: FolderMenuProps) {
 			</div>
 
 			<ul
-				className="absolute bg-[#C0C0C0] w-fit p-1 rounded-sm"
+				className="absolute bg-[#C0C0C0] w-fit p-1 rounded-md"
 				style={{ display: isMenuOpen ? "block" : "none" }}
 			>
-				<li className="cursor-pointer">Add Deadline</li>
-				<li className="cursor-pointer">Add Labels</li>
-				<li className="cursor-pointer" onClick={props.deleteFolder}>
+				<li className="px-1 cursor-pointer hover:bg-white hover:rounded-md">Add Deadline</li>
+				<li className="px-1 cursor-pointer hover:bg-white hover:rounded-md">Add Labels</li>
+				<li className="px-1 cursor-pointer hover:bg-white hover:rounded-md" onClick={deleteFolder}>
 					Delete
 				</li>
 			</ul>
