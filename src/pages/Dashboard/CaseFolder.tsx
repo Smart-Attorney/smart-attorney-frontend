@@ -19,15 +19,7 @@ function CaseFolder() {
 	useEffect(() => {
 		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
 		if (storedCases !== null) {
-			const formattedCases = storedCases.map((caseDetails: { id: any; name: any }) => {
-				return {
-					id: caseDetails.id,
-					name: caseDetails.name,
-					deadline: "",
-					status: "#53EF0A",
-				};
-			});
-			setCases(formattedCases);
+			setCases(storedCases);
 		} else {
 			setCases([]);
 		}

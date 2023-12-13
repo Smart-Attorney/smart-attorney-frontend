@@ -56,6 +56,9 @@ function NewCase() {
 		const newCaseObject = {
 			id: caseID.current,
 			name: caseInfo.name,
+			status: "#53EF0A",
+			deadline: "",
+			labels: [],
 		};
 
 		storedCaseArray.push(newCaseObject);
