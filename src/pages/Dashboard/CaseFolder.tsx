@@ -25,6 +25,10 @@ function CaseFolder() {
 		}
 	}, []);
 
+  const handleAddDeadline = () => {
+
+  }
+
 	const handleFolderDelete = (folderID: number) => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
 		const filteredOutItemAray = storedCaseArray.filter((folder: { id: number }) => {
@@ -47,7 +51,7 @@ function CaseFolder() {
 							<p>Deadline: {caseInfo.deadline}</p>
 							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseInfo.status}` }}></div>
 						</div>
-						<FolderMenu deleteFolder={() => handleFolderDelete(caseInfo.id)} />
+						<FolderMenu addDeadline={()=>handleAddDeadline} deleteFolder={() => handleFolderDelete(caseInfo.id)} />
 						<p className="mb-8 w-fit">{caseInfo.name}</p>
 					</div>
 				);
