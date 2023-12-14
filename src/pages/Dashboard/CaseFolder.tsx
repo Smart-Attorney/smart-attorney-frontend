@@ -36,6 +36,20 @@ function CaseFolder() {
 		setCases(updatedCaseArray);
 	};
 
+	const handleAddLabel = (folderID: number, event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		const { value } = (event.target as HTMLFormElement).form[0];
+
+		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
+		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: number; labels: string[] }) => {
+			return folderID === caseFolder.id
+				? { ...caseFolder, labels: [...caseFolder.labels, value] }
+				: caseFolder;
+		});
+		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
+		setCases(updatedCaseArray);
+	};
+
 	const handleFolderDelete = (folderID: number) => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
 		const filteredOutItemAray = storedCaseArray.filter((caseFolder: { id: number }) => {
@@ -71,6 +85,7 @@ function CaseFolder() {
 						</div>
 						<FolderMenu
 							addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
+							addLabel={(event) => handleAddLabel(caseInfo.id, event)}
 							deleteFolder={() => handleFolderDelete(caseInfo.id)}
 						/>
 						<p className="mb-8 w-fit">{caseInfo.name}</p>
