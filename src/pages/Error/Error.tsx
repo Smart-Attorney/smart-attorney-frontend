@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+/**
+ * Page to handle all routes not accounted for.
+ */
 function Error() {
 	return (
 		<div className="flex flex-col items-center justify-center h-screen gap-8">
