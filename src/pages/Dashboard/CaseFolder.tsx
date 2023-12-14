@@ -6,6 +6,7 @@ interface Case {
 	name: string;
 	deadline: string;
 	status: string;
+	labels: string[];
 }
 
 function CaseFolder() {
@@ -71,17 +72,24 @@ function CaseFolder() {
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{cases?.map((caseInfo) => {
-				const formattedDate = formatDate(caseInfo.deadline);
-
 				return (
 					<div
-						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-8 flex flex-col justify-between"
+						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col justify-between"
 						key={caseInfo.id}
 						id={caseInfo.id}
 					>
 						<div className="flex flex-row items-center gap-4 w-fit">
-							<p>Deadline: {formattedDate}</p>
+							<p>Deadline: {formatDate(caseInfo.deadline)}</p>
 							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseInfo.status}` }}></div>
+						</div>
+						<div className="flex flex-row flex-wrap w-4/5 gap-2">
+							{caseInfo.labels.map((label) => {
+								return (
+									<div className="">
+										<p className="px-2 pb-[3px] text-white bg-black rounded-full text-sm">{label}</p>
+									</div>
+								);
+							})}
 						</div>
 						<FolderMenu
 							addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
