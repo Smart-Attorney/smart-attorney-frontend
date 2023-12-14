@@ -46,6 +46,9 @@ function CaseFolder() {
 	};
 
 	const formatDate = (date: string) => {
+		if (date === "" || date === null || date === undefined) {
+			return "__________";
+		}
 		const dateArray = date.split("-");
 		const formattedDate = `${dateArray[1]}/${dateArray[2]}/${dateArray[0]}`;
 		return formattedDate;
