@@ -13,7 +13,6 @@ function FolderMenu(props: FolderMenuProps) {
 
 
 
-
 	const toggleMenu = () => {
 		setIsMenuOpen((prev) => !prev);
 	};
@@ -68,12 +67,12 @@ function FolderMenu(props: FolderMenuProps) {
 			<div className="absolute right-[150px]" style={{ display: isDatePickerOpen ? "block" : "none" }}>
 				<input className="left-[5px] rounded-sm cursor-pointer" type="date" onChange={setDate} />
 				<img
-					className="relative w-5 right-[25px] bottom-[35px] cursor-pointer hover:bg-gray-400 rounded-full"
+					className="relative w-5 left-[140px] bottom-[35px] cursor-pointer hover:bg-gray-400 rounded-full"
 					src={checkIcon}
 					onClick={closeDatePicker}
 				/>
 				<img
-					className="relative w-5 right-[25px] bottom-[35px] cursor-pointer hover:bg-gray-400 rounded-full"
+					className="relative w-5 left-[140px] bottom-[33px] cursor-pointer hover:bg-gray-400 rounded-full"
 					src={closeIcon}
 					onClick={closeDatePicker}
 				/>
