@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import FolderMenu from "./FolderMenu";
 
 interface Case {
@@ -51,6 +51,26 @@ function CaseFolder() {
 		setCases(updatedCaseArray);
 	};
 
+	const handleDeleteLabel = (event: React.MouseEvent<HTMLParagraphElement>) => {
+		const { textContent } = event.target as HTMLParagraphElement;
+		const { id } = event.target as HTMLParagraphElement;
+		const labelID = Number(id);
+
+		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
+		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: number; labels: string[] }) => {
+			return labelID === caseFolder.id
+				? {
+						...caseFolder,
+						labels: caseFolder.labels.filter((label) => {
+							return label !== textContent;
+						}),
+				  }
+				: caseFolder;
+		});
+		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
+		setCases(updatedCaseArray);
+	};
+
 	const handleFolderDelete = (folderID: number) => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
 		const filteredOutItemAray = storedCaseArray.filter((caseFolder: { id: number }) => {
@@ -74,7 +94,7 @@ function CaseFolder() {
 			{cases?.map((caseInfo) => {
 				return (
 					<div
-						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col justify-between"
+						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col gap-2"
 						key={caseInfo.id}
 						id={caseInfo.id}
 					>
@@ -85,9 +105,14 @@ function CaseFolder() {
 						<div className="flex flex-row flex-wrap w-4/5 gap-2">
 							{caseInfo.labels.map((label) => {
 								return (
-									<div className="">
-										<p className="px-2 pb-[3px] text-white bg-black rounded-full text-sm">{label}</p>
-									</div>
+									<p
+										key={caseInfo.id}
+										id={caseInfo.id}
+										className="px-3 py-[2px] text-sm text-white bg-black rounded-full cursor-pointer"
+										onClick={handleDeleteLabel}
+									>
+										{label}
+									</p>
 								);
 							})}
 						</div>
