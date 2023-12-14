@@ -25,14 +25,21 @@ function CaseFolder() {
 		}
 	}, []);
 
-  const handleAddDeadline = () => {
+	const handleAddDeadline = (folderID: number, event: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = event.target;
 
-  }
+		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
+		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: number }) => {
+			return folderID === caseFolder.id ? { ...caseFolder, deadline: value } : caseFolder;
+		});
+		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
+		setCases(updatedCaseArray);
+	};
 
 	const handleFolderDelete = (folderID: number) => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const filteredOutItemAray = storedCaseArray.filter((folder: { id: number }) => {
-			return folder.id !== folderID;
+		const filteredOutItemAray = storedCaseArray.filter((caseFolder: { id: number }) => {
+			return caseFolder.id !== folderID;
 		});
 		localStorage.setItem("cases", JSON.stringify(filteredOutItemAray));
 		setCases(filteredOutItemAray);
@@ -51,7 +58,10 @@ function CaseFolder() {
 							<p>Deadline: {caseInfo.deadline}</p>
 							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseInfo.status}` }}></div>
 						</div>
-						<FolderMenu addDeadline={()=>handleAddDeadline} deleteFolder={() => handleFolderDelete(caseInfo.id)} />
+						<FolderMenu
+							addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
+							deleteFolder={() => handleFolderDelete(caseInfo.id)}
+						/>
 						<p className="mb-8 w-fit">{caseInfo.name}</p>
 					</div>
 				);
