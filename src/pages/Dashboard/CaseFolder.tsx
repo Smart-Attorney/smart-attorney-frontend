@@ -50,7 +50,7 @@ function CaseFolder() {
 			{cases?.map((caseInfo) => {
 				return (
 					<div
-						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
+						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-8 flex flex-col justify-between"
 						key={caseInfo.id}
 						id={caseInfo.id}
 					>
