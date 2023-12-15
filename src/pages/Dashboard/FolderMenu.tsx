@@ -105,28 +105,18 @@ function FolderMenu(props: FolderMenuProps) {
 				className="absolute right-[125px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3]"
 				style={{ display: isLabelAssignerOpen ? "block" : "none" }}
 			>
-				<div className="flex flex-col">
-					<form>
-						<label htmlFor="labels">New Label:</label>
-						<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="labels" type="text" />
-						<div className="flex flex-row justify-between">
-							<button
-								className="w-16 border border-black rounded-sm hover:bg-gray-400"
-								type="submit"
-								onClick={props.addLabel}
-							>
-								Add
-							</button>
-							<button
-								className="w-16 border border-black rounded-sm hover:bg-gray-400"
-								type="button"
-								onClick={closeLabelAssigner}
-							>
-								Close
-							</button>
-						</div>
-					</form>
-				</div>
+				<form className="flex flex-col gap-2">
+					<label htmlFor="labels">New Label:</label>
+					<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="labels" type="text" />
+					<div className="flex flex-row justify-between w-full">
+						<button className="w-16 bg-[#77dd77] rounded-md py-1" type="submit" onClick={props.addLabel}>
+							Add
+						</button>
+						<button className="w-16 rounded-md bg-[#c1c1c1] py-1" type="button" onClick={closeLabelAssigner}>
+							Close
+						</button>
+					</div>
+				</form>
 			</div>
 
 			{/* Case Delete Warning */}

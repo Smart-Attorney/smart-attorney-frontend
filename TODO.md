@@ -26,7 +26,8 @@
 - [ ] allow user to update cases
 
 ### bugs to fix
-- [ ] either label-assigner or date-picker can be open at a time, not both
+- [x] either label-assigner or date-picker can be open at a time, not both
+- [ ] labels array should have id for each label
 
 ### nice to have features
 - [x] add delete confirmation box
