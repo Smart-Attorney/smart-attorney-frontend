@@ -2,9 +2,10 @@ import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CaseFile from "./CaseFile";
 import newCaseSortOptions from "./newCaseSortOptions";
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
+import { nanoid } from "nanoid/non-secure";
 
 function NewCase() {
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
@@ -12,26 +13,17 @@ function NewCase() {
 		name: "New Case",
 	});
 
-	/**
-	 * Holds length of cases array from local storage.
-	 * Used as the id for each newly created case folder.
-	 */
-	const caseID = useRef();
+	const navigate = useNavigate();
 
 	/**
-	 * Gets length of stored cases array in local storage and sets length to useRef.
-	 * If array is null, creates and sets new cases array in local storage.
+	 * On initial load, checks if cases array exists in local storage.
+	 * If not, creates and saves a cases array to local storage.
 	 */
 	useEffect(() => {
 		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
-
 		if (storedCases === null) {
 			const emptyCaseArray: {}[] = [];
 			localStorage.setItem("cases", JSON.stringify(emptyCaseArray));
-			const newlyStoredCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-			caseID.current = newlyStoredCaseArray.length;
-		} else {
-			caseID.current = storedCases.length;
 		}
 	}, []);
 
@@ -54,15 +46,17 @@ function NewCase() {
 	const handleCaseCreate = () => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
 		const newCaseObject = {
-			id: caseID.current,
+			id: nanoid(),
 			name: caseInfo.name,
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
+			files: [],
 		};
 
 		storedCaseArray.push(newCaseObject);
 		localStorage.setItem("cases", JSON.stringify(storedCaseArray));
+		navigate("/dashboard");
 	};
 
 	return (
@@ -94,23 +88,25 @@ function NewCase() {
 					<button
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
+						name="Team"
 					>
 						<span>Team</span>
 					</button>
 					<button
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
+						name="Upload"
 					>
 						<span>Upload</span>
 					</button>
-					<Link
+					<button
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
-						to={"/dashboard"}
+						name="Create"
 						onClick={handleCaseCreate}
 					>
 						<span>Create</span>
-					</Link>
+					</button>
 				</div>
 			</div>
 

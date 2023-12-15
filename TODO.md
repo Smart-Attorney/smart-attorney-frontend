@@ -34,3 +34,7 @@
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] modals
+
+### temporary workarounds
+- using nanoID to create unique IDs for new case folders
+- using local storage as makeshift database
