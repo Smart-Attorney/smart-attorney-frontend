@@ -26,10 +26,10 @@
 - [ ] allow user to update cases
 
 ### bugs to fix
-- either label-assigner or date-picker can be open at a time, not both
+- [ ] either label-assigner or date-picker can be open at a time, not both
 
 ### nice to have features
-- [ ] add delete confirmation box
+- [x] add delete confirmation box
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] modals

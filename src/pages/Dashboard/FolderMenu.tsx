@@ -21,6 +21,8 @@ function FolderMenu(props: FolderMenuProps) {
 	};
 
 	const toggleDatePicker = () => {
+		closeLabelAssigner();
+		closeDeleteWarning();
 		setIsDatePickerOpen((prev) => !prev);
 	};
 	const closeDatePicker = () => {
@@ -28,6 +30,8 @@ function FolderMenu(props: FolderMenuProps) {
 	};
 
 	const toggleLabelAssigner = () => {
+		closeDatePicker();
+		closeDeleteWarning();
 		setIsLabelAssignerOpen((prev) => !prev);
 	};
 	const closeLabelAssigner = () => {
@@ -35,6 +39,8 @@ function FolderMenu(props: FolderMenuProps) {
 	};
 
 	const toggleDeleteWarning = () => {
+		closeDatePicker();
+		closeLabelAssigner();
 		setIsDeleteWarningOpen((prev) => !prev);
 	};
 	const closeDeleteWarning = () => {
