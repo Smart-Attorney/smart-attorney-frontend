@@ -11,6 +11,7 @@ function FolderMenu(props: FolderMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelAssignerOpen, setIsLabelAssignerOpen] = useState(false);
+	const [isDeleteWarningOpen, setIsDeleteWarningOpen] = useState(false);
 
 	const toggleMenu = () => {
 		setIsMenuOpen((prev) => !prev);
@@ -33,9 +34,11 @@ function FolderMenu(props: FolderMenuProps) {
 		setIsLabelAssignerOpen(false);
 	};
 
-	const deleteFolder = () => {
-		closeMenu();
-		props.deleteFolder();
+	const toggleDeleteWarning = () => {
+		setIsDeleteWarningOpen((prev) => !prev);
+	};
+	const closeDeleteWarning = () => {
+		setIsDeleteWarningOpen(false);
 	};
 
 	return (
@@ -62,7 +65,10 @@ function FolderMenu(props: FolderMenuProps) {
 				>
 					Add Labels
 				</li>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={deleteFolder}>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={toggleDeleteWarning}
+				>
 					Delete
 				</li>
 			</ul>
@@ -114,6 +120,33 @@ function FolderMenu(props: FolderMenuProps) {
 							</button>
 						</div>
 					</form>
+				</div>
+			</div>
+
+			{/* Case Delete Warning */}
+			<div
+				className="absolute right-[79px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-max"
+				style={{ display: isDeleteWarningOpen ? "block" : "none" }}
+			>
+				<div className="flex flex-col items-center gap-2">
+					<h3 className="text-lg font-semibold w-max">Delete Case</h3>
+					<p className="w-full">This process cannot be undone.</p>
+					<div className="flex flex-row w-full justify-evenly">
+						<button
+							className="w-20 bg-[#c1c1c1] text-white rounded-md py-1"
+							type="button"
+							onClick={closeDeleteWarning}
+						>
+							Cancel
+						</button>
+						<button
+							className="w-20 bg-[#f15e5e] text-white rounded-md py-1"
+							type="button"
+							onClick={props.deleteFolder}
+						>
+							Delete
+						</button>
+					</div>
 				</div>
 			</div>
 		</>
