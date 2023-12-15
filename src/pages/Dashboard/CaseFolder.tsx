@@ -14,8 +14,8 @@ function CaseFolder() {
 
 	/**
 	 * On initial load, retrieves case array from local storage.
-   * Then, sets case array to cases state.
-   * Empty dependency array since it should only run once on initial load. 
+	 * Then, sets case array to cases state.
+	 * Empty dependency array since it should only run once on initial load.
 	 */
 	useEffect(() => {
 		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
@@ -110,7 +110,10 @@ function CaseFolder() {
 						{/* Case Deadline */}
 						<div className="relative flex flex-row items-center gap-4 w-fit bottom-[26px]">
 							<p>Deadline: {formatDate(caseInfo.deadline)}</p>
-							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseInfo.status}` }}></div>
+							<div
+								className="w-4 h-4 rounded-full"
+								style={{ backgroundColor: `${caseInfo.status}` }}
+							></div>
 						</div>
 
 						{/* Case Folder Labels */}
