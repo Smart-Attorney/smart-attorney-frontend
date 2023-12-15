@@ -13,9 +13,9 @@ function CaseFolder() {
 	const [cases, setCases] = useState<Case[]>();
 
 	/**
-	 * Retrieves case array from local storage and maps over them to format into
-	 * appropriate object shape.
-	 * Sets formattd array into cases state.
+	 * On initial load, retrieves case array from local storage.
+   * Then, sets case array to cases state.
+   * Empty dependency array since it should only run once on initial load. 
 	 */
 	useEffect(() => {
 		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
