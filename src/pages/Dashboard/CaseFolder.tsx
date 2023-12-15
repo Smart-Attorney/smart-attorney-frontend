@@ -94,21 +94,33 @@ function CaseFolder() {
 			{cases?.map((caseInfo) => {
 				return (
 					<div
-						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col gap-2"
+						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
 						key={caseInfo.id}
 						id={caseInfo.id}
 					>
-						<div className="flex flex-row items-center gap-4 w-fit">
+						{/* Kebab Menu */}
+						<div className="relative left-[200px] w-28">
+							<FolderMenu
+								addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
+								addLabel={(event) => handleAddLabel(caseInfo.id, event)}
+								deleteFolder={() => handleFolderDelete(caseInfo.id)}
+							/>
+						</div>
+
+						{/* Case Deadline */}
+						<div className="relative flex flex-row items-center gap-4 w-fit bottom-[26px]">
 							<p>Deadline: {formatDate(caseInfo.deadline)}</p>
 							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseInfo.status}` }}></div>
 						</div>
-						<div className="flex flex-row flex-wrap w-4/5 gap-2">
+
+						{/* Case Folder Labels */}
+						<div className="relative flex flex-row flex-wrap w-[85%] h-6 gap-2 bottom-[24px]">
 							{caseInfo.labels.map((label) => {
 								return (
 									<p
+										className="px-3 text-sm pb-[3px] pt-[2px] text-white bg-black rounded-full cursor-pointer"
 										key={caseInfo.id}
 										id={caseInfo.id}
-										className="px-3 py-[2px] text-sm text-white bg-black rounded-full cursor-pointer"
 										onClick={handleDeleteLabel}
 									>
 										{label}
@@ -116,12 +128,9 @@ function CaseFolder() {
 								);
 							})}
 						</div>
-						<FolderMenu
-							addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
-							addLabel={(event) => handleAddLabel(caseInfo.id, event)}
-							deleteFolder={() => handleFolderDelete(caseInfo.id)}
-						/>
-						<p className="mb-8 w-fit">{caseInfo.name}</p>
+
+						{/* Case Folder Name */}
+						<p className="relative top-[120px] w-fit">{caseInfo.name}</p>
 					</div>
 				);
 			})}

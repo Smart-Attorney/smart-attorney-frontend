@@ -19,7 +19,8 @@
 - [x] allow user to create new cases
 - [x] allow user to delete cases
 - [x] allow user to assign deadlines to folders
-- [ ] allow user to assign labels to folders
+- [x] allow user to assign labels to folders
+- [x] allow user to delete labels on folders
 - [ ] allow user to upload files to cases
 - [ ] allow user to view their cases in a new page
 - [ ] allow user to update cases

@@ -39,7 +39,7 @@ function FolderMenu(props: FolderMenuProps) {
 	};
 
 	return (
-		<div className="relative left-[195px] bottom-[84px] w-28">
+		<>
 			{/* Kebab Menu Icon */}
 			<div className="p-1 cursor-pointer w-fit " onClick={toggleMenu}>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>
@@ -105,7 +105,7 @@ function FolderMenu(props: FolderMenuProps) {
 					</form>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 
