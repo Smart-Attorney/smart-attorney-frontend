@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
+import FileUpload from "./FileUpload";
 
 function NewCase() {
+	const [isUploadOpen, setIsUploadOpen] = useState(false);
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
 	const [caseInfo, setCaseInfo] = useState({
 		name: "New Case",
@@ -26,6 +28,14 @@ function NewCase() {
 			localStorage.setItem("cases", JSON.stringify(emptyCaseArray));
 		}
 	}, []);
+
+	const toggleUploadBox = () => {
+		setIsUploadOpen((prev) => !prev);
+	};
+
+	const closeUploadBox = () => {
+		setIsUploadOpen(false);
+	};
 
 	const toggleCaseNameEditable = () => {
 		setIsCaseNameEditable(true);
@@ -96,6 +106,7 @@ function NewCase() {
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
 						name="Upload"
+						onClick={toggleUploadBox}
 					>
 						<span>Upload</span>
 					</button>
@@ -111,6 +122,8 @@ function NewCase() {
 			</div>
 
 			<CaseFile />
+
+			{isUploadOpen && <FileUpload closeUploadBox={closeUploadBox} />}
 		</div>
 	);
 }
