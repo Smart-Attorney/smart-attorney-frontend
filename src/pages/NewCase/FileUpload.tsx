@@ -2,6 +2,8 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropArea from "./DropArea";
 import UploadedFilesDisplay from "./UploadedFilesDisplay";
+import storage from "../../services/firebase/firebase.ts";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface FileUploadProps {
 	closeUploadBox: () => void;
@@ -18,6 +20,28 @@ interface FileUpload {
 function FileUpload(props: FileUploadProps) {
 	const [filesToUpload, setFilesToUpload] = useState<FileUpload[]>([]);
 	console.log(filesToUpload);
+
+	const getFileFromCloud = async () => {
+		try {
+			const fileRef = ref(storage, `images/${filesToUpload[0].name}`);
+			const url = await getDownloadURL(fileRef);
+			console.log(url);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const addFileToCloud = async () => {
+		if (filesToUpload.length < 1) return;
+		const fileRef = ref(storage, `images/${filesToUpload[0].name}`);
+		try {
+			const response = await uploadBytes(fileRef, filesToUpload[0].data);
+			const url = await getDownloadURL(response.ref);
+			console.log(url);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const addFilesToUploadArray = (files: FileList) => {
 		for (let i = 0; i < files.length; i++) {
@@ -112,6 +136,7 @@ function FileUpload(props: FileUploadProps) {
 					<button
 						className="bg-[#B588B3] w-40 py-2 text-white font-semibold border border-[#B588B3] rounded-md"
 						type="button"
+						onClick={addFileToCloud}
 						disabled={filesToUpload.length < 1 ? true : false}
 						style={{ cursor: filesToUpload.length < 1 ? "not-allowed" : "pointer" }}
 					>
