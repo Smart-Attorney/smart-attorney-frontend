@@ -61,6 +61,19 @@ function FileUpload(props: FileUploadProps) {
 		);
 	};
 
+	const handleSelectAllToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { checked } = event.target;
+
+		setFilesToUpload((prev) => {
+			return prev.map((file) => {
+				return {
+					...file,
+					selected: checked,
+				};
+			});
+		});
+	};
+
 	return (
 		<div className="p-5  rounded-lg bg-[#D9D9D9]">
 			<div className="flex flex-col items-center gap-5">
@@ -68,7 +81,22 @@ function FileUpload(props: FileUploadProps) {
 
 				<DropArea filesToUpload={filesToUpload} addFilesToUploadArray={addFilesToUploadArray} />
 
-				{filesToUpload && (
+				{/* Select All Checkbox */}
+				{filesToUpload.length > 0 && (
+					<div className="flex flex-row self-start justify-center gap-1 cursor-pointer">
+						<input
+							className="cursor-pointer"
+							id="select-all"
+							type="checkbox"
+							onChange={handleSelectAllToggleChange}
+						/>
+						<label className="font-semibold cursor-pointer" htmlFor="select-all">
+							Select all
+						</label>
+					</div>
+				)}
+
+				{filesToUpload.length > 0 && (
 					<div className="grid grid-cols-3 gap-5">
 						<UploadedFilesDisplay
 							filesToUpload={filesToUpload}

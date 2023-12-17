@@ -26,6 +26,10 @@ const formatBytes = (bytes: number, decimals = 1) => {
 	return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
 
+/**
+ * TODO:
+ * Rename UploadedFilesDisplay to UploadedFileCard for specificity.
+ */
 function UploadedFilesDisplay(props: UploadedFilesDisplayProps) {
 	return (
 		<>
