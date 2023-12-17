@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropArea from "./DropArea";
+import UploadedFilesDisplay from "./UploadedFilesDisplay";
 
 interface FileUploadProps {
 	closeUploadBox: () => void;
@@ -60,19 +61,6 @@ function FileUpload(props: FileUploadProps) {
 		);
 	};
 
-	/**
-	 * Byte conversion function reference:
-	 * https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-	 */
-	const formatBytes = (bytes: number, decimals = 1) => {
-		if (!+bytes) return "0 Bytes";
-		const k = 1000;
-		const dm = decimals < 0 ? 0 : decimals;
-		const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-		const i = Math.floor(Math.log(bytes) / Math.log(k));
-		return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-	};
-
 	return (
 		<div className="p-5  rounded-lg bg-[#D9D9D9]">
 			<div className="flex flex-col items-center gap-5">
@@ -80,42 +68,14 @@ function FileUpload(props: FileUploadProps) {
 
 				<DropArea addFilesToUploadArray={addFilesToUploadArray} />
 
-				{/* Uploaded Files Display */}
 				{filesToUpload && (
 					<div className="grid grid-cols-3 gap-5">
-						{filesToUpload.map((file, index) => {
-							return (
-								<div className="p-2 bg-white rounded-md w-52" key={index}>
-									<div className="flex flex-row h-full gap-3">
-										<input
-											className="self-start cursor-pointer"
-											type="checkbox"
-											checked={file.selected}
-											onChange={() => handleChangeToggleChecked(file.id)}
-										/>
-										<div
-											className="flex flex-col justify-between w-full cursor-pointer"
-											onClick={() => handleClickToggleChecked(file.id)}
-										>
-											{/**
-											 * TODO: Apply ellipsis to multiline text workaround.
-											 * Does not work in native CSS.
-											 * Reference to workaround:
-											 * https://www.geeksforgeeks.org/how-to-apply-an-ellipsis-to-multiline-text-in-css/
-											 */}
-											<p className="font-semibold">{file.name}</p>
-											<p className="text-gray-500 ">{formatBytes(file.size)}</p>
-										</div>
-										<span
-											className="relative self-start font-semibold bottom-[6px] cursor-pointer"
-											onClick={() => handleClickRemoveFileFromUploadStaging(file.id)}
-										>
-											X
-										</span>
-									</div>
-								</div>
-							);
-						})}
+						<UploadedFilesDisplay
+							filesToUpload={filesToUpload}
+							handleChangeToggleChecked={handleChangeToggleChecked}
+							handleClickToggleChecked={handleClickToggleChecked}
+							handleClickRemoveFileFromUploadStaging={handleClickRemoveFileFromUploadStaging}
+						/>
 					</div>
 				)}
 
