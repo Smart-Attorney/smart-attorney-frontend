@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
-import uploadIcon from "../../assets/upload.png";
+import { useState } from "react";
 import { nanoid } from "nanoid";
+import DropArea from "./DropArea";
 
 interface FileUploadProps {
 	closeUploadBox: () => void;
@@ -16,31 +16,7 @@ interface FileUpload {
 
 function FileUpload(props: FileUploadProps) {
 	const [filesToUpload, setFilesToUpload] = useState<FileUpload[]>([]);
-
 	console.log(filesToUpload);
-
-	const inputRef = useRef<HTMLInputElement>(null);
-
-	const handleClick = () => {
-		inputRef.current?.click();
-	};
-
-	const handleSelectUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { files } = event.target;
-		if (files) {
-			addFilesToUploadArray(files);
-		}
-	};
-
-	const handleDragOver = (event: React.DragEvent) => {
-		event.preventDefault();
-	};
-
-	const handleDropUpload = (event: React.DragEvent) => {
-		event.preventDefault();
-		const { files } = event.dataTransfer;
-		addFilesToUploadArray(files);
-	};
 
 	const addFilesToUploadArray = (files: FileList) => {
 		for (let i = 0; i < files.length; i++) {
@@ -102,29 +78,7 @@ function FileUpload(props: FileUploadProps) {
 			<div className="flex flex-col items-center gap-5">
 				<h1 className="text-xl font-bold">Upload Documentation</h1>
 
-				{/* Drag and Drop Area */}
-				<div
-					className="p-6 bg-white border border-black border-dashed rounded-lg cursor-pointer w-fit"
-					onDragOver={handleDragOver}
-					onDrop={handleDropUpload}
-					onClick={handleClick}
-				>
-					<div className="flex flex-col items-center gap-4">
-						<img className="w-16 h-16" src={uploadIcon} />
-						<h1 className="text-xl font-medium">
-							Drag and drop or <b>select</b> files from your device.
-						</h1>
-						<input
-							name="upload"
-							type="file"
-							multiple
-							ref={inputRef}
-							style={{ display: "none" }}
-							onChange={handleSelectUpload}
-							onClick={handleClick}
-						/>
-					</div>
-				</div>
+				<DropArea addFilesToUploadArray={addFilesToUploadArray} />
 
 				{/* Uploaded Files Display */}
 				{filesToUpload && (
