@@ -66,7 +66,7 @@ function FileUpload(props: FileUploadProps) {
 			<div className="flex flex-col items-center gap-5">
 				<h1 className="text-xl font-bold">Upload Documentation</h1>
 
-				<DropArea addFilesToUploadArray={addFilesToUploadArray} />
+				<DropArea filesToUpload={filesToUpload} addFilesToUploadArray={addFilesToUploadArray} />
 
 				{filesToUpload && (
 					<div className="grid grid-cols-3 gap-5">
