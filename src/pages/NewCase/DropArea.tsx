@@ -3,8 +3,6 @@ import uploadIcon from "../../assets/upload.png";
 
 interface FileUpload {
 	id: string;
-	name: string;
-	size: number;
 	data: File;
 	selected: boolean;
 }

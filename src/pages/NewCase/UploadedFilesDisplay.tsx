@@ -1,7 +1,5 @@
 interface FileUpload {
 	id: string;
-	name: string;
-	size: number;
 	data: File;
 	selected: boolean;
 }
@@ -53,8 +51,8 @@ function UploadedFilesDisplay(props: UploadedFilesDisplayProps) {
 								 * Reference to workaround:
 								 * https://www.geeksforgeeks.org/how-to-apply-an-ellipsis-to-multiline-text-in-css/
 								 */}
-								<p className="font-semibold">{file.name}</p>
-								<p className="text-gray-500 ">{formatBytes(file.size)}</p>
+								<p className="font-semibold">{file.data.name}</p>
+								<p className="text-gray-500 ">{formatBytes(file.data.size)}</p>
 							</div>
 							<span
 								className="relative self-start font-semibold bottom-[6px] cursor-pointer"

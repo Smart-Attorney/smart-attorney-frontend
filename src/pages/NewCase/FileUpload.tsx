@@ -11,8 +11,6 @@ interface FileUploadProps {
 
 interface FileUpload {
 	id: string;
-	name: string;
-	size: number;
 	data: File;
 	selected: boolean;
 }
@@ -23,7 +21,7 @@ function FileUpload(props: FileUploadProps) {
 
 	const getFileFromCloud = async () => {
 		try {
-			const fileRef = ref(storage, `images/${filesToUpload[0].name}`);
+			const fileRef = ref(storage, `images/${filesToUpload[0].data.name}`);
 			const url = await getDownloadURL(fileRef);
 			console.log(url);
 		} catch (error) {
@@ -33,7 +31,7 @@ function FileUpload(props: FileUploadProps) {
 
 	const addFileToCloud = async () => {
 		if (filesToUpload.length < 1) return;
-		const fileRef = ref(storage, `images/${filesToUpload[0].name}`);
+		const fileRef = ref(storage, `images/${filesToUpload[0].data.name}`);
 		try {
 			const response = await uploadBytes(fileRef, filesToUpload[0].data);
 			const url = await getDownloadURL(response.ref);
@@ -50,8 +48,6 @@ function FileUpload(props: FileUploadProps) {
 					...prev,
 					{
 						id: nanoid(),
-						name: files[i].name,
-						size: files[i].size,
 						data: files[i],
 						selected: false,
 					},
