@@ -64,15 +64,15 @@ function DropArea(props: DropAreaProps) {
 				</div>
 			) : (
 				<div
-					className="w-full p-3 bg-white border border-black border-dashed rounded-lg cursor-pointer"
+					className="w-full p-3 bg-white border border-black border-dashed rounded-lg "
 					onDragOver={handleDragOver}
 					onDrop={handleDropUpload}
-					onClick={handleClickBrowseFiles}
 				>
 					<div className="flex flex-row items-center gap-4">
 						<button
 							className="px-3 py-1 text-white font- rounded-md bg-[#5b636b] tracking-wide"
 							type="button"
+							onClick={handleClickBrowseFiles}
 						>
 							Browse...
 						</button>

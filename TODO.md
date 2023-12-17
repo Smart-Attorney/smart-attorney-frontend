@@ -21,7 +21,9 @@
 - [x] allow user to assign deadlines to folders
 - [x] allow user to assign labels to folders
 - [x] allow user to delete labels on folders
-- [ ] allow user to upload files to cases
+- [x] allow user to upload files to cases
+- [ ] upload files to cloud hosting service
+- [ ] user can view uploaded files retrieved from hosting service
 - [ ] allow user to view their cases in a new page
 - [ ] allow user to update cases
 
@@ -34,6 +36,7 @@
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] modals
+- [ ] remove explicit return statements
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders

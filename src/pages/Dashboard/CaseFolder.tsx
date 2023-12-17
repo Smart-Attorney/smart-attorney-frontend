@@ -91,6 +91,12 @@ function CaseFolder() {
 
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
+			{/**
+			 * TODO:
+			 * Rename this file to Case Folder Card for specificity.
+			 * Move the grid layout to dashboard.
+			 * Dashboard should be in charge of displaying case folder cards.
+			 */}
 			{cases?.map((caseInfo) => {
 				return (
 					<div
