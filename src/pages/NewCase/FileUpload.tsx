@@ -17,6 +17,7 @@ interface FileUpload {
 
 function FileUpload(props: FileUploadProps) {
 	const [filesToUpload, setFilesToUpload] = useState<FileUpload[]>([]);
+	const [isUploadDone, setIsUploadDone] = useState(false);
 	console.log(filesToUpload);
 
 	const getFileFromCloud = async () => {
@@ -29,16 +30,31 @@ function FileUpload(props: FileUploadProps) {
 		}
 	};
 
-	const addFileToCloud = async () => {
-		if (filesToUpload.length < 1) return;
-		const fileRef = ref(storage, `images/${filesToUpload[0].data.name}`);
+	const addFileToCloud = async (file: File, id: string) => {
+		const splitFile = file.name.split(".");
+		const fileExt = splitFile[splitFile.length - 1];
+
+		const fileRef = ref(storage, `${fileExt}/${id}_${file.name}`);
 		try {
-			const response = await uploadBytes(fileRef, filesToUpload[0].data);
-			const url = await getDownloadURL(response.ref);
-			console.log(url);
+			const response = await uploadBytes(fileRef, file);
+			// const url = await getDownloadURL(response.ref);
+			console.log(`Successfully uploaded: ${file.name}`);
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const handleButtonClickUploadSelectedFiles = () => {
+		if (filesToUpload === null) return;
+		if (filesToUpload.length < 1) return;
+
+		for (let i = 0; i < filesToUpload.length; i++) {
+			if (filesToUpload[i].selected === true) {
+				addFileToCloud(filesToUpload[i].data, filesToUpload[i].id);
+			}
+		}
+
+		setIsUploadDone(true);
 	};
 
 	const addFilesToUploadArray = (files: FileList) => {
@@ -94,6 +110,11 @@ function FileUpload(props: FileUploadProps) {
 		});
 	};
 
+	const handleButtonClickCloseUpload = () => {
+		setIsUploadDone(false);
+		props.closeUploadBox();
+	};
+
 	return (
 		<div className="p-5  rounded-lg bg-[#D9D9D9]">
 			<div className="flex flex-col items-center gap-5">
@@ -132,7 +153,7 @@ function FileUpload(props: FileUploadProps) {
 					<button
 						className="bg-[#B588B3] w-40 py-2 text-white font-semibold border border-[#B588B3] rounded-md"
 						type="button"
-						onClick={addFileToCloud}
+						onClick={handleButtonClickUploadSelectedFiles}
 						disabled={filesToUpload.length < 1 ? true : false}
 						style={{ cursor: filesToUpload.length < 1 ? "not-allowed" : "pointer" }}
 					>
@@ -141,11 +162,17 @@ function FileUpload(props: FileUploadProps) {
 					<button
 						className="w-40 bg-white py-2 font-semibold text-[#B588B3] border border-[#B588B3] rounded-md"
 						type="button"
-						onClick={props.closeUploadBox}
+						onClick={handleButtonClickCloseUpload}
 					>
-						Cancel
+						Close
 					</button>
 				</div>
+
+				{isUploadDone && (
+					<p className="text-xl font-semibold text-green-600">
+						Selected files have been successfully uploaded!
+					</p>
+				)}
 			</div>
 		</div>
 	);

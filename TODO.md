@@ -22,7 +22,7 @@
 - [x] allow user to assign labels to folders
 - [x] allow user to delete labels on folders
 - [x] allow user to upload files to cases
-- [ ] upload files to cloud hosting service
+- [x] upload files to cloud hosting service
 - [ ] user can view uploaded files retrieved from hosting service
 - [ ] allow user to view their cases in a new page
 - [ ] allow user to update cases
@@ -31,12 +31,15 @@
 - [x] either label-assigner or date-picker can be open at a time, not both
 - [ ] labels array should have id for each label
 
-### nice to have features
+### nitpicks
 - [x] add delete confirmation box
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] modals
 - [ ] remove explicit return statements
+- [ ] rename terse functions for descriptive verbosity
+- [ ] group related functions into a class
+- [ ] fix UX of upload component
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders
