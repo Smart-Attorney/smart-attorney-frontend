@@ -106,7 +106,7 @@ function CaseFolder() {
 					<div
 						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
 						key={caseInfo.id}
-						id={caseInfo.id}
+						id={caseInfo.id.toString()}
 					>
 						{/* Kebab Menu */}
 						<div className="relative left-[200px] w-28">
@@ -133,7 +133,7 @@ function CaseFolder() {
 									<p
 										className="px-3 text-sm pb-[3px] pt-[2px] text-white bg-black rounded-full cursor-pointer"
 										key={caseInfo.id}
-										id={caseInfo.id}
+										id={caseInfo.id.toString()}
 										onClick={handleDeleteLabel}
 									>
 										{label}
