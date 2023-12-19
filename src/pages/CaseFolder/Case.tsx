@@ -6,7 +6,8 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ViewCaseFileModal from "./ViewCaseFileModal";
-import { StorageReference } from "firebase/storage";
+import { StorageReference, getDownloadURL, ref } from "firebase/storage";
+import storage from "../../services/firebase/firebase";
 
 interface UploadedFileObject {
 	id: string;
@@ -27,8 +28,11 @@ interface Case {
 function Case() {
 	const { id } = useParams();
 	const folderID = useRef(id);
+
 	const fileID = useRef<string>("");
 	const fileName = useRef<string | null>("");
+	const fileURL = useRef<string>("");
+
 	const navigate = useNavigate();
 
 	const [caseFiles, setCaseFiles] = useState<Case>();
@@ -59,17 +63,34 @@ function Case() {
 		}
 	}, []);
 
-	const handleClickViewCaseFile = (event: React.MouseEvent<HTMLParagraphElement>) => {
+	const getFileFromCloud = async (fileExt: string, fileID: string, fileName: string) => {
+		try {
+			const fileRef = ref(storage, `${fileExt}/${fileID}_${fileName}`);
+			const url = await getDownloadURL(fileRef);
+			return url;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleClickViewCaseFile = async (event: React.MouseEvent<HTMLParagraphElement>) => {
 		const { id, textContent } = event.target as HTMLParagraphElement;
+
+		const splitFileName = textContent!.split(".");
+		const fileExt = splitFileName[splitFileName.length - 1];
+
+		const fileUrl = await getFileFromCloud(fileExt, id, textContent!);
 
 		fileName.current = textContent;
 		fileID.current = id;
+		fileURL.current = fileUrl!;
+
 		setIsFileViewModalOpen(true);
 	};
 
-  const handleClickCloseViewCaseFile = () => {
-    setIsFileViewModalOpen(false);
-  }
+	const handleClickCloseViewCaseFile = () => {
+		setIsFileViewModalOpen(false);
+	};
 
 	return (
 		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
@@ -119,7 +140,12 @@ function Case() {
 			/>
 
 			{isFileViewModalOpen && (
-        <ViewCaseFileModal fileName={fileName.current} fileID={fileID.current} handleClickCloseViewCaseFile={ handleClickCloseViewCaseFile} />
+				<ViewCaseFileModal
+					fileName={fileName.current}
+					fileID={fileID.current}
+					fileURL={fileURL.current}
+					handleClickCloseViewCaseFile={handleClickCloseViewCaseFile}
+				/>
 			)}
 		</div>
 	);

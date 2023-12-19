@@ -42,6 +42,8 @@
 - [ ] fix UX of upload component
 - [ ] add upload confirmation under each uploaded file
 - [ ] designate code that should be ran on the server
+- [ ] gh repo clone Smart-Attorney/smart-attorney-frontend
+- [ ] save documents under folder id not file extension
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders
