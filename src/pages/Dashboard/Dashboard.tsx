@@ -13,7 +13,6 @@ function Dashboard() {
 
 				<div className="flex flex-row items-center justify-between w-full gap-8">
 					<SortBar options={dashboardOptions} />
-
 					
 					<Link
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
