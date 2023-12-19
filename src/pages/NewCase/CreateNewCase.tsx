@@ -75,7 +75,7 @@ function CreateNewCase() {
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
-			files: [],
+			files: uploadedCaseFiles,
 		};
 
 		storedCaseArray.push(newCaseObject);
