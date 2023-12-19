@@ -6,6 +6,7 @@ import CreateNewCase from "./pages/NewCase/CreateNewCase";
 import Error from "./pages/Error/Error";
 
 function App() {
+	
 	return (
 		<>
 			<Routes>
