@@ -1,17 +1,33 @@
-import JsonData from "./data-new-case";
+import { StorageReference } from "firebase/storage";
 
-function CaseFile() {
+interface UploadedFileObject {
+	id: string;
+	name: string;
+	status: string;
+	ref: Promise<StorageReference | undefined>;
+}
+
+interface CaseFileProps {
+	uploadedCaseFiles: UploadedFileObject[];
+}
+
+function CaseFile(props: CaseFileProps) {
 	return (
+		/**
+		 * TODO:
+		 * NewCase page should be in charge of how these cards are displayed.
+		 * Also rename this to CaseFileCard for clarity.
+		 */
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
-			{JsonData.map((fileInfo) => {
+			{props.uploadedCaseFiles.map((file) => {
 				return (
 					<div
 						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
-						key={fileInfo.id}
+						key={file.id}
 					>
-						<h1>{fileInfo.status}</h1>
+						<h1>{file.status}</h1>
 
-						<p className="mb-8">{fileInfo.name}</p>
+						<p className="mb-8">{file.name}</p>
 					</div>
 				);
 			})}

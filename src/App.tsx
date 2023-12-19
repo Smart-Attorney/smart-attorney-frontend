@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import NewCase from "./pages/NewCase/NewCase";
+import CreateNewCase from "./pages/NewCase/CreateNewCase";
 import Error from "./pages/Error/Error";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/dashboard" element={<Dashboard />} />
-				<Route path="/new-case" element={<NewCase />} />
+				<Route path="/create-new-case" element={<CreateNewCase />} />
 				<Route path="/*" element={<Error />} />
 			</Routes>
 		</>

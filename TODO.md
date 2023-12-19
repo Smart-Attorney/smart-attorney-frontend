@@ -40,6 +40,7 @@
 - [ ] rename terse functions for descriptive verbosity
 - [ ] group related functions into a class
 - [ ] fix UX of upload component
+- [ ] add upload confirmation under each uploaded file
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders

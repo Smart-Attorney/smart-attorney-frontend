@@ -3,17 +3,26 @@ import SortBar from "../../components/SortBar";
 import CaseFile from "./CaseFile";
 import newCaseSortOptions from "./newCaseSortOptions";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
 import FileUpload from "./FileUpload";
+import { StorageReference } from "firebase/storage";
 
-function NewCase() {
+interface UploadedFileObject {
+	id: string;
+	name: string;
+	status: string;
+	ref: Promise<StorageReference | undefined>;
+}
+
+function CreateNewCase() {
+	const caseName = useRef("New Case");
 	const [isUploadOpen, setIsUploadOpen] = useState(false);
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
-	const [caseInfo, setCaseInfo] = useState({
-		name: "New Case",
-	});
+	const [uploadedCaseFiles, setUploadedCaseFiles] = useState<UploadedFileObject[]>([]);
+
+	console.log(uploadedCaseFiles);
 
 	const navigate = useNavigate();
 
@@ -39,6 +48,10 @@ function NewCase() {
 
 	const toggleCaseNameEditable = () => {
 		setIsCaseNameEditable(true);
+		/**
+		 * TODO:
+		 * Replace with useRef().
+		 */
 		const caseName = document.getElementById("case-name");
 
 		setTimeout(() => {
@@ -48,8 +61,9 @@ function NewCase() {
 
 	const handleBlur = (event: React.FocusEvent<HTMLSpanElement>) => {
 		const { textContent } = event.nativeEvent.target as HTMLElement;
+		if (textContent === null) return;
 
-		setCaseInfo({ name: textContent ? textContent : "" });
+		caseName.current = textContent;
 		setIsCaseNameEditable(false);
 	};
 
@@ -57,7 +71,7 @@ function NewCase() {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
 		const newCaseObject = {
 			id: nanoid(),
-			name: caseInfo.name,
+			name: caseName.current,
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
@@ -67,6 +81,12 @@ function NewCase() {
 		storedCaseArray.push(newCaseObject);
 		localStorage.setItem("cases", JSON.stringify(storedCaseArray));
 		navigate("/dashboard");
+	};
+
+	const updateUploadedCaseFilesArray = (uploadedFileObject: UploadedFileObject) => {
+		setUploadedCaseFiles((prev) => {
+			return [...prev, uploadedFileObject];
+		});
 	};
 
 	return (
@@ -79,7 +99,7 @@ function NewCase() {
 					suppressContentEditableWarning={true}
 					onBlur={handleBlur}
 				>
-					{caseInfo.name}
+					{caseName.current}
 				</span>
 
 				<img
@@ -121,11 +141,16 @@ function NewCase() {
 				</div>
 			</div>
 
-			<CaseFile />
+			<CaseFile uploadedCaseFiles={uploadedCaseFiles} />
 
-			{isUploadOpen && <FileUpload closeUploadBox={closeUploadBox} />}
+			{isUploadOpen && (
+				<FileUpload
+					closeUploadBox={closeUploadBox}
+					updateUploadedCaseFilesArray={updateUploadedCaseFilesArray}
+				/>
+			)}
 		</div>
 	);
 }
 
-export default NewCase;
+export default CreateNewCase;

@@ -16,7 +16,7 @@ function Dashboard() {
 				<Link
 					className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
 					type="button"
-					to={"/new-case"}
+					to={"/create-new-case"}
 				>
 					<span>New Case</span>
 				</Link>
