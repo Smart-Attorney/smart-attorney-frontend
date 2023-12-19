@@ -23,8 +23,8 @@
 - [x] allow user to delete labels on folders
 - [x] allow user to upload files to cases
 - [x] upload files to cloud hosting service
-- [ ] user can view uploaded files retrieved from hosting service
-- [ ] allow user to view their cases in a new page
+- [x] user can view uploaded files retrieved from hosting service
+- [x] allow user to view their cases in a new page
 - [ ] allow user to update cases
 
 ### bugs to fix
@@ -41,6 +41,7 @@
 - [ ] group related functions into a class
 - [ ] fix UX of upload component
 - [ ] add upload confirmation under each uploaded file
+- [ ] designate code that should be ran on the server
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders

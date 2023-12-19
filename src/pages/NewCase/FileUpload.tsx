@@ -12,10 +12,10 @@ interface FileUpload {
 }
 
 interface UploadedFileObject {
-  id: string;
-  name: string;
-  status: string;
-  ref: Promise<StorageReference | undefined>;
+	id: string;
+	name: string;
+	status: string;
+	ref: Promise<StorageReference | undefined>;
 }
 
 interface FileUploadProps {
@@ -27,16 +27,6 @@ function FileUpload(props: FileUploadProps) {
 	const [filesToUpload, setFilesToUpload] = useState<FileUpload[]>([]);
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
-
-	// const getFileFromCloud = async () => {
-	// 	try {
-	// 		const fileRef = ref(storage, `images/${filesToUpload[0].data.name}`);
-	// 		const url = await getDownloadURL(fileRef);
-	// 		console.log(url);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
 
 	const addFileToCloud = async (file: File, id: string) => {
 		const splitFile = file.name.split(".");
@@ -59,10 +49,10 @@ function FileUpload(props: FileUploadProps) {
 			if (filesToUpload[i].selected === true) {
 				const uploadedFileRef = addFileToCloud(filesToUpload[i].data, filesToUpload[i].id);
 
-        const uploadedFileObject = {
-          id: filesToUpload[i].id,
-          name: filesToUpload[i].data.name,
-          status: "Submitted",
+				const uploadedFileObject = {
+					id: filesToUpload[i].id,
+					name: filesToUpload[i].data.name,
+					status: "Submitted",
 					ref: uploadedFileRef,
 				};
 

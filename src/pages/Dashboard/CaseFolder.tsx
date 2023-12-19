@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import FolderMenu from "./FolderMenu";
 
 interface Case {
@@ -7,6 +8,7 @@ interface Case {
 	deadline: string;
 	status: string;
 	labels: string[];
+	files: [];
 }
 
 function CaseFolder() {
@@ -25,6 +27,8 @@ function CaseFolder() {
 			setCases([]);
 		}
 	}, []);
+
+	const navigate = useNavigate();
 
 	const handleAddDeadline = (folderID: number, event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
@@ -139,7 +143,12 @@ function CaseFolder() {
 						</div>
 
 						{/* Case Folder Name */}
-						<p className="relative top-[120px] w-fit">{caseInfo.name}</p>
+						<p
+							className="relative top-[120px] w-fit cursor-pointer font-semibold hover:text-blue-500"
+							onClick={() => navigate(caseInfo.id)}
+						>
+							{caseInfo.name}
+						</p>
 					</div>
 				);
 			})}
