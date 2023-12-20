@@ -1,6 +1,6 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import newCaseSortOptions from "../NewCase/newCaseSortOptions";
+import newCaseSortOptions from "../../data/new-case-sort-options";
 import CaseFileCards from "./CaseFileCards";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";

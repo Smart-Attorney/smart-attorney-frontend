@@ -3,7 +3,7 @@ interface Options {
 	name: string;
 }
 
-const dashboardOptions: Options[] = [
+const dashboardSortOptions: Options[] = [
 	{ clicked: false, name: "Name" },
 	{ clicked: false, name: "Date Created" },
 	{ clicked: false, name: "Last Opened" },
@@ -12,4 +12,4 @@ const dashboardOptions: Options[] = [
 	{ clicked: false, name: "Labels" },
 ];
 
-export default dashboardOptions;
+export default dashboardSortOptions;

@@ -1,7 +1,7 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CaseFolder from "./CaseFolder";
-import dashboardOptions from "./DashboardSortOptions";
+import dashboardSortOptions from "../../data/dashboard-sort-options";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
@@ -12,7 +12,7 @@ function Dashboard() {
 				<SearchBar />
 
 				<div className="flex flex-row items-center justify-between w-full gap-8">
-					<SortBar options={dashboardOptions} />
+					<SortBar options={dashboardSortOptions} />
 					
 					<Link
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"

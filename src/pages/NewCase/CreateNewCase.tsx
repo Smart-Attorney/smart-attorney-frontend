@@ -1,7 +1,7 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CaseFile from "./CaseFile";
-import newCaseSortOptions from "./newCaseSortOptions";
+import newCaseSortOptions from "../../data/new-case-sort-options";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";

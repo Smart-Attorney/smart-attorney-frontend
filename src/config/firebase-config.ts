@@ -1,4 +1,4 @@
-const firebaseConfig = {
+const config = {
 	apiKey: "AIzaSyAhPuHwfbUpEjiBb7pObuhsKToyU9na2kA",
 	authDomain: "smart-attorney-564b2.firebaseapp.com",
 	projectId: "smart-attorney-564b2",
@@ -8,4 +8,4 @@ const firebaseConfig = {
 	measurementId: "G-GDFTJQ0GVC",
 };
 
-export default firebaseConfig;
+export default config;
