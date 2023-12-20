@@ -35,14 +35,14 @@
 - [x] add delete confirmation box
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
-- [ ] modals
+- [x] modals
 - [ ] remove explicit return statements
 - [ ] rename terse functions for descriptive verbosity
 - [ ] group related functions into a class
 - [ ] fix UX of upload component
 - [ ] add upload confirmation under each uploaded file
 - [ ] designate code that should be ran on the server
-- [ ] gh repo clone Smart-Attorney/smart-attorney-frontend
+- [ ] find system to organize types/interfaces
 - [ ] save documents under folder id not file extension
 
 ### temporary workarounds
