@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FolderMenu from "./FolderMenu";
-import type { CaseFolder } from "../../utils/types";
-import LocalStorage from "../../services/apis/local-storage";
+import StorageArray from "../../services/local-storage/storage-array";
+import CaseFolder from "../../services/local-storage/case-folder";
+import CaseDeadline from "../../services/local-storage/case-deadline";
+import CaseLabel from "../../services/local-storage/case-label";
 import { formatDateInput } from "../../utils/format";
+import type { FolderItem } from "../../utils/types";
 
-function CaseFolder() {
+function FolderCard() {
 	const navigate = useNavigate();
-	const [cases, setCases] = useState<CaseFolder[]>();
+	const [cases, setCases] = useState<FolderItem[]>();
 
 	/**
 	 * On initial load, retrieves case array from local storage.
@@ -15,65 +18,36 @@ function CaseFolder() {
 	 * Empty dependency array since it should only run once on initial load.
 	 */
 	useEffect(() => {
-		const caseArrayExists = LocalStorage.doesCaseArrayExist();
+		const caseArrayExists = StorageArray.exists();
 		if (caseArrayExists) {
-			setCases(LocalStorage.getStoredCaseArray());
+			setCases(StorageArray.get());
 		} else {
 			setCases([]);
 		}
 	}, []);
 
-	const handleAddDeadline = (folderID: string, event: React.ChangeEvent<HTMLInputElement>) => {
-		const { value } = event.target;
-
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: string }) => {
-			return folderID === caseFolder.id ? { ...caseFolder, deadline: value } : caseFolder;
-		});
-		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
-		setCases(updatedCaseArray);
+	const handleAddDeadline = (folderId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+		const { value: newDeadline } = event.target;
+		const updatedArray = CaseDeadline.add(folderId, newDeadline);
+		setCases(updatedArray);
 	};
 
-	const handleAddLabel = (folderID: string, event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleAddLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		const { value } = (event.target as HTMLFormElement).form[0];
-
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: string; labels: string[] }) => {
-			return folderID === caseFolder.id
-				? { ...caseFolder, labels: [...caseFolder.labels, value] }
-				: caseFolder;
-		});
-		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
-		setCases(updatedCaseArray);
+		const { value: newLabel } = (event.target as HTMLFormElement).form[0];
+		const updatedArray = CaseLabel.add(folderId, newLabel);
+		setCases(updatedArray);
 	};
 
 	const handleDeleteLabel = (event: React.MouseEvent<HTMLParagraphElement>) => {
-		const { textContent } = event.target as HTMLParagraphElement;
-		const { id } = event.target as HTMLParagraphElement;
-
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: string; labels: string[] }) => {
-			return id === caseFolder.id
-				? {
-						...caseFolder,
-						labels: caseFolder.labels.filter((label) => {
-							return label !== textContent;
-						}),
-				  }
-				: caseFolder;
-		});
-		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
-		setCases(updatedCaseArray);
+		const { id: folderId, innerText: selectedLabel } = event.target as HTMLParagraphElement;
+		const updatedArray = CaseLabel.delete(folderId, selectedLabel);
+		setCases(updatedArray);
 	};
 
-	const handleFolderDelete = (folderID: string) => {
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const filteredOutItemAray = storedCaseArray.filter((caseFolder: { id: string }) => {
-			return caseFolder.id !== folderID;
-		});
-		localStorage.setItem("cases", JSON.stringify(filteredOutItemAray));
-		setCases(filteredOutItemAray);
+	const handleDeleteFolder = (folderId: string) => {
+		const updatedArray = CaseFolder.delete(folderId);
+		setCases(updatedArray);
 	};
 
 	return (
@@ -96,7 +70,7 @@ function CaseFolder() {
 							<FolderMenu
 								addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
 								addLabel={(event) => handleAddLabel(caseInfo.id, event)}
-								deleteFolder={() => handleFolderDelete(caseInfo.id)}
+								deleteFolder={() => handleDeleteFolder(caseInfo.id)}
 							/>
 						</div>
 
@@ -139,4 +113,4 @@ function CaseFolder() {
 	);
 }
 
-export default CaseFolder;
+export default FolderCard;

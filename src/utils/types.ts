@@ -3,20 +3,20 @@ interface SortOptions {
 	name: string;
 }
 
-interface CaseFile {
+interface FileItem {
 	id: string;
 	name: string;
 	status: string;
 	ref: {};
 }
 
-interface CaseFolder {
+interface FolderItem {
 	id: string;
 	name: string;
 	status: string;
 	deadline: string;
 	labels: string[];
-	files: CaseFile[];
+	files: FileItem[];
 }
 
-export type { SortOptions, CaseFile, CaseFolder };
+export type { SortOptions, FileItem, FolderItem };

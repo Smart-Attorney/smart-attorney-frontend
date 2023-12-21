@@ -1,9 +1,12 @@
 ### core funtionalities
-- create new folders (tiles)
-- create new documents
-- assign deadlines for folders
-- create labels for folders
-- make the above look decent
+- [x] create new folders (tiles)
+- [x] create new documents
+- [x] assign deadlines for folders
+- [x] create labels for folders
+- [ ] make the above look decent (adhere to hi-fidelity wireframe)
+- [ ] preview of most recently opened document on folder
+- [ ] click on folder to view all case files inside
+- [ ] sort feature
 
 ### tasks
 - [x] project gh repo
@@ -42,7 +45,7 @@
 - [ ] fix UX of upload component
 - [ ] add upload confirmation under each uploaded file
 - [ ] designate code that should be ran on the server
-- [ ] find system to organize types/interfaces
+- [x] find system to organize types/interfaces
 - [ ] save documents under folder id not file extension
 
 ### temporary workarounds

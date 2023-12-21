@@ -1,6 +1,6 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import CaseFolder from "./CaseFolder";
+import FolderCard from "./FolderCard";
 import { DASHBOARD_SORT_OPTIONS } from "../../utils/constants";
 import { Link } from "react-router-dom";
 
@@ -28,7 +28,7 @@ function Dashboard() {
 					</Link>
 				</div>
 
-				<CaseFolder />
+				<FolderCard />
 			</div>
 		</div>
 	);
