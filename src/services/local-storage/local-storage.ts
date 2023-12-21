@@ -1,26 +1,30 @@
-interface CaseFolder {
-	id: string;
-	name: string;
-	status: string;
-	deadline: string;
-	labels: string[];
-	files: [];
-}
+import { CaseFolder } from "../../utils/types";
 
 class LocalStorage {
 	//
+	static #STORED_CASES_KEY: string = "cases";
+	static #NEW_EMPTY_CASE_ARRAY: {}[] = [];
+
+	static setNewEmptyCaseArray(): void {
+		localStorage.setItem(
+			LocalStorage.#STORED_CASES_KEY,
+			JSON.stringify(LocalStorage.#NEW_EMPTY_CASE_ARRAY)
+		);
+	}
+
 	static getStoredCaseArray(): CaseFolder[] {
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
+		const storedCaseArray: CaseFolder[] = JSON.parse(
+			localStorage.getItem(LocalStorage.#STORED_CASES_KEY) as string
+		);
 		return storedCaseArray;
 	}
 
-	static setNewEmptyCaseArray(): void {
+	static doesCaseArrayExist(): boolean {
 		const storedCaseArray = this.getStoredCaseArray();
-
 		if (storedCaseArray === null) {
-			const emptyCaseArray: {}[] = [];
-			localStorage.setItem("cases", JSON.stringify(emptyCaseArray));
+			return false;
 		}
+		return true;
 	}
 
 	static findFolderByID(folderID: string): boolean {
@@ -35,3 +39,5 @@ class LocalStorage {
 	}
 	//
 }
+
+export default LocalStorage;
