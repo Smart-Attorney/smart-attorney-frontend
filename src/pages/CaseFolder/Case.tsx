@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ViewCaseFileModal from "./ViewCaseFileModal";
 import { StorageReference, getDownloadURL, ref } from "firebase/storage";
-import storage from "../../services/firebase/firebase";
+import storage from "../../services/apis/firebase";
 
 interface UploadedFileObject {
 	id: string;

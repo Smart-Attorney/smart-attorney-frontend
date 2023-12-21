@@ -2,7 +2,7 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropArea from "./DropArea";
 import UploadedFilesDisplay from "./UploadedFilesDisplay";
-import storage from "../../services/firebase/firebase.ts";
+import storage from "../../services/apis/firebase.ts";
 import { StorageReference, ref, uploadBytes } from "firebase/storage";
 
 interface FileUpload {

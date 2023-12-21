@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FolderMenu from "./FolderMenu";
-
-interface Case {
-	id: number;
-	name: string;
-	deadline: string;
-	status: string;
-	labels: string[];
-	files: [];
-}
+import type { CaseFolder } from "../../utils/types";
+import LocalStorage from "../../services/apis/local-storage";
+import { formatDateInput } from "../../utils/format";
 
 function CaseFolder() {
-	const [cases, setCases] = useState<Case[]>();
+	const navigate = useNavigate();
+	const [cases, setCases] = useState<CaseFolder[]>();
 
 	/**
 	 * On initial load, retrieves case array from local storage.
@@ -20,33 +15,31 @@ function CaseFolder() {
 	 * Empty dependency array since it should only run once on initial load.
 	 */
 	useEffect(() => {
-		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
-		if (storedCases !== null) {
-			setCases(storedCases);
+		const caseArrayExists = LocalStorage.doesCaseArrayExist();
+		if (caseArrayExists) {
+			setCases(LocalStorage.getStoredCaseArray());
 		} else {
 			setCases([]);
 		}
 	}, []);
 
-	const navigate = useNavigate();
-
-	const handleAddDeadline = (folderID: number, event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleAddDeadline = (folderID: string, event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
 
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: number }) => {
+		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: string }) => {
 			return folderID === caseFolder.id ? { ...caseFolder, deadline: value } : caseFolder;
 		});
 		localStorage.setItem("cases", JSON.stringify(updatedCaseArray));
 		setCases(updatedCaseArray);
 	};
 
-	const handleAddLabel = (folderID: number, event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleAddLabel = (folderID: string, event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { value } = (event.target as HTMLFormElement).form[0];
 
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: number; labels: string[] }) => {
+		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: string; labels: string[] }) => {
 			return folderID === caseFolder.id
 				? { ...caseFolder, labels: [...caseFolder.labels, value] }
 				: caseFolder;
@@ -58,11 +51,10 @@ function CaseFolder() {
 	const handleDeleteLabel = (event: React.MouseEvent<HTMLParagraphElement>) => {
 		const { textContent } = event.target as HTMLParagraphElement;
 		const { id } = event.target as HTMLParagraphElement;
-		const labelID = Number(id);
 
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: number; labels: string[] }) => {
-			return labelID === caseFolder.id
+		const updatedCaseArray = storedCaseArray.map((caseFolder: { id: string; labels: string[] }) => {
+			return id === caseFolder.id
 				? {
 						...caseFolder,
 						labels: caseFolder.labels.filter((label) => {
@@ -75,22 +67,13 @@ function CaseFolder() {
 		setCases(updatedCaseArray);
 	};
 
-	const handleFolderDelete = (folderID: number) => {
+	const handleFolderDelete = (folderID: string) => {
 		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-		const filteredOutItemAray = storedCaseArray.filter((caseFolder: { id: number }) => {
+		const filteredOutItemAray = storedCaseArray.filter((caseFolder: { id: string }) => {
 			return caseFolder.id !== folderID;
 		});
 		localStorage.setItem("cases", JSON.stringify(filteredOutItemAray));
 		setCases(filteredOutItemAray);
-	};
-
-	const formatDate = (date: string) => {
-		if (date === "" || date === null || date === undefined) {
-			return "__________";
-		}
-		const dateArray = date.split("-");
-		const formattedDate = `${dateArray[1]}/${dateArray[2]}/${dateArray[0]}`;
-		return formattedDate;
 	};
 
 	return (
@@ -119,7 +102,7 @@ function CaseFolder() {
 
 						{/* Case Deadline */}
 						<div className="relative flex flex-row items-center gap-4 w-fit bottom-[26px]">
-							<p>Deadline: {formatDate(caseInfo.deadline)}</p>
+							<p>Deadline: {formatDateInput(caseInfo.deadline)}</p>
 							<div
 								className="w-4 h-4 rounded-full"
 								style={{ backgroundColor: `${caseInfo.status}` }}

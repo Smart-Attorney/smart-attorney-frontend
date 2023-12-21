@@ -1,3 +1,5 @@
+import { formatBytes } from "../../utils/format";
+
 interface FileUpload {
 	id: string;
 	data: File;
@@ -10,19 +12,6 @@ interface UploadedFilesDisplayProps {
 	handleClickToggleChecked: (id: string) => void;
 	handleClickRemoveFileFromUploadStaging: (id: string) => void;
 }
-
-/**
- * Byte conversion function reference:
- * https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
- */
-const formatBytes = (bytes: number, decimals = 1) => {
-	if (!+bytes) return "0 Bytes";
-	const k = 1000;
-	const dm = decimals < 0 ? 0 : decimals;
-	const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-	const i = Math.floor(Math.log(bytes) / Math.log(k));
-	return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-};
 
 /**
  * TODO:
