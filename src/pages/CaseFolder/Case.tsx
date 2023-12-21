@@ -1,6 +1,6 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import newCaseSortOptions from "../../data/new-case-sort-options";
+import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
 import CaseFileCards from "./CaseFileCards";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -106,7 +106,7 @@ function Case() {
 			<SearchBar />
 
 			<div className="flex flex-row items-center justify-between w-full gap-8">
-				<SortBar options={newCaseSortOptions} />
+				<SortBar options={NEW_CASE_SORT_OPTIONS} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-8">
 					<button

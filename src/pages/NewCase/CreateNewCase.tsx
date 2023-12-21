@@ -1,7 +1,7 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CaseFile from "./CaseFile";
-import newCaseSortOptions from "../../data/new-case-sort-options";
+import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
@@ -112,7 +112,7 @@ function CreateNewCase() {
 			<SearchBar />
 
 			<div className="flex flex-row items-center justify-between w-full gap-8">
-				<SortBar options={newCaseSortOptions} />
+				<SortBar options={NEW_CASE_SORT_OPTIONS} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-8">
 					<button
