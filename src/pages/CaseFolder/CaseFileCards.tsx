@@ -1,14 +1,7 @@
-import { StorageReference } from "firebase/storage";
-
-interface UploadedFileObject {
-	id: string;
-	name: string;
-	status: string;
-	ref: Promise<StorageReference>;
-}
+import { FileItem } from "../../utils/types";
 
 interface CaseFileCardsProps {
-	files: UploadedFileObject[] | undefined;
+	files: FileItem[] | undefined;
 	handleClickViewCaseFile: (event: React.MouseEvent<HTMLParagraphElement>) => void;
 }
 

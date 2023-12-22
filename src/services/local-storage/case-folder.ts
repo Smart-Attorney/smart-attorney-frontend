@@ -1,17 +1,25 @@
+import { FolderItem } from "../../utils/types";
 import StorageArray from "./storage-array";
 
 class CaseFolder extends StorageArray {
 	/**
 	 *
 	 */
-	static findById(folderId: string) {
+	static getById(folderId: string) {
 		const storedArray = super.get();
 		for (let i = 0; i < storedArray.length; i++) {
 			if (storedArray[i].id === folderId) {
-				return true;
+				return storedArray[i];
 			}
 		}
-		return false;
+		return null;
+	}
+
+	static add(newFolder: FolderItem) {
+		const storedArray = super.get();
+		const updatedArray = [...storedArray, newFolder];
+		super.set(updatedArray);
+		return updatedArray;
 	}
 
 	static delete(folderId: string) {

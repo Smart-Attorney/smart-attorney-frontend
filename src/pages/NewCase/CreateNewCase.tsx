@@ -8,6 +8,8 @@ import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
 import FileUpload from "./FileUpload";
 import { StorageReference } from "firebase/storage";
+import StorageArray from "../../services/local-storage/storage-array";
+import CaseFolder from "../../services/local-storage/case-folder";
 
 interface UploadedFileObject {
 	id: string;
@@ -31,10 +33,9 @@ function CreateNewCase() {
 	 * If not, creates and saves a cases array to local storage.
 	 */
 	useEffect(() => {
-		const storedCases = JSON.parse(localStorage.getItem("cases") as string);
-		if (storedCases === null) {
-			const emptyCaseArray: {}[] = [];
-			localStorage.setItem("cases", JSON.stringify(emptyCaseArray));
+		const caseArrayExists = StorageArray.exists();
+		if (!caseArrayExists) {
+			StorageArray.init();
 		}
 	}, []);
 
@@ -68,7 +69,6 @@ function CreateNewCase() {
 	};
 
 	const handleCaseCreate = () => {
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
 		const newCaseObject = {
 			id: nanoid(),
 			name: caseName.current,
@@ -77,9 +77,7 @@ function CreateNewCase() {
 			labels: [],
 			files: uploadedCaseFiles,
 		};
-
-		storedCaseArray.push(newCaseObject);
-		localStorage.setItem("cases", JSON.stringify(storedCaseArray));
+		CaseFolder.add(newCaseObject);
 		navigate("/dashboard");
 	};
 

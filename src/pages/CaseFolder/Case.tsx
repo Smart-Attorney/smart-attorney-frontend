@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import ViewCaseFileModal from "./ViewCaseFileModal";
 import { StorageReference, getDownloadURL, ref } from "firebase/storage";
 import storage from "../../services/cloud-storage/firebase";
+import CaseFolder from "../../services/local-storage/case-folder";
+import { FolderItem } from "../../utils/types";
 
 interface UploadedFileObject {
 	id: string;
@@ -27,37 +29,25 @@ interface Case {
 
 function Case() {
 	const { id } = useParams();
-	const folderID = useRef(id);
-
+	const folderID = useRef<string | undefined>(id);
 	const fileID = useRef<string>("");
 	const fileName = useRef<string | null>("");
 	const fileURL = useRef<string>("");
 
 	const navigate = useNavigate();
 
-	const [caseFiles, setCaseFiles] = useState<Case>();
+	const [caseFiles, setCaseFiles] = useState<FolderItem>();
 	// console.log(caseFiles);
 	const [isFileViewModalOpen, setIsFileViewModalOpen] = useState(false);
 
 	useEffect(() => {
-		const storedCaseArray = JSON.parse(localStorage.getItem("cases") as string);
-
-		const findFolderByID = () => {
-			for (let i = 0; i < storedCaseArray.length; i++) {
-				if (storedCaseArray[i].id === folderID.current) {
-					return true;
-				}
-			}
-			return false;
-		};
-
-		if (findFolderByID()) {
-			for (let i = 0; i < storedCaseArray.length; i++) {
-				if (storedCaseArray[i].id === folderID.current) {
-					setCaseFiles(storedCaseArray[i]);
-					break;
-				}
-			}
+		if (folderID.current === undefined) {
+			navigate("/404");
+			return;
+		}
+		const caseFolderExists = CaseFolder.getById(folderID.current);
+		if (caseFolderExists) {
+			setCaseFiles(caseFolderExists);
 		} else {
 			navigate("/404");
 		}
