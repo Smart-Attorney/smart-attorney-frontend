@@ -4,7 +4,7 @@ interface UploadedFileObject {
 	id: string;
 	name: string;
 	status: string;
-	ref: Promise<StorageReference | undefined>;
+	ref: Promise<StorageReference | null>;
 }
 
 interface CaseFileProps {
@@ -19,18 +19,16 @@ function CaseFile(props: CaseFileProps) {
 		 * Also rename this to CaseFileCard for clarity.
 		 */
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
-			{props.uploadedCaseFiles.map((file) => {
-				return (
-					<div
-						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
-						key={file.id}
-					>
-						<h1>{file.status}</h1>
+			{props.uploadedCaseFiles.map((file) => (
+				<div
+					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
+					key={file.id}
+				>
+					<h1>{file.status}</h1>
 
-						<p className="mb-8">{file.name}</p>
-					</div>
-				);
-			})}
+					<p className="mb-8">{file.name}</p>
+				</div>
+			))}
 		</div>
 	);
 }

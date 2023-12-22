@@ -32,6 +32,7 @@
 - [ ] allow user to update cases
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
+- [ ] add upload confirmation under each uploaded file
 
 
 ### bugs to fix
@@ -46,12 +47,12 @@
 - [ ] rename terse functions for descriptive verbosity
 - [x] group related functions into a class
 - [ ] fix UX of upload component
-- [ ] add upload confirmation under each uploaded file
 - [x] designate code that should be ran on the server
 - [x] find system to organize types/interfaces
 - [ ] save uploaded files under folder id not file extension
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
+- [ ] clean up rogue interface declarations
 
 
 ### temporary workarounds

@@ -15,9 +15,7 @@ interface DropAreaProps {
 function DropArea(props: DropAreaProps) {
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	const handleClickBrowseFiles = () => {
-		inputRef.current?.click();
-	};
+	const handleClickBrowseFiles = () => inputRef.current?.click();
 
 	const handleSelectUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { files } = event.target;
@@ -26,9 +24,7 @@ function DropArea(props: DropAreaProps) {
 		}
 	};
 
-	const handleDragOver = (event: React.DragEvent) => {
-		event.preventDefault();
-	};
+	const handleDragOver = (event: React.DragEvent) => event.preventDefault();
 
 	const handleDropUpload = (event: React.DragEvent) => {
 		event.preventDefault();

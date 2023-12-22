@@ -15,7 +15,7 @@ interface UploadedFileObject {
 	id: string;
 	name: string;
 	status: string;
-	ref: Promise<StorageReference | undefined>;
+	ref: Promise<StorageReference | null>;
 }
 
 function CreateNewCase() {
@@ -24,7 +24,7 @@ function CreateNewCase() {
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
 	const [uploadedCaseFiles, setUploadedCaseFiles] = useState<UploadedFileObject[]>([]);
 
-	console.log(uploadedCaseFiles);
+	// console.log(uploadedCaseFiles);
 
 	const navigate = useNavigate();
 
@@ -39,13 +39,9 @@ function CreateNewCase() {
 		}
 	}, []);
 
-	const toggleUploadBox = () => {
-		setIsUploadOpen((prev) => !prev);
-	};
+	const toggleUploadBox = () => setIsUploadOpen((prev) => !prev);
 
-	const closeUploadBox = () => {
-		setIsUploadOpen(false);
-	};
+	const closeUploadBox = () => setIsUploadOpen(false);
 
 	const toggleCaseNameEditable = () => {
 		setIsCaseNameEditable(true);
@@ -81,11 +77,8 @@ function CreateNewCase() {
 		navigate("/dashboard");
 	};
 
-	const updateUploadedCaseFilesArray = (uploadedFileObject: UploadedFileObject) => {
-		setUploadedCaseFiles((prev) => {
-			return [...prev, uploadedFileObject];
-		});
-	};
+	const updateUploadedCaseFilesArray = (uploadedFileObject: UploadedFileObject) =>
+		setUploadedCaseFiles((prev) => [...prev, uploadedFileObject]);
 
 	return (
 		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">

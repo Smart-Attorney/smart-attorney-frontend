@@ -28,9 +28,7 @@ function FileUpload(props: FileUploadProps) {
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
 
-	const addFileToCloud = async (file: File, fileId: string) => {
-		return await Firebase.addFile(file, fileId);
-	};
+	const addFileToCloud = async (file: File, fileId: string) => await Firebase.addFile(file, fileId);
 
 	const handleButtonClickUploadSelectedFiles = () => {
 		if (filesToUpload === null) return;
@@ -67,42 +65,31 @@ function FileUpload(props: FileUploadProps) {
 		}
 	};
 
-	const handleClickRemoveFileFromUploadStaging = (id: string) => {
-		setFilesToUpload((prev) =>
-			prev.filter((file) => {
-				return file.id !== id;
-			})
-		);
-	};
+	const handleClickRemoveFileFromUploadStaging = (id: string) =>
+		setFilesToUpload((prev) => prev.filter((file) => file.id !== id));
 
-	const handleClickToggleChecked = (id: string) => {
-		handleChangeToggleChecked(id);
-	};
+	const handleClickToggleChecked = (id: string) => handleChangeToggleChecked(id);
 
-	const handleChangeToggleChecked = (id: string) => {
+	const handleChangeToggleChecked = (id: string) =>
 		setFilesToUpload((prev) =>
-			prev.map((file) => {
-				return file.id === id
+			prev.map((file) =>
+				file.id === id
 					? {
 							...file,
 							selected: !file.selected,
 					  }
-					: file;
-			})
+					: file
+			)
 		);
-	};
 
 	const handleSelectAllToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { checked } = event.target;
-
-		setFilesToUpload((prev) => {
-			return prev.map((file) => {
-				return {
-					...file,
-					selected: checked,
-				};
-			});
-		});
+		setFilesToUpload((prev) =>
+			prev.map((file) => ({
+				...file,
+				selected: checked,
+			}))
+		);
 	};
 
 	const handleButtonClickCloseUpload = () => {
