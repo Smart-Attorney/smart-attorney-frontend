@@ -10,7 +10,7 @@ class Firebase {
 	 *
 	 */
 	// replace saving by fileType with folderId
-	static async getFile(fileId: string, fileName: string) {
+	public static async getFile(fileId: string, fileName: string) {
 		const fileNameArray = fileName.split(".");
 		const fileType = fileNameArray[fileNameArray.length - 1];
 		const fileRef = ref(storage, `${fileType}/${fileId}_${fileName}`);
@@ -24,7 +24,7 @@ class Firebase {
 	}
 
 	// replace saving by fileType with folderId
-	static async addFile(file: File, fileId: string) {
+	public static async addFile(file: File, fileId: string) {
 		const fileName = file.name;
 		const fileNameArray = fileName.split(".");
 		const fileType = fileNameArray[fileNameArray.length - 1];

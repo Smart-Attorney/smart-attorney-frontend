@@ -7,20 +7,20 @@ class StorageArray {
 	private static STORAGE_KEY: string = "cases";
 	private static EMPTY_ARRAY: FolderItem[] = [];
 
-	static init(): void {
+	public static init(): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.EMPTY_ARRAY));
 	}
 
-	static set(updatedArray: FolderItem[]): void {
+	public static set(updatedArray: FolderItem[]): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedArray));
 	}
 
-	static get(): FolderItem[] {
+	public static get(): FolderItem[] {
 		const storedArray: FolderItem[] = JSON.parse(localStorage.getItem(this.STORAGE_KEY) as string);
 		return storedArray;
 	}
 
-	static exists(): boolean {
+	public static exists(): boolean {
 		const storedArray = this.get();
 		if (storedArray === null) {
 			return false;

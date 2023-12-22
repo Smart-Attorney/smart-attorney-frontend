@@ -4,7 +4,7 @@ class CaseLabel extends StorageArray {
 	/**
 	 *
 	 */
-	static add(folderId: string, newLabel: string) {
+	public static add(folderId: string, newLabel: string) {
 		const storedArray = super.get();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
@@ -20,7 +20,7 @@ class CaseLabel extends StorageArray {
 	 * Update this method once each label is identified by
 	 * its own unique id.
 	 */
-	static delete(folderId: string, selectedLabel: string) {
+	public static delete(folderId: string, selectedLabel: string) {
 		const storedArray = super.get();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
