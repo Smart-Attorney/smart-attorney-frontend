@@ -1,0 +1,3 @@
+Firebase api should be run from the backend.
+
+LocalStorage methods are to be replaced by backend database.

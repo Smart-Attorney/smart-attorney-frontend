@@ -2,8 +2,8 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropArea from "./DropArea";
 import UploadedFilesDisplay from "./UploadedFilesDisplay";
-import storage from "../../services/cloud-storage/firebase.ts";
-import { StorageReference, ref, uploadBytes } from "firebase/storage";
+import Firebase from "../../services/cloud-storage/firebase";
+import { StorageReference } from "firebase/storage";
 
 interface FileUpload {
 	id: string;
@@ -15,7 +15,7 @@ interface UploadedFileObject {
 	id: string;
 	name: string;
 	status: string;
-	ref: Promise<StorageReference | undefined>;
+	ref: Promise<StorageReference | null>;
 }
 
 interface FileUploadProps {
@@ -28,17 +28,8 @@ function FileUpload(props: FileUploadProps) {
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
 
-	const addFileToCloud = async (file: File, id: string) => {
-		const splitFile = file.name.split(".");
-		const fileExt = splitFile[splitFile.length - 1];
-
-		const fileRef = ref(storage, `${fileExt}/${id}_${file.name}`);
-		try {
-			const response = await uploadBytes(fileRef, file);
-			return response.ref;
-		} catch (error) {
-			console.log(error);
-		}
+	const addFileToCloud = async (file: File, fileId: string) => {
+		return await Firebase.addFile(file, fileId);
 	};
 
 	const handleButtonClickUploadSelectedFiles = () => {
@@ -65,16 +56,14 @@ function FileUpload(props: FileUploadProps) {
 
 	const addFilesToUploadArray = (files: FileList) => {
 		for (let i = 0; i < files.length; i++) {
-			setFilesToUpload((prev) => {
-				return [
-					...prev,
-					{
-						id: nanoid(),
-						data: files[i],
-						selected: false,
-					},
-				];
-			});
+			setFilesToUpload((prev) => [
+				...prev,
+				{
+					id: nanoid(),
+					data: files[i],
+					selected: false,
+				},
+			]);
 		}
 	};
 

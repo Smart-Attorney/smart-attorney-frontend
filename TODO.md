@@ -8,6 +8,7 @@
 - [ ] click on folder to view all case files inside
 - [ ] sort feature
 
+
 ### tasks
 - [x] project gh repo
 - [x] project template
@@ -29,25 +30,31 @@
 - [x] user can view uploaded files retrieved from hosting service
 - [x] allow user to view their cases in a new page
 - [ ] allow user to update cases
+- [ ] add dynamic deadline status color
+- [ ] add on hover effect (x) to labels to remove
+
 
 ### bugs to fix
 - [x] either label-assigner or date-picker can be open at a time, not both
-- [ ] labels array should have id for each label
+- [ ] labels array should have an id for each label
+
 
 ### nitpicks
 - [x] add delete confirmation box
-- [ ] add dynamic deadline status color
-- [ ] add on hover effect (x) to labels to remove
 - [x] modals
 - [ ] remove explicit return statements
 - [ ] rename terse functions for descriptive verbosity
-- [ ] group related functions into a class
+- [x] group related functions into a class
 - [ ] fix UX of upload component
 - [ ] add upload confirmation under each uploaded file
-- [ ] designate code that should be ran on the server
+- [x] designate code that should be ran on the server
 - [x] find system to organize types/interfaces
-- [ ] save documents under folder id not file extension
+- [ ] save uploaded files under folder id not file extension
+- [ ] save url of uploaded files so u dont have to make a call for each every time
+- [ ] replace ref property from uploaded files object with url
+
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders
 - using local storage as makeshift database
+

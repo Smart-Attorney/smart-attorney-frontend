@@ -6,10 +6,10 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ViewCaseFileModal from "./ViewCaseFileModal";
-import { StorageReference, getDownloadURL, ref } from "firebase/storage";
-import storage from "../../services/cloud-storage/firebase";
 import CaseFolder from "../../services/local-storage/case-folder";
 import { FolderItem } from "../../utils/types";
+import { StorageReference } from "firebase/storage";
+import Firebase from "../../services/cloud-storage/firebase";
 
 interface UploadedFileObject {
 	id: string;
@@ -53,26 +53,16 @@ function Case() {
 		}
 	}, []);
 
-	const getFileFromCloud = async (fileExt: string, fileID: string, fileName: string) => {
-		try {
-			const fileRef = ref(storage, `${fileExt}/${fileID}_${fileName}`);
-			const url = await getDownloadURL(fileRef);
-			return url;
-		} catch (error) {
-			console.log(error);
-		}
+	const getFileFromCloud = async (fileId: string, fileName: string) => {
+		return await Firebase.getFile(fileId, fileName);
 	};
 
 	const handleClickViewCaseFile = async (event: React.MouseEvent<HTMLParagraphElement>) => {
-		const { id, textContent } = event.target as HTMLParagraphElement;
+		const { id: fileId, innerText } = event.target as HTMLParagraphElement;
+		const fileUrl = await getFileFromCloud(fileId, innerText);
 
-		const splitFileName = textContent!.split(".");
-		const fileExt = splitFileName[splitFileName.length - 1];
-
-		const fileUrl = await getFileFromCloud(fileExt, id, textContent!);
-
-		fileName.current = textContent;
-		fileID.current = id;
+		fileName.current = innerText;
+		fileID.current = fileId;
 		fileURL.current = fileUrl!;
 
 		setIsFileViewModalOpen(true);
