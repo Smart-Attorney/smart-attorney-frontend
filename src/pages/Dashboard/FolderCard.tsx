@@ -58,57 +58,53 @@ function FolderCard() {
 			 * Move the grid layout to dashboard.
 			 * Dashboard should be in charge of displaying case folder cards.
 			 */}
-			{cases?.map((caseInfo) => {
-				return (
-					<div
-						className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
-						key={caseInfo.id}
-						id={caseInfo.id.toString()}
-					>
-						{/* Kebab Menu */}
-						<div className="relative left-[200px] w-28">
-							<FolderMenu
-								addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
-								addLabel={(event) => handleAddLabel(caseInfo.id, event)}
-								deleteFolder={() => handleDeleteFolder(caseInfo.id)}
-							/>
-						</div>
-
-						{/* Case Deadline */}
-						<div className="relative flex flex-row items-center gap-4 w-fit bottom-[26px]">
-							<p>Deadline: {formatDateInput(caseInfo.deadline)}</p>
-							<div
-								className="w-4 h-4 rounded-full"
-								style={{ backgroundColor: `${caseInfo.status}` }}
-							></div>
-						</div>
-
-						{/* Case Folder Labels */}
-						<div className="relative flex flex-row flex-wrap w-[85%] h-6 gap-2 bottom-[24px]">
-							{caseInfo.labels.map((label) => {
-								return (
-									<p
-										className="px-3 text-sm pb-[3px] pt-[2px] text-white bg-black rounded-full cursor-pointer"
-										key={caseInfo.id}
-										id={caseInfo.id.toString()}
-										onClick={handleDeleteLabel}
-									>
-										{label}
-									</p>
-								);
-							})}
-						</div>
-
-						{/* Case Folder Name */}
-						<p
-							className="relative top-[120px] w-fit cursor-pointer font-semibold hover:text-blue-500"
-							onClick={() => navigate(caseInfo.id)}
-						>
-							{caseInfo.name}
-						</p>
+			{cases?.map((caseInfo) => (
+				<div
+					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
+					key={caseInfo.id}
+					id={caseInfo.id.toString()}
+				>
+					{/* Kebab Menu */}
+					<div className="relative left-[200px] w-28">
+						<FolderMenu
+							addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
+							addLabel={(event) => handleAddLabel(caseInfo.id, event)}
+							deleteFolder={() => handleDeleteFolder(caseInfo.id)}
+						/>
 					</div>
-				);
-			})}
+
+					{/* Case Deadline */}
+					<div className="relative flex flex-row items-center gap-4 w-fit bottom-[26px]">
+						<p>Deadline: {formatDateInput(caseInfo.deadline)}</p>
+						<div
+							className="w-4 h-4 rounded-full"
+							style={{ backgroundColor: `${caseInfo.status}` }}
+						></div>
+					</div>
+
+					{/* Case Folder Labels */}
+					<div className="relative flex flex-row flex-wrap w-[85%] h-6 gap-2 bottom-[24px]">
+						{caseInfo.labels.map((label) => (
+							<p
+								className="px-3 text-sm pb-[3px] pt-[2px] text-white bg-black rounded-full cursor-pointer"
+								key={caseInfo.id}
+								id={caseInfo.id.toString()}
+								onClick={handleDeleteLabel}
+							>
+								{label}
+							</p>
+						))}
+					</div>
+
+					{/* Case Folder Name */}
+					<p
+						className="relative top-[120px] w-fit cursor-pointer font-semibold hover:text-blue-500"
+						onClick={() => navigate(caseInfo.id)}
+					>
+						{caseInfo.name}
+					</p>
+				</div>
+			))}
 		</div>
 	);
 }
