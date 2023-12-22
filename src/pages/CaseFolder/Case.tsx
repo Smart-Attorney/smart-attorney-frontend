@@ -53,9 +53,8 @@ function Case() {
 		}
 	}, []);
 
-	const getFileFromCloud = async (fileId: string, fileName: string) => {
-		return await Firebase.getFile(fileId, fileName);
-	};
+	const getFileFromCloud = async (fileId: string, fileName: string) =>
+		await Firebase.getFile(fileId, fileName);
 
 	const handleClickViewCaseFile = async (event: React.MouseEvent<HTMLParagraphElement>) => {
 		const { id: fileId, innerText } = event.target as HTMLParagraphElement;
@@ -68,10 +67,8 @@ function Case() {
 		setIsFileViewModalOpen(true);
 	};
 
-	const handleClickCloseViewCaseFile = () => {
-		setIsFileViewModalOpen(false);
-	};
-
+  const handleClickCloseViewCaseFile = () => setIsFileViewModalOpen(false);
+  
 	return (
 		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 			<div className="flex flex-row items-end h-20 gap-2 mb-5">

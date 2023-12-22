@@ -13,22 +13,6 @@ function ViewCaseFileModal(props: CaseFileCardsProps) {
 	 * Find a way to display .docx files in webpage.
 	 */
 
-	// const getFileFromCloud = async () => {
-	// 	try {
-	// 		const fileRef = ref(storage, `${fileExt}/${fileID}_${fileName}`);
-	// 		const url = await getDownloadURL(fileRef);
-	// 		setFileUrl([{ uri: url }]);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
-
-	// const splitFileName = fileName!.split(".");
-	// const fileExt = splitFileName[splitFileName.length - 1];
-	// const splitUrl = fileURL.split("?alt=media&");
-	// const filePath = splitUrl[0];
-	// const accessToken = splitUrl[1];
-
 	return (
 		<div
 			id="modal-overlay"
