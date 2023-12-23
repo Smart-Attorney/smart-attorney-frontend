@@ -4,7 +4,7 @@
  * This function formats the date to be displayed in the
  * desired format of (month/day/year).
  */
-const formatDateInput = (date: string) => {
+const formatDateInput = (date: string): string => {
 	if (date === "" || date === null || date === undefined) {
 		return "__________";
 	}
@@ -17,7 +17,7 @@ const formatDateInput = (date: string) => {
  * Byte conversion function source:
  * https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
  */
-const formatBytes = (bytes: number, decimals = 1) => {
+const formatBytes = (bytes: number, decimals = 1): string => {
 	if (!+bytes) return "0 Bytes";
 	const k = 1000;
 	const dm = decimals < 0 ? 0 : decimals;

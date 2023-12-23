@@ -28,9 +28,10 @@ function FileUpload(props: FileUploadProps) {
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
 
-	const addFileToCloud = async (file: File, fileId: string) => await Firebase.addFile(file, fileId);
+	const addFileToCloud = async (file: File, fileId: string): Promise<StorageReference | null> =>
+		await Firebase.addFile(file, fileId);
 
-	const handleButtonClickUploadSelectedFiles = () => {
+	const handleButtonClickUploadSelectedFiles = (): void => {
 		if (filesToUpload === null) return;
 		if (filesToUpload.length < 1) return;
 
@@ -52,7 +53,7 @@ function FileUpload(props: FileUploadProps) {
 		setIsUploadDone(true);
 	};
 
-	const addFilesToUploadArray = (files: FileList) => {
+	const addFilesToUploadArray = (files: FileList): void => {
 		for (let i = 0; i < files.length; i++) {
 			setFilesToUpload((prev) => [
 				...prev,
@@ -65,12 +66,12 @@ function FileUpload(props: FileUploadProps) {
 		}
 	};
 
-	const handleClickRemoveFileFromUploadStaging = (id: string) =>
+	const handleClickRemoveFileFromUploadStaging = (id: string): void =>
 		setFilesToUpload((prev) => prev.filter((file) => file.id !== id));
 
-	const handleClickToggleChecked = (id: string) => handleChangeToggleChecked(id);
+	const handleClickToggleChecked = (id: string): void => handleChangeToggleChecked(id);
 
-	const handleChangeToggleChecked = (id: string) =>
+	const handleChangeToggleChecked = (id: string): void =>
 		setFilesToUpload((prev) =>
 			prev.map((file) =>
 				file.id === id
@@ -82,7 +83,7 @@ function FileUpload(props: FileUploadProps) {
 			)
 		);
 
-	const handleSelectAllToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleSelectAllToggleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { checked } = event.target;
 		setFilesToUpload((prev) =>
 			prev.map((file) => ({
@@ -92,7 +93,7 @@ function FileUpload(props: FileUploadProps) {
 		);
 	};
 
-	const handleButtonClickCloseUpload = () => {
+	const handleButtonClickCloseUpload = (): void => {
 		setIsUploadDone(false);
 		props.closeUploadBox();
 	};
@@ -129,7 +130,7 @@ function FileUpload(props: FileUploadProps) {
 								filesToUpload={filesToUpload}
 								handleChangeToggleChecked={handleChangeToggleChecked}
 								handleClickToggleChecked={handleClickToggleChecked}
-								handleClickRemoveFileFromUploadStaging={handleClickRemoveFileFromUploadStaging}
+								handleRemoveFileFromStaging={handleClickRemoveFileFromUploadStaging}
 							/>
 						</div>
 					)}

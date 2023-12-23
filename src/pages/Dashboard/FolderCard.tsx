@@ -26,26 +26,29 @@ function FolderCard() {
 		}
 	}, []);
 
-	const handleAddDeadline = (folderId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleAddDeadline = (
+		folderId: string,
+		event: React.ChangeEvent<HTMLInputElement>
+	): void => {
 		const { value: newDeadline } = event.target;
 		const updatedArray = CaseDeadline.add(folderId, newDeadline);
 		setCases(updatedArray);
 	};
 
-	const handleAddLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleAddLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>): void => {
 		event.preventDefault();
 		const { value: newLabel } = (event.target as HTMLFormElement).form[0];
 		const updatedArray = CaseLabel.add(folderId, newLabel);
 		setCases(updatedArray);
 	};
 
-	const handleDeleteLabel = (event: React.MouseEvent<HTMLParagraphElement>) => {
+	const handleDeleteLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id: folderId, innerText: selectedLabel } = event.target as HTMLParagraphElement;
 		const updatedArray = CaseLabel.delete(folderId, selectedLabel);
 		setCases(updatedArray);
 	};
 
-	const handleDeleteFolder = (folderId: string) => {
+	const handleDeleteFolder = (folderId: string): void => {
 		const updatedArray = CaseFolder.delete(folderId);
 		setCases(updatedArray);
 	};

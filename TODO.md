@@ -43,8 +43,6 @@
 ### nitpicks
 - [x] add delete confirmation box
 - [x] modals
-- [ ] remove explicit return statements
-- [ ] rename terse functions for descriptive verbosity
 - [x] group related functions into a class
 - [ ] fix UX of upload component
 - [x] designate code that should be ran on the server
@@ -53,9 +51,18 @@
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
+- [x] remove unnecessary explicit return statements
+- [x] specify return type for all functions
+- [ ] rename terse functions for descriptive verbosity (verb/adjective/noun)
 
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders
 - using local storage as makeshift database
 
+
+### inquiries
+ - [ ] should documents be uploaded on drop or when user clicks upload?
+ - [ ] should the Create New Case page have a search bar and sort options?
+ - [ ] if yes to the above ^, what are the sort options for Create New Case page?
+ - [ ] 

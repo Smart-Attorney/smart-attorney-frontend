@@ -39,11 +39,11 @@ function CreateNewCase() {
 		}
 	}, []);
 
-	const toggleUploadBox = () => setIsUploadOpen((prev) => !prev);
+	const toggleUploadBox = (): void => setIsUploadOpen((prev) => !prev);
 
-	const closeUploadBox = () => setIsUploadOpen(false);
+	const closeUploadBox = (): void => setIsUploadOpen(false);
 
-	const toggleCaseNameEditable = () => {
+	const toggleCaseNameEditable = (): void => {
 		setIsCaseNameEditable(true);
 		/**
 		 * TODO:
@@ -56,7 +56,7 @@ function CreateNewCase() {
 		}, 100);
 	};
 
-	const handleBlur = (event: React.FocusEvent<HTMLSpanElement>) => {
+	const handleBlur = (event: React.FocusEvent<HTMLSpanElement>): void => {
 		const { textContent } = event.nativeEvent.target as HTMLElement;
 		if (textContent === null) return;
 
@@ -64,7 +64,7 @@ function CreateNewCase() {
 		setIsCaseNameEditable(false);
 	};
 
-	const handleCaseCreate = () => {
+	const handleCaseCreate = (): void => {
 		const newCaseObject = {
 			id: nanoid(),
 			name: caseName.current,
@@ -77,7 +77,7 @@ function CreateNewCase() {
 		navigate("/dashboard");
 	};
 
-	const updateUploadedCaseFilesArray = (uploadedFileObject: UploadedFileObject) =>
+	const updateUploadedCaseFilesArray = (uploadedFileObject: UploadedFileObject): void =>
 		setUploadedCaseFiles((prev) => [...prev, uploadedFileObject]);
 
 	return (

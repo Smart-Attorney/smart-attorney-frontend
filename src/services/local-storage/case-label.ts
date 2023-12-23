@@ -1,10 +1,11 @@
+import { FolderItem } from "../../utils/types";
 import StorageArray from "./storage-array";
 
 class CaseLabel extends StorageArray {
 	/**
 	 *
 	 */
-	public static add(folderId: string, newLabel: string) {
+	public static add(folderId: string, newLabel: string): FolderItem[] {
 		const storedArray = super.get();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
@@ -20,7 +21,7 @@ class CaseLabel extends StorageArray {
 	 * Update this method once each label is identified by
 	 * its own unique id.
 	 */
-	public static delete(folderId: string, selectedLabel: string) {
+	public static delete(folderId: string, selectedLabel: string): FolderItem[] {
 		const storedArray = super.get();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId

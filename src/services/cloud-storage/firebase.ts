@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { StorageReference, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import config from "../../config/firebase-config";
 
 const app = initializeApp(config);
@@ -10,7 +10,7 @@ class Firebase {
 	 *
 	 */
 	// replace saving by fileType with folderId
-	public static async getFile(fileId: string, fileName: string) {
+	public static async getFile(fileId: string, fileName: string): Promise<string | null> {
 		const fileNameArray = fileName.split(".");
 		const fileType = fileNameArray[fileNameArray.length - 1];
 		const fileRef = ref(storage, `${fileType}/${fileId}_${fileName}`);
@@ -24,7 +24,7 @@ class Firebase {
 	}
 
 	// replace saving by fileType with folderId
-	public static async addFile(file: File, fileId: string) {
+	public static async addFile(file: File, fileId: string): Promise<StorageReference | null> {
 		const fileName = file.name;
 		const fileNameArray = fileName.split(".");
 		const fileType = fileNameArray[fileNameArray.length - 1];

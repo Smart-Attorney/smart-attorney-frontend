@@ -10,7 +10,7 @@ interface UploadedFilesDisplayProps {
 	filesToUpload: FileUpload[];
 	handleChangeToggleChecked: (id: string) => void;
 	handleClickToggleChecked: (id: string) => void;
-	handleClickRemoveFileFromUploadStaging: (id: string) => void;
+	handleRemoveFileFromStaging: (id: string) => void;
 }
 
 /**
@@ -44,7 +44,7 @@ function UploadedFilesDisplay(props: UploadedFilesDisplayProps) {
 						</div>
 						<span
 							className="relative self-start font-semibold bottom-[6px] cursor-pointer"
-							onClick={() => props.handleClickRemoveFileFromUploadStaging(file.id)}
+							onClick={() => props.handleRemoveFileFromStaging(file.id)}
 						>
 							X
 						</span>

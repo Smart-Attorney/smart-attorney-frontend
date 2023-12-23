@@ -9,7 +9,7 @@ interface Options {
 function SortBar({ options }: { options: Options[] }) {
 	const [sortOptions, setSortOptions] = useState<Options[]>(options);
 
-	const handleClick = (event: React.MouseEvent<HTMLParagraphElement>) => {
+	const handleSortByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id } = event.target as HTMLParagraphElement;
 		setSortOptions((prev) =>
 			prev.map((option) => (id === option.name ? { ...option, clicked: !option.clicked } : option))
@@ -22,7 +22,7 @@ function SortBar({ options }: { options: Options[] }) {
 			id={option.name}
 			name={option.name}
 			clicked={option.clicked}
-			onClick={(event) => handleClick(event)}
+			onClick={(event) => handleSortByOption(event)}
 		/>
 	));
 

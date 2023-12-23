@@ -13,33 +13,33 @@ function FolderMenu(props: FolderMenuProps) {
 	const [isLabelAssignerOpen, setIsLabelAssignerOpen] = useState(false);
 	const [isDeleteWarningOpen, setIsDeleteWarningOpen] = useState(false);
 
-	const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+	const toggleMenu = (): void => setIsMenuOpen((prev) => !prev);
 
-	const closeMenu = () => setIsMenuOpen(false);
+	const closeMenu = (): void => setIsMenuOpen(false);
 
-	const toggleDatePicker = () => {
+	const toggleDatePicker = (): void => {
 		closeLabelAssigner();
 		closeDeleteWarning();
 		setIsDatePickerOpen((prev) => !prev);
 	};
 
-	const closeDatePicker = () => setIsDatePickerOpen(false);
+	const closeDatePicker = (): void => setIsDatePickerOpen(false);
 
-	const toggleLabelAssigner = () => {
+	const toggleLabelAssigner = (): void => {
 		closeDatePicker();
 		closeDeleteWarning();
 		setIsLabelAssignerOpen((prev) => !prev);
 	};
 
-	const closeLabelAssigner = () => setIsLabelAssignerOpen(false);
+	const closeLabelAssigner = (): void => setIsLabelAssignerOpen(false);
 
-	const toggleDeleteWarning = () => {
+	const toggleDeleteWarning = (): void => {
 		closeDatePicker();
 		closeLabelAssigner();
 		setIsDeleteWarningOpen((prev) => !prev);
 	};
 
-	const closeDeleteWarning = () => setIsDeleteWarningOpen(false);
+	const closeDeleteWarning = (): void => setIsDeleteWarningOpen(false);
 
 	return (
 		<>
