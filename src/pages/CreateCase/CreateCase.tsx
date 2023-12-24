@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
-import FileUpload from "./FileUpload";
+import UploadModal from "./UploadModal";
 import { StorageReference } from "firebase/storage";
 import StorageArray from "../../services/local-storage/storage-array";
 import CaseFolder from "../../services/local-storage/case-folder";
@@ -18,11 +18,11 @@ interface UploadedFileObject {
 	ref: Promise<StorageReference | null>;
 }
 
-function CreateNewCase() {
+function CreateCase() {
 	const caseName = useRef("New Case");
-	const [isUploadOpen, setIsUploadOpen] = useState(false);
+	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
-	const [uploadedCaseFiles, setUploadedCaseFiles] = useState<UploadedFileObject[]>([]);
+	const [uploadedFiles, setUploadedFiles] = useState<UploadedFileObject[]>([]);
 
 	// console.log(uploadedCaseFiles);
 
@@ -39,9 +39,9 @@ function CreateNewCase() {
 		}
 	}, []);
 
-	const toggleUploadBox = (): void => setIsUploadOpen((prev) => !prev);
+	const toggleUploadModal = (): void => setIsUploadModalOpen((prev) => !prev);
 
-	const closeUploadBox = (): void => setIsUploadOpen(false);
+	const closeUploadModal = (): void => setIsUploadModalOpen(false);
 
 	const toggleCaseNameEditable = (): void => {
 		setIsCaseNameEditable(true);
@@ -64,21 +64,21 @@ function CreateNewCase() {
 		setIsCaseNameEditable(false);
 	};
 
-	const handleCaseCreate = (): void => {
+	const handleCreateCase = (): void => {
 		const newCaseObject = {
 			id: nanoid(),
 			name: caseName.current,
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
-			files: uploadedCaseFiles,
+			files: uploadedFiles,
 		};
 		CaseFolder.add(newCaseObject);
 		navigate("/dashboard");
 	};
 
-	const updateUploadedCaseFilesArray = (uploadedFileObject: UploadedFileObject): void =>
-		setUploadedCaseFiles((prev) => [...prev, uploadedFileObject]);
+	const updateUploadedFilesArray = (uploadedFileObject: UploadedFileObject): void =>
+		setUploadedFiles((prev) => [...prev, uploadedFileObject]);
 
 	return (
 		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
@@ -117,7 +117,7 @@ function CreateNewCase() {
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
 						name="Upload"
-						onClick={toggleUploadBox}
+						onClick={toggleUploadModal}
 					>
 						<span>Upload</span>
 					</button>
@@ -125,23 +125,23 @@ function CreateNewCase() {
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 						type="button"
 						name="Create"
-						onClick={handleCaseCreate}
+						onClick={handleCreateCase}
 					>
 						<span>Create</span>
 					</button>
 				</div>
 			</div>
 
-			<CaseFile uploadedCaseFiles={uploadedCaseFiles} />
+			<CaseFile uploadedCaseFiles={uploadedFiles} />
 
-			{isUploadOpen && (
-				<FileUpload
-					closeUploadBox={closeUploadBox}
-					updateUploadedCaseFilesArray={updateUploadedCaseFilesArray}
+			{isUploadModalOpen && (
+				<UploadModal
+					closeUploadModal={closeUploadModal}
+					updateUploadedFilesArray={updateUploadedFilesArray}
 				/>
 			)}
 		</div>
 	);
 }
 
-export default CreateNewCase;
+export default CreateCase;

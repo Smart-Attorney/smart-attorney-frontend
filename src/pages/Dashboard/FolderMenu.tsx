@@ -10,36 +10,33 @@ interface FolderMenuProps {
 function FolderMenu(props: FolderMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-	const [isLabelAssignerOpen, setIsLabelAssignerOpen] = useState(false);
-	const [isDeleteWarningOpen, setIsDeleteWarningOpen] = useState(false);
+	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
+	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
 	const toggleMenu = (): void => setIsMenuOpen((prev) => !prev);
 
-	const closeMenu = (): void => setIsMenuOpen(false);
-
 	const toggleDatePicker = (): void => {
-		closeLabelAssigner();
-		closeDeleteWarning();
+		closeLabelInput();
+		closeDeleteAlert();
 		setIsDatePickerOpen((prev) => !prev);
 	};
 
+	const toggleLabelInput = (): void => {
+		closeDatePicker();
+		closeDeleteAlert();
+		setIsLabelInputOpen((prev) => !prev);
+	};
+
+	const toggleDeleteAlert = (): void => {
+		closeDatePicker();
+		closeLabelInput();
+		setIsDeleteAlertOpen((prev) => !prev);
+	};
+
+	const closeMenu = (): void => setIsMenuOpen(false);
 	const closeDatePicker = (): void => setIsDatePickerOpen(false);
-
-	const toggleLabelAssigner = (): void => {
-		closeDatePicker();
-		closeDeleteWarning();
-		setIsLabelAssignerOpen((prev) => !prev);
-	};
-
-	const closeLabelAssigner = (): void => setIsLabelAssignerOpen(false);
-
-	const toggleDeleteWarning = (): void => {
-		closeDatePicker();
-		closeLabelAssigner();
-		setIsDeleteWarningOpen((prev) => !prev);
-	};
-
-	const closeDeleteWarning = (): void => setIsDeleteWarningOpen(false);
+	const closeLabelInput = (): void => setIsLabelInputOpen(false);
+	const closeDeleteAlert = (): void => setIsDeleteAlertOpen(false);
 
 	return (
 		<>
@@ -64,13 +61,13 @@ function FolderMenu(props: FolderMenuProps) {
 				</li>
 				<li
 					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
-					onClick={toggleLabelAssigner}
+					onClick={toggleLabelInput}
 				>
 					Add Labels
 				</li>
 				<li
 					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
-					onClick={toggleDeleteWarning}
+					onClick={toggleDeleteAlert}
 				>
 					Delete
 				</li>
@@ -100,7 +97,7 @@ function FolderMenu(props: FolderMenuProps) {
 			{/* Label Assigner */}
 			<div
 				className="absolute right-[125px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3]"
-				style={{ display: isLabelAssignerOpen ? "block" : "none" }}
+				style={{ display: isLabelInputOpen ? "block" : "none" }}
 			>
 				<form className="flex flex-col gap-2">
 					<label htmlFor="labels">New Label:</label>
@@ -120,7 +117,7 @@ function FolderMenu(props: FolderMenuProps) {
 						<button
 							className="w-16 rounded-md bg-[#c1c1c1] py-1"
 							type="button"
-							onClick={closeLabelAssigner}
+							onClick={closeLabelInput}
 						>
 							Close
 						</button>
@@ -131,7 +128,7 @@ function FolderMenu(props: FolderMenuProps) {
 			{/* Case Delete Warning */}
 			<div
 				className="absolute right-[79px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-max"
-				style={{ display: isDeleteWarningOpen ? "block" : "none" }}
+				style={{ display: isDeleteAlertOpen ? "block" : "none" }}
 			>
 				<div className="flex flex-col items-center gap-2">
 					<h3 className="text-lg font-semibold w-max">Delete Case</h3>
@@ -140,7 +137,7 @@ function FolderMenu(props: FolderMenuProps) {
 						<button
 							className="w-20 bg-[#c1c1c1] text-white rounded-md py-1"
 							type="button"
-							onClick={closeDeleteWarning}
+							onClick={closeDeleteAlert}
 						>
 							Cancel
 						</button>

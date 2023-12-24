@@ -5,7 +5,7 @@ import CaseFileCards from "./CaseFileCards";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import ViewCaseFileModal from "./ViewCaseFileModal";
+import CaseFileModal from "./CaseFileModal";
 import CaseFolder from "../../services/local-storage/case-folder";
 import { FolderItem } from "../../utils/types";
 import { StorageReference } from "firebase/storage";
@@ -38,7 +38,7 @@ function Case() {
 
 	const [caseFiles, setCaseFiles] = useState<FolderItem>();
 	// console.log(caseFiles);
-	const [isFileViewModalOpen, setIsFileViewModalOpen] = useState(false);
+	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (folderID.current === undefined) {
@@ -53,23 +53,20 @@ function Case() {
 		}
 	}, []);
 
-	const getFileFromCloud = async (fileId: string, fileName: string): Promise<string | null> =>
-		await Firebase.getFile(fileId, fileName);
-
-	const handleClickViewCaseFile = async (
+	const handleViewFileModal = async (
 		event: React.MouseEvent<HTMLParagraphElement>
 	): Promise<void> => {
 		const { id: fileId, innerText } = event.target as HTMLParagraphElement;
-		const fileUrl = await getFileFromCloud(fileId, innerText);
+		const fileUrl = await Firebase.getFile(fileId, innerText);
 
 		fileName.current = innerText;
 		fileID.current = fileId;
 		fileURL.current = fileUrl!;
 
-		setIsFileViewModalOpen(true);
+		setIsFileModalOpen(true);
 	};
 
-	const handleClickCloseViewCaseFile = (): void => setIsFileViewModalOpen(false);
+	const handleCloseFileModal = (): void => setIsFileModalOpen(false);
 
 	return (
 		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
@@ -113,17 +110,14 @@ function Case() {
 				</div>
 			</div>
 
-			<CaseFileCards
-				files={caseFiles?.files}
-				handleClickViewCaseFile={(event) => handleClickViewCaseFile(event)}
-			/>
+			<CaseFileCards files={caseFiles?.files} onClick={(event) => handleViewFileModal(event)} />
 
-			{isFileViewModalOpen && (
-				<ViewCaseFileModal
+			{isFileModalOpen && (
+				<CaseFileModal
 					fileName={fileName.current}
 					fileID={fileID.current}
 					fileURL={fileURL.current}
-					handleClickCloseViewCaseFile={handleClickCloseViewCaseFile}
+					onClick={handleCloseFileModal}
 				/>
 			)}
 		</div>

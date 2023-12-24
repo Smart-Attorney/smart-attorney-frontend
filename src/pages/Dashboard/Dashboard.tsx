@@ -1,6 +1,6 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import FolderCard from "./FolderCard";
+import CaseFolderCards from "./CaseFolderCards";
 import { DASHBOARD_SORT_OPTIONS } from "../../utils/constants";
 import { Link } from "react-router-dom";
 
@@ -22,13 +22,13 @@ function Dashboard() {
 					<Link
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
 						type="button"
-						to={"/create-new-case"}
+						to={"/create-case"}
 					>
 						<span>New Case</span>
 					</Link>
 				</div>
 
-				<FolderCard />
+				<CaseFolderCards />
 			</div>
 		</div>
 	);

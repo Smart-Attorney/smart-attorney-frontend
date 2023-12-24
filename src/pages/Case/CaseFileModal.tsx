@@ -2,10 +2,10 @@ interface CaseFileCardsProps {
 	fileName: string | null;
 	fileID: string | undefined;
 	fileURL: string;
-	handleClickCloseViewCaseFile: () => void;
+	onClick: () => void;
 }
 
-function ViewCaseFileModal(props: CaseFileCardsProps) {
+function CaseFileModal(props: CaseFileCardsProps) {
 	const { fileName, fileURL } = props;
 
 	/**
@@ -27,7 +27,7 @@ function ViewCaseFileModal(props: CaseFileCardsProps) {
 					<button
 						className="w-40 py-2 font-semibold text-black bg-white border border-black rounded-md"
 						type="button"
-						onClick={props.handleClickCloseViewCaseFile}
+						onClick={props.onClick}
 					>
 						Close
 					</button>
@@ -37,4 +37,4 @@ function ViewCaseFileModal(props: CaseFileCardsProps) {
 	);
 }
 
-export default ViewCaseFileModal;
+export default CaseFileModal;

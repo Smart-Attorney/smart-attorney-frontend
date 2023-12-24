@@ -8,7 +8,7 @@ import CaseLabel from "../../services/local-storage/case-label";
 import { formatDateInput } from "../../utils/format";
 import type { FolderItem } from "../../utils/types";
 
-function FolderCard() {
+function CaseFolderCards() {
 	const navigate = useNavigate();
 	const [cases, setCases] = useState<FolderItem[]>();
 
@@ -26,7 +26,7 @@ function FolderCard() {
 		}
 	}, []);
 
-	const handleAddDeadline = (
+	const handleAddFolderDeadline = (
 		folderId: string,
 		event: React.ChangeEvent<HTMLInputElement>
 	): void => {
@@ -35,14 +35,17 @@ function FolderCard() {
 		setCases(updatedArray);
 	};
 
-	const handleAddLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>): void => {
+	const handleAddFolderLabel = (
+		folderId: string,
+		event: React.MouseEvent<HTMLButtonElement>
+	): void => {
 		event.preventDefault();
 		const { value: newLabel } = (event.target as HTMLFormElement).form[0];
 		const updatedArray = CaseLabel.add(folderId, newLabel);
 		setCases(updatedArray);
 	};
 
-	const handleDeleteLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
+	const handleDeleteFolderLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id: folderId, innerText: selectedLabel } = event.target as HTMLParagraphElement;
 		const updatedArray = CaseLabel.delete(folderId, selectedLabel);
 		setCases(updatedArray);
@@ -70,8 +73,8 @@ function FolderCard() {
 					{/* Kebab Menu */}
 					<div className="relative left-[200px] w-28">
 						<FolderMenu
-							addDeadline={(event) => handleAddDeadline(caseInfo.id, event)}
-							addLabel={(event) => handleAddLabel(caseInfo.id, event)}
+							addDeadline={(event) => handleAddFolderDeadline(caseInfo.id, event)}
+							addLabel={(event) => handleAddFolderLabel(caseInfo.id, event)}
 							deleteFolder={() => handleDeleteFolder(caseInfo.id)}
 						/>
 					</div>
@@ -92,7 +95,7 @@ function FolderCard() {
 								className="px-3 text-sm pb-[3px] pt-[2px] text-white bg-black rounded-full cursor-pointer"
 								key={caseInfo.id}
 								id={caseInfo.id.toString()}
-								onClick={handleDeleteLabel}
+								onClick={handleDeleteFolderLabel}
 							>
 								{label}
 							</p>
@@ -112,4 +115,4 @@ function FolderCard() {
 	);
 }
 
-export default FolderCard;
+export default CaseFolderCards;

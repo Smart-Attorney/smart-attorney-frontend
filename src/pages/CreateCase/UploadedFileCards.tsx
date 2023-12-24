@@ -8,8 +8,7 @@ interface FileUpload {
 
 interface UploadedFilesDisplayProps {
 	filesToUpload: FileUpload[];
-	handleChangeToggleChecked: (id: string) => void;
-	handleClickToggleChecked: (id: string) => void;
+	handleSelectFile: (id: string) => void;
 	handleRemoveFileFromStaging: (id: string) => void;
 }
 
@@ -17,7 +16,7 @@ interface UploadedFilesDisplayProps {
  * TODO:
  * Rename UploadedFilesDisplay to UploadedFileCard for specificity.
  */
-function UploadedFilesDisplay(props: UploadedFilesDisplayProps) {
+function UploadedFileCards(props: UploadedFilesDisplayProps) {
 	return (
 		<>
 			{props.filesToUpload.map((file, index) => (
@@ -27,11 +26,11 @@ function UploadedFilesDisplay(props: UploadedFilesDisplayProps) {
 							className="self-start cursor-pointer"
 							type="checkbox"
 							checked={file.selected}
-							onChange={() => props.handleChangeToggleChecked(file.id)}
+							onChange={() => props.handleSelectFile(file.id)}
 						/>
 						<div
 							className="flex flex-col justify-between w-full cursor-pointer"
-							onClick={() => props.handleClickToggleChecked(file.id)}
+							onClick={() => props.handleSelectFile(file.id)}
 						>
 							{/**
 							 * TODO: Apply ellipsis to multiline text workaround.
@@ -55,4 +54,4 @@ function UploadedFilesDisplay(props: UploadedFilesDisplayProps) {
 	);
 }
 
-export default UploadedFilesDisplay;
+export default UploadedFileCards;

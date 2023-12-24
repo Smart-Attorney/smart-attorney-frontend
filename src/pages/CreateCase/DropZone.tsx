@@ -12,16 +12,16 @@ interface DropAreaProps {
 	filesToUpload: FileUpload[];
 }
 
-function DropArea(props: DropAreaProps) {
+function DropZone(props: DropAreaProps) {
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	const handleClickBrowseFiles = (): void => {
+	const handleOpenFileBrowser = (): void => {
 		if (inputRef.current) {
 			inputRef.current.click();
 		}
 	};
 
-	const handleSelectUpload = (event: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleUploadFilesFromBrowser = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { files } = event.target;
 		if (files) {
 			props.addFilesToUploadArray(files);
@@ -30,7 +30,7 @@ function DropArea(props: DropAreaProps) {
 
 	const handleDragOver = (event: React.DragEvent): void => event.preventDefault();
 
-	const handleDropUpload = (event: React.DragEvent): void => {
+	const handleUploadFilesFromDrop = (event: React.DragEvent): void => {
 		event.preventDefault();
 		const { files } = event.dataTransfer;
 		props.addFilesToUploadArray(files);
@@ -42,8 +42,8 @@ function DropArea(props: DropAreaProps) {
 				<div
 					className="p-6 bg-white border border-black border-dashed rounded-lg cursor-pointer w-fit"
 					onDragOver={handleDragOver}
-					onDrop={handleDropUpload}
-					onClick={handleClickBrowseFiles}
+					onDrop={handleUploadFilesFromDrop}
+					onClick={handleOpenFileBrowser}
 				>
 					<div className="flex flex-col items-center gap-4">
 						<img className="w-16 h-16" src={uploadIcon} />
@@ -56,7 +56,7 @@ function DropArea(props: DropAreaProps) {
 							multiple
 							ref={inputRef}
 							style={{ display: "none" }}
-							onChange={handleSelectUpload}
+							onChange={handleUploadFilesFromBrowser}
 						/>
 					</div>
 				</div>
@@ -64,13 +64,13 @@ function DropArea(props: DropAreaProps) {
 				<div
 					className="w-full p-3 bg-white border border-black border-dashed rounded-lg "
 					onDragOver={handleDragOver}
-					onDrop={handleDropUpload}
+					onDrop={handleUploadFilesFromDrop}
 				>
 					<div className="flex flex-row items-center gap-4">
 						<button
 							className="px-3 py-1 text-white font- rounded-md bg-[#5b636b] tracking-wide"
 							type="button"
-							onClick={handleClickBrowseFiles}
+							onClick={handleOpenFileBrowser}
 						>
 							Browse...
 						</button>
@@ -81,7 +81,7 @@ function DropArea(props: DropAreaProps) {
 							multiple
 							ref={inputRef}
 							style={{ display: "none" }}
-							onChange={handleSelectUpload}
+							onChange={handleUploadFilesFromBrowser}
 						/>
 					</div>
 				</div>
@@ -90,4 +90,4 @@ function DropArea(props: DropAreaProps) {
 	);
 }
 
-export default DropArea;
+export default DropZone;

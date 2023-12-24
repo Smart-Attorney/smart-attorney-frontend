@@ -2,7 +2,7 @@ import { FileItem } from "../../utils/types";
 
 interface CaseFileCardsProps {
 	files: FileItem[] | undefined;
-	handleClickViewCaseFile: (event: React.MouseEvent<HTMLParagraphElement>) => void;
+	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
 }
 
 function CaseFileCards(props: CaseFileCardsProps) {
@@ -18,7 +18,7 @@ function CaseFileCards(props: CaseFileCardsProps) {
 					<p
 						className="mb-8 font-semibold cursor-pointer hover:text-blue-500"
 						id={file.id}
-						onClick={props.handleClickViewCaseFile}
+						onClick={props.onClick}
 					>
 						{file.name}
 					</p>

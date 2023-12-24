@@ -53,7 +53,7 @@
 - [ ] clean up rogue interface declarations
 - [x] remove unnecessary explicit return statements
 - [x] specify return type for all functions
-- [ ] rename terse functions for descriptive verbosity (verb/adjective/noun)
+- [x] rename terse functions for descriptive verbosity (verb/adjective/noun)
 
 
 ### temporary workarounds

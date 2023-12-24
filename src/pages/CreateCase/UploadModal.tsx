@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
-import DropArea from "./DropArea";
-import UploadedFilesDisplay from "./UploadedFilesDisplay";
+import DropZone from "./DropZone";
+import UploadedFileCards from "./UploadedFileCards";
 import Firebase from "../../services/cloud-storage/firebase";
 import { StorageReference } from "firebase/storage";
 
@@ -19,34 +19,31 @@ interface UploadedFileObject {
 }
 
 interface FileUploadProps {
-	closeUploadBox: () => void;
-	updateUploadedCaseFilesArray: (uploadedFile: UploadedFileObject) => void;
+	closeUploadModal: () => void;
+	updateUploadedFilesArray: (uploadedFile: UploadedFileObject) => void;
 }
 
-function FileUpload(props: FileUploadProps) {
-	const [filesToUpload, setFilesToUpload] = useState<FileUpload[]>([]);
+function UploadModal(props: FileUploadProps) {
+	const [filesForUpload, setFilesForUpload] = useState<FileUpload[]>([]);
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
 
-	const addFileToCloud = async (file: File, fileId: string): Promise<StorageReference | null> =>
-		await Firebase.addFile(file, fileId);
+	const handleUploadSelectedFiles = (): void => {
+		if (filesForUpload === null) return;
+		if (filesForUpload.length < 1) return;
 
-	const handleButtonClickUploadSelectedFiles = (): void => {
-		if (filesToUpload === null) return;
-		if (filesToUpload.length < 1) return;
-
-		for (let i = 0; i < filesToUpload.length; i++) {
-			if (filesToUpload[i].selected === true) {
-				const uploadedFileRef = addFileToCloud(filesToUpload[i].data, filesToUpload[i].id);
+		for (let i = 0; i < filesForUpload.length; i++) {
+			if (filesForUpload[i].selected === true) {
+				const uploadedFileRef = Firebase.addFile(filesForUpload[i].data, filesForUpload[i].id);
 
 				const uploadedFileObject = {
-					id: filesToUpload[i].id,
-					name: filesToUpload[i].data.name,
+					id: filesForUpload[i].id,
+					name: filesForUpload[i].data.name,
 					status: "Submitted",
 					ref: uploadedFileRef,
 				};
 
-				props.updateUploadedCaseFilesArray(uploadedFileObject);
+				props.updateUploadedFilesArray(uploadedFileObject);
 			}
 		}
 
@@ -55,7 +52,7 @@ function FileUpload(props: FileUploadProps) {
 
 	const addFilesToUploadArray = (files: FileList): void => {
 		for (let i = 0; i < files.length; i++) {
-			setFilesToUpload((prev) => [
+			setFilesForUpload((prev) => [
 				...prev,
 				{
 					id: nanoid(),
@@ -66,13 +63,11 @@ function FileUpload(props: FileUploadProps) {
 		}
 	};
 
-	const handleClickRemoveFileFromUploadStaging = (id: string): void =>
-		setFilesToUpload((prev) => prev.filter((file) => file.id !== id));
+	const handleRemoveFileFromUploadStaging = (id: string): void =>
+		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
 
-	const handleClickToggleChecked = (id: string): void => handleChangeToggleChecked(id);
-
-	const handleChangeToggleChecked = (id: string): void =>
-		setFilesToUpload((prev) =>
+	const handleSelectFile = (id: string): void =>
+		setFilesForUpload((prev) =>
 			prev.map((file) =>
 				file.id === id
 					? {
@@ -83,9 +78,9 @@ function FileUpload(props: FileUploadProps) {
 			)
 		);
 
-	const handleSelectAllToggleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleSelectAllFiles = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { checked } = event.target;
-		setFilesToUpload((prev) =>
+		setFilesForUpload((prev) =>
 			prev.map((file) => ({
 				...file,
 				selected: checked,
@@ -93,9 +88,9 @@ function FileUpload(props: FileUploadProps) {
 		);
 	};
 
-	const handleButtonClickCloseUpload = (): void => {
+	const handleCloseUploadModal = (): void => {
 		setIsUploadDone(false);
-		props.closeUploadBox();
+		props.closeUploadModal();
 	};
 
 	return (
@@ -107,16 +102,16 @@ function FileUpload(props: FileUploadProps) {
 				<div id="modal-contents" className="flex flex-col items-center gap-5">
 					<h1 className="text-xl font-bold">Upload Documentation</h1>
 
-					<DropArea filesToUpload={filesToUpload} addFilesToUploadArray={addFilesToUploadArray} />
+					<DropZone filesToUpload={filesForUpload} addFilesToUploadArray={addFilesToUploadArray} />
 
 					{/* Select All Checkbox */}
-					{filesToUpload.length > 0 && (
+					{filesForUpload.length > 0 && (
 						<div className="flex flex-row self-start justify-center gap-1 cursor-pointer">
 							<input
 								className="cursor-pointer"
 								id="select-all"
 								type="checkbox"
-								onChange={handleSelectAllToggleChange}
+								onChange={handleSelectAllFiles}
 							/>
 							<label className="font-semibold cursor-pointer" htmlFor="select-all">
 								Select all
@@ -124,13 +119,12 @@ function FileUpload(props: FileUploadProps) {
 						</div>
 					)}
 
-					{filesToUpload.length > 0 && (
+					{filesForUpload.length > 0 && (
 						<div className="grid grid-cols-3 gap-5">
-							<UploadedFilesDisplay
-								filesToUpload={filesToUpload}
-								handleChangeToggleChecked={handleChangeToggleChecked}
-								handleClickToggleChecked={handleClickToggleChecked}
-								handleRemoveFileFromStaging={handleClickRemoveFileFromUploadStaging}
+							<UploadedFileCards
+								filesToUpload={filesForUpload}
+								handleSelectFile={handleSelectFile}
+								handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}
 							/>
 						</div>
 					)}
@@ -140,16 +134,16 @@ function FileUpload(props: FileUploadProps) {
 						<button
 							className="bg-[#B588B3] w-40 py-2 text-white font-semibold border border-[#B588B3] rounded-md"
 							type="button"
-							onClick={handleButtonClickUploadSelectedFiles}
-							disabled={filesToUpload.length < 1 ? true : false}
-							style={{ cursor: filesToUpload.length < 1 ? "not-allowed" : "pointer" }}
+							onClick={handleUploadSelectedFiles}
+							disabled={filesForUpload.length < 1 ? true : false}
+							style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
 						>
 							Upload
 						</button>
 						<button
 							className="w-40 bg-white py-2 font-semibold text-[#B588B3] border border-[#B588B3] rounded-md"
 							type="button"
-							onClick={handleButtonClickCloseUpload}
+							onClick={handleCloseUploadModal}
 						>
 							Close
 						</button>
@@ -166,4 +160,4 @@ function FileUpload(props: FileUploadProps) {
 	);
 }
 
-export default FileUpload;
+export default UploadModal;
