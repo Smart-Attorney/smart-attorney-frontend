@@ -28,7 +28,7 @@ function SortBar({ options }: { options: Options[] }) {
 
 	return (
 		<div className="flex flex-row flex-wrap items-center gap-6">
-			<p className="mr-6">Sort by:</p>
+			<p className="mr-6" style={{ color: '#FFFFFF' }}>Sort by:</p>
 			{optionElements}
 		</div>
 	);
