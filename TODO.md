@@ -44,16 +44,17 @@
 - [x] add delete confirmation box
 - [x] modals
 - [x] group related functions into a class
-- [ ] fix UX of upload component
 - [x] designate code that should be ran on the server
 - [x] find system to organize types/interfaces
+- [x] remove unnecessary explicit return statements
+- [x] specify return type for all functions
+- [x] rename terse functions for descriptive verbosity (verb/adjective/noun)
+- [ ] fix UX of upload component
 - [ ] save uploaded files under folder id not file extension
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
-- [x] remove unnecessary explicit return statements
-- [x] specify return type for all functions
-- [x] rename terse functions for descriptive verbosity (verb/adjective/noun)
+- [ ] separate files into features and layouts
 
 
 ### temporary workarounds
@@ -65,4 +66,7 @@
  - [ ] should documents be uploaded on drop or when user clicks upload?
  - [ ] should the Create New Case page have a search bar and sort options?
  - [ ] if yes to the above ^, what are the sort options for Create New Case page?
- - [ ] 
+
+
+### references
+ - https://blog.webdevsimplified.com/2022-07/react-folder-structure/
