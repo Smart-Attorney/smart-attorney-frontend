@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CaseFileModal from "./CaseFileModal";
 import CaseFolder from "../../services/local-storage/case-folder";
-import { FolderItem } from "../../utils/types";
+import { FolderObj } from "../../utils/types";
 import { StorageReference } from "firebase/storage";
 import Firebase from "../../services/cloud-storage/firebase";
 
@@ -36,7 +36,7 @@ function Case() {
 
 	const navigate = useNavigate();
 
-	const [caseFiles, setCaseFiles] = useState<FolderItem>();
+	const [caseFiles, setCaseFiles] = useState<FolderObj>();
 	// console.log(caseFiles);
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 

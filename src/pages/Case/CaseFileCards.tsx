@@ -1,7 +1,7 @@
-import { FileItem } from "../../utils/types";
+import { FileObj } from "../../utils/types";
 
 interface CaseFileCardsProps {
-	files: FileItem[] | undefined;
+	files: FileObj[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
 }
 

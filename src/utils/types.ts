@@ -3,20 +3,25 @@ interface SortOptions {
 	name: string;
 }
 
-interface FileItem {
+interface LabelObj {
+	id: string;
+	name: string;
+}
+
+interface FileObj {
 	id: string;
 	name: string;
 	status: string;
 	ref: {};
 }
 
-interface FolderItem {
+interface FolderObj {
 	id: string;
 	name: string;
 	status: string;
 	deadline: string;
-	labels: string[];
-	files: FileItem[];
+	labels: LabelObj[];
+	files: FileObj[];
 }
 
-export type { SortOptions, FileItem, FolderItem };
+export type { SortOptions, LabelObj, FileObj, FolderObj };

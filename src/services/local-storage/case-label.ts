@@ -1,33 +1,33 @@
-import { FolderItem } from "../../utils/types";
+import { FolderObj, LabelObj } from "../../utils/types";
 import StorageArray from "./storage-array";
+import { nanoid } from "nanoid";
 
 class CaseLabel extends StorageArray {
 	/**
 	 *
 	 */
-	public static add(folderId: string, newLabel: string): FolderItem[] {
+	public static add(folderId: string, newLabel: string): FolderObj[] {
+		const newLabelObj: LabelObj = {
+			id: nanoid(10),
+			name: newLabel,
+		};
 		const storedArray = super.get();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
-				? { ...storedFolder, labels: [...storedFolder.labels, newLabel] }
+				? { ...storedFolder, labels: [...storedFolder.labels, newLabelObj] }
 				: storedFolder
 		);
 		super.set(updatedArray);
 		return updatedArray;
 	}
 
-	/**
-	 * TODO:
-	 * Update this method once each label is identified by
-	 * its own unique id.
-	 */
-	public static delete(folderId: string, selectedLabel: string): FolderItem[] {
+	public static delete(folderId: string, labelId: string): FolderObj[] {
 		const storedArray = super.get();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
 				? {
 						...storedFolder,
-						labels: storedFolder.labels.filter((label) => label !== selectedLabel),
+						labels: storedFolder.labels.filter((label) => label.id !== labelId),
 				  }
 				: storedFolder
 		);

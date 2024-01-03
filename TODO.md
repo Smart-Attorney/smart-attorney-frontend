@@ -37,7 +37,7 @@
 
 ### bugs to fix
 - [x] either label-assigner or date-picker can be open at a time, not both
-- [ ] labels array should have an id for each label
+- [x] labels array should have an id for each label
 
 
 ### nitpicks
@@ -49,12 +49,12 @@
 - [x] remove unnecessary explicit return statements
 - [x] specify return type for all functions
 - [x] rename terse functions for descriptive verbosity (verb/adjective/noun)
+- [x] separate files into features and layouts
 - [ ] fix UX of upload component
 - [ ] save uploaded files under folder id not file extension
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
-- [x] separate files into features and layouts
 
 
 ### temporary workarounds

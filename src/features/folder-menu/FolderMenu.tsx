@@ -53,22 +53,13 @@ function FolderMenu(props: FolderMenuProps) {
 				style={{ display: isMenuOpen ? "block" : "none" }}
 				onMouseLeave={closeMenu}
 			>
-				<li
-					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
-					onClick={toggleDatePicker}
-				>
+				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDatePicker}>
 					Add Deadline
 				</li>
-				<li
-					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
-					onClick={toggleLabelInput}
-				>
+				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleLabelInput}>
 					Add Labels
 				</li>
-				<li
-					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
-					onClick={toggleDeleteAlert}
-				>
+				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDeleteAlert}>
 					Delete
 				</li>
 			</ul>
@@ -101,24 +92,12 @@ function FolderMenu(props: FolderMenuProps) {
 			>
 				<form className="flex flex-col gap-2">
 					<label htmlFor="labels">New Label:</label>
-					<input
-						className="w-40 px-2 pb-[2px] border border-black rounded-sm"
-						id="labels"
-						type="text"
-					/>
+					<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="labels" type="text" />
 					<div className="flex flex-row justify-between w-full">
-						<button
-							className="w-16 bg-[#77dd77] rounded-md py-1"
-							type="submit"
-							onClick={props.addLabel}
-						>
+						<button className="w-16 bg-[#77dd77] rounded-md py-1" type="submit" onClick={props.addLabel}>
 							Add
 						</button>
-						<button
-							className="w-16 rounded-md bg-[#c1c1c1] py-1"
-							type="button"
-							onClick={closeLabelInput}
-						>
+						<button className="w-16 rounded-md bg-[#c1c1c1] py-1" type="button" onClick={closeLabelInput}>
 							Close
 						</button>
 					</div>
