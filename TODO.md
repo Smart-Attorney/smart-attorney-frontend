@@ -54,6 +54,7 @@
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
+- [ ] rename "case files" to documents for specificity
 - [ ] separate files into features and layouts
 
 
@@ -69,4 +70,5 @@
 
 
 ### references
- - https://blog.webdevsimplified.com/2022-07/react-folder-structure/
+React Project Structure
+ - https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md

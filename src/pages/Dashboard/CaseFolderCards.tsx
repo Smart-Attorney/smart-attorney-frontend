@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FolderMenu from "./FolderMenu";
+import FolderMenu from "../../features/folder-menu/FolderMenu";
 import StorageArray from "../../services/local-storage/storage-array";
 import CaseFolder from "../../services/local-storage/case-folder";
 import CaseDeadline from "../../services/local-storage/case-deadline";

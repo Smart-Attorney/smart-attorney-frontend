@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
-import UploadModal from "./UploadModal";
+import UploadModal from "../../features/file-upload/UploadModal";
 import { StorageReference } from "firebase/storage";
 import StorageArray from "../../services/local-storage/storage-array";
 import CaseFolder from "../../services/local-storage/case-folder";
