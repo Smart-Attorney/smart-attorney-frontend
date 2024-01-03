@@ -54,8 +54,7 @@
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
-- [ ] rename "case files" to documents for specificity
-- [ ] separate files into features and layouts
+- [x] separate files into features and layouts
 
 
 ### temporary workarounds

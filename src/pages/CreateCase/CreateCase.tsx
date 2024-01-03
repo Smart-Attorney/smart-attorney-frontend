@@ -1,12 +1,12 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import CaseFile from "./CaseFile";
+import UploadedFile from "./UploadedFile";
 import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
-import UploadModal from "../../features/file-upload/UploadModal";
+import FileUploadModal from "../../features/file-upload/FileUploadModal";
 import { StorageReference } from "firebase/storage";
 import StorageArray from "../../services/local-storage/storage-array";
 import CaseFolder from "../../services/local-storage/case-folder";
@@ -138,10 +138,10 @@ function CreateCase() {
 					</div>
 				</div>
 
-				<CaseFile uploadedCaseFiles={uploadedFiles} />
+				<UploadedFile uploadedCaseFiles={uploadedFiles} />
 
 				{isUploadModalOpen && (
-					<UploadModal
+					<FileUploadModal
 						closeUploadModal={closeUploadModal}
 						updateUploadedFilesArray={updateUploadedFilesArray}
 					/>

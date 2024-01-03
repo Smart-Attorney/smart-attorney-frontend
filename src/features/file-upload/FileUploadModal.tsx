@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropZone from "./DropZone";
-import UploadedFileCards from "./UploadedFileCards";
+import ModalFileCards from "./ModalFileCards";
 import Firebase from "../../services/cloud-storage/firebase";
 import { StorageReference } from "firebase/storage";
 
@@ -23,7 +23,7 @@ interface FileUploadProps {
 	updateUploadedFilesArray: (uploadedFile: UploadedFileObject) => void;
 }
 
-function UploadModal(props: FileUploadProps) {
+function FileUploadModal(props: FileUploadProps) {
 	const [filesForUpload, setFilesForUpload] = useState<FileUpload[]>([]);
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
@@ -121,7 +121,7 @@ function UploadModal(props: FileUploadProps) {
 
 					{filesForUpload.length > 0 && (
 						<div className="grid grid-cols-3 gap-5">
-							<UploadedFileCards
+							<ModalFileCards
 								filesToUpload={filesForUpload}
 								handleSelectFile={handleSelectFile}
 								handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}
@@ -160,4 +160,4 @@ function UploadModal(props: FileUploadProps) {
 	);
 }
 
-export default UploadModal;
+export default FileUploadModal;

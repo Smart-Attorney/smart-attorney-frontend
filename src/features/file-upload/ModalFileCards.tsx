@@ -16,7 +16,7 @@ interface UploadedFilesDisplayProps {
  * TODO:
  * Rename UploadedFilesDisplay to UploadedFileCard for specificity.
  */
-function UploadedFileCards(props: UploadedFilesDisplayProps) {
+function ModalFileCards(props: UploadedFilesDisplayProps) {
 	return (
 		<>
 			{props.filesToUpload.map((file, index) => (
@@ -54,4 +54,4 @@ function UploadedFileCards(props: UploadedFilesDisplayProps) {
 	);
 }
 
-export default UploadedFileCards;
+export default ModalFileCards;
