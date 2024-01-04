@@ -12,7 +12,7 @@ class LSArray {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.EMPTY_ARRAY));
 	}
 
-	public static set(updatedArray: FolderObj[]): void {
+	public static update(updatedArray: FolderObj[]): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedArray));
 	}
 

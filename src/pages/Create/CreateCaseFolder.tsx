@@ -8,8 +8,7 @@ import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
 import FileUploadModal from "../../features/file-upload/FileUploadModal";
 import { StorageReference } from "firebase/storage";
-import LSArray from "../../services/local-storage/ls-array";
-import CaseFolder from "../../services/local-storage/case-folder";
+import Database from "../../services/database";
 
 interface UploadedFileObject {
 	id: string;
@@ -18,7 +17,9 @@ interface UploadedFileObject {
 	ref: Promise<StorageReference | null>;
 }
 
+
 function CreateCaseFolder() {
+  const db = new Database();
 	const caseName = useRef("New Case");
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
@@ -34,9 +35,9 @@ function CreateCaseFolder() {
 	 */
 	useEffect(() => {
 		document.body.style.background = "linear-gradient(to bottom, #000273, #000000)";
-		const caseArray = LSArray.get();
-		if (caseArray !== null) {
-			LSArray.init();
+		const caseArray = db.getCaseArray();
+		if (caseArray === null) {
+			db.initNewArray();
 		}
 		return () => {
 			document.body.style.background = "";
@@ -77,7 +78,7 @@ function CreateCaseFolder() {
 			labels: [],
 			files: uploadedFiles,
 		};
-		CaseFolder.add(newCaseObject);
+		db.addNewCaseFolder(newCaseObject);
 		navigate("/dashboard");
 	};
 

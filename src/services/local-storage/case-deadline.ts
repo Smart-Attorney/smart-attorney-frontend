@@ -10,7 +10,7 @@ class CaseDeadline extends LSArray {
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId ? { ...storedFolder, deadline: newDeadline } : storedFolder
 		);
-		super.set(updatedArray);
+		super.update(updatedArray);
 		return updatedArray;
 	}
 }

@@ -17,7 +17,7 @@ class CaseLabel extends LSArray {
 				? { ...storedFolder, labels: [...storedFolder.labels, newLabelObj] }
 				: storedFolder
 		);
-		super.set(updatedArray);
+		super.update(updatedArray);
 		return updatedArray;
 	}
 
@@ -31,7 +31,7 @@ class CaseLabel extends LSArray {
 				  }
 				: storedFolder
 		);
-		super.set(updatedArray);
+		super.update(updatedArray);
 		return updatedArray;
 	}
 }

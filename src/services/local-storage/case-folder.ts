@@ -18,14 +18,14 @@ class CaseFolder extends LSArray {
 	public static add(newFolder: FolderObj): FolderObj[] {
 		const storedArray = super.get();
 		const updatedArray = [...storedArray, newFolder];
-		super.set(updatedArray);
+		super.update(updatedArray);
 		return updatedArray;
 	}
 
 	public static delete(folderId: string): FolderObj[] {
 		const storedArray = super.get();
 		const updatedArray = storedArray.filter((storedFolder) => storedFolder.id !== folderId);
-		super.set(updatedArray);
+		super.update(updatedArray);
 		return updatedArray;
 	}
 }

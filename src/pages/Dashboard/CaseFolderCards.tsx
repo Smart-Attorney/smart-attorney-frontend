@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FolderMenu from "../../features/folder-menu/FolderMenu";
-import LSArray from "../../services/local-storage/ls-array";
-import CaseFolder from "../../services/local-storage/case-folder";
-import CaseDeadline from "../../services/local-storage/case-deadline";
-import CaseLabel from "../../services/local-storage/case-label";
 import { formatDateInput } from "../../utils/format";
 import type { FolderObj } from "../../utils/types";
+import Database from "../../services/database";
 
 function CaseFolderCards() {
+	const db = new Database();
 	const navigate = useNavigate();
 	const [caseFolders, setCaseFolders] = useState<FolderObj[]>();
 
@@ -18,37 +16,37 @@ function CaseFolderCards() {
 	 * Empty dependency array since it should only run once on initial load.
 	 */
 	useEffect(() => {
-		const caseArray = LSArray.get();
+		const caseArray = db.getCaseArray();
 		if (caseArray !== null) {
 			setCaseFolders(caseArray);
 		} else {
-			LSArray.init();
+			db.initNewArray();
 			setCaseFolders([]);
 		}
 	}, []);
 
 	const handleAddFolderDeadline = (folderId: string, event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { value: newDeadline } = event.target;
-		const updatedArray = CaseDeadline.add(folderId, newDeadline);
+		const updatedArray = db.addCaseFolderDeadline(folderId, newDeadline);
 		setCaseFolders(updatedArray);
 	};
 
 	const handleAddFolderLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>): void => {
 		event.preventDefault();
 		const { value: newLabel } = (event.target as HTMLFormElement).form[0];
-		const updatedArray = CaseLabel.add(folderId, newLabel);
+		const updatedArray = db.addCaseFolderLabel(folderId, newLabel);
 		setCaseFolders(updatedArray);
 	};
 
 	const handleDeleteFolderLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id: folderId } = event.target as HTMLParagraphElement;
 		const { id: labelId } = (event.target as HTMLDivElement).parentElement!;
-		const updatedArray = CaseLabel.delete(folderId, labelId);
+		const updatedArray = db.deleteCaseFolderLabelById(folderId, labelId);
 		setCaseFolders(updatedArray);
 	};
 
 	const handleDeleteFolder = (folderId: string): void => {
-		const updatedArray = CaseFolder.delete(folderId);
+		const updatedArray = db.deleteCaseFolderById(folderId);
 		setCaseFolders(updatedArray);
 	};
 
@@ -64,7 +62,7 @@ function CaseFolderCards() {
 				<div
 					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
 					key={caseFolder.id}
-					id={caseFolder.id.toString()}
+					id={caseFolder.id}
 				>
 					{/* Kebab Menu */}
 					<div className="relative left-[200px] w-28">

@@ -38,7 +38,7 @@
 ### bugs to fix
 - [x] either label-assigner or date-picker can be open at a time, not both
 - [x] labels array should have an id for each label
-- [ ] on loading of dashboard, retrieve case array or initialize empty array
+- [x] on loading of dashboard, retrieve case array or initialize empty array
 
 
 ### nitpicks
@@ -51,12 +51,12 @@
 - [x] specify return type for all functions
 - [x] rename terse functions for descriptive verbosity (verb/adjective/noun)
 - [x] separate files into features and layouts
+- [x] add adapter layer between client and file storage/database code
 - [ ] fix UX of upload component
 - [ ] save uploaded files under folder id not file extension
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
-- [ ] add adapter between client and file storage/database
 
 
 ### temporary workarounds

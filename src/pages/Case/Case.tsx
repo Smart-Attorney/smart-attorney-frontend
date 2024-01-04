@@ -6,10 +6,10 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CaseFileModal from "./CaseFileModal";
-import CaseFolder from "../../services/local-storage/case-folder";
 import { FolderObj } from "../../utils/types";
 import { StorageReference } from "firebase/storage";
 import Firebase from "../../services/cloud-storage/firebase";
+import Database from "../../services/database";
 
 interface UploadedFileObject {
 	id: string;
@@ -28,6 +28,7 @@ interface Case {
 }
 
 function Case() {
+	const db = new Database();
 	const { id } = useParams();
 	const folderID = useRef<string | undefined>(id);
 	const fileID = useRef<string>("");
@@ -45,7 +46,7 @@ function Case() {
 			navigate("/404");
 			return;
 		}
-		const caseFolderExists = CaseFolder.getById(folderID.current);
+		const caseFolderExists = db.getCaseFolderById(folderID.current);
 		if (caseFolderExists) {
 			setCaseFiles(caseFolderExists);
 		} else {
@@ -53,9 +54,7 @@ function Case() {
 		}
 	}, []);
 
-	const handleViewFileModal = async (
-		event: React.MouseEvent<HTMLParagraphElement>
-	): Promise<void> => {
+	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id: fileId, innerText } = event.target as HTMLParagraphElement;
 		const fileUrl = await Firebase.getFile(fileId, innerText);
 
@@ -69,8 +68,10 @@ function Case() {
 	const handleCloseFileModal = (): void => setIsFileModalOpen(false);
 
 	return (
-		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto" style={{ background: 'linear-gradient(to bottom, #000273, #000000)' }}>
-
+		<div
+			className="flex flex-col items-center gap-6 w-[80%] mx-auto"
+			style={{ background: "linear-gradient(to bottom, #000273, #000000)" }}
+		>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-row items-end h-20 gap-2 mb-5">
 					<span
