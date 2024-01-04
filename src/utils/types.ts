@@ -12,7 +12,7 @@ interface FileObj {
 	id: string;
 	name: string;
 	status: string;
-	ref: {};
+	url: string;
 }
 
 interface FolderObj {

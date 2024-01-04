@@ -6,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import FileUploadModal from "../../features/file-upload/FileUploadModal";
-import { StorageReference } from "firebase/storage";
 import Database from "../../services/database";
 
 interface UploadedFileObject {
 	id: string;
 	name: string;
 	status: string;
-	ref: Promise<StorageReference | null>;
+	url: string;
 }
 
 

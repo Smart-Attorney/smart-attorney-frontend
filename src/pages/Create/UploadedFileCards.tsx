@@ -1,10 +1,10 @@
-import { StorageReference } from "firebase/storage";
+
 
 interface UploadedFileObject {
 	id: string;
 	name: string;
 	status: string;
-	ref: Promise<StorageReference | null>;
+	url: string;
 }
 
 interface CaseFileProps {

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropZone from "./DropZone";
-import ModalFileCards from "./ModalFileCards";
+import ModalUploadedFileCards from "./ModalUploadedFileCards";
 import Firebase from "../../services/cloud-storage/firebase";
-import { StorageReference } from "firebase/storage";
 
 interface FileUpload {
 	id: string;
@@ -15,7 +14,7 @@ interface UploadedFileObject {
 	id: string;
 	name: string;
 	status: string;
-	ref: Promise<StorageReference | null>;
+	url: string;
 }
 
 interface FileUploadProps {
@@ -28,19 +27,20 @@ function FileUploadModal(props: FileUploadProps) {
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
 
-	const handleUploadSelectedFiles = (): void => {
+	const handleUploadSelectedFiles = async (): Promise<void> => {
 		if (filesForUpload === null) return;
 		if (filesForUpload.length < 1) return;
 
 		for (let i = 0; i < filesForUpload.length; i++) {
 			if (filesForUpload[i].selected === true) {
-				const uploadedFileRef = Firebase.addFile(filesForUpload[i].data, filesForUpload[i].id);
+				const uploadedFileRef = await Firebase.uploadFileToCloud(filesForUpload[i].data, filesForUpload[i].id);
+        const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
 
 				const uploadedFileObject = {
 					id: filesForUpload[i].id,
 					name: filesForUpload[i].data.name,
 					status: "Submitted",
-					ref: uploadedFileRef,
+					url: uploadedFileUrl ? uploadedFileUrl : "",
 				};
 
 				props.updateUploadedFilesArray(uploadedFileObject);
@@ -55,7 +55,7 @@ function FileUploadModal(props: FileUploadProps) {
 			setFilesForUpload((prev) => [
 				...prev,
 				{
-					id: nanoid(),
+					id: nanoid(16),
 					data: files[i],
 					selected: false,
 				},
@@ -121,7 +121,7 @@ function FileUploadModal(props: FileUploadProps) {
 
 					{filesForUpload.length > 0 && (
 						<div className="grid grid-cols-3 gap-5">
-							<ModalFileCards
+							<ModalUploadedFileCards
 								filesToUpload={filesForUpload}
 								handleSelectFile={handleSelectFile}
 								handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}

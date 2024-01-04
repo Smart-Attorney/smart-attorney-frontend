@@ -12,11 +12,7 @@ interface UploadedFilesDisplayProps {
 	handleRemoveFileFromStaging: (id: string) => void;
 }
 
-/**
- * TODO:
- * Rename UploadedFilesDisplay to UploadedFileCard for specificity.
- */
-function ModalFileCards(props: UploadedFilesDisplayProps) {
+function ModalUploadedFileCards(props: UploadedFilesDisplayProps) {
 	return (
 		<>
 			{props.filesToUpload.map((file, index) => (
@@ -54,4 +50,4 @@ function ModalFileCards(props: UploadedFilesDisplayProps) {
 	);
 }
 
-export default ModalFileCards;
+export default ModalUploadedFileCards;

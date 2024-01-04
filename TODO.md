@@ -54,8 +54,8 @@
 - [x] add adapter layer between client and file storage/database code
 - [ ] fix UX of upload component
 - [ ] save uploaded files under folder id not file extension
-- [ ] save url of uploaded files so u dont have to make a call for each every time
-- [ ] replace ref property from uploaded files object with url
+- [x] save url of uploaded files so u dont have to make a call for each every time
+- [x] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
 
 
