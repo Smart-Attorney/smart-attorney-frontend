@@ -1,5 +1,6 @@
 import { FolderObj } from "../../utils/types";
 import LSArray from "./ls-array";
+import { nanoid } from "nanoid";
 
 class CaseFolder extends LSArray {
 	/**
@@ -17,7 +18,8 @@ class CaseFolder extends LSArray {
 
 	public static add(newFolder: FolderObj): FolderObj[] {
 		const storedArray = super.get();
-		const updatedArray = [...storedArray, newFolder];
+		const newFolderWithId = { ...newFolder, id: nanoid(16) };
+		const updatedArray = [...storedArray, newFolderWithId];
 		super.update(updatedArray);
 		return updatedArray;
 	}

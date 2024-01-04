@@ -8,7 +8,7 @@ class CaseLabel extends LSArray {
 	 */
 	public static add(folderId: string, newLabel: string): FolderObj[] {
 		const newLabelObj: LabelObj = {
-			id: nanoid(10),
+			id: nanoid(8),
 			name: newLabel,
 		};
 		const storedArray = super.get();

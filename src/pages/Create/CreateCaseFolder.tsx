@@ -5,7 +5,6 @@ import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
-import { nanoid } from "nanoid/non-secure";
 import FileUploadModal from "../../features/file-upload/FileUploadModal";
 import { StorageReference } from "firebase/storage";
 import Database from "../../services/database";
@@ -71,7 +70,7 @@ function CreateCaseFolder() {
 
 	const handleCreateCaseFolder = (): void => {
 		const newCaseObject = {
-			id: nanoid(),
+			id: "",
 			name: caseName.current,
 			status: "#53EF0A",
 			deadline: "",
