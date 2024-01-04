@@ -1,8 +1,8 @@
 import { FolderObj, LabelObj } from "../../utils/types";
-import StorageArray from "./storage-array";
+import LSArray from "./ls-array";
 import { nanoid } from "nanoid";
 
-class CaseLabel extends StorageArray {
+class CaseLabel extends LSArray {
 	/**
 	 *
 	 */

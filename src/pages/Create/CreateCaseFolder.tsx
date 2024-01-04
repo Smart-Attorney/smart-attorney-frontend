@@ -8,7 +8,7 @@ import EditPenIcon from "../../assets/content-edit-pen.svg";
 import { nanoid } from "nanoid/non-secure";
 import FileUploadModal from "../../features/file-upload/FileUploadModal";
 import { StorageReference } from "firebase/storage";
-import StorageArray from "../../services/local-storage/storage-array";
+import LSArray from "../../services/local-storage/ls-array";
 import CaseFolder from "../../services/local-storage/case-folder";
 
 interface UploadedFileObject {
@@ -33,14 +33,14 @@ function CreateCaseFolder() {
 	 * If not, creates and saves a cases array to local storage.
 	 */
 	useEffect(() => {
-		document.body.style.background = 'linear-gradient(to bottom, #000273, #000000)';
-		const caseArrayExists = StorageArray.exists();
-		if (!caseArrayExists) {
-			StorageArray.init();
+		document.body.style.background = "linear-gradient(to bottom, #000273, #000000)";
+		const caseArray = LSArray.get();
+		if (caseArray !== null) {
+			LSArray.init();
 		}
 		return () => {
-			document.body.style.background = '';
-		  };
+			document.body.style.background = "";
+		};
 	}, []);
 
 	const toggleUploadModal = (): void => setIsUploadModalOpen((prev) => !prev);
@@ -94,7 +94,7 @@ function CreateCaseFolder() {
 						contentEditable={isCaseNameEditable}
 						suppressContentEditableWarning={true}
 						onBlur={handleBlur}
-						style={{ color: '#FFFFFF' }}
+						style={{ color: "#FFFFFF" }}
 					>
 						{caseName.current}
 					</span>

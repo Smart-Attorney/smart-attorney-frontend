@@ -1,1 +1,3 @@
-class Database {}
+class Database {
+
+}

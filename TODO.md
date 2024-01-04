@@ -38,6 +38,7 @@
 ### bugs to fix
 - [x] either label-assigner or date-picker can be open at a time, not both
 - [x] labels array should have an id for each label
+- [ ] on loading of dashboard, retrieve case array or initialize empty array
 
 
 ### nitpicks

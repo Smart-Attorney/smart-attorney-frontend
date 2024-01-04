@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FolderMenu from "../../features/folder-menu/FolderMenu";
-import StorageArray from "../../services/local-storage/storage-array";
+import LSArray from "../../services/local-storage/ls-array";
 import CaseFolder from "../../services/local-storage/case-folder";
 import CaseDeadline from "../../services/local-storage/case-deadline";
 import CaseLabel from "../../services/local-storage/case-label";
@@ -18,10 +18,11 @@ function CaseFolderCards() {
 	 * Empty dependency array since it should only run once on initial load.
 	 */
 	useEffect(() => {
-		const caseArrayExists = StorageArray.exists();
-		if (caseArrayExists) {
-			setCaseFolders(StorageArray.get());
+		const caseArray = LSArray.get();
+		if (caseArray !== null) {
+			setCaseFolders(caseArray);
 		} else {
+			LSArray.init();
 			setCaseFolders([]);
 		}
 	}, []);

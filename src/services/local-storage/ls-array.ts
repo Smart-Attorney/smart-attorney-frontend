@@ -1,6 +1,7 @@
 import type { FolderObj } from "../../utils/types";
 
-class StorageArray {
+/* Local Storage Array*/
+class LSArray {
 	/**
 	 *
 	 */
@@ -29,4 +30,4 @@ class StorageArray {
 	}
 }
 
-export default StorageArray;
+export default LSArray;

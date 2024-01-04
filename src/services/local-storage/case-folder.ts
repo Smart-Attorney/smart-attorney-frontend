@@ -1,7 +1,7 @@
 import { FolderObj } from "../../utils/types";
-import StorageArray from "./storage-array";
+import LSArray from "./ls-array";
 
-class CaseFolder extends StorageArray {
+class CaseFolder extends LSArray {
 	/**
 	 *
 	 */
