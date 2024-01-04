@@ -1,6 +1,6 @@
 interface CaseFileCardsProps {
-	fileName: string | null;
-	fileID: string | undefined;
+	fileName: string;
+	fileID: string;
 	fileURL: string;
 	onClick: () => void;
 }

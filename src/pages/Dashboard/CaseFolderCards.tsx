@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FolderMenu from "../../features/folder-menu/FolderMenu";
 import { formatDateInput } from "../../utils/format";
-import type { FolderObj } from "../../utils/types";
+import type { CaseFolderObj } from "../../utils/types";
 import Database from "../../services/database";
 
 function CaseFolderCards() {
 	const db = new Database();
 	const navigate = useNavigate();
-	const [caseFolders, setCaseFolders] = useState<FolderObj[]>();
+	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[]>();
 
 	/**
 	 * On initial load, retrieves case array from local storage.

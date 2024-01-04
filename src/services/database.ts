@@ -2,7 +2,7 @@ import LSArray from "./local-storage/ls-array";
 import CaseFolder from "./local-storage/case-folder";
 import CaseDeadline from "./local-storage/case-deadline";
 import CaseLabel from "./local-storage/case-label";
-import { FolderObj } from "../utils/types";
+import { CaseFolderObj } from "../utils/types";
 
 class Database {
 	/**************************************************/
@@ -11,37 +11,37 @@ class Database {
 		LSArray.init();
 	}
 
-	public getCaseArray(): FolderObj[] {
+	public getCaseArray(): CaseFolderObj[] {
 		return LSArray.get();
 	}
 
 	/**************************************************/
 	/* Case Folder Methods */
-	public getCaseFolderById(folderId: string): FolderObj | null {
+	public getCaseFolderById(folderId: string): CaseFolderObj | null {
 		return CaseFolder.getById(folderId);
 	}
 
-	public addNewCaseFolder(newFolder: FolderObj): FolderObj[] {
+	public addNewCaseFolder(newFolder: CaseFolderObj): CaseFolderObj[] {
 		return CaseFolder.add(newFolder);
 	}
 
-	public deleteCaseFolderById(folderId: string): FolderObj[] {
+	public deleteCaseFolderById(folderId: string): CaseFolderObj[] {
 		return CaseFolder.delete(folderId);
 	}
 
 	/**************************************************/
 	/* Case Folder Deadline Methods */
-	public addCaseFolderDeadline(folderId: string, newDeadline: string): FolderObj[] {
+	public addCaseFolderDeadline(folderId: string, newDeadline: string): CaseFolderObj[] {
 		return CaseDeadline.add(folderId, newDeadline);
 	}
 
 	/**************************************************/
 	/* Case Folder Label Methods */
-	public addCaseFolderLabel(folderId: string, newLabel: string): FolderObj[] {
+	public addCaseFolderLabel(folderId: string, newLabel: string): CaseFolderObj[] {
 		return CaseLabel.add(folderId, newLabel);
 	}
 
-	public deleteCaseFolderLabelById(folderId: string, labelId: string): FolderObj[] {
+	public deleteCaseFolderLabelById(folderId: string, labelId: string): CaseFolderObj[] {
 		return CaseLabel.delete(folderId, labelId);
 	}
 }

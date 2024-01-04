@@ -11,14 +11,15 @@ import Firebase from "../../services/cloud-storage/firebase";
 import Database from "../../services/database";
 
 function CaseFolder() {
-	const db = new Database();
-	const { id } = useParams();
-	const folderId = useRef<string | undefined>(id);
-	const fileId = useRef<string>("");
-	const fileName = useRef<string | null>("");
-	const fileUrl = useRef<string>("");
-
 	const navigate = useNavigate();
+	const db = new Database();
+
+	const { id: idFromParams } = useParams();
+	const folderId = useRef(idFromParams);
+
+	const fileId = useRef<string>("");
+	const fileName = useRef<string>("");
+	const fileUrl = useRef<string>("");
 
 	const [caseFiles, setCaseFiles] = useState<CaseFolderObj>();
 	// console.log(caseFiles);
@@ -40,12 +41,12 @@ function CaseFolder() {
 	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		// console.log(event);
 
-		const { id: fileID, innerText } = event.target as HTMLParagraphElement;
-		const fileURL = await Firebase.getFileById(fileID, innerText, folderId.current!);
+		const { id, innerText: name } = event.target as HTMLParagraphElement;
+		const url = await Firebase.getFileById(id, name, folderId.current!);
 
-		fileName.current = innerText;
-		fileId.current = fileID;
-		fileUrl.current = fileURL!;
+		fileName.current = name ? name : "";
+		fileId.current = id ? id : "";
+		fileUrl.current = url ? url : "";
 
 		setIsFileModalOpen(true);
 	};

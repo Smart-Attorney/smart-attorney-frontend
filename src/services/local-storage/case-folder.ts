@@ -1,11 +1,11 @@
-import { FolderObj } from "../../utils/types";
+import { CaseFolderObj } from "../../utils/types";
 import LSArray from "./ls-array";
 
 class CaseFolder extends LSArray {
 	/**
 	 *
 	 */
-	public static getById(folderId: string): FolderObj | null {
+	public static getById(folderId: string): CaseFolderObj | null {
 		const storedArray = super.get();
 		for (let i = 0; i < storedArray.length; i++) {
 			if (storedArray[i].id === folderId) {
@@ -15,14 +15,14 @@ class CaseFolder extends LSArray {
 		return null;
 	}
 
-	public static add(newFolder: FolderObj): FolderObj[] {
+	public static add(newFolder: CaseFolderObj): CaseFolderObj[] {
 		const storedArray = super.get();
 		const updatedArray = [...storedArray, newFolder];
 		super.update(updatedArray);
 		return updatedArray;
 	}
 
-	public static delete(folderId: string): FolderObj[] {
+	public static delete(folderId: string): CaseFolderObj[] {
 		const storedArray = super.get();
 		const updatedArray = storedArray.filter((storedFolder) => storedFolder.id !== folderId);
 		super.update(updatedArray);
