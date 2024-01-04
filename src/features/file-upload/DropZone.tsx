@@ -1,15 +1,10 @@
 import { useRef } from "react";
 import uploadIcon from "../../assets/upload.png";
-
-interface FileUpload {
-	id: string;
-	data: File;
-	selected: boolean;
-}
+import { UploadedFileObj } from "../../utils/types";
 
 interface DropAreaProps {
 	addFilesToUploadArray: (files: FileList) => void;
-	filesToUpload: FileUpload[];
+	filesToUpload: UploadedFileObj[];
 }
 
 function DropZone(props: DropAreaProps) {

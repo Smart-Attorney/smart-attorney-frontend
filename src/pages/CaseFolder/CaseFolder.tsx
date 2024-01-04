@@ -6,25 +6,9 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CaseFileModal from "./CaseFileModal";
-import { FolderObj } from "../../utils/types";
+import { CaseFolderObj } from "../../utils/types";
 import Firebase from "../../services/cloud-storage/firebase";
 import Database from "../../services/database";
-
-interface UploadedFileObject {
-	id: string;
-	name: string;
-	status: string;
-	url: string;
-}
-
-interface Case {
-	id: number;
-	name: string;
-	deadline: string;
-	status: string;
-	labels: string[];
-	files: UploadedFileObject[];
-}
 
 function CaseFolder() {
 	const db = new Database();
@@ -36,7 +20,7 @@ function CaseFolder() {
 
 	const navigate = useNavigate();
 
-	const [caseFiles, setCaseFiles] = useState<FolderObj>();
+	const [caseFiles, setCaseFiles] = useState<CaseFolderObj>();
 	// console.log(caseFiles);
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
@@ -53,9 +37,9 @@ function CaseFolder() {
 		}
 	}, []);
 
-  const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
-    // console.log(event);
-    
+	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
+		// console.log(event);
+
 		const { id: fileID, innerText } = event.target as HTMLParagraphElement;
 		const fileURL = await Firebase.getFileById(fileID, innerText, folderId.current!);
 

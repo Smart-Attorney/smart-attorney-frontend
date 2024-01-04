@@ -1,27 +1,33 @@
-interface SortOptions {
+interface SortOptionsObj {
 	clicked: boolean;
 	name: string;
 }
 
-interface LabelObj {
+interface UploadedFileObj {
+	id: string;
+	data: File;
+	selected: boolean;
+}
+
+interface CaseFolderLabelObj {
 	id: string;
 	name: string;
 }
 
-interface FileObj {
+interface CaseFileObj {
 	id: string;
 	name: string;
 	status: string;
 	url: string;
 }
 
-interface FolderObj {
+interface CaseFolderObj {
 	id: string;
 	name: string;
 	status: string;
 	deadline: string;
-	labels: LabelObj[];
-	files: FileObj[];
+	labels: CaseFolderLabelObj[];
+	files: CaseFileObj[];
 }
 
-export type { SortOptions, LabelObj, FileObj, FolderObj };
+export type { SortOptionsObj, UploadedFileObj, CaseFolderLabelObj, CaseFileObj, CaseFolderObj };

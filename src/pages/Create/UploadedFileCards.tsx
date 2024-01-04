@@ -1,14 +1,7 @@
-
-
-interface UploadedFileObject {
-	id: string;
-	name: string;
-	status: string;
-	url: string;
-}
+import { CaseFileObj } from "../../utils/types";
 
 interface CaseFileProps {
-	uploadedCaseFiles: UploadedFileObject[];
+	uploadedCaseFiles: CaseFileObj[];
 }
 
 function UploadedFileCards(props: CaseFileProps) {

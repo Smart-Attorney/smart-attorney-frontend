@@ -1,13 +1,8 @@
 import { formatBytes } from "../../utils/format";
-
-interface FileUpload {
-	id: string;
-	data: File;
-	selected: boolean;
-}
+import { UploadedFileObj } from "../../utils/types";
 
 interface UploadedFilesDisplayProps {
-	filesToUpload: FileUpload[];
+	filesToUpload: UploadedFileObj[];
 	handleSelectFile: (id: string) => void;
 	handleRemoveFileFromStaging: (id: string) => void;
 }

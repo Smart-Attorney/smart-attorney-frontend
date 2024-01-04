@@ -3,28 +3,16 @@ import { nanoid } from "nanoid";
 import DropZone from "./DropZone";
 import ModalUploadedFileCards from "./ModalUploadedFileCards";
 import Firebase from "../../services/cloud-storage/firebase";
-
-interface FileUpload {
-	id: string;
-	data: File;
-	selected: boolean;
-}
-
-interface UploadedFileObject {
-	id: string;
-	name: string;
-	status: string;
-	url: string;
-}
+import { CaseFileObj, UploadedFileObj } from "../../utils/types";
 
 interface FileUploadProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
-	updateUploadedFilesArray: (uploadedFile: UploadedFileObject) => void;
+	updateUploadedFilesArray: (uploadedFile: CaseFileObj) => void;
 }
 
 function FileUploadModal(props: FileUploadProps) {
-	const [filesForUpload, setFilesForUpload] = useState<FileUpload[]>([]);
+	const [filesForUpload, setFilesForUpload] = useState<UploadedFileObj[]>([]);
 	const [isUploadDone, setIsUploadDone] = useState(false);
 	// console.log(filesToUpload);
 

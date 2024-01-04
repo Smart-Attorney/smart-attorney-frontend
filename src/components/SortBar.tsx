@@ -1,13 +1,9 @@
 import { useState } from "react";
 import SortOption from "./SortOption";
+import { SortOptionsObj } from "../utils/types";
 
-interface Options {
-	clicked: boolean;
-	name: string;
-}
-
-function SortBar({ options }: { options: Options[] }) {
-	const [sortOptions, setSortOptions] = useState<Options[]>(options);
+function SortBar({ options }: { options: SortOptionsObj[] }) {
+	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
 
 	const handleSortCardsByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id } = event.target as HTMLParagraphElement;
@@ -28,7 +24,9 @@ function SortBar({ options }: { options: Options[] }) {
 
 	return (
 		<div className="flex flex-row flex-wrap items-center gap-6">
-			<p className="mr-6" style={{ color: '#FFFFFF' }}>Sort by:</p>
+			<p className="mr-6" style={{ color: "#FFFFFF" }}>
+				Sort by:
+			</p>
 			{optionElements}
 		</div>
 	);

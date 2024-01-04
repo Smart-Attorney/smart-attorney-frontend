@@ -104,7 +104,7 @@ function FolderMenu(props: FolderMenuProps) {
 				</form>
 			</div>
 
-			{/* Case Delete Warning */}
+			{/* Delete Warning */}
 			<div
 				className="absolute right-[79px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-max"
 				style={{ display: isDeleteAlertOpen ? "block" : "none" }}
