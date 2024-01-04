@@ -55,6 +55,7 @@
 - [ ] save url of uploaded files so u dont have to make a call for each every time
 - [ ] replace ref property from uploaded files object with url
 - [ ] clean up rogue interface declarations
+- [ ] add adapter between client and file storage/database
 
 
 ### temporary workarounds

@@ -1,6 +1,6 @@
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import UploadedFile from "./UploadedFile";
+import UploadedFileCards from "./UploadedFileCards";
 import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -18,7 +18,7 @@ interface UploadedFileObject {
 	ref: Promise<StorageReference | null>;
 }
 
-function CreateCase() {
+function CreateCaseFolder() {
 	const caseName = useRef("New Case");
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
@@ -68,7 +68,7 @@ function CreateCase() {
 		setIsCaseNameEditable(false);
 	};
 
-	const handleCreateCase = (): void => {
+	const handleCreateCaseFolder = (): void => {
 		const newCaseObject = {
 			id: nanoid(),
 			name: caseName.current,
@@ -131,14 +131,14 @@ function CreateCase() {
 							className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 							type="button"
 							name="Create"
-							onClick={handleCreateCase}
+							onClick={handleCreateCaseFolder}
 						>
 							<span>Create</span>
 						</button>
 					</div>
 				</div>
 
-				<UploadedFile uploadedCaseFiles={uploadedFiles} />
+				<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
 
 				{isUploadModalOpen && (
 					<FileUploadModal
@@ -151,4 +151,4 @@ function CreateCase() {
 	);
 }
 
-export default CreateCase;
+export default CreateCaseFolder;

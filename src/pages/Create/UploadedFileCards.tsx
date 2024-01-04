@@ -11,7 +11,7 @@ interface CaseFileProps {
 	uploadedCaseFiles: UploadedFileObject[];
 }
 
-function UploadedFile(props: CaseFileProps) {
+function UploadedFileCards(props: CaseFileProps) {
 	return (
 		/**
 		 * TODO:
@@ -33,4 +33,4 @@ function UploadedFile(props: CaseFileProps) {
 	);
 }
 
-export default UploadedFile;
+export default UploadedFileCards;
