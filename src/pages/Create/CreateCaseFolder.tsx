@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../../assets/content-edit-pen.svg";
 import FileUploadModal from "../../features/file-upload/FileUploadModal";
 import Database from "../../services/database";
+import { nanoid } from "nanoid";
 
 interface UploadedFileObject {
 	id: string;
@@ -17,15 +18,21 @@ interface UploadedFileObject {
 
 
 function CreateCaseFolder() {
+  const navigate = useNavigate();
   const db = new Database();
-	const caseName = useRef("New Case");
+  const caseFolderId = useRef("");
+	const caseFolderName = useRef("New Case");
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
 	const [uploadedFiles, setUploadedFiles] = useState<UploadedFileObject[]>([]);
 
 	// console.log(uploadedCaseFiles);
-
-	const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (caseFolderId.current.length < 1) {
+      caseFolderId.current = nanoid(16);
+    }
+   }, [])
 
 	/**
 	 * On initial load, checks if cases array exists in local storage.
@@ -63,14 +70,14 @@ function CreateCaseFolder() {
 		const { textContent } = event.nativeEvent.target as HTMLElement;
 		if (textContent === null) return;
 
-		caseName.current = textContent;
+		caseFolderName.current = textContent;
 		setIsCaseNameEditable(false);
 	};
 
 	const handleCreateCaseFolder = (): void => {
 		const newCaseObject = {
-			id: "",
-			name: caseName.current,
+			id: caseFolderId.current,
+			name: caseFolderName.current,
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
@@ -95,7 +102,7 @@ function CreateCaseFolder() {
 						onBlur={handleBlur}
 						style={{ color: "#FFFFFF" }}
 					>
-						{caseName.current}
+						{caseFolderName.current}
 					</span>
 
 					<img
@@ -140,7 +147,8 @@ function CreateCaseFolder() {
 				<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
 
 				{isUploadModalOpen && (
-					<FileUploadModal
+          <FileUploadModal
+            caseFolderId={caseFolderId.current}
 						closeUploadModal={closeUploadModal}
 						updateUploadedFilesArray={updateUploadedFilesArray}
 					/>

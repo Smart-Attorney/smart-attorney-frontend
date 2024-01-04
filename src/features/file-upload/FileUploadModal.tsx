@@ -18,6 +18,7 @@ interface UploadedFileObject {
 }
 
 interface FileUploadProps {
+	caseFolderId: string;
 	closeUploadModal: () => void;
 	updateUploadedFilesArray: (uploadedFile: UploadedFileObject) => void;
 }
@@ -33,8 +34,12 @@ function FileUploadModal(props: FileUploadProps) {
 
 		for (let i = 0; i < filesForUpload.length; i++) {
 			if (filesForUpload[i].selected === true) {
-				const uploadedFileRef = await Firebase.uploadFileToCloud(filesForUpload[i].data, filesForUpload[i].id);
-        const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
+				const uploadedFileRef = await Firebase.uploadFileToCloud(
+					filesForUpload[i].data,
+					filesForUpload[i].id,
+					props.caseFolderId
+				);
+				const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
 
 				const uploadedFileObject = {
 					id: filesForUpload[i].id,

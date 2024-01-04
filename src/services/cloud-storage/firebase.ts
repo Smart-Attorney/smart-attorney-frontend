@@ -9,11 +9,8 @@ class Firebase {
 	/**
 	 *
 	 */
-	// replace saving by fileType with folderId
-	public static async getFile(fileId: string, fileName: string): Promise<string | null> {
-		const fileNameArray = fileName.split(".");
-		const fileType = fileNameArray[fileNameArray.length - 1];
-		const fileRef = ref(storage, `${fileType}/${fileId}_${fileName}`);
+	public static async getFileById(fileId: string, fileName: string, folderId: string): Promise<string | null> {
+		const fileRef = ref(storage, `${folderId}/${fileId}_${fileName}`);
 		try {
 			const url = await getDownloadURL(fileRef);
 			return url;
@@ -21,10 +18,10 @@ class Firebase {
 			console.log(error);
 			return null;
 		}
-  }
-  
-  public static async getFileByRef(fileRef: StorageReference | null) {
-    if (fileRef === null) return;
+	}
+
+	public static async getFileByRef(fileRef: StorageReference | null) {
+		if (fileRef === null) return;
 
 		try {
 			const url = await getDownloadURL(fileRef);
@@ -35,15 +32,16 @@ class Firebase {
 		}
 	}
 
-	// replace saving by fileType with folderId
-	public static async uploadFileToCloud(file: File, fileId: string): Promise<StorageReference | null> {
+	public static async uploadFileToCloud(
+		file: File,
+		fileId: string,
+		folderId: string
+	): Promise<StorageReference | null> {
 		const fileName = file.name;
-		const fileNameArray = fileName.split(".");
-		const fileType = fileNameArray[fileNameArray.length - 1];
-		const fileRef = ref(storage, `${fileType}/${fileId}_${fileName}`);
+		const fileRef = ref(storage, `${folderId}/${fileId}_${fileName}`);
 		try {
 			const response = await uploadBytes(fileRef, file);
-      return response.ref;
+			return response.ref;
 		} catch (error) {
 			console.log(error);
 			return null;

@@ -26,13 +26,13 @@ interface Case {
 	files: UploadedFileObject[];
 }
 
-function Case() {
+function CaseFolder() {
 	const db = new Database();
 	const { id } = useParams();
-	const folderID = useRef<string | undefined>(id);
-	const fileID = useRef<string>("");
+	const folderId = useRef<string | undefined>(id);
+	const fileId = useRef<string>("");
 	const fileName = useRef<string | null>("");
-	const fileURL = useRef<string>("");
+	const fileUrl = useRef<string>("");
 
 	const navigate = useNavigate();
 
@@ -41,11 +41,11 @@ function Case() {
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
 	useEffect(() => {
-		if (folderID.current === undefined) {
+		if (folderId.current === undefined) {
 			navigate("/404");
 			return;
 		}
-		const caseFolderExists = db.getCaseFolderById(folderID.current);
+		const caseFolderExists = db.getCaseFolderById(folderId.current);
 		if (caseFolderExists) {
 			setCaseFiles(caseFolderExists);
 		} else {
@@ -53,13 +53,15 @@ function Case() {
 		}
 	}, []);
 
-	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
-		const { id: fileId, innerText } = event.target as HTMLParagraphElement;
-		const fileUrl = await Firebase.getFile(fileId, innerText);
+  const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
+    // console.log(event);
+    
+		const { id: fileID, innerText } = event.target as HTMLParagraphElement;
+		const fileURL = await Firebase.getFileById(fileID, innerText, folderId.current!);
 
 		fileName.current = innerText;
-		fileID.current = fileId;
-		fileURL.current = fileUrl!;
+		fileId.current = fileID;
+		fileUrl.current = fileURL!;
 
 		setIsFileModalOpen(true);
 	};
@@ -118,8 +120,8 @@ function Case() {
 			{isFileModalOpen && (
 				<CaseFileModal
 					fileName={fileName.current}
-					fileID={fileID.current}
-					fileURL={fileURL.current}
+					fileID={fileId.current}
+					fileURL={fileUrl.current}
 					onClick={handleCloseFileModal}
 				/>
 			)}
@@ -127,4 +129,4 @@ function Case() {
 	);
 }
 
-export default Case;
+export default CaseFolder;
