@@ -56,7 +56,7 @@
 - [x] save url of uploaded files so u dont have to make a call for each every time
 - [x] replace ref property from uploaded files object with url
 - [x] clean up rogue interface declarations
-- [ ] remove null/undefined on props interface declarations by type narrowing
+- [x] remove null/undefined on props interface declarations by type narrowing
 - [ ] fix UX of upload component
 
 

@@ -1,5 +1,5 @@
-import { formatBytes } from "../../utils/format";
-import { UploadedFileObj } from "../../utils/types";
+import { formatBytes } from "../../../utils/format";
+import { UploadedFileObj } from "../../../utils/types";
 
 interface UploadedFilesDisplayProps {
 	filesToUpload: UploadedFileObj[];

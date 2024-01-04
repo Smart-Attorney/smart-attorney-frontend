@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FolderMenu from "../../features/folder-menu/FolderMenu";
+import FolderMenu from "./FolderMenu";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import Database from "../../services/database";

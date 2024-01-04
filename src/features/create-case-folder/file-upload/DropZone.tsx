@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import uploadIcon from "../../assets/upload.png";
-import { UploadedFileObj } from "../../utils/types";
+import uploadIcon from "../../../assets/upload.png";
+import { UploadedFileObj } from "../../../utils/types";
 
 interface DropAreaProps {
 	addFilesToUploadArray: (files: FileList) => void;

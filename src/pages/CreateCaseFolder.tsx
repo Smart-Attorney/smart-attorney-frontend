@@ -1,14 +1,14 @@
-import SearchBar from "../../components/SearchBar";
-import SortBar from "../../components/SortBar";
-import UploadedFileCards from "./UploadedFileCards";
-import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
+import SearchBar from "../components/SearchBar";
+import SortBar from "../components/SortBar";
+import UploadedFileCards from "../features/create-case-folder/UploadedFileCards";
+import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import EditPenIcon from "../../assets/content-edit-pen.svg";
-import FileUploadModal from "../../features/file-upload/FileUploadModal";
-import Database from "../../services/database";
+import EditPenIcon from "../assets/content-edit-pen.svg";
+import FileUploadModal from "../features/create-case-folder/file-upload/FileUploadModal";
+import Database from "../services/database";
 import { nanoid } from "nanoid";
-import { CaseFileObj } from "../../utils/types";
+import { CaseFileObj } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();

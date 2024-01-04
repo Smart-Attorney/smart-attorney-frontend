@@ -1,14 +1,14 @@
-import SearchBar from "../../components/SearchBar";
-import SortBar from "../../components/SortBar";
-import { NEW_CASE_SORT_OPTIONS } from "../../utils/constants";
-import CaseFileCards from "./CaseFileCards";
+import SearchBar from "../components/SearchBar";
+import SortBar from "../components/SortBar";
+import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
+import CaseFileCards from "../features/case-folder/CaseFileCards";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import CaseFileModal from "./CaseFileModal";
-import { CaseFolderObj } from "../../utils/types";
-import Firebase from "../../services/cloud-storage/firebase";
-import Database from "../../services/database";
+import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
+import { CaseFolderObj } from "../utils/types";
+import Firebase from "../services/cloud-storage/firebase";
+import Database from "../services/database";
 
 function CaseFolder() {
 	const navigate = useNavigate();
@@ -103,7 +103,7 @@ function CaseFolder() {
 			<CaseFileCards files={caseFiles?.files} onClick={(event) => handleViewFileModal(event)} />
 
 			{isFileModalOpen && (
-				<CaseFileModal
+				<ViewCaseFileModal
 					fileName={fileName.current}
 					fileID={fileId.current}
 					fileURL={fileUrl.current}

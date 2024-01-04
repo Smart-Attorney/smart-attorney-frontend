@@ -2,8 +2,8 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import DropZone from "./DropZone";
 import ModalUploadedFileCards from "./ModalUploadedFileCards";
-import Firebase from "../../services/cloud-storage/firebase";
-import { CaseFileObj, UploadedFileObj } from "../../utils/types";
+import Firebase from "../../../services/cloud-storage/firebase";
+import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
 
 interface FileUploadProps {
 	caseFolderId: string;

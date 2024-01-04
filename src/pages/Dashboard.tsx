@@ -1,7 +1,7 @@
-import SearchBar from "../../components/SearchBar";
-import SortBar from "../../components/SortBar";
-import CaseFolderCards from "./CaseFolderCards";
-import { DASHBOARD_SORT_OPTIONS } from "../../utils/constants";
+import SearchBar from "../components/SearchBar";
+import SortBar from "../components/SortBar";
+import CaseFolderCards from "../features/dashboard/CaseFolderCards";
+import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
 import { Link } from "react-router-dom";
 
 function Dashboard() {

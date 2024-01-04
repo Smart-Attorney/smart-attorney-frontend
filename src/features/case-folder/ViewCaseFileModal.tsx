@@ -1,11 +1,11 @@
-interface CaseFileCardsProps {
+interface ViewCaseFileCardsProps {
 	fileName: string;
 	fileID: string;
 	fileURL: string;
 	onClick: () => void;
 }
 
-function CaseFileModal(props: CaseFileCardsProps) {
+function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 	const { fileName, fileURL } = props;
 
 	/**
@@ -37,4 +37,4 @@ function CaseFileModal(props: CaseFileCardsProps) {
 	);
 }
 
-export default CaseFileModal;
+export default ViewCaseFileModal;
