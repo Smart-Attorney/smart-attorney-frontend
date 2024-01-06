@@ -1,4 +1,4 @@
-import type { FolderObj } from "../../utils/types";
+import type { CaseFolderObj } from "../../utils/types";
 
 /* Local Storage Array*/
 class LSArray {
@@ -6,23 +6,23 @@ class LSArray {
 	 *
 	 */
 	private static STORAGE_KEY: string = "cases";
-	private static EMPTY_ARRAY: FolderObj[] = [];
+	private static EMPTY_ARRAY: CaseFolderObj[] = [];
 
-	public static init(): void {
+	public static initArray(): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.EMPTY_ARRAY));
 	}
 
-	public static update(updatedArray: FolderObj[]): void {
+	public static updateArray(updatedArray: CaseFolderObj[]): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedArray));
 	}
 
-	public static get(): FolderObj[] {
-		const storedArray: FolderObj[] = JSON.parse(localStorage.getItem(this.STORAGE_KEY) as string);
+	public static getArray(): CaseFolderObj[] {
+		const storedArray: CaseFolderObj[] = JSON.parse(localStorage.getItem(this.STORAGE_KEY) as string);
 		return storedArray;
 	}
 
-	public static exists(): boolean {
-		const storedArray = this.get();
+	public static doesArrayExist(): boolean {
+		const storedArray = this.getArray();
 		if (storedArray === null) {
 			return false;
 		}

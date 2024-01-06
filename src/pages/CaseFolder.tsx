@@ -6,9 +6,10 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
-import { CaseFolderObj } from "../utils/types";
+import { CaseFileObj, CaseFolderObj } from "../utils/types";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
+import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
 
 function CaseFolder() {
 	const navigate = useNavigate();
@@ -21,8 +22,16 @@ function CaseFolder() {
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
 
-	const [caseFiles, setCaseFiles] = useState<CaseFolderObj>();
-	// console.log(caseFiles);
+	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
+		id: "",
+		name: "",
+		status: "",
+		deadline: "",
+		labels: [],
+		files: [],
+	});
+	const [uploadedFiles, setUploadedFiles] = useState<CaseFileObj[]>([]);
+	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
 	useEffect(() => {
@@ -32,26 +41,52 @@ function CaseFolder() {
 		}
 		const caseFolderExists = db.getCaseFolderById(folderId.current);
 		if (caseFolderExists) {
-			setCaseFiles(caseFolderExists);
+			setCaseFolder(caseFolderExists);
+			setUploadedFiles(caseFolderExists.files);
 		} else {
 			navigate("/404");
 		}
 	}, []);
 
 	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
-		// console.log(event);
-
 		const { id, innerText: name } = event.target as HTMLParagraphElement;
 		const url = await Firebase.getFileById(id, name, folderId.current!);
-
 		fileName.current = name ? name : "";
 		fileId.current = id ? id : "";
 		fileUrl.current = url ? url : "";
-
 		setIsFileModalOpen(true);
 	};
 
-	const handleCloseFileModal = (): void => setIsFileModalOpen(false);
+	const handleCloseFileModal = (): void => {
+		setIsFileModalOpen(false);
+	};
+
+	const toggleUploadModal = (): void => {
+		setIsUploadModalOpen((prev) => !prev);
+	};
+
+	const closeUploadModal = (): void => {
+		setIsUploadModalOpen(false);
+	};
+
+	/**
+	 * TODO
+	 * Consolidate these functions in the future.
+	 * updateUploadedFilesArray & updateCaseFolder
+	 * Will break/introduce bugs when tampered with.
+	 */
+	const updateUploadedFilesArray = (uploadedFile: CaseFileObj): void => {
+		setUploadedFiles((prev) => [...prev, uploadedFile]);
+	};
+
+	const updateCaseFolder = (): void => {
+		const newCaseFolder = {
+			...caseFolder,
+			files: uploadedFiles,
+		};
+		const updatedCaseFolder = db.updateCaseFolder(folderId.current!, newCaseFolder);
+		setCaseFolder(updatedCaseFolder);
+	};
 
 	return (
 		<div
@@ -65,7 +100,7 @@ function CaseFolder() {
 						className="relative mt-10 mb-5 text-4xl font-bold top-5"
 						suppressContentEditableWarning={true}
 					>
-						{caseFiles?.name}
+						{caseFolder?.name}
 					</span>
 				</div>
 				<SearchBar />
@@ -85,6 +120,7 @@ function CaseFolder() {
 							className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 							type="button"
 							name="Upload"
+							onClick={toggleUploadModal}
 						>
 							<span>Upload</span>
 						</button>
@@ -100,7 +136,16 @@ function CaseFolder() {
 				</div>
 			</div>
 
-			<CaseFileCards files={caseFiles?.files} onClick={(event) => handleViewFileModal(event)} />
+			<CaseFileCards files={uploadedFiles} onClick={(event) => handleViewFileModal(event)} />
+
+			{isUploadModalOpen && (
+				<FileUploadModal
+					caseFolderId={idFromParams!}
+					closeUploadModal={closeUploadModal}
+					updateUploadedFilesArray={updateUploadedFilesArray}
+					updateCaseFolder={updateCaseFolder}
+				/>
+			)}
 
 			{isFileModalOpen && (
 				<ViewCaseFileModal

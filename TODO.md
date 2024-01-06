@@ -29,7 +29,8 @@
 - [x] upload files to cloud hosting service
 - [x] user can view uploaded files retrieved from hosting service
 - [x] allow user to view their cases in a new page
-- [ ] allow user to update cases
+- [x] allow user to update cases by uploading more files
+- [ ] allow user to delete cases
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] add upload confirmation under each uploaded file
@@ -58,6 +59,7 @@
 - [x] clean up rogue interface declarations
 - [x] remove null/undefined on props interface declarations by type narrowing
 - [ ] fix UX of upload component
+- [ ] extract upload component to be reusable
 
 
 ### temporary workarounds

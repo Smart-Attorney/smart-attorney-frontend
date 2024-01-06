@@ -19,8 +19,6 @@ function CreateCaseFolder() {
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
 	const [uploadedFiles, setUploadedFiles] = useState<CaseFileObj[]>([]);
 
-	// console.log(uploadedCaseFiles);
-
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
 			caseFolderId.current = nanoid(16);

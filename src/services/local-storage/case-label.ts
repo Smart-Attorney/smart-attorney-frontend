@@ -1,4 +1,4 @@
-import { FolderObj, LabelObj } from "../../utils/types";
+import { CaseFolderObj, CaseFolderLabelObj } from "../../utils/types";
 import LSArray from "./ls-array";
 import { nanoid } from "nanoid";
 
@@ -6,23 +6,23 @@ class CaseLabel extends LSArray {
 	/**
 	 *
 	 */
-	public static add(folderId: string, newLabel: string): FolderObj[] {
-		const newLabelObj: LabelObj = {
+	public static add(folderId: string, newLabel: string): CaseFolderObj[] {
+		const newLabelObj: CaseFolderLabelObj = {
 			id: nanoid(8),
 			name: newLabel,
 		};
-		const storedArray = super.get();
+		const storedArray = super.getArray();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
 				? { ...storedFolder, labels: [...storedFolder.labels, newLabelObj] }
 				: storedFolder
 		);
-		super.update(updatedArray);
+		super.updateArray(updatedArray);
 		return updatedArray;
 	}
 
-	public static delete(folderId: string, labelId: string): FolderObj[] {
-		const storedArray = super.get();
+	public static delete(folderId: string, labelId: string): CaseFolderObj[] {
+		const storedArray = super.getArray();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId
 				? {
@@ -31,7 +31,7 @@ class CaseLabel extends LSArray {
 				  }
 				: storedFolder
 		);
-		super.update(updatedArray);
+		super.updateArray(updatedArray);
 		return updatedArray;
 	}
 }

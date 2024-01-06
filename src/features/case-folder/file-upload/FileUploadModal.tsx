@@ -9,6 +9,7 @@ interface FileUploadProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
 	updateUploadedFilesArray: (uploadedFile: CaseFileObj) => void;
+	updateCaseFolder: () => void;
 }
 
 function FileUploadModal(props: FileUploadProps) {
@@ -28,17 +29,15 @@ function FileUploadModal(props: FileUploadProps) {
 				);
 				const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
 
-				const uploadedFileObject = {
+				const uploadedFileObject: CaseFileObj = {
 					id: filesForUpload[i].id,
 					name: filesForUpload[i].data.name,
 					status: "Submitted",
 					url: uploadedFileUrl ? uploadedFileUrl : "",
 				};
-
 				props.updateUploadedFilesArray(uploadedFileObject);
 			}
 		}
-
 		setIsUploadDone(true);
 	};
 
@@ -81,6 +80,11 @@ function FileUploadModal(props: FileUploadProps) {
 	};
 
 	const handleCloseUploadModal = (): void => {
+		/* 
+    'props.updateCaseFolder()' does not work when placed at the end of 
+    'handleUploadSelectedFiles'. But oddly works when placed here.
+    */
+		props.updateCaseFolder();
 		setIsUploadDone(false);
 		props.closeUploadModal();
 	};

@@ -8,11 +8,11 @@ class Database {
 	/**************************************************/
 	/* Case Folder Array Methods */
 	public initNewArray(): void {
-		LSArray.init();
+		LSArray.initArray();
 	}
 
 	public getCaseArray(): CaseFolderObj[] {
-		return LSArray.get();
+		return LSArray.getArray();
 	}
 
 	/**************************************************/
@@ -27,6 +27,10 @@ class Database {
 
 	public deleteCaseFolderById(folderId: string): CaseFolderObj[] {
 		return CaseFolder.delete(folderId);
+	}
+
+	public updateCaseFolder(folderId: string, caseFolder: CaseFolderObj): CaseFolderObj {
+		return CaseFolder.update(folderId, caseFolder);
 	}
 
 	/**************************************************/
