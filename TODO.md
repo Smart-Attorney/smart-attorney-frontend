@@ -4,9 +4,9 @@
 - [x] assign deadlines for folders
 - [x] create labels for folders
 - [x] click on folder to view all case files inside
+- [x] make the above look decent (adhere to hi-fidelity wireframe)
 - [ ] preview of most recently opened document on folder
 - [ ] sort feature
-- [ ] make the above look decent (adhere to hi-fidelity wireframe)
 
 
 ### tasks
@@ -62,9 +62,10 @@
 - [ ] fix UX of upload component
 - [ ] extract upload component to be reusable
 - [ ] extract folder/file card component to be reusable
-- [ ] ensure updated state flows in direction of: updates -> database -> client
+- [ ] ensure updated state flows in direction of: updates -> storage -> database -> client
 - [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
 - [ ] refactor database methods as a mock backend api
+- [ ] when user deletes folder, remove all files associated with folder from cloud
 
 
 ### temporary workarounds
@@ -76,6 +77,13 @@
  - [ ] should documents be uploaded on drop or when user clicks upload?
  - [ ] should the Create New Case page have a search bar and sort options?
  - [ ] if yes to the above ^, what are the sort options for Create New Case page?
+
+
+### figma wireframe notes
+ - linear gradient colors for pages: 
+   - [#2A2B81 100%]  &  [#080613 100%]
+ - linear gradient colors for modals:
+   - [#2A2A7D 100%]  &  [#000000 100%]
 
 
 ### references

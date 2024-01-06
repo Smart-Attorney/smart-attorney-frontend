@@ -1,3 +1,4 @@
+import PageBody from "../layouts/PageBody";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import UploadedFileCards from "../features/create-case-folder/UploadedFileCards";
@@ -30,14 +31,10 @@ function CreateCaseFolder() {
 	 * If not, creates and saves a cases array to local storage.
 	 */
 	useEffect(() => {
-		document.body.style.background = "linear-gradient(to bottom, #000273, #000000)";
 		const caseArray = db.getCaseArray();
 		if (caseArray === null) {
 			db.initNewArray();
 		}
-		return () => {
-			document.body.style.background = "";
-		};
 	}, []);
 
 	const toggleUploadModal = (): void => setIsUploadModalOpen((prev) => !prev);
@@ -82,70 +79,71 @@ function CreateCaseFolder() {
 		setUploadedFiles((prev) => [...prev, uploadedFile]);
 
 	return (
-		<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
+		<PageBody>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-row items-end h-20 gap-2 mb-5">
-					<span
-						id="case-name"
-						className="relative mt-10 mb-5 text-4xl font-bold border-b border-b-black top-5"
-						contentEditable={isCaseNameEditable}
-						suppressContentEditableWarning={true}
-						onBlur={handleBlur}
-						style={{ color: "#FFFFFF" }}
-					>
-						{caseFolderName.current}
-					</span>
-
-					<img
-						src={EditPenIcon}
-						width="30px"
-						className="cursor-pointer mt-7"
-						onClick={toggleCaseNameEditable}
-					/>
-				</div>
-				<SearchBar />
-
-				<div className="flex flex-row items-center justify-between w-full gap-8">
-					<SortBar options={NEW_CASE_SORT_OPTIONS} />
-
-					<div className="flex flex-row flex-wrap justify-end gap-8">
-						<button
-							className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-							type="button"
-							name="Team"
+				<div className="flex flex-col items-center w-full gap-6 mx-auto">
+					<div className="flex flex-row items-end h-20 gap-2 mb-5">
+						<span
+							id="case-name"
+							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-black top-5"
+							contentEditable={isCaseNameEditable}
+							suppressContentEditableWarning={true}
+							onBlur={handleBlur}
 						>
-							<span>Team</span>
-						</button>
-						<button
-							className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-							type="button"
-							name="Upload"
-							onClick={toggleUploadModal}
-						>
-							<span>Upload</span>
-						</button>
-						<button
-							className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-							type="button"
-							name="Create"
-							onClick={handleCreateCaseFolder}
-						>
-							<span>Create</span>
-						</button>
+							{caseFolderName.current}
+						</span>
+
+						<img
+							src={EditPenIcon}
+							width="30px"
+							className="cursor-pointer mt-7"
+							onClick={toggleCaseNameEditable}
+						/>
 					</div>
+					<SearchBar />
+
+					<div className="flex flex-row items-center justify-between w-full gap-8">
+						<SortBar options={NEW_CASE_SORT_OPTIONS} />
+
+						<div className="flex flex-row flex-wrap justify-end gap-8">
+							<button
+								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
+								type="button"
+								name="Team"
+							>
+								<span>Team</span>
+							</button>
+							<button
+								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
+								type="button"
+								name="Upload"
+								onClick={toggleUploadModal}
+							>
+								<span>Upload</span>
+							</button>
+							<button
+								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
+								type="button"
+								name="Create"
+								onClick={handleCreateCaseFolder}
+							>
+								<span>Create</span>
+							</button>
+						</div>
+					</div>
+
+					<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
+
+					{isUploadModalOpen && (
+						<FileUploadModal
+							caseFolderId={caseFolderId.current}
+							closeUploadModal={closeUploadModal}
+							updateUploadedFilesArray={updateUploadedFilesArray}
+						/>
+					)}
 				</div>
-
-				<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
-
-				{isUploadModalOpen && (
-					<FileUploadModal
-						caseFolderId={caseFolderId.current}
-						closeUploadModal={closeUploadModal}
-						updateUploadedFilesArray={updateUploadedFilesArray}
-					/>
-				)}
 			</div>
-		</div>
+		</PageBody>
 	);
 }
 
