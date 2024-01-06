@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { StorageReference, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+	StorageReference,
+	deleteObject,
+	getDownloadURL,
+	getStorage,
+	ref,
+	uploadBytes,
+} from "firebase/storage";
 import config from "../../config/firebase-config";
 
 const app = initializeApp(config);
@@ -22,7 +29,6 @@ class Firebase {
 
 	public static async getFileByRef(fileRef: StorageReference | null) {
 		if (fileRef === null) return;
-
 		try {
 			const url = await getDownloadURL(fileRef);
 			return url;
@@ -32,7 +38,7 @@ class Firebase {
 		}
 	}
 
-	public static async uploadFileToCloud(
+	public static async uploadFile(
 		file: File,
 		fileId: string,
 		folderId: string
@@ -45,6 +51,15 @@ class Firebase {
 		} catch (error) {
 			console.log(error);
 			return null;
+		}
+	}
+
+	public static async deleteFileById(fileId: string, fileName: string, folderId: string): Promise<void> {
+		const fileRef = ref(storage, `${folderId}/${fileId}_${fileName}`);
+		try {
+			await deleteObject(fileRef);
+		} catch (error) {
+			console.log(error);
 		}
 	}
 }

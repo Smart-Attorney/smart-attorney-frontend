@@ -30,7 +30,7 @@ function CaseFolder() {
 		labels: [],
 		files: [],
 	});
-	const [uploadedFiles, setUploadedFiles] = useState<CaseFileObj[]>([]);
+	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
@@ -42,7 +42,7 @@ function CaseFolder() {
 		const caseFolderExists = db.getCaseFolderById(folderId.current);
 		if (caseFolderExists) {
 			setCaseFolder(caseFolderExists);
-			setUploadedFiles(caseFolderExists.files);
+			setCaseFiles(caseFolderExists.files);
 		} else {
 			navigate("/404");
 		}
@@ -69,23 +69,23 @@ function CaseFolder() {
 		setIsUploadModalOpen(false);
 	};
 
-	/**
-	 * TODO
-	 * Consolidate these functions in the future.
-	 * updateUploadedFilesArray & updateCaseFolder
-	 * Will break/introduce bugs when tampered with.
-	 */
-	const updateUploadedFilesArray = (uploadedFile: CaseFileObj): void => {
-		setUploadedFiles((prev) => [...prev, uploadedFile]);
+	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
+		setCaseFiles((prev) => [...prev, uploadedFile]);
 	};
 
 	const updateCaseFolder = (): void => {
 		const newCaseFolder = {
 			...caseFolder,
-			files: uploadedFiles,
+			files: caseFiles,
 		};
 		const updatedCaseFolder = db.updateCaseFolder(folderId.current!, newCaseFolder);
 		setCaseFolder(updatedCaseFolder);
+	};
+
+	/* TODO: revise this lol */
+	const updateCaseFolder2 = (newCaseFolder: CaseFolderObj) => {
+		setCaseFolder(newCaseFolder);
+		setCaseFiles(newCaseFolder.files);
 	};
 
 	return (
@@ -136,13 +136,18 @@ function CaseFolder() {
 				</div>
 			</div>
 
-			<CaseFileCards files={uploadedFiles} onClick={(event) => handleViewFileModal(event)} />
+			<CaseFileCards
+				files={caseFiles}
+				onClick={(event) => handleViewFileModal(event)}
+				updateCaseFolder={updateCaseFolder}
+				updateCaseFolder2={updateCaseFolder2}
+			/>
 
 			{isUploadModalOpen && (
 				<FileUploadModal
 					caseFolderId={idFromParams!}
 					closeUploadModal={closeUploadModal}
-					updateUploadedFilesArray={updateUploadedFilesArray}
+					addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
 					updateCaseFolder={updateCaseFolder}
 				/>
 			)}

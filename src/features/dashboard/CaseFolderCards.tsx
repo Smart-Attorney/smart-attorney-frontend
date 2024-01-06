@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FolderMenu from "./FolderMenu";
+import KebabMenu from "./KebabMenu";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import Database from "../../services/database";
@@ -66,7 +66,7 @@ function CaseFolderCards() {
 				>
 					{/* Kebab Menu */}
 					<div className="relative left-[200px] w-28">
-						<FolderMenu
+						<KebabMenu
 							addDeadline={(event) => handleAddFolderDeadline(caseFolder.id, event)}
 							addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 							deleteFolder={() => handleDeleteFolder(caseFolder.id)}

@@ -1,22 +1,50 @@
-import { CaseFileObj } from "../../utils/types";
+import { CaseFileObj, CaseFolderObj } from "../../utils/types";
+import KebabMenu from "./KebabMenu";
+import Firebase from "../../services/cloud-storage/firebase";
+import { useParams } from "react-router-dom";
+import Database from "../../services/database";
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
+	updateCaseFolder: () => void;
+	updateCaseFolder2: (newCaseFolder: CaseFolderObj) => void;
 }
 
 function CaseFileCards(props: CaseFileCardsProps) {
+	const db = new Database();
+	const { id: folderId } = useParams();
+
+	/**
+	 * TODO
+	 * awful and messy function
+	 * revise this
+	 */
+	const handleFileDelete = (file: CaseFileObj) => {
+		const { id: fileId, name: fileName } = file;
+		Firebase.deleteFileById(fileId, fileName, folderId!);
+		db.deleteCaseFileById(folderId!, fileId);
+		const newCaseFolder = db.getCaseFolderById(folderId!);
+		if (newCaseFolder) {
+			props.updateCaseFolder2(newCaseFolder);
+		}
+	};
+
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{props.files?.map((file) => (
-				<div
-					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
-					key={file.id}
-				>
-					<h1>{file.status}</h1>
+				<div className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 " key={file.id}>
+					{/* Kebab Menu */}
+					<div className="relative left-[175px] w-24">
+						<KebabMenu deleteFile={() => handleFileDelete(file)} />
+					</div>
 
+					{/* File Status */}
+					<h1 className="relative bottom-[26px] right-[10px] w-fit">{file.status}</h1>
+
+					{/* File Name */}
 					<p
-						className="mb-8 font-semibold cursor-pointer hover:text-blue-500"
+						className="mb-8 font-semibold w-fit cursor-pointer hover:text-blue-500 relative top-[140px] right-[10px]"
 						id={file.id}
 						onClick={props.onClick}
 					>

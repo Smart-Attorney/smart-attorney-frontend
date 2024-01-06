@@ -3,10 +3,10 @@
 - [x] create new documents
 - [x] assign deadlines for folders
 - [x] create labels for folders
-- [ ] make the above look decent (adhere to hi-fidelity wireframe)
+- [x] click on folder to view all case files inside
 - [ ] preview of most recently opened document on folder
-- [ ] click on folder to view all case files inside
 - [ ] sort feature
+- [ ] make the above look decent (adhere to hi-fidelity wireframe)
 
 
 ### tasks
@@ -30,7 +30,7 @@
 - [x] user can view uploaded files retrieved from hosting service
 - [x] allow user to view their cases in a new page
 - [x] allow user to update cases by uploading more files
-- [ ] allow user to delete cases
+- [x] allow user to delete cases
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] add upload confirmation under each uploaded file
@@ -40,6 +40,7 @@
 - [x] either label-assigner or date-picker can be open at a time, not both
 - [x] labels array should have an id for each label
 - [x] on loading of dashboard, retrieve case array or initialize empty array
+- [ ] fix uploading new files feature by updating the database before updating the client state
 
 
 ### nitpicks
@@ -60,6 +61,10 @@
 - [x] remove null/undefined on props interface declarations by type narrowing
 - [ ] fix UX of upload component
 - [ ] extract upload component to be reusable
+- [ ] extract folder/file card component to be reusable
+- [ ] ensure updated state flows in direction of: updates -> database -> client
+- [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
+- [ ] refactor database methods as a mock backend api
 
 
 ### temporary workarounds

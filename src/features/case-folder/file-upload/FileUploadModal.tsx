@@ -8,7 +8,7 @@ import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
 interface FileUploadProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
-	updateUploadedFilesArray: (uploadedFile: CaseFileObj) => void;
+	addUploadedFileToCaseFileArray: (uploadedFile: CaseFileObj) => void;
 	updateCaseFolder: () => void;
 }
 
@@ -22,7 +22,7 @@ function FileUploadModal(props: FileUploadProps) {
 
 		for (let i = 0; i < filesForUpload.length; i++) {
 			if (filesForUpload[i].selected === true) {
-				const uploadedFileRef = await Firebase.uploadFileToCloud(
+				const uploadedFileRef = await Firebase.uploadFile(
 					filesForUpload[i].data,
 					filesForUpload[i].id,
 					props.caseFolderId
@@ -35,7 +35,7 @@ function FileUploadModal(props: FileUploadProps) {
 					status: "Submitted",
 					url: uploadedFileUrl ? uploadedFileUrl : "",
 				};
-				props.updateUploadedFilesArray(uploadedFileObject);
+				props.addUploadedFileToCaseFileArray(uploadedFileObject);
 			}
 		}
 		setIsUploadDone(true);

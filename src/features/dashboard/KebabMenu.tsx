@@ -1,13 +1,13 @@
 import { useState } from "react";
 import removeIcon from "../../assets/remove.png";
 
-interface FolderMenuProps {
+interface KebabMenuProps {
 	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	addLabel: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	deleteFolder: () => void;
 }
 
-function FolderMenu(props: FolderMenuProps) {
+function KebabMenu(props: KebabMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
@@ -134,4 +134,4 @@ function FolderMenu(props: FolderMenuProps) {
 	);
 }
 
-export default FolderMenu;
+export default KebabMenu;

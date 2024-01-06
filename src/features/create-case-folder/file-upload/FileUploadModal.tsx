@@ -21,7 +21,7 @@ function FileUploadModal(props: FileUploadProps) {
 
 		for (let i = 0; i < filesForUpload.length; i++) {
 			if (filesForUpload[i].selected === true) {
-				const uploadedFileRef = await Firebase.uploadFileToCloud(
+				const uploadedFileRef = await Firebase.uploadFile(
 					filesForUpload[i].data,
 					filesForUpload[i].id,
 					props.caseFolderId

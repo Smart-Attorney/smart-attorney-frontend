@@ -2,6 +2,7 @@ import LSArray from "./local-storage/ls-array";
 import CaseFolder from "./local-storage/case-folder";
 import CaseDeadline from "./local-storage/case-deadline";
 import CaseLabel from "./local-storage/case-label";
+import CaseFile from "./local-storage/case-files";
 import { CaseFolderObj } from "../utils/types";
 
 class Database {
@@ -47,6 +48,12 @@ class Database {
 
 	public deleteCaseFolderLabelById(folderId: string, labelId: string): CaseFolderObj[] {
 		return CaseLabel.delete(folderId, labelId);
+	}
+
+	/**************************************************/
+	/* Case Folder Label Methods */
+	public deleteCaseFileById(folderId: string, fileId: string): CaseFolderObj[] {
+		return CaseFile.delete(folderId, fileId);
 	}
 }
 
