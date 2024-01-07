@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import EditPenIcon from "../assets/content-edit-pen.svg";
 import FileUploadModal from "../features/create-case-folder/file-upload/FileUploadModal";
 import Database from "../services/database";
-import { nanoid } from "nanoid";
+import nanoid from "../services/nanoid";
 import { CaseFileObj } from "../utils/types";
 
 function CreateCaseFolder() {
@@ -22,7 +22,7 @@ function CreateCaseFolder() {
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
-			caseFolderId.current = nanoid(16);
+			caseFolderId.current = nanoid();
 		}
 	}, []);
 

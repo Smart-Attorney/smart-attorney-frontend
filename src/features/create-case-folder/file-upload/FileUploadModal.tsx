@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { nanoid } from "nanoid";
+import nanoid from "../../../services/nanoid";
 import DropZone from "./DropZone";
 import ModalUploadedFileCards from "./ModalUploadedFileCards";
 import Firebase from "../../../services/cloud-storage/firebase";
@@ -47,7 +47,7 @@ function FileUploadModal(props: FileUploadProps) {
 			setFilesForUpload((prev) => [
 				...prev,
 				{
-					id: nanoid(16),
+					id: nanoid(),
 					data: files[i],
 					selected: false,
 				},

@@ -1,6 +1,6 @@
 import { CaseFolderObj, CaseFolderLabelObj } from "../../utils/types";
 import LSArray from "./ls-array";
-import { nanoid } from "nanoid";
+import nanoid from "../nanoid";
 
 class CaseLabel extends LSArray {
 	/**
@@ -8,7 +8,7 @@ class CaseLabel extends LSArray {
 	 */
 	public static add(folderId: string, newLabel: string): CaseFolderObj[] {
 		const newLabelObj: CaseFolderLabelObj = {
-			id: nanoid(8),
+			id: nanoid(),
 			name: newLabel,
 		};
 		const storedArray = super.getArray();
