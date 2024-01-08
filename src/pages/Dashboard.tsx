@@ -9,7 +9,10 @@ function Dashboard() {
 	return (
 		<PageBody>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<h1 className="mt-10 mb-5 text-4xl font-bold text-white text-left">Case Dashboard</h1>
+				<div className="flex items-center gap-1 w-[100%] mx-auto">
+          			<img src={DashBoardLogo} alt="Logo" className="h-12 w-12 mr-2" />
+          			<h1 className="mt-10 mb-5 text-4xl font-bold text-white text-left">Case Dashboard</h1>
+        		</div>
 				<SearchBar />
 				<div className="flex flex-row items-center justify-between w-full gap-8">
 					<SortBar options={DASHBOARD_SORT_OPTIONS} />
