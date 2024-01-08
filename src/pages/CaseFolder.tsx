@@ -22,7 +22,7 @@ function CaseFolder() {
 	const fileId = useRef<string>("");
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
-
+	
 	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
 		id: "",
 		name: "",
@@ -31,6 +31,7 @@ function CaseFolder() {
 		labels: [],
 		files: [],
 	});
+
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
@@ -48,7 +49,6 @@ function CaseFolder() {
 			navigate("/404");
 		}
 	}, []);
-
 	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id, innerText: name } = event.target as HTMLParagraphElement;
 		const url = await Firebase.getFileById(id, name, folderId.current!);
