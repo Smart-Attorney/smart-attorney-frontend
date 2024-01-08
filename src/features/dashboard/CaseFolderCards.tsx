@@ -51,19 +51,13 @@ function CaseFolderCards() {
 	};
 
 	return (
-		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
-			{/**
-			 * TODO:
-			 * Rename this file to Case Folder Card for specificity.
-			 * Move the grid layout to dashboard.
-			 * Dashboard should be in charge of displaying case folder cards.
-			 */}
+		<div className="flex flex-wrap">
 			{caseFolders?.map((caseFolder) => (
-				<div
-					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
-					key={caseFolder.id}
-					id={caseFolder.id}
-				>
+			<div
+				className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col mx-4 my-4"
+				key={caseFolder.id}
+				id={caseFolder.id}
+			>
 					{/* Kebab Menu */}
 					<div className="relative left-[200px] w-28">
 						<KebabMenu
