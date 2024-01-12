@@ -4,7 +4,7 @@ import SortBar from "../components/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
 import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
 import { Link } from "react-router-dom";
-import DashBoardLogo from "../assets/DashBoardLogo.png";
+import DashBoardLogo from "../assets/Frame 12.png";
 function Dashboard() {
 	return (
 		<PageBody>
