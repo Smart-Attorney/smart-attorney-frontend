@@ -7,14 +7,14 @@ interface SortOptionProps {
 
 function SortOption(props: SortOptionProps) {
 	const sortOptionStyle = {
-		color: props.clicked ? "white" : "black",
-		backgroundColor: props.clicked ? "black" : "white",
+		color: props.clicked ? "black" : "white",
+		backgroundColor: props.clicked ? "white" : "transparent",
 	};
 
 	return (
 		<p
 			id={props.id}
-			className="px-2 py-1 border-[0px] border-black rounded-lg cursor-pointer cursor text-b"
+			className="px-2 py-1 border-[0px] border-black rounded-lg cursor-pointer cursor"
 			style={sortOptionStyle}
 			onClick={props.onClick}
 		>

@@ -1,7 +1,7 @@
 import PageBody from "../layouts/PageBody";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
-import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
+import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ function CaseFolder() {
 	const fileId = useRef<string>("");
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
-	
+
 	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
 		id: "",
 		name: "",
@@ -31,7 +31,6 @@ function CaseFolder() {
 		labels: [],
 		files: [],
 	});
-
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
@@ -49,6 +48,7 @@ function CaseFolder() {
 			navigate("/404");
 		}
 	}, []);
+
 	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id, innerText: name } = event.target as HTMLParagraphElement;
 		const url = await Firebase.getFileById(id, name, folderId.current!);
@@ -105,7 +105,7 @@ function CaseFolder() {
 					<SearchBar />
 
 					<div className="flex flex-row items-center justify-between w-full gap-8">
-						<SortBar options={NEW_CASE_SORT_OPTIONS} />
+						<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
 
 						<div className="flex flex-row flex-wrap justify-end gap-8">
 							<button

@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import KebabMenu from "./KebabMenu";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import Database from "../../services/database";
 
-function CaseFolderCards() {
+interface CaseFolderCardProps {
+	caseFolders: CaseFolderObj[] | null;
+	setCaseFolders: React.Dispatch<React.SetStateAction<CaseFolderObj[] | null>>;
+}
+
+function CaseFolderCards(props: CaseFolderCardProps) {
 	const db = new Database();
 	const navigate = useNavigate();
-	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[]>();
 
-	/**
-	 * On initial load, retrieves case array from local storage.
-	 * Then, sets case array to cases state.
-	 * Empty dependency array since it should only run once on initial load.
-	 */
-	useEffect(() => {
-		const caseArray = db.getCaseArray();
-		if (caseArray !== null) {
-			setCaseFolders(caseArray);
-		} else {
-			db.initNewArray();
-			setCaseFolders([]);
-		}
-	}, []);
+	const { caseFolders, setCaseFolders } = props;
 
 	const handleAddFolderDeadline = (folderId: string, event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { value: newDeadline } = event.target;
@@ -51,13 +41,20 @@ function CaseFolderCards() {
 	};
 
 	return (
-		<div className="flex flex-wrap">
+		/* I will change the layout to accomodate for 4 card layout instead of the current 3. */
+		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
+			{/**
+			 * TODO:
+			 * Rename this file to Case Folder Card for specificity.
+			 * Move the grid layout to dashboard.
+			 * Dashboard should be in charge of displaying case folder cards.
+			 */}
 			{caseFolders?.map((caseFolder) => (
-			<div
-				className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col mx-4 my-4"
-				key={caseFolder.id}
-				id={caseFolder.id}
-			>
+				<div
+					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
+					key={caseFolder.id}
+					id={caseFolder.id}
+				>
 					{/* Kebab Menu */}
 					<div className="relative left-[200px] w-28">
 						<KebabMenu

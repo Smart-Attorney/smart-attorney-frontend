@@ -5,8 +5,8 @@
 - [x] create labels for folders
 - [x] click on folder to view all case files inside
 - [x] make the above look decent (adhere to hi-fidelity wireframe)
-- [ ] preview of most recently opened document on folder
 - [ ] sort feature
+- [ ] preview of most recently opened document on folder
 
 
 ### tasks
@@ -66,6 +66,7 @@
 - [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
 - [ ] refactor database methods as a mock backend api
 - [ ] when user deletes folder, remove all files associated with folder from cloud
+- [ ] refactor: parent holds state, while business logic of child stays in child (ex: dashboard & cardfoldercards)
 
 
 ### temporary workarounds

@@ -2,6 +2,13 @@ import { useState } from "react";
 import SortOption from "./SortOption";
 import { SortOptionsObj } from "../utils/types";
 
+/* 
+  pass state setter to sortBar
+  pass copy of folder array to sortBar
+  when option is selected, run sort function on folder array
+  update state with newly sorta array
+*/
+
 function SortBar({ options }: { options: SortOptionsObj[] }) {
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
 
