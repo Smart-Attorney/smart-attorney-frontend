@@ -41,8 +41,13 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 	};
 
 	return (
-		/* I will change the layout to accomodate for 4 card layout instead of the current 3. */
-		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
+		/* 
+      Current layout will display 4 cards for all screen resolutions with a min-width of 1400px. 
+      
+      The grid layout resizes and accomodates for different screen resolutions while also keeping
+      the elements centered.
+    */
+		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{/**
 			 * TODO:
 			 * Rename this file to Case Folder Card for specificity.
