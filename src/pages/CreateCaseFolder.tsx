@@ -109,14 +109,14 @@ function CreateCaseFolder() {
 
 						<div className="flex flex-row flex-wrap justify-end gap-8">
 							<button
-								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
+								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 								type="button"
 								name="Team"
 							>
 								<span>Team</span>
 							</button>
 							<button
-								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
+								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 								type="button"
 								name="Upload"
 								onClick={toggleUploadModal}
@@ -124,7 +124,7 @@ function CreateCaseFolder() {
 								<span>Upload</span>
 							</button>
 							<button
-								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
+								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 								type="button"
 								name="Create"
 								onClick={handleCreateCaseFolder}

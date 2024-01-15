@@ -56,7 +56,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 			 */}
 			{caseFolders?.map((caseFolder) => (
 				<div
-					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-5 flex flex-col"
+					className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
 					key={caseFolder.id}
 					id={caseFolder.id}
 				>

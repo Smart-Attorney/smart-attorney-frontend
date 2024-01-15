@@ -2,6 +2,7 @@ import { useState } from "react";
 import SortOption from "./SortOption";
 import { CaseFolderObj, SortOptionsObj } from "../utils/types";
 import { sortArrayByOption } from "../utils/sort";
+import Group6Logo from "../assets/Smart-Attorney/Group 6.png";
 import Database from "../services/database";
 
 /* 
@@ -31,13 +32,13 @@ function SortBar(props: SortBarProps) {
 			)
 		);
 
-    if (unsortedArray && setSortedArray) {
-      /* 
+		if (unsortedArray && setSortedArray) {
+			/* 
         Reason for this shallow copy:
         "React components automatically re-render whenever there is a change in their state or props. In your example, sortedPlans.sort is sorting the array in place and returning that very same array, and thus you never actually update the state. The easiest way is to just copy the state, modify the copy, then setting the state equal to the copy and then the state gets updated and the component re-renders."
         Source: https://stackoverflow.com/questions/71766944/react-setstate-not-triggering-re-render
       */
-      const newArray = [...unsortedArray];
+			const newArray = [...unsortedArray];
 
 			const sortedArray = sortArrayByOption(newArray, id) as CaseFolderObj[];
 			db.updateCaseArray(sortedArray);
@@ -57,7 +58,10 @@ function SortBar(props: SortBarProps) {
 
 	return (
 		<div className="flex flex-row flex-wrap items-center gap-6">
-			<p className="mr-6 text-white">Sort by:</p>
+			<div className="flex flex-row items-center gap-3">
+				<img className="w-6 h-5" src={Group6Logo} />
+				<p className="text-white ">Sort by:</p>
+			</div>
 			{optionElements}
 		</div>
 	);

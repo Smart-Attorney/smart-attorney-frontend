@@ -14,7 +14,7 @@ function UploadedFileCards(props: CaseFileProps) {
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{props.uploadedCaseFiles.map((file) => (
 				<div
-					className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 flex flex-col justify-between"
+					className="flex flex-col justify-between w-64 h-64 py-4 pl-12 bg-white rounded-3xl"
 					key={file.id}
 				>
 					<h1>{file.status}</h1>

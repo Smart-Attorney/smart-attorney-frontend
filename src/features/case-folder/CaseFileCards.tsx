@@ -33,7 +33,7 @@ function CaseFileCards(props: CaseFileCardsProps) {
 	return (
 		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{props.files?.map((file) => (
-				<div className="bg-[#D9D9D9] h-64 w-64 rounded-3xl py-4 pl-12 " key={file.id}>
+				<div className="w-64 h-64 py-4 pl-12 bg-white rounded-3xl " key={file.id}>
 					{/* Kebab Menu */}
 					<div className="relative left-[175px] w-24">
 						<KebabMenu deleteFile={() => handleFileDelete(file)} />

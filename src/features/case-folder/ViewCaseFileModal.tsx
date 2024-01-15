@@ -18,9 +18,9 @@ function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 			id="modal-overlay"
 			className="absolute flex justify-center items-center h-screen w-screen bg-[rgba(128,128,128,0.5)]"
 		>
-			<div id="modal" className=" w-[80%] h-[80%] p-5 rounded-lg bg-[#D9D9D9] ">
+			<div id="modal" className=" w-[80%] h-[80%] p-5 rounded-lg bg-white ">
 				<div id="modal-contents" className="flex flex-col items-center w-full h-full gap-4">
-					<h1 className="text-xl font-semibold bg-[#D9D9D9]">{fileName}</h1>
+					<h1 className="text-xl font-semibold bg-white">{fileName}</h1>
 					<div className="w-full h-full bg-white rounded-md">
 						<object height="100%" width="100%" data={fileURL}></object>
 					</div>
