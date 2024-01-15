@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { CaseFolderObj } from "../utils/types";
 import Database from "../services/database";
 import Frame12Logo from "../assets/Smart-Attorney/Frame 12.png";
+import Component2Logo from "../assets/Smart-Attorney/Component 2.png";
 
 function Dashboard() {
 	const db = new Database();
@@ -29,10 +30,15 @@ function Dashboard() {
 		}
 	}, []);
 
+	const newCaseButtonStyle = {
+		background:
+			"linear-gradient(94.94deg, rgba(50, 68, 242, 0.87) 0%, rgba(52, 129, 244, 0.84474) 50.52%, rgba(255, 37, 246, 0.82) 100%)",
+	};
+
 	return (
 		<PageBody>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-row items-center w-full gap-1 mx-auto">
+				<div className="flex flex-row items-center w-full gap-2 mx-auto">
 					<img className="w-12 h-12 mr-2 mt-[20px]" src={Frame12Logo} alt="logo" />
 					<h1 className="mt-10 mb-5 text-4xl font-bold text-white">Case Dashboard</h1>
 				</div>
@@ -44,11 +50,15 @@ function Dashboard() {
 						setSortedArray={setCaseFolders}
 					/>
 					<Link
-						className="bg-white h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
+						className="bg-white h-11 rounded-full min-w-[150px] flex justify-center items-center font-medium "
+						style={newCaseButtonStyle}
 						type="button"
 						to={"/create-case"}
 					>
-						<span>New Case</span>
+						<div className="flex flex-row items-center gap-2 px-5 py-1 bg-white rounded-full">
+							<img className="h-5" src={Component2Logo} />
+							<span className="text-[#2D2F8D]">New Case</span>
+						</div>
 					</Link>
 				</div>
 				<CaseFolderCards caseFolders={caseFolders} setCaseFolders={setCaseFolders} />
@@ -58,3 +68,7 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+// border: 3px solid;
+
+// border-image-source: linear-gradient(94.94deg, rgba(50, 68, 242, 0.87) 0%, rgba(52, 129, 244, 0.84474) 50.52%, rgba(255, 37, 246, 0.82) 100%);

@@ -5,11 +5,12 @@ import UploadedFileCards from "../features/create-case-folder/UploadedFileCards"
 import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import EditPenIcon from "../assets/content-edit-pen.svg";
+import PencilIcon from "../assets/pencil.png";
 import FileUploadModal from "../features/create-case-folder/file-upload/FileUploadModal";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { CaseFileObj } from "../utils/types";
+import Ellipse8Logo from "../assets/Smart-Attorney/Ellipse 8.png";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -65,9 +66,9 @@ function CreateCaseFolder() {
 	const handleCreateCaseFolder = (): void => {
 		const newCaseObject = {
 			id: caseFolderId.current,
-      name: caseFolderName.current,
-      createdDate: Date.now(),
-      lastOpenedDate: Date.now(),
+			name: caseFolderName.current,
+			createdDate: Date.now(),
+			lastOpenedDate: Date.now(),
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
@@ -83,11 +84,12 @@ function CreateCaseFolder() {
 	return (
 		<PageBody>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-col items-center w-full gap-6 mx-auto">
-					<div className="flex flex-row items-end h-20 gap-2 mb-5">
+				<div className="flex flex-col w-full gap-6 mx-auto">
+					<div className="flex flex-row items-end h-20 gap-4 mb-5">
+						<img className="relative top-2 h-14" src={Ellipse8Logo} />
 						<span
 							id="case-name"
-							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-black top-5"
+							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-white top-5"
 							contentEditable={isCaseNameEditable}
 							suppressContentEditableWarning={true}
 							onBlur={handleBlur}
@@ -96,7 +98,7 @@ function CreateCaseFolder() {
 						</span>
 
 						<img
-							src={EditPenIcon}
+							src={PencilIcon}
 							width="30px"
 							className="cursor-pointer mt-7"
 							onClick={toggleCaseNameEditable}

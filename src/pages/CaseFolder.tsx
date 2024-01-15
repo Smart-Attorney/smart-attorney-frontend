@@ -11,6 +11,7 @@ import { CaseFileObj, CaseFolderObj } from "../utils/types";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
+import Ellipse8Logo from "../assets/Smart-Attorney/Ellipse 8.png";
 
 function CaseFolder() {
 	const navigate = useNavigate();
@@ -111,12 +112,13 @@ function CaseFolder() {
 	return (
 		<PageBody>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-col items-center w-full gap-6 mx-auto">
-					<div className="flex flex-row items-end h-20 gap-2 mb-5">
+				<div className="flex flex-col w-full gap-6 mx-auto">
+					<div className="flex flex-row items-end h-20 gap-4 mb-5">
+						<img className="relative top-2 h-14" src={Ellipse8Logo} />
 						<span
 							id="case-name"
-							className="relative mt-10 mb-5 text-4xl font-bold text-white top-5"
-							suppressContentEditableWarning={true}
+							className="mt-10 text-4xl font-bold text-white justify-self-end"
+							// suppressContentEditableWarning={true}
 						>
 							{caseFolder?.name}
 						</span>
