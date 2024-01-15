@@ -34,9 +34,7 @@ const CASE_FOLDER_SORT_OPTIONS: SortOptionsObj[] = [
 	{ clicked: false, name: "Name" },
 	{ clicked: false, name: "Date Created" },
 	{ clicked: false, name: "Last Opened" },
-	{ clicked: false, name: "Open Cases" },
-	{ clicked: false, name: "Deadline" },
-	{ clicked: false, name: "Labels" },
+	{ clicked: false, name: "Status" },
 ];
 
 const NEW_CASE_SORT_OPTIONS: SortOptionsObj[] = [

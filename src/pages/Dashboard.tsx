@@ -38,7 +38,11 @@ function Dashboard() {
 				</div>
 				<SearchBar />
 				<div className="flex flex-row items-center justify-between w-full gap-8">
-					<SortBar options={DASHBOARD_SORT_OPTIONS} />
+					<SortBar
+						options={DASHBOARD_SORT_OPTIONS}
+						unsortedArray={caseFolders}
+						setSortedArray={setCaseFolders}
+					/>
 					<Link
 						className="bg-[#D9D9D9] h-11 rounded-md min-w-[150px] flex justify-center items-center pb-[2px]"
 						type="button"

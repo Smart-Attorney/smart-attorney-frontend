@@ -65,7 +65,9 @@ function CreateCaseFolder() {
 	const handleCreateCaseFolder = (): void => {
 		const newCaseObject = {
 			id: caseFolderId.current,
-			name: caseFolderName.current,
+      name: caseFolderName.current,
+      createdDate: Date.now(),
+      lastOpenedDate: Date.now(),
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],

@@ -16,6 +16,10 @@ class Database {
 		return LSArray.getArray();
 	}
 
+	public updateCaseArray(updatedArray: CaseFolderObj[]): void {
+		LSArray.updateArray(updatedArray);
+	}
+
 	/**************************************************/
 	/* Case Folder Methods */
 	public getCaseFolderById(folderId: string): CaseFolderObj | null {

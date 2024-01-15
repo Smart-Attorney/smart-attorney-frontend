@@ -72,6 +72,7 @@
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders
 - using local storage as makeshift database
+- sorting is done faux-server-side (may change to client-side in the future once true backend is implemented)
 
 
 ### inquiries

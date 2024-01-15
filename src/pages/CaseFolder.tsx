@@ -26,6 +26,8 @@ function CaseFolder() {
 	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
 		id: "",
 		name: "",
+		createdDate: NaN,
+		lastOpenedDate: NaN,
 		status: "",
 		deadline: "",
 		labels: [],
@@ -89,6 +91,23 @@ function CaseFolder() {
 		setCaseFiles(newCaseFolder.files);
 	};
 
+	/* 
+    TODO:
+    revise this so this func runs then it navigates back to dashboard 
+  */
+	const updateLastOpenedDate = (): void => {
+		const newCaseFolder = {
+			...caseFolder,
+			lastOpenedDate: Date.now(),
+		};
+		db.updateCaseFolder(folderId.current!, newCaseFolder);
+	};
+
+	const handleSaveChanges = () => {
+		updateLastOpenedDate();
+		navigate("/dashboard");
+	};
+
 	return (
 		<PageBody>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
@@ -126,8 +145,8 @@ function CaseFolder() {
 							<button
 								className="bg-[#D9D9D9] h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
 								type="button"
-								name="Create"
-								onClick={() => navigate("/dashboard")}
+								name="Save"
+								onClick={handleSaveChanges}
 							>
 								<span>Save</span>
 							</button>

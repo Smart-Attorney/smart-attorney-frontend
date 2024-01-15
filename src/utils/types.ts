@@ -17,6 +17,8 @@ interface CaseFolderLabelObj {
 interface CaseFileObj {
 	id: string;
 	name: string;
+  createdDate: number;
+  lastOpenedDate: number;
 	status: string;
 	url: string;
 }
@@ -24,6 +26,8 @@ interface CaseFileObj {
 interface CaseFolderObj {
 	id: string;
 	name: string;
+  createdDate: number;
+  lastOpenedDate: number;
 	status: string;
 	deadline: string;
 	labels: CaseFolderLabelObj[];
