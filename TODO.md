@@ -1,10 +1,10 @@
 ### core funtionalities
+- [x] make the above look decent (adhere to hi-fidelity wireframe)
 - [x] create new folders (tiles)
 - [x] create new documents
 - [x] assign deadlines for folders
 - [x] create labels for folders
 - [x] click on folder to view all case files inside
-- [x] make the above look decent (adhere to hi-fidelity wireframe)
 - [ ] sort feature
 - [ ] login / signup page
 - [ ] preview of most recently opened document on folder
