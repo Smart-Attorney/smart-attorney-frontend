@@ -64,6 +64,11 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateCaseFolder = (): void => {
+		if (caseFolderName.current === "New Case") {
+			// Display an error message or take appropriate action to prompt the user to change the case name.
+			alert("Please change the case name before creating.");
+			return;
+		  }
 		const newCaseObject = {
 			id: caseFolderId.current,
 			name: caseFolderName.current,
