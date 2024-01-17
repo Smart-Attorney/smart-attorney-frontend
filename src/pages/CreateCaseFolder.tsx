@@ -10,7 +10,7 @@ import FileUploadModal from "../features/create-case-folder/file-upload/FileUplo
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { CaseFileObj } from "../utils/types";
-import Ellipse8Logo from "../assets/Smart-Attorney/Ellipse 8.png";
+import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();

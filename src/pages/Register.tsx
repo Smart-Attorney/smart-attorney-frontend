@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import LogoSmartAttorney from "../assets/Smart-Attorney/Final Typeface White Ver 1.png";
+import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
 import PageBody from "../layouts/PageBody";
 import InputField from "../features/register/InputField";
 import TermsOfService from "../features/register/TermsOfService";
@@ -14,7 +14,7 @@ function Register() {
 	return (
 		<PageBody>
 			<div className="pt-8 pl-14">
-				<img className="h-12" src={LogoSmartAttorney} />
+				<img className="h-12" src={SmartAttorneyLogo} />
 			</div>
 
 			<div className="flex justify-center py-10">

@@ -1,5 +1,5 @@
 import PageBody from "../layouts/PageBody";
-import LogoSmartAttorney from "../assets/Smart-Attorney/Final Typeface White Ver 1.png";
+import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 /* temporary workaround */
@@ -49,7 +49,7 @@ function Signin() {
 	return (
 		<PageBody>
 			<div className="flex flex-col items-center py-20">
-				<img className="h-32" src={LogoSmartAttorney} />
+				<img className="h-32" src={SmartAttorneyLogo} />
 			</div>
 
 			<div className="flex flex-col items-center">

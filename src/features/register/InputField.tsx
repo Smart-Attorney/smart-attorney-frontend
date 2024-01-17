@@ -1,4 +1,4 @@
-import GreenCheckCircle from "../../assets/register/icon _tick circle_@3x.png";
+import GreenCheckCircle from "../../assets/smart-attorney-figma/tick-green-circle.png";
 
 interface InputFieldProps {
 	name: string;

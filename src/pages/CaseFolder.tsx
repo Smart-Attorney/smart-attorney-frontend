@@ -11,7 +11,7 @@ import { CaseFileObj, CaseFolderObj } from "../utils/types";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
-import Ellipse8Logo from "../assets/Smart-Attorney/Ellipse 8.png";
+import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
 
 function CaseFolder() {
 	const navigate = useNavigate();

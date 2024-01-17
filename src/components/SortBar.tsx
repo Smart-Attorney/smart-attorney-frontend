@@ -2,7 +2,7 @@ import { useState } from "react";
 import SortOption from "./SortOption";
 import { CaseFolderObj, SortOptionsObj } from "../utils/types";
 import { sortArrayByOption } from "../utils/sort";
-import Group6Logo from "../assets/Smart-Attorney/Group 6.png";
+import SortIcon from "../assets/smart-attorney-figma/sort-white-icon.png";
 import Database from "../services/database";
 
 /* 
@@ -59,7 +59,7 @@ function SortBar(props: SortBarProps) {
 	return (
 		<div className="flex flex-row flex-wrap items-center gap-6">
 			<div className="flex flex-row items-center gap-3">
-				<img className="w-6 h-5" src={Group6Logo} />
+				<img className="w-6 h-5" src={SortIcon} />
 				<p className="text-white ">Sort by:</p>
 			</div>
 			{optionElements}
