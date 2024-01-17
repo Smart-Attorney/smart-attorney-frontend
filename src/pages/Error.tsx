@@ -1,5 +1,5 @@
-import PageBody from "../layouts/PageBody";
 import { useNavigate } from "react-router-dom";
+import PageBody from "../layouts/PageBody";
 
 /**
  * Page to handle all routes not accounted for.

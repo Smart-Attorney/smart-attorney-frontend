@@ -1,14 +1,14 @@
-import PageBody from "../layouts/PageBody";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DashboardLogo from "../assets/smart-attorney-figma/dashboard-icon.png";
+import FolderPurpleLogo from "../assets/smart-attorney-figma/folder-purple-icon.png";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
-import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { CaseFolderObj } from "../utils/types";
+import PageBody from "../layouts/PageBody";
 import Database from "../services/database";
-import DashboardLogo from "../assets/smart-attorney-figma/dashboard-icon.png";
-import FolderPurpleLogo from "../assets/smart-attorney-figma/folder-purple-icon.png";
+import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
+import { CaseFolderObj } from "../utils/types";
 
 function Dashboard() {
 	const db = new Database();

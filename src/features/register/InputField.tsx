@@ -13,8 +13,8 @@ function InputField(props: InputFieldProps) {
 			</label>
 			<div className="flex flex-row items-center gap-4">
 				<input className="h-8 rounded-md min-w-[300px]" id={name} type={type} />
-        <span className="">
-          {/* placeholder img to help me position elements properly */}
+				<span className="">
+					{/* placeholder img to help me position elements properly */}
 					<img className="w-6 h-6" src={GreenCheckCircle} />
 				</span>
 			</div>

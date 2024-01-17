@@ -1,4 +1,4 @@
-import { CaseFolderObj, CaseFileObj } from "./types";
+import { CaseFileObj, CaseFolderObj } from "./types";
 
 type UnsortedArray = CaseFolderObj[] | CaseFileObj[];
 type SortedArray = CaseFolderObj[] | CaseFileObj[];

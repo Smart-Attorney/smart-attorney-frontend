@@ -1,7 +1,7 @@
-import PageBody from "../layouts/PageBody";
-import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
+import PageBody from "../layouts/PageBody";
 /* temporary workaround */
 import { mockUser } from "../utils/mock-user";
 

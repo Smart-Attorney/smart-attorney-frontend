@@ -1,9 +1,9 @@
-import LSArray from "./local-storage/ls-array";
-import CaseFolder from "./local-storage/case-folder";
-import CaseDeadline from "./local-storage/case-deadline";
-import CaseLabel from "./local-storage/case-label";
-import CaseFile from "./local-storage/case-files";
 import { CaseFolderObj } from "../utils/types";
+import CaseDeadline from "./local-storage/case-deadline";
+import CaseFile from "./local-storage/case-files";
+import CaseFolder from "./local-storage/case-folder";
+import CaseLabel from "./local-storage/case-label";
+import LSArray from "./local-storage/ls-array";
 
 class Database {
 	/**************************************************/

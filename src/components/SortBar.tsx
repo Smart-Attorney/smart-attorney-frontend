@@ -1,9 +1,9 @@
 import { useState } from "react";
-import SortOption from "./SortOption";
-import { CaseFolderObj, SortOptionsObj } from "../utils/types";
-import { sortArrayByOption } from "../utils/sort";
 import SortIcon from "../assets/smart-attorney-figma/sort-white-icon.png";
 import Database from "../services/database";
+import { sortArrayByOption } from "../utils/sort";
+import { CaseFolderObj, SortOptionsObj } from "../utils/types";
+import SortOption from "./SortOption";
 
 /* 
   pass state setter to sortBar

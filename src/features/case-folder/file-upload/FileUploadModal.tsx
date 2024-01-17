@@ -1,9 +1,9 @@
 import { useState } from "react";
+import Firebase from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
+import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
 import DropZone from "./DropZone";
 import ModalUploadedFileCards from "./ModalUploadedFileCards";
-import Firebase from "../../../services/cloud-storage/firebase";
-import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
 
 interface FileUploadProps {
 	caseFolderId: string;
@@ -32,7 +32,7 @@ function FileUploadModal(props: FileUploadProps) {
 				const uploadedFileObject: CaseFileObj = {
 					id: filesForUpload[i].id,
 					name: filesForUpload[i].data.name,
-          createdDate: Date.now(),
+					createdDate: Date.now(),
 					lastOpenedDate: Date.now(),
 					status: "Submitted",
 					url: uploadedFileUrl ? uploadedFileUrl : "",

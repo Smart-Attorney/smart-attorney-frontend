@@ -1,6 +1,6 @@
-import { CaseFolderObj, CaseFolderLabelObj } from "../../utils/types";
-import LSArray from "./ls-array";
+import { CaseFolderLabelObj, CaseFolderObj } from "../../utils/types";
 import nanoid from "../nanoid";
+import LSArray from "./ls-array";
 
 class CaseLabel extends LSArray {
 	/**

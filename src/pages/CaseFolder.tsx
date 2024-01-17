@@ -1,17 +1,16 @@
-import PageBody from "../layouts/PageBody";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
-import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
-import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
-import { CaseFileObj, CaseFolderObj } from "../utils/types";
+import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
+import PageBody from "../layouts/PageBody";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
-import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
-import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
+import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
+import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
 function CaseFolder() {
 	const navigate = useNavigate();

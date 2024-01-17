@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
-import PageBody from "../layouts/PageBody";
 import InputField from "../features/register/InputField";
 import TermsOfService from "../features/register/TermsOfService";
+import PageBody from "../layouts/PageBody";
 
 function Register() {
 	const navigate = useNavigate();

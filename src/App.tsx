@@ -1,11 +1,11 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Signin from "./pages/Signin";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import { Route, Routes } from "react-router-dom";
 import CaseFolder from "./pages/CaseFolder";
 import CreateCaseFolder from "./pages/CreateCaseFolder";
+import Dashboard from "./pages/Dashboard";
 import Error from "./pages/Error";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Signin from "./pages/Signin";
 
 function App() {
 	return (

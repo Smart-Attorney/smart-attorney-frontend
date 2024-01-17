@@ -1,16 +1,16 @@
-import PageBody from "../layouts/PageBody";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PencilIcon from "../assets/pencil.png";
+import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import UploadedFileCards from "../features/create-case-folder/UploadedFileCards";
-import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import PencilIcon from "../assets/pencil.png";
 import FileUploadModal from "../features/create-case-folder/file-upload/FileUploadModal";
+import PageBody from "../layouts/PageBody";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
+import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
 import { CaseFileObj } from "../utils/types";
-import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -67,7 +67,7 @@ function CreateCaseFolder() {
 		if (caseFolderName.current === "New Case") {
 			alert("Please change the case name before creating.");
 			return;
-		  }
+		}
 		const newCaseObject = {
 			id: caseFolderId.current,
 			name: caseFolderName.current,

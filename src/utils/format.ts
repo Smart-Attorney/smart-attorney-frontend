@@ -26,4 +26,5 @@ const formatBytes = (bytes: number, decimals = 1): string => {
 	return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
 
-export { formatDateInput, formatBytes };
+export { formatBytes, formatDateInput };
+

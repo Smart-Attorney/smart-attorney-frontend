@@ -1,8 +1,8 @@
+import { useParams } from "react-router-dom";
+import Firebase from "../../services/cloud-storage/firebase";
+import Database from "../../services/database";
 import { CaseFileObj, CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
-import Firebase from "../../services/cloud-storage/firebase";
-import { useParams } from "react-router-dom";
-import Database from "../../services/database";
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;

@@ -34,8 +34,8 @@ class CaseFolder extends LSArray {
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId ? newCaseFolder : storedFolder
 		);
-    super.updateArray(updatedArray);
-    return newCaseFolder;
+		super.updateArray(updatedArray);
+		return newCaseFolder;
 	}
 }
 
