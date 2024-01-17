@@ -3,22 +3,22 @@ interface SortOptionsObj {
 	name: string;
 }
 
+interface CaseFolderLabelObj {
+	id: string;
+	name: string;
+}
+
 interface UploadedFileObj {
 	id: string;
 	data: File;
 	selected: boolean;
 }
 
-interface CaseFolderLabelObj {
-	id: string;
-	name: string;
-}
-
 interface CaseFileObj {
 	id: string;
 	name: string;
-  createdDate: number;
-  lastOpenedDate: number;
+	createdDate: number;
+	lastOpenedDate: number;
 	status: string;
 	url: string;
 }
@@ -26,8 +26,8 @@ interface CaseFileObj {
 interface CaseFolderObj {
 	id: string;
 	name: string;
-  createdDate: number;
-  lastOpenedDate: number;
+	createdDate: number;
+	lastOpenedDate: number;
 	status: string;
 	deadline: string;
 	labels: CaseFolderLabelObj[];

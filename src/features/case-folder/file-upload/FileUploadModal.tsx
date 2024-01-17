@@ -32,6 +32,8 @@ function FileUploadModal(props: FileUploadProps) {
 				const uploadedFileObject: CaseFileObj = {
 					id: filesForUpload[i].id,
 					name: filesForUpload[i].data.name,
+          createdDate: Date.now(),
+					lastOpenedDate: Date.now(),
 					status: "Submitted",
 					url: uploadedFileUrl ? uploadedFileUrl : "",
 				};

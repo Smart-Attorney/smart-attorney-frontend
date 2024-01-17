@@ -59,9 +59,9 @@ class SortArrayBy {
 
 	/* Sorts from open cases to closed cases. */
 	/* Doesn't do anything yet lol */
-	public static openCases(array: CaseFolderObj[]): CaseFolderObj[] {
-		return [];
-	}
+	// public static openCases(array: CaseFolderObj[]): CaseFolderObj[] {
+	// 	return [];
+	// }
 
 	/* Sorts from closest to furthest deadline. */
 	public static deadline(array: CaseFolderObj[]): CaseFolderObj[] {
@@ -82,9 +82,9 @@ class SortArrayBy {
 
 	/* Sorts by status. */
 	/* Doesn't do anything yet lol */
-	public static status(array: CaseFileObj[]): CaseFileObj[] {
-		return [];
-	}
+	// public static status(array: CaseFileObj[]): CaseFileObj[] {
+	// 	return [];
+	// }
 }
 
 const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray => {
@@ -102,7 +102,7 @@ const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray =>
 			return array;
 
 		case "Deadline":
-			return SortArrayBy.deadline(array as CaseFolderObj[]) ;
+			return SortArrayBy.deadline(array as CaseFolderObj[]);
 
 		case "Status":
 			return array;
