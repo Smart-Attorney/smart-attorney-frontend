@@ -35,6 +35,11 @@
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] add upload confirmation under each uploaded file
+- [ ] big fill upload for create new case file upload
+- [ ] modal for case folder to add additional files
+- [ ] sort feature for case folder; none for create new
+- [ ] match buttons
+- [ ] figure out sidebar layout then inform C
 
 
 ### bugs to fix
@@ -78,9 +83,11 @@
 
 
 ### inquiries
- - [ ] should documents be uploaded on drop or when user clicks upload?
- - [ ] should the Create New Case page have a search bar and sort options?
- - [ ] if yes to the above ^, what are the sort options for Create New Case page?
+ - [x] should documents be uploaded on drop or when user clicks upload?
+ - [x] should the Create New Case page have a search bar and sort options?
+ - [x] if yes to the above ^, what are the sort options for Create New Case page?
+ - [ ] how to denote a open or closed case?
+ - [ ] favicon?
 
 
 ### figma wireframe notes

@@ -48,38 +48,57 @@ function Signin() {
 
 	return (
 		<PageBody>
-			<div className="flex flex-col items-center gap-4 pt-[5%]">
-				<img className="h-32 w-fit" src={LogoSmartAttorney} />
-				<form className=" h-[545px] w-[545px] rounded-3xl p-20" style={formBackgroundStyle}>
-					<div className="flex flex-col items-center justify-between w-full h-full">
-						<h1 className="text-4xl font-normal text-white ">Welcome back!</h1>
+			<div className="flex flex-col items-center py-20">
+				<img className="h-32" src={LogoSmartAttorney} />
+			</div>
 
-						<div className="flex flex-col w-full">
+			<div className="flex flex-col items-center">
+				<form className=" h-[545px] w-[545px] rounded-3xl px-20 py-14" style={formBackgroundStyle}>
+					<div className="flex flex-col items-center w-full h-full">
+						<div className="mb-16">
+							<h1 className="text-4xl font-normal text-white ">Welcome back!</h1>
+						</div>
+
+						<div className="flex flex-col w-full mb-6">
 							<label className="text-white" htmlFor="email">
 								Company Email
 							</label>
-							<input id="email" name="email" value={credentials.email} onChange={handleInputChange} />
+							<input
+								className="h-8 px-3"
+								id="email"
+								type="email"
+								name="email"
+								value={credentials.email}
+								onChange={handleInputChange}
+							/>
 						</div>
 
-						<div className="flex flex-col w-full">
+						<div className="flex flex-col w-full mb-10">
 							<label className="text-white" htmlFor="password">
 								Password
 							</label>
-							<input type="password" id="password" name="password" value={credentials.password} onChange={handleInputChange} />
+							<input
+								className="h-8 px-3"
+								id="password"
+								type="password"
+								name="password"
+								value={credentials.password}
+								onChange={handleInputChange}
+							/>
 						</div>
 
-						<button className="w-full bg-white rounded-lg " type="button" onClick={handleSignIn}>
-							<span>Sign In</span>
+						<button className="w-full h-12 mb-4 bg-white rounded-lg" type="button" onClick={handleSignIn}>
+							<span className="text-xl">Sign In</span>
 						</button>
 
-						<p className="text-white">or</p>
+						<p className="mb-4 text-white">or</p>
 
 						<button
-							className="w-full text-white border-2 border-white"
+							className="w-full border-2 border-white rounded-lg h-14"
 							type="button"
 							onClick={handleRedirectToRegister}
 						>
-							<span>Get Started</span>
+							<span className="text-xl text-white">Get Started</span>
 						</button>
 					</div>
 				</form>
