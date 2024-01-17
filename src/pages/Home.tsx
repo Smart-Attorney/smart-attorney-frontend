@@ -8,7 +8,7 @@ function Home() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		navigate("dashboard");
+		navigate("signin");
 	}, []);
 
 	return <></>;

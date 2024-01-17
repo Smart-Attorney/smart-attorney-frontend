@@ -3,7 +3,7 @@ import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
 import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CaseFolderObj } from "../utils/types";
 import Database from "../services/database";
@@ -12,6 +12,7 @@ import Component2Logo from "../assets/Smart-Attorney/Component 2.png";
 
 function Dashboard() {
 	const db = new Database();
+	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
 
@@ -49,17 +50,17 @@ function Dashboard() {
 						unsortedArray={caseFolders}
 						setSortedArray={setCaseFolders}
 					/>
-					<Link
+					<button
 						className="bg-white h-11 rounded-full min-w-[150px] flex justify-center items-center font-medium "
 						style={newCaseButtonStyle}
 						type="button"
-						to={"/create-case"}
+						onClick={() => navigate("/create-case")}
 					>
 						<div className="flex flex-row items-center gap-2 px-5 py-1 bg-white rounded-full">
 							<img className="h-5" src={Component2Logo} />
 							<span className="text-[#2D2F8D]">New Case</span>
 						</div>
-					</Link>
+					</button>
 				</div>
 				<CaseFolderCards caseFolders={caseFolders} setCaseFolders={setCaseFolders} />
 			</div>
