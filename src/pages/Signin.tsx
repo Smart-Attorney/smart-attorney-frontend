@@ -65,7 +65,7 @@ function Signin() {
 							<label className="text-white" htmlFor="password">
 								Password
 							</label>
-							<input id="password" name="password" value={credentials.password} onChange={handleInputChange} />
+							<input type="password" id="password" name="password" value={credentials.password} onChange={handleInputChange} />
 						</div>
 
 						<button className="w-full bg-white rounded-lg " type="button" onClick={handleSignIn}>
