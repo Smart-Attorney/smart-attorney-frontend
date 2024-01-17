@@ -1,11 +1,40 @@
 import PageBody from "../layouts/PageBody";
 import LogoSmartAttorney from "../assets/Smart-Attorney/Final Typeface White Ver 1.png";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+/* temporary workaround */
+import { mockUser } from "../utils/mock-user";
 
 function Signin() {
 	const navigate = useNavigate();
 
-	const handleSignIn = () => navigate("/dashboard");
+	const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+	const handleInputChange = (event: { target: { value: any; name: any } }) => {
+		const { name, value } = event.target;
+		setCredentials((prev) => {
+			return {
+				...prev,
+				[name]: value,
+			};
+		});
+	};
+
+	const handleSignIn = () => {
+		/* temporary workaround */
+		const passwordMatch = credentials.password === mockUser.password;
+		const emailMatch = credentials.email === mockUser.email;
+		if (!passwordMatch) {
+			alert("Incorrect login information.");
+			return;
+		}
+		if (!emailMatch) {
+			alert("Incorrect login information.");
+			return;
+		}
+
+		navigate("/dashboard");
+	};
 
 	const handleRedirectToRegister = () => navigate("/register");
 
@@ -29,14 +58,14 @@ function Signin() {
 							<label className="text-white" htmlFor="email">
 								Company Email
 							</label>
-							<input id="email" />
+							<input id="email" name="email" value={credentials.email} onChange={handleInputChange} />
 						</div>
 
 						<div className="flex flex-col w-full">
 							<label className="text-white" htmlFor="password">
 								Password
 							</label>
-							<input id="password" />
+							<input id="password" name="password" value={credentials.password} onChange={handleInputChange} />
 						</div>
 
 						<button className="w-full bg-white rounded-lg " type="button" onClick={handleSignIn}>
