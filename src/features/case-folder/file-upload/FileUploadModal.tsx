@@ -94,7 +94,7 @@ function FileUploadModal(props: FileUploadProps) {
 	return (
 		<div
 			id="modal-overlay"
-			className="bg-[rgba(128,128,128,0.5)] h-screen w-screen absolute flex justify-center items-center"
+			className="bg-[rgba(128,128,128,0.5)] left-0 w-full h-full absolute flex justify-center items-center"
 		>
 			<div id="modal" className="p-5 bg-white rounded-lg">
 				<div id="modal-contents" className="flex flex-col items-center gap-5">

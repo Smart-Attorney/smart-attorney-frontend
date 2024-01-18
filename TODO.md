@@ -5,9 +5,10 @@
 - [x] assign deadlines for folders
 - [x] create labels for folders
 - [x] click on folder to view all case files inside
+- [x] login / signup page
 - [ ] sort feature
-- [ ] login / signup page
 - [ ] preview of most recently opened document on folder
+- [ ] user can create sub-folders within case folders
 
 
 ### tasks
@@ -39,7 +40,7 @@
 - [ ] modal for case folder to add additional files
 - [ ] sort feature for case folder; none for create new
 - [ ] match buttons
-- [ ] figure out sidebar layout then inform C
+- [x] figure out sidebar layout then inform C
 
 
 ### bugs to fix
@@ -86,15 +87,14 @@
  - [x] should documents be uploaded on drop or when user clicks upload?
  - [x] should the Create New Case page have a search bar and sort options?
  - [x] if yes to the above ^, what are the sort options for Create New Case page?
+ - [x] favicon?
  - [ ] how to denote a open or closed case?
- - [ ] favicon?
 
 
 ### figma wireframe notes
- - linear gradient colors for pages: 
-   - [#2A2B81 100%]  &  [#080613 100%]
- - linear gradient colors for modals:
-   - [#2A2A7D 100%]  &  [#000000 100%]
+ - linear gradient color background/modal
+   - [#2A2B81 100%]  &  [#080614 100%]
+
 
 
 ### references
