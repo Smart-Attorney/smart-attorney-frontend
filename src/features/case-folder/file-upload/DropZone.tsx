@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import uploadIcon from "../../../assets/upload.png";
 import { UploadedFileObj } from "../../../utils/types";
 
 interface DropAreaProps {
@@ -35,14 +34,13 @@ function DropZone(props: DropAreaProps) {
 		<>
 			{props.filesToUpload.length < 1 ? (
 				<div
-					className="p-6 bg-white border border-black border-dashed rounded-lg cursor-pointer w-fit"
+					className="min-w-[624px] min-h-[224px] p-6 cursor-pointer border-dashed-custom flex items-center justify-center"
 					onDragOver={handleDragOver}
 					onDrop={handleUploadFilesFromDrop}
 					onClick={handleOpenFileBrowser}
 				>
-					<div className="flex flex-col items-center gap-4">
-						<img className="w-16 h-16" src={uploadIcon} />
-						<h1 className="text-xl font-medium">
+					<div className="w-fit h-fit">
+						<h1 className="text-base text-white">
 							Drag and drop or <b>select</b> files from your device.
 						</h1>
 						<input
