@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
 import InputField from "../features/register/InputField";
 import TermsOfService from "../features/register/TermsOfService";
-import PageBody from "../layouts/PageBody";
+import StyledBackground from "../layouts/StyledBackground";
 
 function Register() {
 	const navigate = useNavigate();
@@ -12,7 +12,7 @@ function Register() {
 	};
 
 	return (
-		<PageBody>
+		<StyledBackground>
 			<div className="pt-8 pl-14">
 				<img className="h-12" src={SmartAttorneyLogo} />
 			</div>
@@ -47,7 +47,7 @@ function Register() {
 					<span className="text-xl text-black">Register</span>
 				</button>
 			</div>
-		</PageBody>
+		</StyledBackground>
 	);
 }
 

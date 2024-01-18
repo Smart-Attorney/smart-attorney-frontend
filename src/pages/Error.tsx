@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import PageBody from "../layouts/PageBody";
+import StyledBackground from "../layouts/StyledBackground";
 
 /**
  * Page to handle all routes not accounted for.
@@ -8,7 +8,7 @@ function Error() {
 	const navigate = useNavigate();
 
 	return (
-		<PageBody>
+		<StyledBackground>
 			<div className="flex flex-col items-center justify-center h-screen gap-8">
 				<h1 className="font-semibold text-white text-8xl">404</h1>
 				<h3 className="text-lg text-white">The requested page does not exist.</h3>
@@ -20,7 +20,7 @@ function Error() {
 					<p className="text-lg font-semibold text-white mb-[2px]">Back to Dashboard</p>
 				</button>
 			</div>
-		</PageBody>
+		</StyledBackground>
 	);
 }
 

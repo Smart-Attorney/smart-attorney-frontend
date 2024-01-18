@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
-import PageBody from "../layouts/PageBody";
+import StyledBackground from "../layouts/StyledBackground";
 /* temporary workaround */
 import { mockUser } from "../utils/mock-user";
 
@@ -47,7 +47,7 @@ function Signin() {
 	};
 
 	return (
-		<PageBody>
+		<StyledBackground>
 			<div className="flex flex-col items-center py-20">
 				<img className="h-32" src={SmartAttorneyLogo} />
 			</div>
@@ -103,7 +103,7 @@ function Signin() {
 					</div>
 				</form>
 			</div>
-		</PageBody>
+		</StyledBackground>
 	);
 }
 

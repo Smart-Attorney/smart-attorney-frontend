@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
 import SearchBar from "../components/SearchBar";
-import SortBar from "../components/SortBar";
+import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
-import PageBody from "../layouts/PageBody";
+import SidebarLayout from "../layouts/SidebarLayout";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
@@ -109,7 +109,7 @@ function CaseFolder() {
 	};
 
 	return (
-		<PageBody>
+		<SidebarLayout>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-col w-full gap-6 mx-auto">
 					<div className="flex flex-row items-end h-20 gap-4 mb-5">
@@ -180,7 +180,7 @@ function CaseFolder() {
 					/>
 				)}
 			</div>
-		</PageBody>
+		</SidebarLayout>
 	);
 }
 

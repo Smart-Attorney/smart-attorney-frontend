@@ -1,8 +1,8 @@
 import { useState } from "react";
-import SortIcon from "../assets/smart-attorney-figma/sort-white-icon.png";
-import Database from "../services/database";
-import { sortArrayByOption } from "../utils/sort";
-import { CaseFolderObj, SortOptionsObj } from "../utils/types";
+import SortIcon from "../../assets/smart-attorney-figma/sort-white-icon.png";
+import Database from "../../services/database";
+import { sortArrayByOption } from "../../utils/sort";
+import { CaseFolderObj, SortOptionsObj } from "../../utils/types";
 import SortOption from "./SortOption";
 
 /* 
