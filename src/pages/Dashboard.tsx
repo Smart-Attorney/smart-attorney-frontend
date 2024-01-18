@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
 import PageBody from "../layouts/PageBody";
+import Sidebar from "../layouts/Sidebar";
 import Database from "../services/database";
 import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
 import { CaseFolderObj } from "../utils/types";
@@ -38,6 +39,8 @@ function Dashboard() {
 
 	return (
 		<PageBody>
+			<Sidebar />
+
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-row items-center w-full gap-2 mx-auto">
 					<img className="w-12 h-12 mr-2 mt-[20px]" src={DashboardLogo} alt="logo" />
