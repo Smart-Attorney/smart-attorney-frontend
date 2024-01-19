@@ -5,7 +5,7 @@ import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
-import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
+import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import SidebarLayout from "../layouts/SidebarLayout";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
@@ -34,8 +34,8 @@ function CaseFolder() {
 		files: [],
 	});
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
-	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
+	const [uploadModalOpen, setUploadModalOpen] = useState(false);
+	const [fileModalOpen, setFileModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (folderId.current === undefined) {
@@ -57,19 +57,19 @@ function CaseFolder() {
 		fileName.current = name ? name : "";
 		fileId.current = id ? id : "";
 		fileUrl.current = url ? url : "";
-		setIsFileModalOpen(true);
+		setFileModalOpen(true);
 	};
 
 	const handleCloseFileModal = (): void => {
-		setIsFileModalOpen(false);
+		setFileModalOpen(false);
 	};
 
 	const toggleUploadModal = (): void => {
-		setIsUploadModalOpen((prev) => !prev);
+		setUploadModalOpen((prev) => !prev);
 	};
 
 	const closeUploadModal = (): void => {
-		setIsUploadModalOpen(false);
+		setUploadModalOpen(false);
 	};
 
 	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
@@ -162,8 +162,8 @@ function CaseFolder() {
 					updateCaseFolder2={updateCaseFolder2}
 				/>
 
-				{isUploadModalOpen && (
-					<FileUploadModal
+				{uploadModalOpen && (
+					<UploadModal
 						caseFolderId={idFromParams!}
 						closeUploadModal={closeUploadModal}
 						addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
@@ -171,7 +171,7 @@ function CaseFolder() {
 					/>
 				)}
 
-				{isFileModalOpen && (
+				{fileModalOpen && (
 					<ViewCaseFileModal
 						fileName={fileName.current}
 						fileID={fileId.current}

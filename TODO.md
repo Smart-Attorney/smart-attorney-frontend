@@ -33,6 +33,7 @@
 - [x] allow user to view their cases in a new page
 - [x] allow user to update cases by uploading more files
 - [x] allow user to delete cases
+- [x] figure out sidebar layout then inform C
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] add upload confirmation under each uploaded file
@@ -40,15 +41,14 @@
 - [ ] modal for case folder to add additional files
 - [ ] sort feature for case folder; none for create new
 - [ ] match buttons
-- [x] figure out sidebar layout then inform C
 
 
 ### bugs to fix
 - [x] either label-assigner or date-picker can be open at a time, not both
 - [x] labels array should have an id for each label
 - [x] on loading of dashboard, retrieve case array or initialize empty array
+- [x] fix modal style and behavior
 - [ ] fix uploading new files feature by updating the database before updating the client state
-- [ ] fix modal style and behavior
 
 
 ### nitpicks
@@ -67,9 +67,8 @@
 - [x] replace ref property from uploaded files object with url
 - [x] clean up rogue interface declarations
 - [x] remove null/undefined on props interface declarations by type narrowing
-- [ ] fix UX of upload component
-- [ ] extract upload component to be reusable
-- [ ] extract folder/file card component to be reusable
+- [x] fix UX of upload component
+- [x] extract folder/file card component to be reusable
 - [ ] ensure updated state flows in direction of: updates -> storage -> database -> client
 - [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
 - [ ] refactor database methods as a mock backend api
@@ -100,3 +99,6 @@
 ### references
 React Project Structure
  - https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md
+
+File Type Icons
+ - https://www.flaticon.com/packs/file-formats-text
