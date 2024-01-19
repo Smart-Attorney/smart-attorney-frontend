@@ -3,7 +3,9 @@ import SmartAttorneyLogo from "../../assets/smart-attorney-figma/Favicon 1@4x 1@
 function SidebarItems() {
 	return (
 		<div className="flex flex-col items-center w-full h-full">
-			<img className="cursor-pointer w-14 h-14" src={SmartAttorneyLogo} />
+			<button className="cursor-pointer" onClick={() => { /* Handle button click */ }}>
+				<img className="cursor-pointer w-14 h-14" src={SmartAttorneyLogo} />
+			</button>
 		</div>
 	);
 }
