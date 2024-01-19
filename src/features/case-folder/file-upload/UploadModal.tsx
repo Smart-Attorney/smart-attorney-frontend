@@ -1,8 +1,9 @@
 import { useState } from "react";
+import ModalButton from "../../../components/ModalButton";
+import ModalSpecialButton from "../../../components/ModalSpecialButton";
 import Firebase from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
 import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
-import Button from "./modal-components/Button";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
@@ -79,7 +80,6 @@ function UploadModal(props: UploadModalProps) {
 		}
 	};
 
-	/* Add outline to modal. */
 	return (
 		<div
 			id="modal-backdrop"
@@ -88,7 +88,7 @@ function UploadModal(props: UploadModalProps) {
 		>
 			<div
 				id="modal-container"
-				className="rounded-[32px] py-14 h-fit w-[768px] bg-gradient-custom flex items-center justify-center"
+				className="border border-[#9C9DA4] rounded-[32px] py-14 h-fit w-[768px] bg-gradient-custom flex items-center justify-center"
 			>
 				<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
 					<Header />
@@ -103,18 +103,16 @@ function UploadModal(props: UploadModalProps) {
 					)}
 
 					{/* Upload and Translate Buttons */}
-					<div className="flex flex-row justify-between w-full">
-						<Button
+					<div className="flex flex-row w-full gap-7">
+						<ModalButton
 							name="Upload"
-							className="custom-bg custom-border"
 							onClick={handleUploadFiles}
 							disabled={filesForUpload.length < 1 ? true : false}
 							style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
 						/>
-						<Button
+						<ModalSpecialButton
 							name="Translate"
-							className="custom-bg-2 custom-border-2"
-							// onClick={} does not have a function yet
+							// onClick={}
 						/>
 					</div>
 

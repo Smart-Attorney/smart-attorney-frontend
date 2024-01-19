@@ -6,12 +6,13 @@ interface ModalButtonProps {
 	style?: React.CSSProperties;
 }
 
-function Button(props: ModalButtonProps) {
-	const { onClick, name, className, disabled, style } = props;
+function ModalButton(props: ModalButtonProps) {
+	const { name, className, onClick, disabled, style } = props;
+
 	return (
 		<button
 			type="button"
-			className={`${className} w-[296px] h-[72px] rounded-xl py-2`}
+			className={`${className} h-[72px] w-full rounded-xl py-2 border-[5px] border-solid border-[#3141e4] bg-[#2a2c84]`}
 			onClick={onClick}
 			disabled={disabled}
 			style={style}
@@ -21,4 +22,4 @@ function Button(props: ModalButtonProps) {
 	);
 }
 
-export default Button;
+export default ModalButton;
