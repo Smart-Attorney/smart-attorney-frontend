@@ -1,12 +1,6 @@
-interface ModalButtonProps {
-	name: string;
-	className?: string;
-	onClick?: () => void;
-	disabled?: boolean;
-	style?: React.CSSProperties;
-}
+import { ButtonProps } from "../../utils/types";
 
-function ModalButton(props: ModalButtonProps) {
+function ModalButton(props: ButtonProps) {
 	const { name, className, onClick, disabled, style } = props;
 
 	return (

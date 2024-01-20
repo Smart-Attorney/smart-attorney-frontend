@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PencilIcon from "../assets/pencil.png";
 import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
+import { Folder, LightBulb, Pen, SphereLattice, Upload } from "../assets/smart-attorney-figma/buttons";
+import PillButton from "../components/Buttons/PillButton";
+import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import UploadedFileCards from "../features/create-case-folder/UploadedFileCards";
@@ -15,10 +18,12 @@ import { CaseFileObj } from "../utils/types";
 function CreateCaseFolder() {
 	const navigate = useNavigate();
 	const db = new Database();
+
 	const caseFolderId = useRef("");
 	const caseFolderName = useRef("New Case");
-	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-	const [isCaseNameEditable, setIsCaseNameEditable] = useState(false);
+
+	const [uploadModalOpen, setUploadModalOpen] = useState(false);
+	const [caseNameEditable, setCaseNameEditable] = useState(false);
 	const [uploadedFiles, setUploadedFiles] = useState<CaseFileObj[]>([]);
 
 	useEffect(() => {
@@ -38,12 +43,12 @@ function CreateCaseFolder() {
 		}
 	}, []);
 
-	const toggleUploadModal = (): void => setIsUploadModalOpen((prev) => !prev);
+	const toggleUploadModal = (): void => setUploadModalOpen((prev) => !prev);
 
-	const closeUploadModal = (): void => setIsUploadModalOpen(false);
+	const closeUploadModal = (): void => setUploadModalOpen(false);
 
 	const toggleCaseNameEditable = (): void => {
-		setIsCaseNameEditable(true);
+		setCaseNameEditable(true);
 		/**
 		 * TODO:
 		 * Replace with useRef().
@@ -60,7 +65,7 @@ function CreateCaseFolder() {
 		if (textContent === null) return;
 
 		caseFolderName.current = textContent;
-		setIsCaseNameEditable(false);
+		setCaseNameEditable(false);
 	};
 
 	const handleCreateCaseFolder = (): void => {
@@ -94,7 +99,7 @@ function CreateCaseFolder() {
 						<span
 							id="case-name"
 							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-white top-5"
-							contentEditable={isCaseNameEditable}
+							contentEditable={caseNameEditable}
 							suppressContentEditableWarning={true}
 							onBlur={handleBlur}
 						>
@@ -113,36 +118,24 @@ function CreateCaseFolder() {
 					<div className="flex flex-row items-center justify-between w-full gap-8">
 						<SortBar options={NEW_CASE_SORT_OPTIONS} />
 
-						<div className="flex flex-row flex-wrap justify-end gap-8">
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Team"
-							>
-								<span>Team</span>
-							</button>
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Upload"
-								onClick={toggleUploadModal}
-							>
-								<span>Upload</span>
-							</button>
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Create"
-								onClick={handleCreateCaseFolder}
-							>
-								<span>Create</span>
-							</button>
+						<div className="flex flex-row flex-wrap justify-end gap-3">
+							<PillButton name="Create" img={Pen} />
+							<PillButton name="Upload" img={Upload} onClick={toggleUploadModal} />
+							<PillButton name="Translate" img={SphereLattice} />
+							<PillSpecialButton name="Generate" img={LightBulb} />
+							<PillButton name="Create Case" img={Folder} onClick={handleCreateCaseFolder} />
 						</div>
 					</div>
 
 					<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
+					{/* work in progress... */}
+					{/* {uploadedFiles.length > 0 ? (
+						<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
+					) : (
+						<div className="w-[95%] self-center h-[60vh] bg-teal-500"></div>
+					)} */}
 
-					{isUploadModalOpen && (
+					{uploadModalOpen && (
 						<FileUploadModal
 							caseFolderId={caseFolderId.current}
 							closeUploadModal={closeUploadModal}

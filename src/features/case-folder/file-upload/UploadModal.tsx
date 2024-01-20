@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ModalButton from "../../../components/ModalButton";
-import ModalSpecialButton from "../../../components/ModalSpecialButton";
+import ModalButton from "../../../components/Buttons/ModalButton";
+import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import Firebase from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
 import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
@@ -83,7 +83,7 @@ function UploadModal(props: UploadModalProps) {
 	return (
 		<div
 			id="modal-backdrop"
-			className="bg-[rgba(128,128,128,0.5)] left-0 w-full h-full absolute flex justify-center items-center"
+			className="bg-[#00000040] h-screen top-0 right-0 justify-center left-[78px] flex items-center absolute backdrop-blur-[2px]"
 			onClick={(event) => handleClickModalBackdrop(event)}
 		>
 			<div

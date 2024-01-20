@@ -34,13 +34,13 @@
 - [x] allow user to update cases by uploading more files
 - [x] allow user to delete cases
 - [x] figure out sidebar layout then inform C
+- [x] modal for case folder to add additional files
+- [x] match buttons
 - [ ] add dynamic deadline status color
 - [ ] add on hover effect (x) to labels to remove
 - [ ] add upload confirmation under each uploaded file
 - [ ] big fill upload for create new case file upload
-- [ ] modal for case folder to add additional files
 - [ ] sort feature for case folder; none for create new
-- [ ] match buttons
 
 
 ### bugs to fix
@@ -74,6 +74,10 @@
 - [ ] refactor database methods as a mock backend api
 - [ ] when user deletes folder, remove all files associated with folder from cloud
 - [ ] refactor: parent holds state, while business logic of child stays in child (ex: dashboard & cardfoldercards)
+- [ ] when user leaves create page without creating, delete all uploaded files
+- [ ] when user deletes folder, delete all files within
+- [ ] include folder name when saving case folders
+- [ ] re-organize assets and components by exporting via index file; named exports
 
 
 ### temporary workarounds

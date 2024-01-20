@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
+import { LightBulb, Pen, Save, SphereLattice, Upload } from "../assets/smart-attorney-figma/buttons";
+import PillButton from "../components/Buttons/PillButton";
+import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
@@ -122,35 +125,18 @@ function CaseFolder() {
 							{caseFolder?.name}
 						</span>
 					</div>
+
 					<SearchBar />
 
 					<div className="flex flex-row items-center justify-between w-full gap-8">
 						<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
 
-						<div className="flex flex-row flex-wrap justify-end gap-8">
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Team"
-							>
-								<span>Team</span>
-							</button>
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Upload"
-								onClick={toggleUploadModal}
-							>
-								<span>Upload</span>
-							</button>
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Save"
-								onClick={handleSaveChanges}
-							>
-								<span>Save</span>
-							</button>
+						<div className="flex flex-row flex-wrap justify-end gap-3">
+							<PillButton name="Create" img={Pen} />
+							<PillButton name="Upload" img={Upload} onClick={toggleUploadModal} />
+							<PillButton name="Translate" img={SphereLattice} />
+							<PillSpecialButton name="Generate" img={LightBulb} />
+							<PillButton name="Save" img={Save} onClick={handleSaveChanges} />
 						</div>
 					</div>
 				</div>
@@ -161,25 +147,25 @@ function CaseFolder() {
 					updateCaseFolder={updateCaseFolder}
 					updateCaseFolder2={updateCaseFolder2}
 				/>
-
-				{uploadModalOpen && (
-					<UploadModal
-						caseFolderId={idFromParams!}
-						closeUploadModal={closeUploadModal}
-						addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
-						updateCaseFolder={updateCaseFolder}
-					/>
-				)}
-
-				{fileModalOpen && (
-					<ViewCaseFileModal
-						fileName={fileName.current}
-						fileID={fileId.current}
-						fileURL={fileUrl.current}
-						onClick={handleCloseFileModal}
-					/>
-				)}
 			</div>
+
+			{uploadModalOpen && (
+				<UploadModal
+					caseFolderId={idFromParams!}
+					closeUploadModal={closeUploadModal}
+					addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
+					updateCaseFolder={updateCaseFolder}
+				/>
+			)}
+
+			{fileModalOpen && (
+				<ViewCaseFileModal
+					fileName={fileName.current}
+					fileID={fileId.current}
+					fileURL={fileUrl.current}
+					onClick={handleCloseFileModal}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }
