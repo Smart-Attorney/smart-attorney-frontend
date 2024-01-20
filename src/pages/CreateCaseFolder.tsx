@@ -135,6 +135,14 @@ function CreateCaseFolder() {
 						<div className="w-[95%] self-center h-[60vh] bg-teal-500"></div>
 					)} */}
 
+					{/* 
+             - create drop zone
+             - clicking upload opens up file browser
+             - have drop zone sit on top of uploaded file cards
+             - when there are no cards, display the drop zone
+             - when a file is hovered over the drop zone, display it over the file cards
+          */}
+
 					{uploadModalOpen && (
 						<FileUploadModal
 							caseFolderId={caseFolderId.current}

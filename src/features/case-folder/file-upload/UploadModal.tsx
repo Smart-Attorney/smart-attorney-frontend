@@ -83,7 +83,7 @@ function UploadModal(props: UploadModalProps) {
 	return (
 		<div
 			id="modal-backdrop"
-			className="bg-[#00000040] h-screen top-0 right-0 justify-center left-[78px] flex items-center absolute backdrop-blur-[2px]"
+			className="bg-[#00000040] h-screen w-[calc(100%-80px)] justify-center flex items-center top-0 absolute backdrop-blur-[2px]"
 			onClick={(event) => handleClickModalBackdrop(event)}
 		>
 			<div
