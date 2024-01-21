@@ -1,9 +1,9 @@
 import { getFileTypeImg } from "../../../../utils/file-type-img";
 import { formatBytes } from "../../../../utils/format";
-import { UploadedFileObj } from "../../../../utils/types";
+import { FileForUploadObj } from "../../../../utils/types";
 
 interface UploadedFileCardsProps {
-	filesToUpload: UploadedFileObj[];
+	filesToUpload: FileForUploadObj[];
 	handleRemoveFileFromStaging: (id: string) => void;
 }
 

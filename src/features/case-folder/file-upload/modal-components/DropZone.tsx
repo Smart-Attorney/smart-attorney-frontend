@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { UploadedFileObj } from "../../../../utils/types";
+import { FileForUploadObj } from "../../../../utils/types";
 
 interface DropAreaProps {
 	addFilesToUploadArray: (files: FileList) => void;
-	filesToUpload: UploadedFileObj[];
+	filesToUpload: FileForUploadObj[];
 }
 
 function DropZone(props: DropAreaProps) {

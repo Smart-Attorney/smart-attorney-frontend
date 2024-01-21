@@ -3,7 +3,7 @@ import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import Firebase from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
-import { CaseFileObj, UploadedFileObj } from "../../../utils/types";
+import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
@@ -16,7 +16,7 @@ interface UploadModalProps {
 }
 
 function UploadModal(props: UploadModalProps) {
-	const [filesForUpload, setFilesForUpload] = useState<UploadedFileObj[]>([]);
+	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 	const [uploadDone, setUploadDone] = useState(false);
 
 	/*TODO

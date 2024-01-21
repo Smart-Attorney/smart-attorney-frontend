@@ -3,8 +3,8 @@ interface ButtonProps {
 	className?: string;
 	onClick?: () => void;
 	disabled?: boolean;
-  style?: React.CSSProperties;
-  img?: string;
+	style?: React.CSSProperties;
+	img?: string;
 }
 
 interface SortOptionsObj {
@@ -17,7 +17,7 @@ interface CaseFolderLabelObj {
 	name: string;
 }
 
-interface UploadedFileObj {
+interface FileForUploadObj {
 	id: string;
 	data: File;
 	selected: boolean;
@@ -43,4 +43,4 @@ interface CaseFolderObj {
 	files: CaseFileObj[];
 }
 
-export type { ButtonProps, CaseFileObj, CaseFolderLabelObj, CaseFolderObj, SortOptionsObj, UploadedFileObj };
+export type { ButtonProps, CaseFileObj, CaseFolderLabelObj, CaseFolderObj, FileForUploadObj, SortOptionsObj };

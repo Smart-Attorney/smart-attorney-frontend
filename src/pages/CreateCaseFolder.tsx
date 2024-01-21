@@ -7,13 +7,14 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import UploadedFileCards from "../features/create-case-folder/UploadedFileCards";
-import FileUploadModal from "../features/create-case-folder/file-upload/FileUploadModal";
+import DropArea from "../features/create-case-folder/DropArea";
+import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
 import SidebarLayout from "../layouts/SidebarLayout";
+import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
-import { CaseFileObj } from "../utils/types";
+import { CaseFileObj, FileForUploadObj } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -21,10 +22,10 @@ function CreateCaseFolder() {
 
 	const caseFolderId = useRef("");
 	const caseFolderName = useRef("New Case");
+	const inputRef = useRef<HTMLInputElement>(null);
 
-	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [caseNameEditable, setCaseNameEditable] = useState(false);
-	const [uploadedFiles, setUploadedFiles] = useState<CaseFileObj[]>([]);
+	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
@@ -43,9 +44,9 @@ function CreateCaseFolder() {
 		}
 	}, []);
 
-	const toggleUploadModal = (): void => setUploadModalOpen((prev) => !prev);
-
-	const closeUploadModal = (): void => setUploadModalOpen(false);
+	const handleOpenFileBrowser = (): void => {
+		inputRef.current?.click();
+	};
 
 	const toggleCaseNameEditable = (): void => {
 		setCaseNameEditable(true);
@@ -68,27 +69,77 @@ function CreateCaseFolder() {
 		setCaseNameEditable(false);
 	};
 
-	const handleCreateCaseFolder = (): void => {
+	const addFilesToFilesForUploadArray = (filesFromUpload: FileList): void => {
+		for (let i = 0; i < filesFromUpload.length; i++) {
+			setFilesForUpload((prev) => [
+				...prev,
+				{
+					id: nanoid(),
+					data: filesFromUpload[i],
+					selected: false,
+				},
+			]);
+		}
+	};
+
+	const removeFileFromFilesForUploadArray = (id: string): void => {
+		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
+	};
+
+	const uploadFilesToCloudStorage = async (filesArray: FileForUploadObj[]): Promise<null | CaseFileObj[]> => {
+		if (filesArray === null) return null;
+		if (filesArray.length < 1) return null;
+
+		let uploadedFiles: CaseFileObj[] = [];
+
+		for (let i = 0; i < filesArray.length; i++) {
+			const uploadedFileRef = await Firebase.uploadFile(
+				filesArray[i].data,
+				filesArray[i].id,
+				caseFolderId.current
+			);
+			const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
+			const uploadedFileObject = {
+				id: filesArray[i].id,
+				name: filesArray[i].data.name,
+				createdDate: Date.now(),
+				lastOpenedDate: Date.now(),
+				status: "Submitted",
+				url: uploadedFileUrl ? uploadedFileUrl : "",
+			};
+
+			uploadedFiles.push(uploadedFileObject);
+		}
+
+		return uploadedFiles;
+	};
+
+	const handleCreateCaseFolder = async (): Promise<void> => {
 		if (caseFolderName.current === "New Case") {
 			alert("Please change the case name before creating.");
 			return;
 		}
-		const newCaseObject = {
-			id: caseFolderId.current,
-			name: caseFolderName.current,
-			createdDate: Date.now(),
-			lastOpenedDate: Date.now(),
-			status: "#53EF0A",
-			deadline: "",
-			labels: [],
-			files: uploadedFiles,
-		};
-		db.addNewCaseFolder(newCaseObject);
-		navigate("/dashboard");
-	};
 
-	const updateUploadedFilesArray = (uploadedFile: CaseFileObj): void =>
-		setUploadedFiles((prev) => [...prev, uploadedFile]);
+		const uploadedFilesArray = await uploadFilesToCloudStorage(filesForUpload);
+
+		if (uploadedFilesArray === null) {
+			alert("Encountered an issue when attempting to upload files.");
+			return;
+		} else {
+			const newCaseFolderObject = {
+				id: caseFolderId.current,
+				name: caseFolderName.current,
+				createdDate: Date.now(),
+				lastOpenedDate: Date.now(),
+				status: "#53EF0A",
+				deadline: "",
+				labels: [],
+				files: uploadedFilesArray,
+			};
+			db.addNewCaseFolder(newCaseFolderObject);
+			navigate("/dashboard");
+		}
+	};
 
 	return (
 		<SidebarLayout>
@@ -120,36 +171,29 @@ function CreateCaseFolder() {
 
 						<div className="flex flex-row flex-wrap justify-end gap-3">
 							<PillButton name="Create" img={Pen} />
-							<PillButton name="Upload" img={Upload} onClick={toggleUploadModal} />
+							<PillButton name="Upload" img={Upload} onClick={handleOpenFileBrowser} />
 							<PillButton name="Translate" img={SphereLattice} />
 							<PillSpecialButton name="Generate" img={LightBulb} />
 							<PillButton name="Create Case" img={Folder} onClick={handleCreateCaseFolder} />
 						</div>
 					</div>
 
-					<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
-					{/* work in progress... */}
-					{/* {uploadedFiles.length > 0 ? (
-						<UploadedFileCards uploadedCaseFiles={uploadedFiles} />
-					) : (
-						<div className="w-[95%] self-center h-[60vh] bg-teal-500"></div>
-					)} */}
-
-					{/* 
-             - create drop zone
-             - clicking upload opens up file browser
-             - have drop zone sit on top of uploaded file cards
-             - when there are no cards, display the drop zone
-             - when a file is hovered over the drop zone, display it over the file cards
-          */}
-
-					{uploadModalOpen && (
-						<FileUploadModal
-							caseFolderId={caseFolderId.current}
-							closeUploadModal={closeUploadModal}
-							updateUploadedFilesArray={updateUploadedFilesArray}
+					{filesForUpload.length > 0 && (
+						<FileForUploadCards
+							filesForUpload={filesForUpload}
+							removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
 						/>
 					)}
+
+					<DropArea
+						ref={inputRef}
+						style={{
+							zIndex: filesForUpload.length > 0 ? -5 : 5,
+							display: filesForUpload.length > 0 ? "none" : "flex",
+						}}
+						handleOpenFileBrowser={handleOpenFileBrowser}
+						addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
+					/>
 				</div>
 			</div>
 		</SidebarLayout>

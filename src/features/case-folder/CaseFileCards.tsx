@@ -31,11 +31,11 @@ function CaseFileCards(props: CaseFileCardsProps) {
 	};
 
 	return (
-		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1500px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
+		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
 			{props.files?.map((file) => (
 				<div className="w-64 h-64 py-4 pl-12 bg-white rounded-3xl " key={file.id}>
 					{/* Kebab Menu */}
-					<div className="relative left-[175px] w-24">
+					<div className="relative left-[175px] max-w-min">
 						<KebabMenu deleteFile={() => handleFileDelete(file)} />
 					</div>
 
