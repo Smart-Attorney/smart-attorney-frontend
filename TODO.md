@@ -79,9 +79,10 @@
 - [ ] include folder name when saving case folders
 - [ ] re-organize assets and components by exporting via index file; named exports
 - [ ] re-organize functions for dependency injection pattern for reusability
-- [ ] add reusable grid layout for cards
+- [ ] add reusable grid layout for cards (tailwind custom class)
 - [ ] add reusable modal layout
 - [ ] add reusuable page header layout
+- [ ] separate routes into its own file
 
 
 ### temporary workarounds
@@ -103,10 +104,12 @@
    - [#2A2B81 100%]  &  [#080614 100%]
 
 
-
 ### references
 React Project Structure
  - https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md
 
 File Type Icons
  - https://www.flaticon.com/packs/file-formats-text
+
+Git Naming Conventions
+ - https://dev.to/varbsan/a-simplified-convention-for-naming-branches-and-commits-in-git-il4
