@@ -15,10 +15,10 @@ function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 
 	return (
 		<div
-			id="modal-overlay"
-			className="absolute flex justify-center items-center h-screen w-screen bg-[rgba(128,128,128,0.5)]"
+			id="modal-backdrop"
+			className="bg-[#00000040] h-screen w-[calc(100%-80px)] justify-center flex items-center top-0 absolute backdrop-blur-[2px]"
 		>
-			<div id="modal" className=" w-[80%] h-[80%] p-5 rounded-lg bg-white ">
+			<div id="modal-container" className=" w-[768px] h-fit p-5 rounded-lg bg-white ">
 				<div id="modal-contents" className="flex flex-col items-center w-full h-full gap-4">
 					<h1 className="text-xl font-semibold bg-white">{fileName}</h1>
 					<div className="w-full h-full bg-white rounded-md">

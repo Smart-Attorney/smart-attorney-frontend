@@ -43,7 +43,7 @@ function KebabMenu(props: KebabMenuProps) {
 				style={{ display: isDeleteAlertOpen ? "block" : "none" }}
 			>
 				<div className="flex flex-col items-center gap-2">
-					<h3 className="text-lg font-semibold w-max">Delete Case File?</h3>
+					<h3 className="text-lg font-semibold w-max">Delete File?</h3>
 					<p className="w-full">This process cannot be undone.</p>
 					<div className="flex flex-row w-full justify-evenly">
 						<button
