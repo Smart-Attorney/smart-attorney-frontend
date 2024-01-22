@@ -1,4 +1,4 @@
-import SmartAttorneyLogo from "../../assets/smart-attorney-figma/Favicon 1@4x 1@3x.png";
+import SmartAttorneyLogo from "../../assets/smart-attorney-figma/Favicon 1@4x 1.png";
 import FolderFromFigma from "../../assets/smart-attorney-figma/FolderFromFigma.png";
 import DashboardSym from "../../assets/smart-attorney-figma/DashboardIcon.png";
 import calendar from "../../assets/smart-attorney-figma/Calendar.png";
@@ -6,7 +6,6 @@ import team from "../../assets/smart-attorney-figma/Team.png";
 import notification from "../../assets/smart-attorney-figma/Component 2 (1).png";
 import settings from "../../assets/smart-attorney-figma/Settings.png";
 import { useNavigate } from "react-router-dom";
-
 function SidebarItems() {
 	const navigate = useNavigate();
 	
