@@ -47,7 +47,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
       The grid layout resizes and accomodates for different screen resolutions while also keeping
       the elements centered.
     */
-		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
+		<div className="grid-card-layout-r">
 			{caseFolders?.map((caseFolder) => (
 				<div
 					className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
