@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
-import { LightBulb, Pen, Save, SphereLattice, Upload } from "../assets/smart-attorney-figma/buttons";
+import { UserIcon } from "../assets/smart-attorney-figma";
+import {
+	LightBulbPurple,
+	PenPurple,
+	SavePurple,
+	SphereLatticePurple,
+	UploadPurple,
+} from "../assets/smart-attorney-figma/buttons";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
@@ -116,7 +122,7 @@ function CaseFolder() {
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-col w-full gap-6 mx-auto">
 					<div className="flex flex-row items-end h-20 gap-4 mb-5">
-						<img className="relative top-2 h-14" src={Ellipse8Logo} />
+						<img className="relative top-2 h-14" src={UserIcon} />
 						<span
 							id="case-name"
 							className="mt-10 text-4xl font-bold text-white justify-self-end"
@@ -132,11 +138,11 @@ function CaseFolder() {
 						<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
 
 						<div className="flex flex-row flex-wrap justify-end gap-3">
-							<PillButton name="Create" img={Pen} />
-							<PillButton name="Upload" img={Upload} onClick={toggleUploadModal} />
-							<PillButton name="Translate" img={SphereLattice} />
-							<PillSpecialButton name="Generate" img={LightBulb} />
-							<PillButton name="Save" img={Save} onClick={handleSaveChanges} />
+							<PillButton name="Create" img={PenPurple} />
+							<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
+							<PillButton name="Translate" img={SphereLatticePurple} />
+							<PillSpecialButton name="Generate" img={LightBulbPurple} />
+							<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
 						</div>
 					</div>
 				</div>

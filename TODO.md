@@ -69,6 +69,7 @@
 - [x] remove null/undefined on props interface declarations by type narrowing
 - [x] fix UX of upload component
 - [x] extract folder/file card component to be reusable
+- [x] re-organize assets and components by exporting via index file; named exports
 - [ ] ensure updated state flows in direction of: updates -> storage -> database -> client
 - [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
 - [ ] refactor database methods as a mock backend api
@@ -77,7 +78,6 @@
 - [ ] when user leaves create page without creating, delete all uploaded files
 - [ ] when user deletes folder, delete all files within
 - [ ] include folder name when saving case folders
-- [ ] re-organize assets and components by exporting via index file; named exports
 - [ ] re-organize functions for dependency injection pattern for reusability
 - [ ] add reusable grid layout for cards (tailwind custom class)
 - [ ] add reusable modal layout

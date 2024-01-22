@@ -1,9 +1,8 @@
-import Folder from "./folder-purple-icon.png";
-import LightBulb from "./light-bulb-purple-icon.png";
-import Pen from "./pen-purple-icon.png";
-import Save from "./save-purple-icon.png";
-import SphereLattice from "./translate-purple-icon.png";
-import Upload from "./upload-purple-icon.png";
+import FolderPurple from "./folder-purple-icon.png";
+import LightBulbPurple from "./light-bulb-purple-icon.png";
+import PenPurple from "./pen-purple-icon.png";
+import SavePurple from "./save-purple-icon.png";
+import SphereLatticePurple from "./translate-purple-icon.png";
+import UploadPurple from "./upload-purple-icon.png";
 
-export { Folder, LightBulb, Pen, Save, SphereLattice, Upload };
-
+export { FolderPurple, LightBulbPurple, PenPurple, SavePurple, SphereLatticePurple, UploadPurple };

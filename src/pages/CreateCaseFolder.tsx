@@ -1,8 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+// TODO: replace this pencil icon with something else or remove entirely
 import PencilIcon from "../assets/pencil.png";
-import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
-import { Folder, LightBulb, Pen, SphereLattice, Upload } from "../assets/smart-attorney-figma/buttons";
+import { UserIcon } from "../assets/smart-attorney-figma";
+import {
+	FolderPurple,
+	LightBulbPurple,
+	PenPurple,
+	SphereLatticePurple,
+	UploadPurple,
+} from "../assets/smart-attorney-figma/buttons";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
@@ -146,7 +153,7 @@ function CreateCaseFolder() {
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-col w-full gap-6 mx-auto">
 					<div className="flex flex-row items-end h-20 gap-4 mb-5">
-						<img className="relative top-2 h-14" src={Ellipse8Logo} />
+						<img className="relative top-2 h-14" src={UserIcon} />
 						<span
 							id="case-name"
 							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-white top-5"
@@ -170,11 +177,11 @@ function CreateCaseFolder() {
 						<SortBar options={NEW_CASE_SORT_OPTIONS} />
 
 						<div className="flex flex-row flex-wrap justify-end gap-3">
-							<PillButton name="Create" img={Pen} />
-							<PillButton name="Upload" img={Upload} onClick={handleOpenFileBrowser} />
-							<PillButton name="Translate" img={SphereLattice} />
-							<PillSpecialButton name="Generate" img={LightBulb} />
-							<PillButton name="Create Case" img={Folder} onClick={handleCreateCaseFolder} />
+							<PillButton name="Create" img={PenPurple} />
+							<PillButton name="Upload" img={UploadPurple} onClick={handleOpenFileBrowser} />
+							<PillButton name="Translate" img={SphereLatticePurple} />
+							<PillSpecialButton name="Generate" img={LightBulbPurple} />
+							<PillButton name="Create Case" img={FolderPurple} onClick={handleCreateCaseFolder} />
 						</div>
 					</div>
 

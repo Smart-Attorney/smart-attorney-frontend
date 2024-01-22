@@ -1,5 +1,5 @@
 import { useState } from "react";
-import removeIcon from "../../assets/remove.png";
+import { CloseIcon } from "../../assets";
 
 interface KebabMenuProps {
 	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -78,8 +78,8 @@ function KebabMenu(props: KebabMenuProps) {
 						onChange={props.addDeadline}
 					/>
 					<img
-						className="w-6 h-6 rounded-md cursor-pointer hover:bg-gray-400"
-						src={removeIcon}
+						className="w-6 h-6 rounded-full cursor-pointer hover:bg-gray-400"
+						src={CloseIcon}
 						onClick={closeDatePicker}
 					/>
 				</div>

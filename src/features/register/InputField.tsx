@@ -1,4 +1,4 @@
-import GreenCheckCircle from "../../assets/smart-attorney-figma/tick-green-circle.png";
+import { CheckIcon } from "../../assets/smart-attorney-figma";
 
 interface InputFieldProps {
 	name: string;
@@ -15,7 +15,7 @@ function InputField(props: InputFieldProps) {
 				<input className="h-8 rounded-md min-w-[300px]" id={name} type={type} />
 				<span className="">
 					{/* placeholder img to help me position elements properly */}
-					<img className="w-6 h-6" src={GreenCheckCircle} />
+					<img className="w-6 h-6" src={CheckIcon} />
 				</span>
 			</div>
 		</div>

@@ -1,9 +1,9 @@
-import { CSSProperties, MutableRefObject, forwardRef } from "react";
-import UploadIcon from "../../assets/smart-attorney-figma/upload-white-icon.png";
+import { forwardRef } from "react";
+import { UploadIcon } from "../../assets/smart-attorney-figma";
 
 interface DropAreaProps {
-	ref: MutableRefObject<null>;
-	style?: CSSProperties;
+	ref: React.MutableRefObject<null>;
+	style?: React.CSSProperties;
 	handleOpenFileBrowser: () => void;
 	addFilesToFilesForUploadArray: (files: FileList) => void;
 }

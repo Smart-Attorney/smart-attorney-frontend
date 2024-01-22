@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Folder } from "../assets/smart-attorney-figma/buttons";
-import DashboardLogo from "../assets/smart-attorney-figma/dashboard-icon.png";
+import { DashboardIcon } from "../assets/smart-attorney-figma";
+import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
@@ -35,7 +35,7 @@ function Dashboard() {
 		<SidebarLayout>
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-row items-center w-full gap-2 mx-auto">
-					<img className="w-12 h-12 mr-2 mt-[20px]" src={DashboardLogo} alt="logo" />
+					<img className="w-12 h-12 mr-2 mt-[20px]" src={DashboardIcon} alt="logo" />
 					<h1 className="mt-10 mb-5 text-4xl font-bold text-white">Case Dashboard</h1>
 				</div>
 
@@ -59,7 +59,7 @@ function Dashboard() {
 						onClick={() => navigate("/create-case")}
 					>
 						<div className="flex flex-row items-center w-full h-full gap-2 px-3">
-							<img className="w-5 h-5" src={Folder} />
+							<img className="w-5 h-5" src={FolderPurple} />
 							<span className="text-[#2D2F8D] text-base font-medium">New Case</span>
 						</div>
 					</button>

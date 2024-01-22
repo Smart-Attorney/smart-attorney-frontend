@@ -1,5 +1,5 @@
-import { getFileTypeImg } from "../../../../utils/file-type-img";
 import { formatBytes } from "../../../../utils/format";
+import { getFileTypeImg } from "../../../../utils/get-file-type-img";
 import { FileForUploadObj } from "../../../../utils/types";
 
 interface UploadedFileCardsProps {
