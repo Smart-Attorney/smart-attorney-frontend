@@ -1,11 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Ellipse8Logo from "../assets/smart-attorney-figma/Ellipse 8.png";
+import { UserIcon } from "../assets/smart-attorney-figma";
+import {
+	LightBulbPurple,
+	PenPurple,
+	SavePurple,
+	SphereLatticePurple,
+	UploadPurple,
+} from "../assets/smart-attorney-figma/buttons";
+import PillButton from "../components/Buttons/PillButton";
+import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
-import FileUploadModal from "../features/case-folder/file-upload/FileUploadModal";
+import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import SidebarLayout from "../layouts/SidebarLayout";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
@@ -34,8 +43,8 @@ function CaseFolder() {
 		files: [],
 	});
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
-	const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-	const [isFileModalOpen, setIsFileModalOpen] = useState(false);
+	const [uploadModalOpen, setUploadModalOpen] = useState(false);
+	const [fileModalOpen, setFileModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (folderId.current === undefined) {
@@ -57,19 +66,19 @@ function CaseFolder() {
 		fileName.current = name ? name : "";
 		fileId.current = id ? id : "";
 		fileUrl.current = url ? url : "";
-		setIsFileModalOpen(true);
+		setFileModalOpen(true);
 	};
 
 	const handleCloseFileModal = (): void => {
-		setIsFileModalOpen(false);
+		setFileModalOpen(false);
 	};
 
 	const toggleUploadModal = (): void => {
-		setIsUploadModalOpen((prev) => !prev);
+		setUploadModalOpen((prev) => !prev);
 	};
 
 	const closeUploadModal = (): void => {
-		setIsUploadModalOpen(false);
+		setUploadModalOpen(false);
 	};
 
 	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
@@ -113,7 +122,7 @@ function CaseFolder() {
 			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
 				<div className="flex flex-col w-full gap-6 mx-auto">
 					<div className="flex flex-row items-end h-20 gap-4 mb-5">
-						<img className="relative top-2 h-14" src={Ellipse8Logo} />
+						<img className="relative top-2 h-14" src={UserIcon} />
 						<span
 							id="case-name"
 							className="mt-10 text-4xl font-bold text-white justify-self-end"
@@ -122,35 +131,18 @@ function CaseFolder() {
 							{caseFolder?.name}
 						</span>
 					</div>
+
 					<SearchBar />
 
 					<div className="flex flex-row items-center justify-between w-full gap-8">
 						<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
 
-						<div className="flex flex-row flex-wrap justify-end gap-8">
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Team"
-							>
-								<span>Team</span>
-							</button>
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Upload"
-								onClick={toggleUploadModal}
-							>
-								<span>Upload</span>
-							</button>
-							<button
-								className="bg-white h-11 rounded-md min-w-[100px] flex justify-center items-center pb-[2px]"
-								type="button"
-								name="Save"
-								onClick={handleSaveChanges}
-							>
-								<span>Save</span>
-							</button>
+						<div className="flex flex-row flex-wrap justify-end gap-3">
+							<PillButton name="Create" img={PenPurple} />
+							<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
+							<PillButton name="Translate" img={SphereLatticePurple} />
+							<PillSpecialButton name="Generate" img={LightBulbPurple} />
+							<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
 						</div>
 					</div>
 				</div>
@@ -161,25 +153,25 @@ function CaseFolder() {
 					updateCaseFolder={updateCaseFolder}
 					updateCaseFolder2={updateCaseFolder2}
 				/>
-
-				{isUploadModalOpen && (
-					<FileUploadModal
-						caseFolderId={idFromParams!}
-						closeUploadModal={closeUploadModal}
-						addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
-						updateCaseFolder={updateCaseFolder}
-					/>
-				)}
-
-				{isFileModalOpen && (
-					<ViewCaseFileModal
-						fileName={fileName.current}
-						fileID={fileId.current}
-						fileURL={fileUrl.current}
-						onClick={handleCloseFileModal}
-					/>
-				)}
 			</div>
+
+			{uploadModalOpen && (
+				<UploadModal
+					caseFolderId={idFromParams!}
+					closeUploadModal={closeUploadModal}
+					addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
+					updateCaseFolder={updateCaseFolder}
+				/>
+			)}
+
+			{fileModalOpen && (
+				<ViewCaseFileModal
+					fileName={fileName.current}
+					fileID={fileId.current}
+					fileURL={fileUrl.current}
+					onClick={handleCloseFileModal}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }
