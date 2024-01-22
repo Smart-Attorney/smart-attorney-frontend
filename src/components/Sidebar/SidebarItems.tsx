@@ -8,7 +8,7 @@ import settings from "../../assets/smart-attorney-figma/Settings.png";
 import { useNavigate } from "react-router-dom";
 function SidebarItems() {
 	const navigate = useNavigate();
-
+	
 	return (
 		<div>
 			<div className="flex flex-col items-center w-full h-full">
