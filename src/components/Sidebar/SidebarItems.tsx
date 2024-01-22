@@ -6,6 +6,7 @@ import team from "../../assets/smart-attorney-figma/Team.png";
 import notification from "../../assets/smart-attorney-figma/Component 2 (1).png";
 import settings from "../../assets/smart-attorney-figma/Settings.png";
 import { useNavigate } from "react-router-dom";
+
 function SidebarItems() {
 	const navigate = useNavigate();
 	

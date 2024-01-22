@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	/* The 'r' stands for responsive; would've been
+  too long of a class name if I typed it all out. */
+	.grid-card-layout-r {
+		@apply grid gap-8 min-[2300px]:grid-cols-6 
+           min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4 
+           min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2;
+	}
+}
+
+.bg-gradient-custom {
+	background: linear-gradient(180deg, #2a2b81 0%, #080614 100%);
+}
+
+.border-dashed-custom {
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='30' ry='30' stroke='white' stroke-width='2' stroke-dasharray='10%2c 15' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+	border-radius: 30px;
+}
+
+.modal-special-btn-border {
+	background: linear-gradient(0deg, #0a0a1e, #0a0a1e) padding-box,
+		linear-gradient(90deg, #9747ff 0%, rgba(251, 62, 62, 0.5) 50%, rgba(50, 68, 242, 0.42) 100%) border-box;
+}
+
+.pill-special-btn-border {
+	background: linear-gradient(0deg, #ffffff, #ffffff) padding-box,
+		linear-gradient(90deg, #e844e1 5.98%, #ff487c 32.14%, #ffe457 61%, #5f39f9 92.58%) border-box;
+}

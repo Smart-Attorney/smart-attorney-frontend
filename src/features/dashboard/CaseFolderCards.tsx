@@ -47,13 +47,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
       The grid layout resizes and accomodates for different screen resolutions while also keeping
       the elements centered.
     */
-		<div className="grid gap-8 min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4 min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2">
-			{/**
-			 * TODO:
-			 * Rename this file to Case Folder Card for specificity.
-			 * Move the grid layout to dashboard.
-			 * Dashboard should be in charge of displaying case folder cards.
-			 */}
+		<div className="grid-card-layout-r">
 			{caseFolders?.map((caseFolder) => (
 				<div
 					className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
@@ -61,7 +55,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 					id={caseFolder.id}
 				>
 					{/* Kebab Menu */}
-					<div className="relative left-[200px] w-28">
+					<div className="relative left-[200px] max-w-fit">
 						<KebabMenu
 							addDeadline={(event) => handleAddFolderDeadline(caseFolder.id, event)}
 							addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}

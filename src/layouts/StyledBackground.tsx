@@ -3,17 +3,18 @@ interface StyledBackgroundProps {
 }
 
 function StyledBackground(props: StyledBackgroundProps) {
-	const bodyStyle = {
-		margin: 0,
-		border: 0,
-		padding: 0,
-		background: "linear-gradient(180deg, #2A2B81 0%, #080614 100%)",
-    minHeight: "100vh", // Ensures the gradient covers the entire viewport height
-    width: "100%", // Gradient covers viewport when using sidebar layout
-	};
-
-	return <div style={bodyStyle}>{props.children}</div>;
+	/*  
+    padding: 0,          p-0
+	  border: 0,           border-0
+	  margin: 0,           m-0
+	  width: "100%",       w-full
+      ^ Gradient covers viewport when using sidebar layout
+	  minHeight: "100vh",  min-h-screen
+      ^ Ensures the gradient covers the entire viewport height
+    background: "linear-gradient(180deg, #2A2B81 0%, #080614 100%)",
+      ^ Replaced with custom tailwindcss utility class: bg-gradient-custom
+	*/
+	return <div className="w-full min-h-screen p-0 m-0 border-0 bg-gradient-custom">{props.children}</div>;
 }
 
 export default StyledBackground;
-

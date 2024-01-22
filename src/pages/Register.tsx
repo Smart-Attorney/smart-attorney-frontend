@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import SmartAttorneyLogo from "../assets/smart-attorney-figma/typeface-white-v1.png";
+import { SmartAttorneyLogo } from "../assets/smart-attorney-figma";
 import InputField from "../features/register/InputField";
 import TermsOfService from "../features/register/TermsOfService";
 import StyledBackground from "../layouts/StyledBackground";
