@@ -21,11 +21,19 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 		setCaseFolders(updatedArray);
 	};
 
-	const handleAddFolderLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>): void => {
+	const handleAddFolderLabel = (folderId: string, event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		const { value: newLabel } = (event.target as HTMLFormElement).form[0];
+		const { value: newLabel } = (event.target as HTMLFormElement)[0] as HTMLInputElement;
+		// checks for empty inputs and null errors
+		if (newLabel.trim() === "" || newLabel === null) {
+			// clears input field
+			((event.target as HTMLFormElement)[0] as HTMLInputElement).value = "";
+			return;
+		}
 		const updatedArray = db.addCaseFolderLabel(folderId, newLabel);
 		setCaseFolders(updatedArray);
+		// clears input field after label is displayed on folder
+		((event.target as HTMLFormElement)[0] as HTMLInputElement).value = "";
 	};
 
 	const handleDeleteFolderLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
