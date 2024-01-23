@@ -3,7 +3,7 @@ import { CloseIcon } from "../../assets/misc";
 
 interface KebabMenuProps {
 	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	addLabel: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	addLabel: (event: React.FormEvent<HTMLFormElement>) => void;
 	deleteFolder: () => void;
 }
 
@@ -90,11 +90,15 @@ function KebabMenu(props: KebabMenuProps) {
 				className="absolute right-[25px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3]"
 				style={{ display: isLabelInputOpen ? "block" : "none" }}
 			>
-				<form className="flex flex-col gap-2">
-					<label htmlFor="labels">New Label:</label>
-					<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="labels" type="text" />
+				<form className="flex flex-col gap-2" name="label-form" onSubmit={props.addLabel}>
+					<label htmlFor="label-input">New Label:</label>
+					<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="label-input" type="text" />
 					<div className="flex flex-row justify-between w-full">
-						<button className="w-16 bg-[#77dd77] rounded-md py-1" type="submit" onClick={props.addLabel}>
+						<button
+							className="w-16 bg-[#77dd77] rounded-md py-1"
+							type="submit"
+							// onClick={props.addLabel}
+						>
 							Add
 						</button>
 						<button className="w-16 rounded-md bg-[#c1c1c1] py-1" type="button" onClick={closeLabelInput}>
