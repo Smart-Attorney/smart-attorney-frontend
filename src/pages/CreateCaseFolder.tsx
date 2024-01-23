@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // TODO: replace this pencil icon with something else or remove entirely
-import PencilIcon from "../assets/pencil.png";
-import { UserIcon } from "../assets/smart-attorney-figma";
+import PencilIcon from "../assets/misc/pencil.png";
+import { UserIcon } from "../assets/smart-attorney-figma/global";
 import {
 	FolderPurple,
 	LightBulbPurple,

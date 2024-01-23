@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CloseIcon } from "../../assets";
+import { CloseIcon } from "../../assets/misc";
 
 interface KebabMenuProps {
 	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;

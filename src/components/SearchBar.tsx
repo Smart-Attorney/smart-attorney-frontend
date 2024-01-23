@@ -1,4 +1,4 @@
-import { SearchIcon } from "../assets/smart-attorney-figma";
+import { SearchIcon } from "../assets/smart-attorney-figma/global";
 
 function SearchBar() {
 	return (

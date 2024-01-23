@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserIcon } from "../assets/smart-attorney-figma";
+import { UserIcon } from "../assets/smart-attorney-figma/global";
 import {
 	LightBulbPurple,
 	PenPurple,

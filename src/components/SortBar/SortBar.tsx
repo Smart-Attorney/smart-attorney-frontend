@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SortIcon } from "../../assets/smart-attorney-figma";
+import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import Database from "../../services/database";
 import { sortArrayByOption } from "../../utils/sort";
 import { CaseFolderObj, SortOptionsObj } from "../../utils/types";

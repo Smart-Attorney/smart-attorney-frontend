@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { UploadIcon } from "../../assets/smart-attorney-figma";
+import { UploadIcon } from "../../assets/smart-attorney-figma/global";
 
 interface DropAreaProps {
 	ref: React.MutableRefObject<null>;

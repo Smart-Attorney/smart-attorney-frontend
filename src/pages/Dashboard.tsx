@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DashboardIcon } from "../assets/smart-attorney-figma";
+import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
