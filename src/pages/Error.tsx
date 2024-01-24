@@ -19,7 +19,7 @@ function Error() {
 					type="button"
 					onClick={() => navigate("/dashboard")}
 				>
-					<p className="text-lg font-semibold text-white mb-[2px]">Back to Dashboard</p>
+					<p className="text-lg font-semibold text-white">Back to Dashboard</p>
 				</button>
 			</div>
 		</SidebarLayout>

@@ -13,7 +13,7 @@ function PillSpecialButton(props: ButtonProps) {
 		>
 			<span className="flex flex-row items-center gap-1">
 				<img style={{ display: img ? "block" : "none" }} className="w-[22px] h-[22px]" src={img} />
-				<p className="text-[#2D2F8C] font-[600] text-base pb-[2px]">{name}</p>
+				<p className="text-[#2D2F8C] font-semibold text-base">{name}</p>
 			</span>
 		</button>
 	);

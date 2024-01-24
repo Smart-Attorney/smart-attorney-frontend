@@ -8,7 +8,7 @@ function SearchBar() {
 					<img className="w-6" src={SearchIcon} />
 				</span>
 				<input
-					className="bg-white pb-[2px] pr-3 h-11 rounded-r-lg placeholder-black w-full focus:outline-none font-semibold text-lg"
+					className="w-full pr-3 text-lg font-medium placeholder-black bg-white rounded-r-lg h-11 focus:outline-none"
 					type="search"
 					placeholder="Search..."
 				/>
@@ -17,7 +17,7 @@ function SearchBar() {
 				className="bg-transparent h-11 rounded-lg min-w-[100px] flex justify-center items-center border-[3px]"
 				type="button"
 			>
-				<span className="mb-[2px] text-xl font-normal text-white">Search</span>
+				<span className="text-xl font-normal text-white">Search</span>
 			</button>
 		</div>
 	);

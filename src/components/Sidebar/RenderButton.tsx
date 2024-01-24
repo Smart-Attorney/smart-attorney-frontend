@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import Tooltip from "./Tooltip";
 
 interface ButtonProps {
 	path: string;
@@ -13,15 +14,17 @@ function RenderButton({ path, imageSrc, label }: ButtonProps) {
 	const isCurrentPath = (path: string): boolean => location.pathname === path;
 
 	return (
-		<button className={`cursor-pointer ${isCurrentPath(path) ? "active" : ""}`} onClick={() => navigate(path)}>
-			<div
-				className={`flex items-center justify-center w-12 h-12 mt-4 mb-4 ${
-					isCurrentPath(path) ? "active-circle" : ""
-				}`}
-			>
+		<div
+			className={`group/tooltip flex items-center justify-center w-12 h-12 mt-4 mb-4 cursor-pointer ${
+				isCurrentPath(path) ? "active-circle" : ""
+			}`}
+			onClick={() => navigate(path)}
+		>
+			<button type="button">
 				<img className="w-8 h-8 cursor-pointer" src={imageSrc} alt={label} />
-			</div>
-		</button>
+			</button>
+			<Tooltip name={path} />
+		</div>
 	);
 }
 

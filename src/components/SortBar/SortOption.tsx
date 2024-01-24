@@ -14,7 +14,7 @@ function SortOption(props: SortOptionProps) {
 	return (
 		<p
 			id={props.id}
-			className="px-2 py-1 border-[0px] border-black rounded-lg cursor-pointer cursor"
+			className="px-2 py-1 rounded-lg cursor-pointer cursor"
 			style={sortOptionStyle}
 			onClick={props.onClick}
 		>
