@@ -60,7 +60,7 @@ function Dashboard() {
 					>
 						<div className="flex flex-row items-center w-full h-full gap-2 px-3">
 							<img className="w-5 h-5" src={FolderPurple} />
-							<span className="text-[#2D2F8D] text-base font-medium">New Case</span>
+							<span className="text-[#2D2F8D] text-base font-semibold">New Case</span>
 						</div>
 					</button>
 				</div>
