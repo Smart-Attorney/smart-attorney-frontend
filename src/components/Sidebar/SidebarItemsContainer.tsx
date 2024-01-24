@@ -16,7 +16,7 @@ function SidebarItemsContainer() {
 		<div className="fixed">
 			{/* The Smart Attorney icon links to the landing page. */}
 			<a href="https://www.smartattorney.co/" target="_blank" rel="noopener noreferrer">
-				<img className="w-20 h-20 cursor-pointer" src={SmartAttorneyIcon} />
+				<img className="w-20 h-20 mb-3 cursor-pointer" src={SmartAttorneyIcon} />
 			</a>
 
 			<div className="flex flex-col items-center">

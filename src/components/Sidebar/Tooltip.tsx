@@ -17,7 +17,7 @@ function Tooltip({ name }: TooltipProps) {
 	}
 
 	return (
-		<span className="group-hover/tooltip:scale-100 scale-0 tooltip-arrow-left bg-[#151515] absolute left-[72px] rounded-md h-7 py-1 px-2 ">
+		<span className="group-hover/tooltip:scale-100 duration-100 ease-in scale-0 tooltip-arrow-left bg-[#151515] absolute left-[72px] rounded-md h-7 py-1 px-2">
 			<h1 className="text-sm text-white">{tooltipName}</h1>
 		</span>
 	);
