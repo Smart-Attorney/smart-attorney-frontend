@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // TODO: replace this pencil icon with something else or remove entirely
 import PencilIcon from "../assets/misc/pencil.png";
-import { UserIcon } from "../assets/smart-attorney-figma/global";
 import {
 	FolderPurple,
 	LightBulbPurple,
@@ -10,6 +9,7 @@ import {
 	SphereLatticePurple,
 	UploadPurple,
 } from "../assets/smart-attorney-figma/buttons";
+import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
@@ -127,25 +127,26 @@ function CreateCaseFolder() {
 			return;
 		}
 
-		const uploadedFilesArray = await uploadFilesToCloudStorage(filesForUpload);
-
-		if (uploadedFilesArray === null) {
-			alert("Encountered an issue when attempting to upload files.");
-			return;
+		// Checks if there are files to upload to prevent unnecessary calls to cloud service.
+		let uploadedFilesArray: CaseFileObj[];
+		if (filesForUpload === null || filesForUpload.length === 0) {
+			uploadedFilesArray = [];
 		} else {
-			const newCaseFolderObject = {
-				id: caseFolderId.current,
-				name: caseFolderName.current,
-				createdDate: Date.now(),
-				lastOpenedDate: Date.now(),
-				status: "#53EF0A",
-				deadline: "",
-				labels: [],
-				files: uploadedFilesArray,
-			};
-			db.addNewCaseFolder(newCaseFolderObject);
-			navigate("/dashboard");
+			uploadedFilesArray = (await uploadFilesToCloudStorage(filesForUpload)) as CaseFileObj[];
 		}
+
+		const newCaseFolderObject = {
+			id: caseFolderId.current,
+			name: caseFolderName.current,
+			createdDate: Date.now(),
+			lastOpenedDate: Date.now(),
+			status: "#53EF0A",
+			deadline: "",
+			labels: [],
+			files: uploadedFilesArray,
+		};
+		db.addNewCaseFolder(newCaseFolderObject);
+		navigate("/dashboard");
 	};
 
 	return (

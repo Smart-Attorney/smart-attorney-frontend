@@ -14,10 +14,10 @@ function SearchBar() {
 				/>
 			</div>
 			<button
-				className="bg-transparent h-11 rounded-lg min-w-[100px] flex justify-center items-center text-white border-[3px] text-xl font-normal"
+				className="bg-transparent h-11 rounded-lg min-w-[100px] flex justify-center items-center border-[3px]"
 				type="button"
 			>
-				<span>Search</span>
+				<span className="mb-[2px] text-xl font-normal text-white">Search</span>
 			</button>
 		</div>
 	);
