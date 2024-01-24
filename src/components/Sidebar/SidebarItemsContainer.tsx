@@ -7,6 +7,7 @@ import {
 	SmartAttorneyIcon,
 	TeamIcon,
 } from "../../assets/smart-attorney-figma/sidebar";
+
 import RenderButton from "./RenderButton";
 
 function SidebarItemsContainer() {
