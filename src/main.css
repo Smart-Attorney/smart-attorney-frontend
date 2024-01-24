@@ -30,3 +30,9 @@
 	background: linear-gradient(0deg, #ffffff, #ffffff) padding-box,
 		linear-gradient(90deg, #e844e1 5.98%, #ff487c 32.14%, #ffe457 61%, #5f39f9 92.58%) border-box;
 }
+
+.active-circle {
+	border: 2px solid rgb(251, 251, 251);
+	border-radius: 50%;
+	background: linear-gradient(to right, #ff69b4, #1e90ff);
+  }

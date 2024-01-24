@@ -7,25 +7,25 @@ import {
 	SmartAttorneyIcon,
 	TeamIcon,
 } from "../../assets/smart-attorney-figma/sidebar";
-import SidebarItem from "./SidebarItem";
+import RenderButton from "./RenderButton";
 
 function SidebarItemsContainer() {
 	return (
-		<div className="fixed flex flex-col items-center w-20">
-			<a
-				className="flex flex-col items-center w-full mb-5"
-				href="https://www.smartattorney.co/"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<img className="w-16" src={SmartAttorneyIcon} />
+		// This outer div keeps the buttons in place, even when scrolling past view height.
+		<div className="fixed">
+			{/* The Smart Attorney icon links to the landing page. */}
+			<a href="https://www.smartattorney.co/" target="_blank" rel="noopener noreferrer">
+				<img className="w-20 h-20 cursor-pointer" src={SmartAttorneyIcon} />
 			</a>
-			<SidebarItem linkTo="/dashboard" image={DashboardIcon} />
-			<SidebarItem linkTo="/create-case" image={FolderIcon} />
-			<SidebarItem linkTo="" image={CalendarIcon} />
-			<SidebarItem linkTo="" image={TeamIcon} />
-			<SidebarItem linkTo="" image={NotificationBellIcon} />
-			<SidebarItem linkTo="" image={SettingsGearIcon} />
+
+			<div className="flex flex-col items-center">
+				<RenderButton path="/dashboard" imageSrc={DashboardIcon} label="Dashboard" />
+				<RenderButton path="/create-case" imageSrc={FolderIcon} label="Create Case" />
+				<RenderButton path="/calendar" imageSrc={CalendarIcon} label="Calendar" />
+				<RenderButton path="/team" imageSrc={TeamIcon} label="Team" />
+				<RenderButton path="/notifications" imageSrc={NotificationBellIcon} label="Notifications" />
+				<RenderButton path="/settings" imageSrc={SettingsGearIcon} label="Settings" />
+			</div>
 		</div>
 	);
 }
