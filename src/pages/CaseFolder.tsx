@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserIcon } from "../assets/smart-attorney-figma/global";
 import {
 	LightBulbPurple,
 	PenPurple,
@@ -8,6 +7,7 @@ import {
 	SphereLatticePurple,
 	UploadPurple,
 } from "../assets/smart-attorney-figma/buttons";
+import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar";
@@ -69,7 +69,7 @@ function CaseFolder() {
 		setFileModalOpen(true);
 	};
 
-	const handleCloseFileModal = (): void => {
+	const handleCloseViewFileModal = (): void => {
 		setFileModalOpen(false);
 	};
 
@@ -169,7 +169,7 @@ function CaseFolder() {
 					fileName={fileName.current}
 					fileID={fileId.current}
 					fileURL={fileUrl.current}
-					onClick={handleCloseFileModal}
+					closeModal={handleCloseViewFileModal}
 				/>
 			)}
 		</SidebarLayout>

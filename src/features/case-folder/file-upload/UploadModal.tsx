@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
+import ModalDialog from "../../../components/Modal/ModalDialog";
 import Firebase from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
 import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
@@ -73,57 +74,41 @@ function UploadModal(props: UploadModalProps) {
 		props.closeUploadModal();
 	};
 
-	const handleClickModalBackdrop = (event: React.MouseEvent<HTMLDivElement>): void => {
-		const { id } = event.target as HTMLDivElement;
-		if (id === "modal-backdrop") {
-			handleCloseUploadModal();
-		}
-	};
-
 	return (
-		<div
-			id="modal-backdrop"
-			className="bg-[#00000040] h-screen w-[calc(100%-80px)] justify-center flex items-center top-0 absolute backdrop-blur-[2px]"
-			onClick={(event) => handleClickModalBackdrop(event)}
-		>
-			<div
-				id="modal-container"
-				className="border border-[#9C9DA4] rounded-[32px] py-14 h-fit w-[768px] bg-gradient-custom flex items-center justify-center"
-			>
-				<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
-					<Header />
+		<ModalDialog closeModal={handleCloseUploadModal}>
+			<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
+				<Header />
 
-					<DropZone filesToUpload={filesForUpload} addFilesToUploadArray={addFilesToUploadArray} />
+				<DropZone filesToUpload={filesForUpload} addFilesToUploadArray={addFilesToUploadArray} />
 
-					{filesForUpload.length > 0 && (
-						<UploadedFileCards
-							filesToUpload={filesForUpload}
-							handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}
-						/>
-					)}
+				{filesForUpload.length > 0 && (
+					<UploadedFileCards
+						filesToUpload={filesForUpload}
+						handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}
+					/>
+				)}
 
-					{/* Upload and Translate Buttons */}
-					<div className="flex flex-row w-full gap-7">
-						<ModalButton
-							name="Upload"
-							onClick={handleUploadFiles}
-							disabled={filesForUpload.length < 1 ? true : false}
-							style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
-						/>
-						<ModalSpecialButton
-							name="Translate"
-							// onClick={}
-						/>
-					</div>
-
-					{uploadDone && (
-						<p className="text-xl font-semibold text-green-600">
-							Selected files have been successfully uploaded!
-						</p>
-					)}
+				{/* Upload and Translate Buttons */}
+				<div className="flex flex-row w-full gap-7">
+					<ModalButton
+						name="Upload"
+						onClick={handleUploadFiles}
+						disabled={filesForUpload.length < 1 ? true : false}
+						style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
+					/>
+					<ModalSpecialButton
+						name="Translate"
+						// onClick={}
+					/>
 				</div>
+
+				{uploadDone && (
+					<p className="text-xl font-semibold text-green-600">
+						Selected files have been successfully uploaded!
+					</p>
+				)}
 			</div>
-		</div>
+		</ModalDialog>
 	);
 }
 

@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// TODO: replace this pencil icon with something else or remove entirely
-import PencilIcon from "../assets/misc/pencil.png";
 import {
 	FolderPurple,
 	LightBulbPurple,
@@ -28,10 +26,10 @@ function CreateCaseFolder() {
 	const db = new Database();
 
 	const caseFolderId = useRef("");
-	const caseFolderName = useRef("New Case");
+	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	const [caseNameEditable, setCaseNameEditable] = useState(false);
+	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 
 	useEffect(() => {
@@ -55,25 +53,32 @@ function CreateCaseFolder() {
 		inputRef.current?.click();
 	};
 
-	const toggleCaseNameEditable = (): void => {
-		setCaseNameEditable(true);
-		/**
-		 * TODO:
-		 * Replace with useRef().
-		 */
-		const caseName = document.getElementById("case-name");
-
-		setTimeout(() => {
-			caseName?.focus();
-		}, 100);
+	/* Clears the input field on initial click focus to save user the hassle of backspacing. */
+	const handeClickOnCaseName = (): void => {
+		if (caseFolderName === "New Case |") {
+			setCaseFolderName("");
+		}
 	};
 
-	const handleBlur = (event: React.FocusEvent<HTMLSpanElement>): void => {
-		const { textContent } = event.nativeEvent.target as HTMLElement;
-		if (textContent === null) return;
+	const handleFocusOffCaseName = (event: React.FocusEvent<HTMLHeadingElement>): void => {
+		const { innerText } = event.target;
+		if (innerText.trim() === "") {
+			setCaseFolderName("New Case |");
+		} else {
+			setCaseFolderName(innerText);
+		}
+	};
 
-		caseFolderName.current = textContent;
-		setCaseNameEditable(false);
+	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
+		if (event.key !== "Enter") return;
+		const { innerText } = event.target as HTMLHeadingElement;
+		if (innerText.trim() === "") {
+			caseFolderNameRef.current?.blur();
+			setCaseFolderName("New Case |");
+		} else {
+			caseFolderNameRef.current?.blur();
+			setCaseFolderName(innerText);
+		}
 	};
 
 	const addFilesToFilesForUploadArray = (filesFromUpload: FileList): void => {
@@ -122,7 +127,7 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateCaseFolder = async (): Promise<void> => {
-		if (caseFolderName.current === "New Case") {
+		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
 			return;
 		}
@@ -137,7 +142,7 @@ function CreateCaseFolder() {
 
 		const newCaseFolderObject = {
 			id: caseFolderId.current,
-			name: caseFolderName.current,
+			name: caseFolderName,
 			createdDate: Date.now(),
 			lastOpenedDate: Date.now(),
 			status: "#53EF0A",
@@ -155,22 +160,18 @@ function CreateCaseFolder() {
 				<div className="flex flex-col w-full gap-6 mx-auto">
 					<div className="flex flex-row items-end h-20 gap-4 mb-5">
 						<img className="relative top-2 h-14" src={UserIcon} />
-						<span
+						<h2
 							id="case-name"
-							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-white top-5"
-							contentEditable={caseNameEditable}
+							className="relative mt-10 mb-5 text-4xl font-bold text-white top-5"
+							contentEditable={true}
 							suppressContentEditableWarning={true}
-							onBlur={handleBlur}
+							ref={caseFolderNameRef}
+							onClick={handeClickOnCaseName}
+							onBlur={handleFocusOffCaseName}
+							onKeyDown={handleEnterKeyPress}
 						>
-							{caseFolderName.current}
-						</span>
-
-						<img
-							src={PencilIcon}
-							width="30px"
-							className="cursor-pointer mt-7"
-							onClick={toggleCaseNameEditable}
-						/>
+							{caseFolderName}
+						</h2>
 					</div>
 					<SearchBar />
 
