@@ -61,12 +61,11 @@ function CreateCaseFolder() {
 	};
 
 	const handleFocusOffCaseName = (event: React.FocusEvent<HTMLHeadingElement>): void => {
-		const { textContent } = event.nativeEvent.target as HTMLElement;
-		if (textContent === null) return;
-		if (textContent.trim() === "") {
+		const { innerText } = event.target;
+		if (innerText.trim() === "") {
 			setCaseFolderName("New Case |");
 		} else {
-			setCaseFolderName(textContent);
+			setCaseFolderName(innerText);
 		}
 	};
 
