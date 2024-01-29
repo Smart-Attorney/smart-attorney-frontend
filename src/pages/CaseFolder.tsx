@@ -10,7 +10,7 @@ import {
 import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";

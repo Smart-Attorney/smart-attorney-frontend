@@ -57,12 +57,12 @@ function SortBar(props: SortBarProps) {
 	));
 
 	return (
-		<div className="flex flex-row flex-wrap items-center gap-6">
-			<div className="flex flex-row items-center gap-3">
+		<div className="flex flex-row items-start justify-start gap-10 w-fit">
+			<div className="flex flex-row items-center gap-2 mt-0.5 min-w-fit">
 				<img className="w-6 h-5" src={SortIcon} />
-				<p className="text-white ">Sort by:</p>
+				<p className="text-white">Sort by:</p>
 			</div>
-			{optionElements}
+			<div className="flex flex-row flex-wrap gap-7">{optionElements}</div>
 		</div>
 	);
 }
