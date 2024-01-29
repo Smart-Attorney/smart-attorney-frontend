@@ -44,10 +44,6 @@ body {
 	border: 2px solid rgb(251, 251, 251);
 	border-radius: 50%;
 	background: linear-gradient(to right, #ff69b4, #1e90ff);
-<<<<<<< HEAD
-  }
-
-=======
 }
 
 /* Toolip triangle thingy on the left side of the box. */
@@ -63,4 +59,9 @@ body {
 	border-bottom: 5px solid transparent;
 	border-right: 6px solid #151515;
 }
->>>>>>> main
+
+.topLeft {
+	position: "relative";
+	top: 20px;
+	left: 20px;
+}

@@ -21,8 +21,8 @@ import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
-import { CaseFileObj, FileForUploadObj,CaseFolderObj } from "../utils/types";
-import Popup from "../components/Popup";
+import { CaseFileObj, FileForUploadObj, ClientInfoObj } from "../utils/types";
+import ClientInfoModal from "../features/create-case-folder/ClientInfoModal";
 
 
 function CreateCaseFolder() {
@@ -32,36 +32,20 @@ function CreateCaseFolder() {
 	const caseFolderId = useRef("");
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
-<<<<<<< HEAD
 	
-	const [showPopup, setShowPopup] = useState(false);
-	const [caseNameEditable, setCaseNameEditable] = useState(false);
-=======
-
 	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
->>>>>>> main
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
-	const [clientFirstName, setClientFirstName] = useState("");
-	const [clientLastName, setClientLastName] = useState("");
-	const [clientSex, setClientSex] = useState("");
-    const [clientPrimaryLanguage, setClientPrimaryLanguage] = useState("");
-    const [clientCountryOfCitizenship, setClientCountryOfCitizenship] = useState("");
-    const [clientDOB, setClientDOB] = useState<Date | null>(null);
 
+	const [clientInfoModalOpen, setClientInfoModalOpen] = useState<boolean>(true);
 
-    const openPopup = () => {
-        setShowPopup(true);
-    };
-
-    const closePopup = () => {
-        setShowPopup(false);
-    };
-
-    const handleSaveClientDetails = () => {
-        // Perform validation if needed
-        // Save client details or perform other actions
-        closePopup();
-    };
+	const [clientInfo, setClientInfo] = useState<ClientInfoObj>({
+		firstName: "",
+		lastName: "",
+		sex: null,
+		primaryLanguage: "",
+		countryOfCitizenship: "",
+		dateOfBirth: "",
+	})
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
@@ -79,6 +63,14 @@ function CreateCaseFolder() {
 			db.initNewArray();
 		}
 	}, []);
+
+	const handleCloseClientInfoModal = () => {
+		setClientInfoModalOpen(false);
+	}
+
+	const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
+		console.log(event);
+	}
 
 	const handleOpenFileBrowser = (): void => {
 		inputRef.current?.click();
@@ -163,19 +155,6 @@ function CreateCaseFolder() {
 			alert("Please change the case name before creating.");
 			return;
 		}
-<<<<<<< HEAD
-	
-		const uploadedFilesArray = await uploadFilesToCloudStorage(filesForUpload);
-	
-		if (uploadedFilesArray === null) {
-			alert("Encountered an issue when attempting to upload files.");
-			return;
-		}
-	
-		const newCaseFolderObject: CaseFolderObj = {
-			id: caseFolderId.current,
-			name: caseFolderName.current,
-=======
 
 		// Checks if there are files to upload to prevent unnecessary calls to cloud service.
 		let uploadedFilesArray: CaseFileObj[];
@@ -188,25 +167,15 @@ function CreateCaseFolder() {
 		const newCaseFolderObject = {
 			id: caseFolderId.current,
 			name: caseFolderName,
->>>>>>> main
 			createdDate: Date.now(),
 			lastOpenedDate: Date.now(),
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
 			files: uploadedFilesArray,
-<<<<<<< HEAD
-			clientFirstName: clientFirstName,
-			clientLastName: clientLastName,
-			clientSex: clientSex,
-			clientPrimaryLanguage: clientPrimaryLanguage,
-			clientCountryOfCitizenship: clientCountryOfCitizenship,
-			clientDOB: clientDOB,
+			clientInfo: clientInfo,
 		};
 	
-=======
-		};
->>>>>>> main
 		db.addNewCaseFolder(newCaseFolderObject);
 		navigate("/dashboard");
 	};
@@ -260,6 +229,12 @@ function CreateCaseFolder() {
 				handleOpenFileBrowser={handleOpenFileBrowser}
 				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
 			/>
+
+			{clientInfoModalOpen && (
+				<ClientInfoModal
+					closeModal={handleCloseClientInfoModal}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }
