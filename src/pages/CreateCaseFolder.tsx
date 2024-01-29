@@ -21,7 +21,9 @@ import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
-import { CaseFileObj, FileForUploadObj } from "../utils/types";
+import { CaseFileObj, FileForUploadObj,CaseFolderObj } from "../utils/types";
+import Popup from "../components/Popup";
+
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -30,9 +32,31 @@ function CreateCaseFolder() {
 	const caseFolderId = useRef("");
 	const caseFolderName = useRef("New Case");
 	const inputRef = useRef<HTMLInputElement>(null);
-
+	
+	const [showPopup, setShowPopup] = useState(false);
 	const [caseNameEditable, setCaseNameEditable] = useState(false);
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
+	const [clientFirstName, setClientFirstName] = useState("");
+	const [clientLastName, setClientLastName] = useState("");
+	const [clientSex, setClientSex] = useState("");
+    const [clientPrimaryLanguage, setClientPrimaryLanguage] = useState("");
+    const [clientCountryOfCitizenship, setClientCountryOfCitizenship] = useState("");
+    const [clientDOB, setClientDOB] = useState<Date | null>(null);
+
+
+    const openPopup = () => {
+        setShowPopup(true);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+    };
+
+    const handleSaveClientDetails = () => {
+        // Perform validation if needed
+        // Save client details or perform other actions
+        closePopup();
+    };
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
@@ -121,32 +145,41 @@ function CreateCaseFolder() {
 		return uploadedFiles;
 	};
 
+
 	const handleCreateCaseFolder = async (): Promise<void> => {
 		if (caseFolderName.current === "New Case") {
 			alert("Please change the case name before creating.");
 			return;
 		}
-
+	
 		const uploadedFilesArray = await uploadFilesToCloudStorage(filesForUpload);
-
+	
 		if (uploadedFilesArray === null) {
 			alert("Encountered an issue when attempting to upload files.");
 			return;
-		} else {
-			const newCaseFolderObject = {
-				id: caseFolderId.current,
-				name: caseFolderName.current,
-				createdDate: Date.now(),
-				lastOpenedDate: Date.now(),
-				status: "#53EF0A",
-				deadline: "",
-				labels: [],
-				files: uploadedFilesArray,
-			};
-			db.addNewCaseFolder(newCaseFolderObject);
-			navigate("/dashboard");
 		}
+	
+		const newCaseFolderObject: CaseFolderObj = {
+			id: caseFolderId.current,
+			name: caseFolderName.current,
+			createdDate: Date.now(),
+			lastOpenedDate: Date.now(),
+			status: "#53EF0A",
+			deadline: "",
+			labels: [],
+			files: uploadedFilesArray,
+			clientFirstName: clientFirstName,
+			clientLastName: clientLastName,
+			clientSex: clientSex,
+			clientPrimaryLanguage: clientPrimaryLanguage,
+			clientCountryOfCitizenship: clientCountryOfCitizenship,
+			clientDOB: clientDOB,
+		};
+	
+		db.addNewCaseFolder(newCaseFolderObject);
+		navigate("/dashboard");
 	};
+	
 
 	return (
 		<SidebarLayout>

@@ -35,6 +35,12 @@ interface CaseFileObj {
 interface CaseFolderObj {
 	id: string;
 	name: string;
+	clientFirstName: string;
+	clientLastName: string;
+	clientSex: string;
+	clientPrimaryLanguage: string;
+	clientCountryOfCitizenship: string;
+	clientDOB: Date | null;
 	createdDate: number;
 	lastOpenedDate: number;
 	status: string;
