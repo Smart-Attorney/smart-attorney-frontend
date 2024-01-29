@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { UploadIcon } from "../../assets/smart-attorney-figma";
+import { UploadIcon } from "../../assets/smart-attorney-figma/global";
 
 interface DropAreaProps {
 	ref: React.MutableRefObject<null>;
@@ -35,7 +35,7 @@ const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(p
 
 	return (
 		<div
-			className="w-[95%] self-center h-[50vh] p-6 cursor-pointer border-dashed-custom flex items-center justify-center -z-10"
+			className="self-center h-[50vh] ml-[108px] mr-40 cursor-pointer border-dashed-custom flex items-center justify-center"
 			style={dropAreaStyle}
 			onDragOver={handleDragOver}
 			onDrop={handleUploadFilesFromDrop}

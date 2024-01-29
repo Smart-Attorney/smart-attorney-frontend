@@ -1,4 +1,4 @@
-import { UploadIcon } from "../../../../assets/smart-attorney-figma";
+import { UploadIcon } from "../../../../assets/smart-attorney-figma/global";
 
 function Header() {
 	return (

@@ -12,27 +12,55 @@
 	}
 }
 
+/* Font family specified by Figma wireframe. */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
 .bg-gradient-custom {
 	background: linear-gradient(180deg, #2a2b81 0%, #080614 100%);
 }
 
+/* Custom dash pattern on upload box. */
 .border-dashed-custom {
 	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='30' ry='30' stroke='white' stroke-width='2' stroke-dasharray='10%2c 15' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 	border-radius: 30px;
 }
 
+/* For the buttons that utilize AI features. */
 .modal-special-btn-border {
 	background: linear-gradient(0deg, #0a0a1e, #0a0a1e) padding-box,
 		linear-gradient(90deg, #9747ff 0%, rgba(251, 62, 62, 0.5) 50%, rgba(50, 68, 242, 0.42) 100%) border-box;
 }
 
+/* For the buttons that utilize AI features. */
 .pill-special-btn-border {
 	background: linear-gradient(0deg, #ffffff, #ffffff) padding-box,
 		linear-gradient(90deg, #e844e1 5.98%, #ff487c 32.14%, #ffe457 61%, #5f39f9 92.58%) border-box;
 }
+
+/* Toolbar currently selected option. */
 .active-circle {
 	border: 2px solid rgb(251, 251, 251);
 	border-radius: 50%;
 	background: linear-gradient(to right, #ff69b4, #1e90ff);
+<<<<<<< HEAD
   }
 
+=======
+}
+
+/* Toolip triangle thingy on the left side of the box. */
+.tooltip-arrow-left::before {
+	content: "";
+	position: absolute;
+	top: 33%;
+	right: 100%;
+	width: 0px;
+	height: 0px;
+	transform: translate(5%);
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-right: 6px solid #151515;
+}
+>>>>>>> main

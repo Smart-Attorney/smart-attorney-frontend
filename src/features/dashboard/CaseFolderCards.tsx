@@ -3,6 +3,7 @@ import Database from "../../services/database";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
+import CardGrid from "../../layouts/CardGrid";
 
 interface CaseFolderCardProps {
 	caseFolders: CaseFolderObj[] | null;
@@ -21,11 +22,19 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 		setCaseFolders(updatedArray);
 	};
 
-	const handleAddFolderLabel = (folderId: string, event: React.MouseEvent<HTMLButtonElement>): void => {
+	const handleAddFolderLabel = (folderId: string, event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		const { value: newLabel } = (event.target as HTMLFormElement).form[0];
+		const { value: newLabel } = (event.target as HTMLFormElement)[0] as HTMLInputElement;
+		// checks for empty inputs and null errors
+		if (newLabel.trim() === "" || newLabel === null) {
+			// clears input field
+			((event.target as HTMLFormElement)[0] as HTMLInputElement).value = "";
+			return;
+		}
 		const updatedArray = db.addCaseFolderLabel(folderId, newLabel);
 		setCaseFolders(updatedArray);
+		// clears input field after label is displayed on folder
+		((event.target as HTMLFormElement)[0] as HTMLInputElement).value = "";
 	};
 
 	const handleDeleteFolderLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
@@ -41,13 +50,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 	};
 
 	return (
-		/* 
-      Current layout will display 4 cards for all screen resolutions with a min-width of 1400px. 
-      
-      The grid layout resizes and accomodates for different screen resolutions while also keeping
-      the elements centered.
-    */
-		<div className="grid-card-layout-r">
+		<CardGrid>
 			{caseFolders?.map((caseFolder) => (
 				<div
 					className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
@@ -93,7 +96,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 					</p>
 				</div>
 			))}
-		</div>
+		</CardGrid>
 	);
 }
 

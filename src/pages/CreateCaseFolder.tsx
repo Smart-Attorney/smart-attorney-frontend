@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// TODO: replace this pencil icon with something else or remove entirely
-import PencilIcon from "../assets/pencil.png";
-import { UserIcon } from "../assets/smart-attorney-figma";
 import {
 	FolderPurple,
 	LightBulbPurple,
@@ -10,13 +7,16 @@ import {
 	SphereLatticePurple,
 	UploadPurple,
 } from "../assets/smart-attorney-figma/buttons";
+import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
+import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
+import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
@@ -30,11 +30,16 @@ function CreateCaseFolder() {
 	const db = new Database();
 
 	const caseFolderId = useRef("");
-	const caseFolderName = useRef("New Case");
+	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
+<<<<<<< HEAD
 	
 	const [showPopup, setShowPopup] = useState(false);
 	const [caseNameEditable, setCaseNameEditable] = useState(false);
+=======
+
+	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
+>>>>>>> main
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 	const [clientFirstName, setClientFirstName] = useState("");
 	const [clientLastName, setClientLastName] = useState("");
@@ -79,25 +84,32 @@ function CreateCaseFolder() {
 		inputRef.current?.click();
 	};
 
-	const toggleCaseNameEditable = (): void => {
-		setCaseNameEditable(true);
-		/**
-		 * TODO:
-		 * Replace with useRef().
-		 */
-		const caseName = document.getElementById("case-name");
-
-		setTimeout(() => {
-			caseName?.focus();
-		}, 100);
+	/* Clears the input field on initial click focus to save user the hassle of backspacing. */
+	const handeClickOnCaseName = (): void => {
+		if (caseFolderName === "New Case |") {
+			setCaseFolderName("");
+		}
 	};
 
-	const handleBlur = (event: React.FocusEvent<HTMLSpanElement>): void => {
-		const { textContent } = event.nativeEvent.target as HTMLElement;
-		if (textContent === null) return;
+	const handleFocusOffCaseName = (event: React.FocusEvent<HTMLHeadingElement>): void => {
+		const { innerText } = event.target;
+		if (innerText.trim() === "") {
+			setCaseFolderName("New Case |");
+		} else {
+			setCaseFolderName(innerText);
+		}
+	};
 
-		caseFolderName.current = textContent;
-		setCaseNameEditable(false);
+	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
+		if (event.key !== "Enter") return;
+		const { innerText } = event.target as HTMLHeadingElement;
+		if (innerText.trim() === "") {
+			caseFolderNameRef.current?.blur();
+			setCaseFolderName("New Case |");
+		} else {
+			caseFolderNameRef.current?.blur();
+			setCaseFolderName(innerText);
+		}
 	};
 
 	const addFilesToFilesForUploadArray = (filesFromUpload: FileList): void => {
@@ -147,10 +159,11 @@ function CreateCaseFolder() {
 
 
 	const handleCreateCaseFolder = async (): Promise<void> => {
-		if (caseFolderName.current === "New Case") {
+		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
 			return;
 		}
+<<<<<<< HEAD
 	
 		const uploadedFilesArray = await uploadFilesToCloudStorage(filesForUpload);
 	
@@ -162,12 +175,27 @@ function CreateCaseFolder() {
 		const newCaseFolderObject: CaseFolderObj = {
 			id: caseFolderId.current,
 			name: caseFolderName.current,
+=======
+
+		// Checks if there are files to upload to prevent unnecessary calls to cloud service.
+		let uploadedFilesArray: CaseFileObj[];
+		if (filesForUpload === null || filesForUpload.length === 0) {
+			uploadedFilesArray = [];
+		} else {
+			uploadedFilesArray = (await uploadFilesToCloudStorage(filesForUpload)) as CaseFileObj[];
+		}
+
+		const newCaseFolderObject = {
+			id: caseFolderId.current,
+			name: caseFolderName,
+>>>>>>> main
 			createdDate: Date.now(),
 			lastOpenedDate: Date.now(),
 			status: "#53EF0A",
 			deadline: "",
 			labels: [],
 			files: uploadedFilesArray,
+<<<<<<< HEAD
 			clientFirstName: clientFirstName,
 			clientLastName: clientLastName,
 			clientSex: clientSex,
@@ -176,6 +204,9 @@ function CreateCaseFolder() {
 			clientDOB: clientDOB,
 		};
 	
+=======
+		};
+>>>>>>> main
 		db.addNewCaseFolder(newCaseFolderObject);
 		navigate("/dashboard");
 	};
@@ -183,59 +214,52 @@ function CreateCaseFolder() {
 
 	return (
 		<SidebarLayout>
-			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-col w-full gap-6 mx-auto">
-					<div className="flex flex-row items-end h-20 gap-4 mb-5">
-						<img className="relative top-2 h-14" src={UserIcon} />
-						<span
-							id="case-name"
-							className="relative mt-10 mb-5 text-4xl font-bold text-white border-b border-b-white top-5"
-							contentEditable={caseNameEditable}
-							suppressContentEditableWarning={true}
-							onBlur={handleBlur}
-						>
-							{caseFolderName.current}
-						</span>
+			<PageHeader className="gap-4">
+				<img className="h-[58px]" src={UserIcon} />
+				<h1
+					id="case-name"
+					className="text-3xl font-bold text-white"
+					contentEditable={true}
+					suppressContentEditableWarning={true}
+					ref={caseFolderNameRef}
+					onClick={handeClickOnCaseName}
+					onBlur={handleFocusOffCaseName}
+					onKeyDown={handleEnterKeyPress}
+				>
+					{caseFolderName}
+				</h1>
+			</PageHeader>
 
-						<img
-							src={PencilIcon}
-							width="30px"
-							className="cursor-pointer mt-7"
-							onClick={toggleCaseNameEditable}
-						/>
-					</div>
-					<SearchBar />
+			<SearchBar />
 
-					<div className="flex flex-row items-center justify-between w-full gap-8">
-						<SortBar options={NEW_CASE_SORT_OPTIONS} />
+			<SortBarWithButtons>
+				<SortBar options={NEW_CASE_SORT_OPTIONS} />
 
-						<div className="flex flex-row flex-wrap justify-end gap-3">
-							<PillButton name="Create" img={PenPurple} />
-							<PillButton name="Upload" img={UploadPurple} onClick={handleOpenFileBrowser} />
-							<PillButton name="Translate" img={SphereLatticePurple} />
-							<PillSpecialButton name="Generate" img={LightBulbPurple} />
-							<PillButton name="Create Case" img={FolderPurple} onClick={handleCreateCaseFolder} />
-						</div>
-					</div>
-
-					{filesForUpload.length > 0 && (
-						<FileForUploadCards
-							filesForUpload={filesForUpload}
-							removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
-						/>
-					)}
-
-					<DropArea
-						ref={inputRef}
-						style={{
-							zIndex: filesForUpload.length > 0 ? -5 : 5,
-							display: filesForUpload.length > 0 ? "none" : "flex",
-						}}
-						handleOpenFileBrowser={handleOpenFileBrowser}
-						addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
-					/>
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+					<PillButton name="Create" img={PenPurple} />
+					<PillButton name="Upload" img={UploadPurple} onClick={handleOpenFileBrowser} />
+					<PillButton name="Translate" img={SphereLatticePurple} />
+					<PillSpecialButton name="Generate" img={LightBulbPurple} />
+					<PillButton name="Create Case" img={FolderPurple} onClick={handleCreateCaseFolder} />
 				</div>
-			</div>
+			</SortBarWithButtons>
+
+			{filesForUpload.length > 0 && (
+				<FileForUploadCards
+					filesForUpload={filesForUpload}
+					removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
+				/>
+			)}
+
+			<DropArea
+				ref={inputRef}
+				style={{
+					zIndex: filesForUpload.length > 0 ? -5 : 5,
+					display: filesForUpload.length > 0 ? "none" : "flex",
+				}}
+				handleOpenFileBrowser={handleOpenFileBrowser}
+				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
+			/>
 		</SidebarLayout>
 	);
 }

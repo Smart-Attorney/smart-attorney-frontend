@@ -1,53 +1,33 @@
 import {
-	CalendarIcon,
-	DashboardIcon,
-	FolderIcon,
-	NotificationBellIcon,
-	SettingsGearIcon,
+	CalendarBlack,
+	DashboardBlack,
+	NotificationBlack,
+	ProjectsBlack,
+	SettingsBlack,
 	SmartAttorneyIcon,
-	TeamIcon,
+	TeamBlack,
 } from "../../assets/smart-attorney-figma/sidebar";
+import RenderButton from "./RenderButton";
 
-import { useNavigate, useLocation } from 'react-router-dom';
+function SidebarItemsContainer() {
+	return (
+		// This outer div keeps the buttons in place, even when scrolling past view height.
+		<div className="fixed">
+			{/* The Smart Attorney icon links to the landing page. */}
+			<a href="https://www.smartattorney.co/" target="_blank" rel="noopener noreferrer">
+				<img className="w-20 h-20 mb-3 cursor-pointer" src={SmartAttorneyIcon} />
+			</a>
 
-interface ButtonProps {
-	path: string;
-	imageSrc: string;
-	label: string;
-  }
-function SidebarItems() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const isCurrentPath = (path: string) => location.pathname === path;
-
-  const renderButton = ({ path, imageSrc, label }: ButtonProps) => (
-    <button
-      className={`cursor-pointer ${isCurrentPath(path) ? 'active' : ''}`}
-      onClick={() => navigate(path)}
-    >
-      <div className={`flex items-center justify-center w-12 h-12 mt-4 mb-4 ${isCurrentPath(path) ? 'active-circle' : ''}`}>
-        <img className="cursor-pointer w-8 h-8" src={imageSrc} alt={label} />
-      </div>
-    </button>
-  );
-
-  return (
-    <div>
-      <div className="flex flex-col items-center w-full h-full">
-        <img className="cursor-pointer w-20 h-20" src={SmartAttorneyIcon} />
-      </div>
-      <div className="flex flex-col items-center w-full h-full">
-        {renderButton({ path: '/dashboard', imageSrc: DashboardIcon, label: 'Dashboard' })}
-        {renderButton({ path: '/create-case', imageSrc: FolderIcon, label: 'Create Case' })}
-        {renderButton({ path: '/calendar', imageSrc: CalendarIcon, label: 'Calendar' })}
-        {renderButton({ path: '/team', imageSrc: TeamIcon, label: 'Team' })}
-        {renderButton({ path: '/notifications', imageSrc: NotificationBellIcon, label: 'Notifications' })}
-        {renderButton({ path: '/settings', imageSrc: SettingsGearIcon, label: 'Settings' })}
-      </div>
-    </div>
-  );
+			<div className="flex flex-col items-center">
+				<RenderButton path="/dashboard" imageSrc={DashboardBlack} label="Dashboard" />
+				<RenderButton path="/create-case" imageSrc={ProjectsBlack} label="Create Case" />
+				<RenderButton path="/calendar" imageSrc={CalendarBlack} label="Calendar" />
+				<RenderButton path="/team" imageSrc={TeamBlack} label="Team" />
+				<RenderButton path="/notifications" imageSrc={NotificationBlack} label="Notifications" />
+				<RenderButton path="/settings" imageSrc={SettingsBlack} label="Settings" />
+			</div>
+		</div>
+	);
 }
 
-export default SidebarItems;
-
+export default SidebarItemsContainer;

@@ -6,10 +6,13 @@ import Error from "../pages/Error";
 import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Signin from "../pages/Signin";
+import Test from "../pages/Test";
+import RemoveTrailingSlash from "./RemoveTrailingSlash";
 
 function AppRoutes() {
 	return (
 		<>
+			<RemoveTrailingSlash />
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/signin" element={<Signin />} />
@@ -18,6 +21,7 @@ function AppRoutes() {
 				<Route path="/dashboard/:id" element={<CaseFolder />} />
 				<Route path="/create-case" element={<CreateCaseFolder />} />
 				<Route path="/*" element={<Error />} />
+				<Route path="/test" element={<Test />} />
 			</Routes>
 		</>
 	);

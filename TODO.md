@@ -72,6 +72,8 @@
 - [x] re-organize assets and components by exporting via index file; named exports
 - [x] separate routes into its own file
 - [x] add reusable grid layout for cards (tailwind custom class)
+- [x] add reusable modal layout
+- [x] add reusuable page header layout
 - [ ] ensure updated state flows in direction of: updates -> storage -> database -> client
 - [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
 - [ ] refactor database methods as a mock backend api
@@ -81,8 +83,6 @@
 - [ ] when user deletes folder, delete all files within
 - [ ] include folder name when saving case folders
 - [ ] re-organize functions for dependency injection pattern for reusability
-- [ ] add reusable modal layout
-- [ ] add reusuable page header layout
 
 
 ### temporary workarounds

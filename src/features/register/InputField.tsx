@@ -1,4 +1,4 @@
-import { CheckIcon } from "../../assets/smart-attorney-figma";
+import { CheckIcon } from "../../assets/smart-attorney-figma/global";
 
 interface InputFieldProps {
 	name: string;
