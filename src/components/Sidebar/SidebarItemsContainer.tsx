@@ -1,13 +1,12 @@
 import {
-	CalendarIcon,
-	DashboardIcon,
-	FolderIcon,
-	NotificationBellIcon,
-	SettingsGearIcon,
+	CalendarBlack,
+	DashboardBlack,
+	NotificationBlack,
+	ProjectsBlack,
+	SettingsBlack,
 	SmartAttorneyIcon,
-	TeamIcon,
+	TeamBlack,
 } from "../../assets/smart-attorney-figma/sidebar";
-
 import RenderButton from "./RenderButton";
 
 function SidebarItemsContainer() {
@@ -20,12 +19,12 @@ function SidebarItemsContainer() {
 			</a>
 
 			<div className="flex flex-col items-center">
-				<RenderButton path="/dashboard" imageSrc={DashboardIcon} label="Dashboard" />
-				<RenderButton path="/create-case" imageSrc={FolderIcon} label="Create Case" />
-				<RenderButton path="/calendar" imageSrc={CalendarIcon} label="Calendar" />
-				<RenderButton path="/team" imageSrc={TeamIcon} label="Team" />
-				<RenderButton path="/notifications" imageSrc={NotificationBellIcon} label="Notifications" />
-				<RenderButton path="/settings" imageSrc={SettingsGearIcon} label="Settings" />
+				<RenderButton path="/dashboard" imageSrc={DashboardBlack} label="Dashboard" />
+				<RenderButton path="/create-case" imageSrc={ProjectsBlack} label="Create Case" />
+				<RenderButton path="/calendar" imageSrc={CalendarBlack} label="Calendar" />
+				<RenderButton path="/team" imageSrc={TeamBlack} label="Team" />
+				<RenderButton path="/notifications" imageSrc={NotificationBlack} label="Notifications" />
+				<RenderButton path="/settings" imageSrc={SettingsBlack} label="Settings" />
 			</div>
 		</div>
 	);
