@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import CardGrid from "../../layouts/CardGrid";
 import Firebase from "../../services/cloud-storage/firebase";
 import Database from "../../services/database";
 import { CaseFileObj, CaseFolderObj } from "../../utils/types";
@@ -31,7 +32,7 @@ function CaseFileCards(props: CaseFileCardsProps) {
 	};
 
 	return (
-		<div className="grid-card-layout-r">
+		<CardGrid>
 			{props.files?.map((file) => (
 				<div className="w-64 h-64 py-4 pl-12 bg-white rounded-3xl " key={file.id}>
 					{/* Kebab Menu */}
@@ -52,7 +53,7 @@ function CaseFileCards(props: CaseFileCardsProps) {
 					</p>
 				</div>
 			))}
-		</div>
+		</CardGrid>
 	);
 }
 

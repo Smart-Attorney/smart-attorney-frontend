@@ -10,12 +10,14 @@ import {
 import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
+import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
+import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
@@ -119,41 +121,33 @@ function CaseFolder() {
 
 	return (
 		<SidebarLayout>
-			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-col w-full gap-6 mx-auto">
-					<div className="flex flex-row items-end h-20 gap-4 mb-5">
-						<img className="relative top-2 h-14" src={UserIcon} />
-						<span
-							id="case-name"
-							className="mt-10 text-4xl font-bold text-white justify-self-end"
-							// suppressContentEditableWarning={true}
-						>
-							{caseFolder?.name}
-						</span>
-					</div>
+			<PageHeader className="gap-4">
+				<img className="h-[58px]" src={UserIcon} />
+				<h1 id="case-name" className="text-3xl font-bold text-white">
+					{caseFolder?.name}
+				</h1>
+			</PageHeader>
 
-					<SearchBar />
+			<SearchBar />
 
-					<div className="flex flex-row items-center justify-between w-full gap-8">
-						<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
+			<SortBarWithButtons>
+				<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
 
-						<div className="flex flex-row flex-wrap justify-end gap-3">
-							<PillButton name="Create" img={PenPurple} />
-							<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
-							<PillButton name="Translate" img={SphereLatticePurple} />
-							<PillSpecialButton name="Generate" img={LightBulbPurple} />
-							<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
-						</div>
-					</div>
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+					<PillButton name="Create" img={PenPurple} />
+					<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
+					<PillButton name="Translate" img={SphereLatticePurple} />
+					<PillSpecialButton name="Generate" img={LightBulbPurple} />
+					<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
 				</div>
+			</SortBarWithButtons>
 
-				<CaseFileCards
-					files={caseFiles}
-					onClick={(event) => handleViewFileModal(event)}
-					updateCaseFolder={updateCaseFolder}
-					updateCaseFolder2={updateCaseFolder2}
-				/>
-			</div>
+			<CaseFileCards
+				files={caseFiles}
+				onClick={(event) => handleViewFileModal(event)}
+				updateCaseFolder={updateCaseFolder}
+				updateCaseFolder2={updateCaseFolder2}
+			/>
 
 			{uploadModalOpen && (
 				<UploadModal

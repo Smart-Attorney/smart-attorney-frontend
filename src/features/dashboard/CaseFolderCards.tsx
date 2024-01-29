@@ -3,6 +3,7 @@ import Database from "../../services/database";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
+import CardGrid from "../../layouts/CardGrid";
 
 interface CaseFolderCardProps {
 	caseFolders: CaseFolderObj[] | null;
@@ -49,13 +50,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 	};
 
 	return (
-		/* 
-      Current layout will display 4 cards for all screen resolutions with a min-width of 1400px. 
-      
-      The grid layout resizes and accomodates for different screen resolutions while also keeping
-      the elements centered.
-    */
-		<div className="grid-card-layout-r">
+		<CardGrid>
 			{caseFolders?.map((caseFolder) => (
 				<div
 					className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
@@ -101,7 +96,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 					</p>
 				</div>
 			))}
-		</div>
+		</CardGrid>
 	);
 }
 

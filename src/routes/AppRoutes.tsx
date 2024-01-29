@@ -6,6 +6,7 @@ import Error from "../pages/Error";
 import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Signin from "../pages/Signin";
+import Test from "../pages/Test";
 
 function AppRoutes() {
 	return (
@@ -18,6 +19,7 @@ function AppRoutes() {
 				<Route path="/dashboard/:id" element={<CaseFolder />} />
 				<Route path="/create-case" element={<CreateCaseFolder />} />
 				<Route path="/*" element={<Error />} />
+				<Route path="/test" element={<Test />} />
 			</Routes>
 		</>
 	);
