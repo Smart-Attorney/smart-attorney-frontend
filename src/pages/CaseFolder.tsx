@@ -43,7 +43,16 @@ function CaseFolder() {
 		deadline: "",
 		labels: [],
 		files: [],
+		clientInfo: {
+			firstName: "",
+			lastName: "",
+			sex: null,
+			primaryLanguage: "",
+			countryOfCitizenship: "",
+			dateOfBirth: ""
+		} ,
 	});
+	
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [fileModalOpen, setFileModalOpen] = useState(false);

@@ -32,6 +32,19 @@ interface CaseFileObj {
 	url: string;
 }
 
+interface SexOptions {
+	sex: "Male" | "Female" | "Other";
+}
+
+interface ClientInfoObj {
+	firstName: string;
+	lastName: string;
+	sex: SexOptions | null;
+	primaryLanguage: string;
+	countryOfCitizenship: string;
+	dateOfBirth: string;
+}
+
 interface CaseFolderObj {
 	id: string;
 	name: string;
@@ -41,6 +54,7 @@ interface CaseFolderObj {
 	deadline: string;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
+	clientInfo: ClientInfoObj;
 }
 
-export type { ButtonProps, CaseFileObj, CaseFolderLabelObj, CaseFolderObj, FileForUploadObj, SortOptionsObj };
+export type { ButtonProps, CaseFileObj, CaseFolderLabelObj, CaseFolderObj, ClientInfoObj, FileForUploadObj, SortOptionsObj };
