@@ -20,13 +20,17 @@ function CaseFileCards(props: CaseFileCardsProps) {
 	 * awful and messy function
 	 * revise this
 	 */
-	const handleFileDelete = (file: CaseFileObj) => {
-		const { id: fileId, name: fileName } = file;
-		Firebase.deleteFileById(fileId, fileName, folderId!);
-		db.deleteCaseFileById(folderId!, fileId);
-		const newCaseFolder = db.getCaseFolderById(folderId!);
-		if (newCaseFolder) {
-			props.updateCaseFolder2(newCaseFolder);
+	const handleFileDelete = async (file: CaseFileObj) => {
+		try {
+			const { id: fileId, name: fileName } = file;
+			await Firebase.deleteFileById(fileId, fileName, folderId!);
+			await db.deleteCaseFileById(folderId!, fileId);
+			const newCaseFolder = await db.getCaseFolderById(folderId!);
+			if (newCaseFolder) {
+				props.updateCaseFolder2(newCaseFolder);
+			}
+		} catch (error) {
+			console.error("Error deleting file:", error);
 		}
 	};
 
