@@ -38,7 +38,8 @@ function CreateCaseFolder() {
 
 	const [clientInfoModalOpen, setClientInfoModalOpen] = useState<boolean>(true);
 
-	const [clientInfo, setClientInfo] = useState<ClientInfoObj>({
+	// removed state setter to appease compiler, add back later
+	const [clientInfo] = useState<ClientInfoObj>({
 		firstName: "",
 		lastName: "",
 		sex: null,
@@ -68,9 +69,9 @@ function CreateCaseFolder() {
 		setClientInfoModalOpen(false);
 	}
 
-	const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
-		console.log(event);
-	}
+	// const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
+	// 	console.log(event);
+	// }
 
 	const handleOpenFileBrowser = (): void => {
 		inputRef.current?.click();
