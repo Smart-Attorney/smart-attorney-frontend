@@ -14,7 +14,9 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
+import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
+import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
@@ -156,55 +158,52 @@ function CreateCaseFolder() {
 
 	return (
 		<SidebarLayout>
-			<div className="flex flex-col items-center gap-6 w-[80%] mx-auto">
-				<div className="flex flex-col w-full gap-6 mx-auto">
-					<div className="flex flex-row items-end h-20 gap-4 mb-5">
-						<img className="relative top-2 h-14" src={UserIcon} />
-						<h2
-							id="case-name"
-							className="relative mt-10 mb-5 text-4xl font-bold text-white top-5"
-							contentEditable={true}
-							suppressContentEditableWarning={true}
-							ref={caseFolderNameRef}
-							onClick={handeClickOnCaseName}
-							onBlur={handleFocusOffCaseName}
-							onKeyDown={handleEnterKeyPress}
-						>
-							{caseFolderName}
-						</h2>
-					</div>
-					<SearchBar />
+			<PageHeader className="gap-4">
+				<img className="h-[58px]" src={UserIcon} />
+				<h1
+					id="case-name"
+					className="text-3xl font-bold text-white"
+					contentEditable={true}
+					suppressContentEditableWarning={true}
+					ref={caseFolderNameRef}
+					onClick={handeClickOnCaseName}
+					onBlur={handleFocusOffCaseName}
+					onKeyDown={handleEnterKeyPress}
+				>
+					{caseFolderName}
+				</h1>
+			</PageHeader>
 
-					<div className="flex flex-row items-center justify-between w-full gap-8">
-						<SortBar options={NEW_CASE_SORT_OPTIONS} />
+			<SearchBar />
 
-						<div className="flex flex-row flex-wrap justify-end gap-3">
-							<PillButton name="Create" img={PenPurple} />
-							<PillButton name="Upload" img={UploadPurple} onClick={handleOpenFileBrowser} />
-							<PillButton name="Translate" img={SphereLatticePurple} />
-							<PillSpecialButton name="Generate" img={LightBulbPurple} />
-							<PillButton name="Create Case" img={FolderPurple} onClick={handleCreateCaseFolder} />
-						</div>
-					</div>
+			<SortBarWithButtons>
+				<SortBar options={NEW_CASE_SORT_OPTIONS} />
 
-					{filesForUpload.length > 0 && (
-						<FileForUploadCards
-							filesForUpload={filesForUpload}
-							removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
-						/>
-					)}
-
-					<DropArea
-						ref={inputRef}
-						style={{
-							zIndex: filesForUpload.length > 0 ? -5 : 5,
-							display: filesForUpload.length > 0 ? "none" : "flex",
-						}}
-						handleOpenFileBrowser={handleOpenFileBrowser}
-						addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
-					/>
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+					<PillButton name="Create" img={PenPurple} />
+					<PillButton name="Upload" img={UploadPurple} onClick={handleOpenFileBrowser} />
+					<PillButton name="Translate" img={SphereLatticePurple} />
+					<PillSpecialButton name="Generate" img={LightBulbPurple} />
+					<PillButton name="Create Case" img={FolderPurple} onClick={handleCreateCaseFolder} />
 				</div>
-			</div>
+			</SortBarWithButtons>
+
+			{filesForUpload.length > 0 && (
+				<FileForUploadCards
+					filesForUpload={filesForUpload}
+					removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
+				/>
+			)}
+
+			<DropArea
+				ref={inputRef}
+				style={{
+					zIndex: filesForUpload.length > 0 ? -5 : 5,
+					display: filesForUpload.length > 0 ? "none" : "flex",
+				}}
+				handleOpenFileBrowser={handleOpenFileBrowser}
+				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
+			/>
 		</SidebarLayout>
 	);
 }

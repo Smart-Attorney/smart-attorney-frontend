@@ -6,7 +6,7 @@ function PillButton(props: ButtonProps) {
 	return (
 		<button
 			type="button"
-			className={`${className} px-3 flex items-center h-9 justify-center border-4 border-[#2D2F8C] bg-white rounded-[30px]`}
+			className={`${className} px-3 flex items-center h-9 justify-center border-[3px] border-[#2D2F8C] bg-white rounded-[30px]`}
 			onClick={onClick}
 			disabled={disabled}
 			style={style}

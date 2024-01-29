@@ -6,7 +6,7 @@ function PillSpecialButton(props: ButtonProps) {
 	return (
 		<button
 			type="button"
-			className={`${className} px-3 pill-special-btn-border border-4 border-transparent h-9 flex items-center justify-center rounded-[30px]`}
+			className={`${className} px-3 pill-special-btn-border border-[3px] border-transparent h-9 flex items-center justify-center rounded-[30px]`}
 			onClick={onClick}
 			disabled={disabled}
 			style={style}

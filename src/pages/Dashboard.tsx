@@ -40,7 +40,7 @@ function Dashboard() {
 
 	return (
 		<SidebarLayout>
-			<PageHeader>
+			<PageHeader className="gap-2">
 				<img className="w-10" src={DashboardIcon} alt="logo" />
 				<h1 className="text-3xl font-bold text-white">Case Dashboard</h1>
 			</PageHeader>

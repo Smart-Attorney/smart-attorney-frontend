@@ -1,11 +1,12 @@
 interface PageHeaderProps {
 	children: React.ReactNode;
+	className?: string;
 }
 
-function PageHeader({ children }: PageHeaderProps) {
+function PageHeader({ children, className }: PageHeaderProps) {
 	return (
-		<div className="flex justify-start pl-20 w-full py-[52px] h-fit">
-			<div className="flex flex-row items-center gap-2 w-fit">{children}</div>
+		<div className="flex justify-start w-full pl-20 h-[152px]">
+			<div className={`${className} flex flex-row items-center w-fit`}>{children}</div>
 		</div>
 	);
 }
