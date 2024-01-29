@@ -33,7 +33,7 @@ function CaseFolder() {
 	const fileId = useRef<string>("");
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
-	const initialDOB = new Date();
+
 	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
 		id: "",
 		name: "",
@@ -43,13 +43,16 @@ function CaseFolder() {
 		deadline: "",
 		labels: [],
 		files: [],
-		clientFirstName: "",
-		clientLastName: "",
-		clientSex: "",
-		clientPrimaryLanguage: "",
-		clientCountryOfCitizenship: "",
-		clientDOB: initialDOB,
+		clientInfo: {
+			firstName: "",
+			lastName: "",
+			sex: null,
+			primaryLanguage: "",
+			countryOfCitizenship: "",
+			dateOfBirth: ""
+		} ,
 	});
+	
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [fileModalOpen, setFileModalOpen] = useState(false);

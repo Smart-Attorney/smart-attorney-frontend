@@ -59,9 +59,3 @@ body {
 	border-bottom: 5px solid transparent;
 	border-right: 6px solid #151515;
 }
-
-.topLeft {
-	position: "relative";
-	top: 20px;
-	left: 20px;
-}
