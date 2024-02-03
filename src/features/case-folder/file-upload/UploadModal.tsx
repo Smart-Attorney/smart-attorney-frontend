@@ -75,7 +75,7 @@ function UploadModal(props: UploadModalProps) {
 	};
 
 	return (
-		<ModalDialog closeModal={handleCloseUploadModal}>
+		<ModalDialog closeModal={handleCloseUploadModal} enableBackdropClose={true}>
 			<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
 				<Header />
 

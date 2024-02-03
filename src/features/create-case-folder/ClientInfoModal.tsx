@@ -26,7 +26,7 @@ function ClientInfoModal({closeModal}: ClientInfoModalProps) {
     function handleSave () {
         closeModal();
     }
-    return (<ModalDialog closeModal={closeModal}>
+    return (<ModalDialog closeModal={closeModal} enableBackdropClose={false}>
         {/* Outer most div contains all of the contents of modal body. */}
         <div id="modal-body" className="flex flex-row justify-between w-full px-16">
             
