@@ -1,9 +1,10 @@
 interface ModalDialogProps {
 	children: React.ReactNode;
 	closeModal: (event?: React.MouseEvent<HTMLDivElement>) => void;
+	enableBackdropClose: boolean;
 }
 
-function ModalDialog({ children, closeModal }: ModalDialogProps) {
+function ModalDialog({ children, closeModal, enableBackdropClose }: ModalDialogProps) {
 	const handleClickModalBackdrop = (event: React.MouseEvent<HTMLDivElement>): void => {
 		const { id } = event.target as HTMLDivElement;
 		if (id === "modal-backdrop") {
@@ -15,7 +16,13 @@ function ModalDialog({ children, closeModal }: ModalDialogProps) {
 		<div
 			id="modal-backdrop"
 			className="bg-[#00000040] h-screen w-[calc(100%-80px)] justify-center flex items-center top-0 absolute backdrop-blur-[2px]"
-			onClick={(event) => handleClickModalBackdrop(event)}
+			onClick={
+				enableBackdropClose
+					? (event) => handleClickModalBackdrop(event)
+					: () => {
+							return;
+					  }
+			}
 		>
 			<div
 				id="modal-container"

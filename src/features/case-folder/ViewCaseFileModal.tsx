@@ -17,7 +17,7 @@ function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 	 */
 
 	return (
-		<ModalDialog closeModal={props.closeModal}>
+		<ModalDialog closeModal={props.closeModal} enableBackdropClose={true}>
 			<div id="modal-body" className="flex flex-col items-center gap-4">
 				<h1 className="text-xl font-semibold text-white">{fileName}</h1>
 				<div className="w-full h-full rounded-md bg-gray-50">
