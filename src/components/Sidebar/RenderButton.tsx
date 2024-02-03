@@ -3,18 +3,17 @@ import Tooltip from "./Tooltip";
 
 interface ButtonProps {
 	path: string;
-	imageSrc: string;
+	imageActive: string;
+	imageInactive: string;
 	label: string;
+	// imageSrc: string;
 }
 
-function RenderButton({ path, imageSrc, label }: ButtonProps) {
+function RenderButton({ path, imageActive, imageInactive, label }: ButtonProps) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const isCurrentPath = (path: string): boolean => location.pathname === path;
-
-	/* This adjusts the hardcoded active-image to match the alignment of its inactive counterpart. */
-	const iconStyle = isCurrentPath(path) ? "w-full relative top-[14px]" : "w-[50px]";
 
 	return (
 		<div
@@ -22,8 +21,21 @@ function RenderButton({ path, imageSrc, label }: ButtonProps) {
 			onClick={() => navigate(path)}
 		>
 			<button type="button">
-				<img className={`${iconStyle}`} src={imageSrc} alt={label} />
+				<img
+					style={{ display: isCurrentPath(path) ? "block" : "none" }}
+					className="w-full relative top-[14px]"
+					src={imageActive}
+					alt={label}
+				/>
+
+				<img
+					style={{ display: isCurrentPath(path) ? "none" : "block" }}
+					className="w-[50px]"
+					src={imageInactive}
+					alt={label}
+				/>
 			</button>
+
 			<Tooltip name={path} />
 		</div>
 	);
