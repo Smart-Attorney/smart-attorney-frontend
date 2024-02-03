@@ -21,7 +21,9 @@ import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
-import { CaseFileObj, FileForUploadObj } from "../utils/types";
+import { CaseFileObj, FileForUploadObj, ClientInfoObj } from "../utils/types";
+import ClientInfoModal from "../features/create-case-folder/ClientInfoModal";
+
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -30,9 +32,21 @@ function CreateCaseFolder() {
 	const caseFolderId = useRef("");
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
-
+	
 	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
+
+	const [clientInfoModalOpen, setClientInfoModalOpen] = useState<boolean>(true);
+
+	// removed state setter to appease compiler, add back later
+	const [clientInfo] = useState<ClientInfoObj>({
+		firstName: "",
+		lastName: "",
+		sex: null,
+		primaryLanguage: "",
+		countryOfCitizenship: "",
+		dateOfBirth: "",
+	})
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
@@ -50,6 +64,14 @@ function CreateCaseFolder() {
 			db.initNewArray();
 		}
 	}, []);
+
+	const handleCloseClientInfoModal = () => {
+		setClientInfoModalOpen(false);
+	}
+
+	// const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
+	// 	console.log(event);
+	// }
 
 	const handleOpenFileBrowser = (): void => {
 		inputRef.current?.click();
@@ -128,6 +150,7 @@ function CreateCaseFolder() {
 		return uploadedFiles;
 	};
 
+
 	const handleCreateCaseFolder = async (): Promise<void> => {
 		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
@@ -151,10 +174,13 @@ function CreateCaseFolder() {
 			deadline: "",
 			labels: [],
 			files: uploadedFilesArray,
+			clientInfo: clientInfo,
 		};
+	
 		db.addNewCaseFolder(newCaseFolderObject);
 		navigate("/dashboard");
 	};
+	
 
 	return (
 		<SidebarLayout>
@@ -204,6 +230,12 @@ function CreateCaseFolder() {
 				handleOpenFileBrowser={handleOpenFileBrowser}
 				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
 			/>
+
+			{clientInfoModalOpen && (
+				<ClientInfoModal
+					closeModal={handleCloseClientInfoModal}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }

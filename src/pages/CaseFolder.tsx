@@ -43,7 +43,16 @@ function CaseFolder() {
 		deadline: "",
 		labels: [],
 		files: [],
+		clientInfo: {
+			firstName: "",
+			lastName: "",
+			sex: null,
+			primaryLanguage: "",
+			countryOfCitizenship: "",
+			dateOfBirth: ""
+		} ,
 	});
+	
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [fileModalOpen, setFileModalOpen] = useState(false);
@@ -119,6 +128,15 @@ function CaseFolder() {
 		navigate("/dashboard");
 	};
 
+	// workaround ¯\_(ツ)_/¯
+	// make it open in a new tab; done
+	const handleLinkToJunCode = () => {
+		const url = "https://astonishing-speculoos-022482.netlify.app/build/?fbclid=IwAR0WX0m2AIq2B9_6SqCbUZptki9w_TGw-CGJSeh443nOtDes8TTX_0yOwSk";
+		window.open(url, "_blank")
+		return;
+	}
+
+
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-4">
@@ -137,7 +155,7 @@ function CaseFolder() {
 					<PillButton name="Create" img={PenPurple} />
 					<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
 					<PillButton name="Translate" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" img={LightBulbPurple} />
+					<PillSpecialButton name="Generate" img={LightBulbPurple} onClick={handleLinkToJunCode}/>
 					<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
 				</div>
 			</SortBarWithButtons>
