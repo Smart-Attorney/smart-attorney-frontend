@@ -21,7 +21,7 @@ function ModalDialog({ children, closeModal, enableBackdropClose }: ModalDialogP
 					? (event) => handleClickModalBackdrop(event)
 					: () => {
 							return;
-					  }
+						}
 			}
 		>
 			<div
