@@ -23,7 +23,7 @@ function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 				<div className="w-full h-full rounded-md bg-gray-50">
 					<object height="100%" width="100%" data={fileURL}></object>
 				</div>
-				<ModalButton name="Close" className="h-16 border-[5px]" onClick={props.closeModal}  />
+				<ModalButton name="Close" type="button" className="h-16 border-[5px]" onClick={props.closeModal} />
 			</div>
 		</ModalDialog>
 	);

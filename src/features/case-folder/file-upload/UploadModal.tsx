@@ -92,6 +92,7 @@ function UploadModal(props: UploadModalProps) {
 				<div className="flex flex-row w-full gap-7">
 					<ModalButton
 						name="Upload"
+						type="button"
 						className="border-[5px]"
 						onClick={handleUploadFiles}
 						disabled={filesForUpload.length < 1 ? true : false}
@@ -99,6 +100,7 @@ function UploadModal(props: UploadModalProps) {
 					/>
 					<ModalSpecialButton
 						name="Translate"
+						type="button"
 						// onClick={}
 					/>
 				</div>

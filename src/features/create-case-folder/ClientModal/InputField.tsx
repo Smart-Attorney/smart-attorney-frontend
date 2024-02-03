@@ -1,15 +1,22 @@
 interface InputFieldProps {
 	name: string;
 	type: string;
+	onChange: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
-function InputField({ name, type }: InputFieldProps) {
+function InputField({ name, type, onChange }: InputFieldProps) {
 	return (
 		<div className="flex flex-col gap-1 w-60">
 			<label htmlFor={name} className="text-white">
 				{name}
 			</label>
-			<input id={name} type={type} className="h-8 px-2 text-base rounded" />
+			<input
+				id={name}
+				name={name}
+				type={type}
+				className="h-8 px-2 overflow-hidden text-base rounded text-ellipsis whitespace-nowrap"
+				onChange={onChange}
+			/>
 		</div>
 	);
 }

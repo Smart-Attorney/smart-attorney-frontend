@@ -1,12 +1,13 @@
 interface SelectFieldProps {
 	name: string;
 	options: string[];
+	onChange: (event: React.FormEvent<HTMLSelectElement>) => void;
 }
 
-function SelectField({ name, options }: SelectFieldProps) {
-	const optionsElements = options.map((option) => {
+function SelectField({ name, options, onChange }: SelectFieldProps) {
+	const optionsElements = options.map((option, index) => {
 		return (
-			<option className="text-base" value={option}>
+			<option className="text-base" key={index} value={option}>
 				{option}
 			</option>
 		);
@@ -17,7 +18,12 @@ function SelectField({ name, options }: SelectFieldProps) {
 			<label htmlFor={name} className="text-white">
 				{name}
 			</label>
-			<select id={name} className="h-8 px-2 text-sm rounded">
+			<select
+				id={name}
+				name={name}
+				className="h-8 px-2 overflow-hidden text-base rounded whitespace-nowrap text-ellipsis"
+				onChange={onChange}
+			>
 				<option value="" className="text-base">
 					-- Select --
 				</option>
