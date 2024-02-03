@@ -57,4 +57,12 @@ interface CaseFolderObj {
 	clientInfo: ClientInfoObj;
 }
 
-export type { ButtonProps, CaseFileObj, CaseFolderLabelObj, CaseFolderObj, ClientInfoObj, FileForUploadObj, SortOptionsObj };
+export type {
+	ButtonProps,
+	CaseFileObj,
+	CaseFolderLabelObj,
+	CaseFolderObj,
+	ClientInfoObj,
+	FileForUploadObj,
+	SortOptionsObj,
+};

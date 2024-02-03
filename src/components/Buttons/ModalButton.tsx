@@ -6,7 +6,7 @@ function ModalButton(props: ButtonProps) {
 	return (
 		<button
 			type="button"
-			className={`${className} h-[72px] w-full rounded-xl py-2 border-[5px] border-solid border-[#3141e4] bg-[#2a2c84]`}
+			className={`${className} w-full rounded-xl border-solid border-[#3141e4] bg-[#2a2c84]`}
 			onClick={onClick}
 			disabled={disabled}
 			style={style}

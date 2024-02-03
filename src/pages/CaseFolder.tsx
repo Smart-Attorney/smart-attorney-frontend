@@ -20,7 +20,7 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
-import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
+import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
 function CaseFolder() {
@@ -49,10 +49,10 @@ function CaseFolder() {
 			sex: null,
 			primaryLanguage: "",
 			countryOfCitizenship: "",
-			dateOfBirth: ""
-		} ,
+			dateOfBirth: "",
+		},
 	});
-	
+
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [fileModalOpen, setFileModalOpen] = useState(false);
@@ -131,11 +131,11 @@ function CaseFolder() {
 	// workaround ¯\_(ツ)_/¯
 	// make it open in a new tab; done
 	const handleLinkToJunCode = () => {
-		const url = "https://astonishing-speculoos-022482.netlify.app/build/?fbclid=IwAR0WX0m2AIq2B9_6SqCbUZptki9w_TGw-CGJSeh443nOtDes8TTX_0yOwSk";
-		window.open(url, "_blank")
+		const url =
+			"https://astonishing-speculoos-022482.netlify.app/build/?fbclid=IwAR0WX0m2AIq2B9_6SqCbUZptki9w_TGw-CGJSeh443nOtDes8TTX_0yOwSk";
+		window.open(url, "_blank");
 		return;
-	}
-
+	};
 
 	return (
 		<SidebarLayout>
@@ -149,13 +149,13 @@ function CaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
+				<SortBar options={CASE_FOLDER} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
 					<PillButton name="Create" img={PenPurple} />
 					<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
 					<PillButton name="Translate" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" img={LightBulbPurple} onClick={handleLinkToJunCode}/>
+					<PillSpecialButton name="Generate" img={LightBulbPurple} onClick={handleLinkToJunCode} />
 					<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
 				</div>
 			</SortBarWithButtons>

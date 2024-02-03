@@ -1,10 +1,11 @@
 interface ModalDialogProps {
 	children: React.ReactNode;
+	className?: string;
 	closeModal: (event?: React.MouseEvent<HTMLDivElement>) => void;
 	enableBackdropClose: boolean;
 }
 
-function ModalDialog({ children, closeModal, enableBackdropClose }: ModalDialogProps) {
+function ModalDialog({ children, className, closeModal, enableBackdropClose }: ModalDialogProps) {
 	const handleClickModalBackdrop = (event: React.MouseEvent<HTMLDivElement>): void => {
 		const { id } = event.target as HTMLDivElement;
 		if (id === "modal-backdrop") {
@@ -26,7 +27,7 @@ function ModalDialog({ children, closeModal, enableBackdropClose }: ModalDialogP
 		>
 			<div
 				id="modal-container"
-				className="border border-[#9C9DA4] rounded-[32px] py-14 h-fit w-[768px] bg-gradient-custom flex items-center justify-center"
+				className={`${className} border border-[#9C9DA4] rounded-[32px] py-14 h-fit bg-gradient-custom flex flex-col items-center justify-center`}
 			>
 				{children}
 			</div>

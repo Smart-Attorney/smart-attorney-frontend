@@ -113,3 +113,6 @@ File Type Icons
 
 Git Naming Conventions
  - https://dev.to/varbsan/a-simplified-convention-for-naming-branches-and-commits-in-git-il4
+
+Unicode Characters
+ - https://stackoverflow.com/questions/5353461/unicode-character-for-x-cancel-close
