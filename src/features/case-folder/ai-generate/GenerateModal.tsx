@@ -1,5 +1,5 @@
-import ModalDialog from "../../../components/Modal/ModalDialog";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
+import ModalDialog from "../../../components/Modal/ModalDialog";
 
 interface GenerateModalProps {
 	closeModal: () => void;
@@ -17,46 +17,47 @@ function GenerateModal({ closeModal }: GenerateModalProps) {
 		return;
 	};
 
-	// const fileElements = Array.map((item) => {
-	// 	return (
-	// 		<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-	// 			<input type="checkbox" />
-	// 		</div>
-	// 	);
-	// });
+	const mockArray = ["abc", "def", "ghi", "jkl", "mno", "pqr"];
 
 	return (
 		<ModalDialog className="w-[768px]" closeModal={closeModal} enableBackdropClose={true}>
-			<div id="modal-body" className="flex flex-col items-center justify-center w-full">
-				<h1 className="text-white">Generate</h1>
-				<p className="text-white">Select the documents you want to generate an argument for.</p>
-				<div className="flex flex-row items-center self-start justify-center gap-2">
-					<input id="select-all" type="checkbox" />
-					<label htmlFor="select-all" className="text-white">
-						Select all
-					</label>
+			{/* Contains all the elements of the body. */}
+			<div id="modal-body" className="flex flex-col items-center justify-center w-full pb-4 gap-7 px-14">
+				{/* Contains the header and subtext. */}
+				<div className="flex flex-col items-center">
+					<h1 className="text-xl text-white">Generate</h1>
+					<p className="text-white">Select the documents you want to generate an argument for.</p>
 				</div>
-				<div id="file-grid" className="grid grid-cols-3 gap-x-5 gap-y-6">
-					<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-						<input type="checkbox" />
+
+				{/* Contains the select-all checkbox and document grid. */}
+				<div className="flex flex-col gap-4">
+					{/* Contains the select-all checkbox and label. */}
+					<div className="flex flex-row items-center self-start justify-center gap-2 cursor-pointer">
+						<input id="select-all" type="checkbox" className="cursor-pointer" />
+						<label htmlFor="select-all" className="text-white cursor-pointer">
+							Select all
+						</label>
 					</div>
-					<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-						<input type="checkbox" />
-					</div>
-					<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-						<input type="checkbox" />
-					</div>
-					<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-						<input type="checkbox" />
-					</div>
-					<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-						<input type="checkbox" />
-					</div>
-					<div className="h-20 w-[204px] px-2.5 py-1 bg-white rounded-lg">
-						<input type="checkbox" />
+
+					{/* Contains the document grid. */}
+					<div id="file-grid" className="grid grid-cols-3 gap-x-5 gap-y-6">
+						{mockArray.map((item) => (
+							<div className="h-20 w-[204px] px-2.5 py-1.5 bg-white rounded-[10px] cursor-pointer">
+								<div className="flex flex-row w-full gap-2 cursor-pointer">
+									<input type="checkbox" className="cursor-pointer" />
+									<label className="text-sm cursor-pointer">{item}</label>
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
-				<ModalSpecialButton name="AI Argument Generation" type="button" onClick={handleLinkToJunCode} />
+
+				<ModalSpecialButton
+					name="AI Argument Generation"
+					type="button"
+					className="h-[68px]"
+					onClick={handleLinkToJunCode}
+				/>
 			</div>
 		</ModalDialog>
 	);

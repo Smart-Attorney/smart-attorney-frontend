@@ -21,7 +21,7 @@ function SelectField({ name, options, onChange }: SelectFieldProps) {
 			<select
 				id={name}
 				name={name}
-				className="h-8 px-2 overflow-hidden text-base rounded whitespace-nowrap text-ellipsis"
+				className="h-8 px-1 overflow-hidden text-base rounded whitespace-nowrap text-ellipsis"
 				onChange={onChange}
 			>
 				<option value="" className="text-base">

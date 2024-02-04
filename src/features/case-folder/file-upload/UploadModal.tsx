@@ -93,7 +93,7 @@ function UploadModal(props: UploadModalProps) {
 					<ModalButton
 						name="Upload"
 						type="button"
-						className="border-[5px]"
+						className="border-[5px] h-[68px]"
 						onClick={handleUploadFiles}
 						disabled={filesForUpload.length < 1 ? true : false}
 						style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
@@ -101,6 +101,7 @@ function UploadModal(props: UploadModalProps) {
 					<ModalSpecialButton
 						name="Translate"
 						type="button"
+						className="h-[68px]"
 						// onClick={}
 					/>
 				</div>

@@ -9,7 +9,7 @@ function ModalSpecialButton(props: ButtonProps) {
 			type={type}
 			disabled={disabled}
 			style={style}
-			className={`${className} modal-special-btn-border border-[5px] border-transparent h-[72px] w-full flex items-center justify-center rounded-xl`}
+			className={`${className} modal-special-btn-border border-[5px] border-transparent w-full flex items-center justify-center rounded-xl`}
 			onClick={onClick}
 		>
 			<span className="text-xl font-semibold text-white">{name}</span>
