@@ -1,4 +1,3 @@
-import { useLocation } from "react-router-dom";
 import { SmartAttorneyIcon } from "../../assets/smart-attorney-figma/sidebar";
 import {
 	Calendar_Active,
@@ -24,9 +23,6 @@ For the future, a much better method is to style the active-icon effect with CSS
 */
 
 function SidebarItemsContainer() {
-	const location = useLocation();
-	const currentPath = location.pathname;
-
 	return (
 		// This outer div keeps the buttons in place, even when scrolling past view height.
 		<div className="fixed">
@@ -38,32 +34,33 @@ function SidebarItemsContainer() {
 			<div className="flex flex-col items-center">
 				<RenderButton
 					path="/dashboard"
-					imageSrc={currentPath === "/dashboard" ? Dashboard_Active : Dashboard_Inactive}
+					imageActive={Dashboard_Active}
+					imageInactive={Dashboard_Inactive}
 					label="Dashboard"
 				/>
 				<RenderButton
 					path="/create-case"
-					imageSrc={currentPath === "/create-case" ? Projects_Active : Projects_Inactive}
+					imageActive={Projects_Active}
+					imageInactive={Projects_Inactive}
 					label="Create Case"
 				/>
 				<RenderButton
 					path="/calendar"
-					imageSrc={currentPath === "/calendar" ? Calendar_Active : Calendar_Inactive}
+					imageActive={Calendar_Active}
+					imageInactive={Calendar_Inactive}
 					label="Calendar"
 				/>
-				<RenderButton
-					path="/team"
-					imageSrc={currentPath === "/team" ? Team_Active : Team_Inactive}
-					label="Team"
-				/>
+				<RenderButton path="/team" imageActive={Team_Active} imageInactive={Team_Inactive} label="Team" />
 				<RenderButton
 					path="/notifications"
-					imageSrc={currentPath === "/notifications" ? Notifications_Active : Notifications_Inactive}
+					imageActive={Notifications_Active}
+					imageInactive={Notifications_Inactive}
 					label="Notifications"
 				/>
 				<RenderButton
 					path="/settings"
-					imageSrc={currentPath === "/settings" ? Settings_Active : Settings_Inactive}
+					imageActive={Settings_Active}
+					imageInactive={Settings_Inactive}
 					label="Settings"
 				/>
 			</div>

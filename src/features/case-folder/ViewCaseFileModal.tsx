@@ -17,13 +17,13 @@ function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 	 */
 
 	return (
-		<ModalDialog closeModal={props.closeModal} enableBackdropClose={true}>
+		<ModalDialog className="w-[768px]" closeModal={props.closeModal} enableBackdropClose={true}>
 			<div id="modal-body" className="flex flex-col items-center gap-4">
 				<h1 className="text-xl font-semibold text-white">{fileName}</h1>
 				<div className="w-full h-full rounded-md bg-gray-50">
 					<object height="100%" width="100%" data={fileURL}></object>
 				</div>
-				<ModalButton onClick={props.closeModal} name="Close" />
+				<ModalButton name="Close" type="button" className="h-16 border-[5px]" onClick={props.closeModal} />
 			</div>
 		</ModalDialog>
 	);

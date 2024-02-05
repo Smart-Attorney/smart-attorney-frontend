@@ -75,7 +75,7 @@ function UploadModal(props: UploadModalProps) {
 	};
 
 	return (
-		<ModalDialog closeModal={handleCloseUploadModal} enableBackdropClose={true}>
+		<ModalDialog className="w-[768px]" closeModal={handleCloseUploadModal} enableBackdropClose={true}>
 			<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
 				<Header />
 
@@ -92,12 +92,16 @@ function UploadModal(props: UploadModalProps) {
 				<div className="flex flex-row w-full gap-7">
 					<ModalButton
 						name="Upload"
+						type="button"
+						className="border-[5px] h-[68px]"
 						onClick={handleUploadFiles}
 						disabled={filesForUpload.length < 1 ? true : false}
 						style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
 					/>
 					<ModalSpecialButton
 						name="Translate"
+						type="button"
+						className="h-[68px]"
 						// onClick={}
 					/>
 				</div>

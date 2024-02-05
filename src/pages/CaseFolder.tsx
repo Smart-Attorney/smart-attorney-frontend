@@ -14,13 +14,14 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
+import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
-import { CASE_FOLDER_SORT_OPTIONS } from "../utils/constants";
+import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
 function CaseFolder() {
@@ -49,13 +50,14 @@ function CaseFolder() {
 			sex: null,
 			primaryLanguage: "",
 			countryOfCitizenship: "",
-			dateOfBirth: ""
-		} ,
+			dateOfBirth: "",
+		},
 	});
-	
+
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
-	const [uploadModalOpen, setUploadModalOpen] = useState(false);
-	const [fileModalOpen, setFileModalOpen] = useState(false);
+	const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
+	const [fileModalOpen, setFileModalOpen] = useState<boolean>(false);
+	const [generateModalOpen, setGenerateModalOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (folderId.current === undefined) {
@@ -78,6 +80,14 @@ function CaseFolder() {
 		fileId.current = id ? id : "";
 		fileUrl.current = url ? url : "";
 		setFileModalOpen(true);
+	};
+
+	const handleCloseGenerateModal = (): void => {
+		setGenerateModalOpen(false);
+	};
+
+	const toggleGenerateModal = (): void => {
+		setGenerateModalOpen((prev) => !prev);
 	};
 
 	const handleCloseViewFileModal = (): void => {
@@ -128,15 +138,6 @@ function CaseFolder() {
 		navigate("/dashboard");
 	};
 
-	// workaround ¯\_(ツ)_/¯
-	// make it open in a new tab; done
-	const handleLinkToJunCode = () => {
-		const url = "https://astonishing-speculoos-022482.netlify.app/build/?fbclid=IwAR0WX0m2AIq2B9_6SqCbUZptki9w_TGw-CGJSeh443nOtDes8TTX_0yOwSk";
-		window.open(url, "_blank")
-		return;
-	}
-
-
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-4">
@@ -149,14 +150,19 @@ function CaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={CASE_FOLDER_SORT_OPTIONS} />
+				<SortBar options={CASE_FOLDER} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
-					<PillButton name="Create" img={PenPurple} />
-					<PillButton name="Upload" img={UploadPurple} onClick={toggleUploadModal} />
-					<PillButton name="Translate" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" img={LightBulbPurple} onClick={handleLinkToJunCode}/>
-					<PillButton name="Save" img={SavePurple} onClick={handleSaveChanges} />
+					<PillButton name="Create" type="button" img={PenPurple} />
+					<PillButton name="Upload" type="button" img={UploadPurple} onClick={toggleUploadModal} />
+					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
+					<PillSpecialButton
+						name="Generate"
+						type="button"
+						img={LightBulbPurple}
+						onClick={toggleGenerateModal}
+					/>
+					<PillButton name="Save" type="button" img={SavePurple} onClick={handleSaveChanges} />
 				</div>
 			</SortBarWithButtons>
 
@@ -184,6 +190,8 @@ function CaseFolder() {
 					closeModal={handleCloseViewFileModal}
 				/>
 			)}
+
+			{generateModalOpen && <GenerateModal closeModal={handleCloseGenerateModal} />}
 		</SidebarLayout>
 	);
 }

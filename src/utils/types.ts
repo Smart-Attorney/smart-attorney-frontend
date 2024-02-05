@@ -1,10 +1,11 @@
 interface ButtonProps {
 	name: string;
-	className?: string;
-	onClick?: () => void;
+	type: "button" | "submit" | "reset";
+	img?: string;
 	disabled?: boolean;
 	style?: React.CSSProperties;
-	img?: string;
+	className?: string;
+	onClick?: () => void;
 }
 
 interface SortOptionsObj {
@@ -39,10 +40,10 @@ interface SexOptions {
 interface ClientInfoObj {
 	firstName: string;
 	lastName: string;
-	sex: SexOptions | null;
-	primaryLanguage: string;
-	countryOfCitizenship: string;
 	dateOfBirth: string;
+	sex: SexOptions | null;
+	countryOfCitizenship: string;
+	primaryLanguage: string;
 }
 
 interface CaseFolderObj {
@@ -57,4 +58,13 @@ interface CaseFolderObj {
 	clientInfo: ClientInfoObj;
 }
 
-export type { ButtonProps, CaseFileObj, CaseFolderLabelObj, CaseFolderObj, ClientInfoObj, FileForUploadObj, SortOptionsObj };
+export type {
+	ButtonProps,
+	CaseFileObj,
+	CaseFolderLabelObj,
+	CaseFolderObj,
+	ClientInfoObj,
+	FileForUploadObj,
+	SexOptions,
+	SortOptionsObj,
+};

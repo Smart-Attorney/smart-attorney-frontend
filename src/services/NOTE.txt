@@ -1,3 +1,18 @@
 Firebase api should be run from the backend.
-
 LocalStorage methods are to be replaced by backend database.
+
+
+firebase file storage is an external service
+localstorage acts as mock database
+
+request from client to server
+  routehandler <==> controller <==> service <==> dao
+
+ - mockapi sends request from frontend to mockbackend with data
+ - routehandler passes data to a controller
+ - controller calls service methods
+ - services contain all business logic
+ - dao retrieves and sends data to database
+
+reference
+ - https://thekenyandev.com/blog/routes-controllers-services-and-models-daos-in-a-nodejs-api-layered-architecture-in-depth/#route-handlers
