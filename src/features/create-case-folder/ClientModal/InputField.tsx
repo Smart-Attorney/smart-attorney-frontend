@@ -14,7 +14,7 @@ function InputField({ name, type, onChange }: InputFieldProps) {
 				id={name}
 				name={name}
 				type={type}
-				className="h-8 px-2 overflow-hidden text-base rounded text-ellipsis whitespace-nowrap"
+				className="h-8 px-2 overflow-hidden text-base bg-white rounded text-ellipsis whitespace-nowrap"
 				onChange={onChange}
 			/>
 		</div>
