@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import StyledBackground from "../layouts/StyledBackground";
 /* temporary workaround */
-import { mockUser } from "../utils/mock-user";
+import { mockUser } from "../services/mock-sql/mock-user";
 
-function Signin() {
+function SignIn() {
 	const navigate = useNavigate();
 
 	const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -107,4 +107,4 @@ function Signin() {
 	);
 }
 
-export default Signin;
+export default SignIn;
