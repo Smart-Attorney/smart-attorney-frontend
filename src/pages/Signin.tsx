@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import { signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
+import { CurrentUserContext } from "../providers/CurrentUserProvider";
 
 function SignIn() {
+	const { setCurrentUser } = useContext(CurrentUserContext);
 	const navigate = useNavigate();
-
 	const [credentials, setCredentials] = useState({ email: "", password: "" });
 
 	const handleInputChange = (event: { target: { value: any; name: any } }) => {
@@ -23,6 +24,7 @@ function SignIn() {
 		try {
 			const response = await signInWithEmailAndPassword(credentials);
 			if (response) {
+				setCurrentUser(response);
 				navigate("/dashboard");
 			}
 		} catch (error) {

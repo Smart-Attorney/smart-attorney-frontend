@@ -13,7 +13,6 @@ import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
 // import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
 
-
 function Dashboard() {
 	const db = new Database();
 	const navigate = useNavigate();
@@ -32,10 +31,9 @@ function Dashboard() {
 		} else {
 			db.initNewArray();
 			setCaseFolders([]);
-    }
+		}
 
-    // getCaseFolders();
-
+		// getCaseFolders();
 	}, []);
 
 	const newCaseBtnGradient = {

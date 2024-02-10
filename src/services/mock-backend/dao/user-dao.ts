@@ -35,7 +35,17 @@ class UserDAO extends DAO {
 		if (!matchEmail) return null;
 
 		if (matchEmail === matchPassword) {
-			return matchEmail;
+			const userArray: Users[] = super.getArray(this.USER_STORAGE_KEY);
+			const userId = matchEmail;
+			for (let i = 0; i < userArray.length; i++) {
+				if (userArray[i].id === userId) {
+					return {
+						id: userArray[i].id,
+						firstName: userArray[i].first_name,
+						lastName: userArray[i].last_name,
+					};
+				}
+			}
 		}
 		return null;
 	}
