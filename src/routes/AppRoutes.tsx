@@ -4,6 +4,7 @@ import CreateCaseFolder from "../pages/CreateCaseFolder";
 import Dashboard from "../pages/Dashboard";
 import Error from "../pages/Error";
 import Home from "../pages/Home";
+import NotFound from "../pages/NotFound";
 import Register from "../pages/Register";
 import SignIn from "../pages/SignIn";
 import Test from "../pages/Test";
@@ -20,7 +21,11 @@ function AppRoutes() {
 				<Route path="/dashboard" element={<Dashboard />} />
 				<Route path="/dashboard/:id" element={<CaseFolder />} />
 				<Route path="/create-case" element={<CreateCaseFolder />} />
-				<Route path="/*" element={<Error />} />
+				<Route path="/calendar" element={<Error />} />
+				<Route path="/notifications" element={<Error />} />
+				<Route path="/settings" element={<Error />} />
+				<Route path="/team" element={<Error />} />
+				<Route path="/*" element={<NotFound />} />
 				<Route path="/test" element={<Test />} />
 			</Routes>
 		</>
