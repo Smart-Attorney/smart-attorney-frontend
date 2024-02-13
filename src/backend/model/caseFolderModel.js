@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const fileSchema = require('../Schema/fileSchema')
 const Schema = mongoose.Schema
 
 const caseFolderSchema = new Schema({
@@ -7,11 +7,11 @@ const caseFolderSchema = new Schema({
         type: String,
         required: true
     },
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    // owner: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // },
     usersWithAccess: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
