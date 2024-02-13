@@ -10,11 +10,11 @@ const getCaseFolders = async (req,res) => {
 
 const getCaseFolder = async (req,res) => {
     const { id } = req.params
-    const caseFolder = await CaseFolder.findById(id)
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'No such caseFolder'})
     }
+    const caseFolder = await CaseFolder.findById(id)
 
     if(!caseFolder) {
         return res.status(404).json({error: 'No such caseFolder'})
@@ -56,12 +56,37 @@ const createCaseFolder = async (req, res) => {
 }
 
 // UPDATE a caseFolder
-
+const updateCaseFolder = async (req,res) => {
+    const { id } = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such caseFolder'})
+    }
+    const caseFolder = await CaseFolder.findOneAndUpdate({_id: id}, {
+        ...req.body
+    })
+    if(!caseFolder) {
+        return res.status(400).json({error: "no such Case Folder"})
+    }
+    return res.status(200).json(caseFolder)
+}
 // DELETE a caseFolder
+const deleteCaseFolder = async (req,res) => {
+    const { id } = req.params
 
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such Case Folder'})
+    }
+    const caseFolder = await CaseFolder.findOneAndDelete({_id: id})
+    if(!caseFolder) {
+        return res.status(400).json({error: "no such Case Folder"})
+    }
+    return res.status(200).json(caseFolder)
+}
 
 module.exports = {
     getCaseFolder,
     getCaseFolders,
-    createCaseFolder
+    createCaseFolder,
+    deleteCaseFolder,
+    updateCaseFolder
 }

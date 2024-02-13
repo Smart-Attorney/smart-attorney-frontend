@@ -1,6 +1,8 @@
 const express = require('express')
 const multer = require('multer');
 const {
+    updateCaseFolder,
+    deleteCaseFolder,
     getCaseFolder,
     getCaseFolders,
     createCaseFolder
@@ -34,13 +36,9 @@ router.get('/:id', getCaseFolder)
 router.post('/', upload.array('files'), createCaseFolder)
 
 // DELETE a new case folder
-router.delete('/:id', (req, res) => {
-    res.json({mssg: 'DELETE a case folder'})
-}) 
+router.delete('/:id', deleteCaseFolder)
 
 // UPDATE a new case folder
-router.patch('/:id', (req, res) => {
-    res.json({mssg: 'UPDATE a new case folder'})
-}) 
+router.patch('/:id', updateCaseFolder)
 
 module.exports = router
