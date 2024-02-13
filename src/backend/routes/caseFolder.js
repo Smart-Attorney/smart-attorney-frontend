@@ -1,44 +1,37 @@
 const express = require('express')
 const multer = require('multer');
+const {
+    getCaseFolder,
+    getCaseFolders,
+    createCaseFolder
+} = require('../controllers/caseFolderController')
 const CaseFolder = require('../model/caseFolderModel')
 
 const router = express.Router()
 
-// GET all case folders
-router.get('/', (req,res) => {
-    res.json({mssg: 'GET all case folders'})
-})
-
-// GET a single case folder
-router.get('/:id', (req,res) => {
-    res.json({mssg: 'GET a single case folder'})
-})
-
-// POST a new case folder
-router.post('/', upload.array('files'), async (req, res) => {
-    // Extract data from the request body
-    const userId = req.user._id;
-    const {Title, FirstName, LastName, Language, DOB, Notes } = req.body;
-    try {
-        const files = req.files.map(file => ({
-            filename: file.filename,
-            size: file.size
-        }));
-        const caseFolder = await CaseFolder.create({
-            Title,
-            FirstName,
-            LastName,
-            Language,
-            DOB,
-            Notes,
-            owner: userId, // Set the owner of the folder
-            files
-        });
-        res.status(200).json(caseFolder);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+// Define multer storage and file upload settings
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Set the destination folder where files will be stored
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        // Set the file name
+        cb(null, file.originalname)
     }
 });
+
+// Initialize multer upload instance
+const upload = multer({ storage: storage });
+
+// GET all case folders
+router.get('/', getCaseFolders)
+
+// GET a single case folder
+router.get('/:id', getCaseFolder)
+
+// POST a new case folder
+router.post('/', upload.array('files'), createCaseFolder)
 
 // DELETE a new case folder
 router.delete('/:id', (req, res) => {
