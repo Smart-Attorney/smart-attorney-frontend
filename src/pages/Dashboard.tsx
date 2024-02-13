@@ -11,6 +11,7 @@ import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Database from "../services/database";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
+// import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
 
 function Dashboard() {
 	const db = new Database();
@@ -31,6 +32,8 @@ function Dashboard() {
 			db.initNewArray();
 			setCaseFolders([]);
 		}
+
+		// getCaseFolders();
 	}, []);
 
 	const newCaseBtnGradient = {
