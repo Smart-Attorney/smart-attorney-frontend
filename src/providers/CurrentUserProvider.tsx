@@ -4,7 +4,7 @@ interface CurrentUserProviderProps {
 	children: React.ReactNode;
 }
 
-interface User {
+interface CurrentUser {
 	id: string;
 	firstName: string;
 	lastName: string;
@@ -12,7 +12,7 @@ interface User {
 
 interface CurrenUserContextType {
 	getCurrentUser: () => any;
-	setCurrentUser: (user: User) => void;
+	setCurrentUser: (user: CurrentUser) => void;
 }
 
 export const CurrentUserContext = createContext<CurrenUserContextType>({
@@ -27,7 +27,7 @@ export function CurrentUserProvider({ children }: CurrentUserProviderProps) {
 		return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) as string);
 	};
 
-	const setCurrentUser = (user: User) => {
+	const setCurrentUser = (user: CurrentUser) => {
 		localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 	};
 
