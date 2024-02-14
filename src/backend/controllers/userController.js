@@ -1,20 +1,21 @@
+
 const express = require('express');
 const User = require('../model/userModel');
 
 const router = express.Router();
 
 // GET all users
-router.get('/', async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().sort({createdAt: -1});
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+};
 
 // GET a single user by ID
-router.get('/:id', async (req, res) => {
+const getSingleUser = async (req,res) => {
     const { id } = req.params;
     try {
         const user = await User.findById(id);
@@ -25,27 +26,37 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
 // POST a new user (registration)
-router.post('/', async (req, res) => {
-    const { Username, Password } = req.body;
+const registration = async (req, res) => {
+    const { email, password } = req.body;
     try {
-        // Check if the username already exists in the database
-        const existingUser = await User.findOne({ Username });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ error: 'Username already exists' });
         }
-        const user = await User.create({ Username, Password });
+        const user = await User.create({ email, password });
         res.status(200).json(user);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        console.error('Error in registration:', error);
+
+        let errorMessage = 'Registration failed. Please try again.';
+
+        // Check if it's a MongoDB validation error
+        if (error.name === 'ValidationError') {
+            errorMessage = 'Validation error. Please check your input.';
+        }
+
+        res.status(400).json({ error: errorMessage });
     }
-});
+};
 
 // DELETE a user by ID
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
+
+const deleteUserByID = async (req,res) => {
+    const { id } = req.params
+
     try {
         const deletedUser = await User.findByIdAndDelete(id);
         if (!deletedUser) {
@@ -55,14 +66,18 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
 // UPDATE a user by ID
-router.patch('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { Username, Password } = req.body;
+
+const updateUserInfo = async (req,res) => {
+    const { id } = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such user'})
+    }
+    const { email, passowrd } = req.body;
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, { Username, Password }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(id, { email, password }, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -70,6 +85,12 @@ router.patch('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
-module.exports = router;
+module.exports = {
+    deleteUserByID,
+    updateUserInfo,
+    getAllUsers,
+    getSingleUser,
+    registration
+}
