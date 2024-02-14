@@ -1,20 +1,21 @@
+
 const express = require('express');
 const User = require('../model/userModel');
 
 const router = express.Router();
 
 // GET all users
-router.get('/', async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().sort({createdAt: -1});
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+};
 
 // GET a single user by ID
-router.get('/:id', async (req, res) => {
+const getSingleUser = async (req,res) => {
     const { id } = req.params;
     try {
         const user = await User.findById(id);
@@ -25,10 +26,10 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
 // POST a new user (registration)
-router.post('/', async (req, res) => {
+const registration = async (req, res) => {
     const { Username, Password } = req.body;
     try {
         // Check if the username already exists in the database
@@ -41,11 +42,13 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-});
+};
 
 // DELETE a user by ID
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
+
+const deleteUserByID = async (req,res) => {
+    const { id } = req.params
+
     try {
         const deletedUser = await User.findByIdAndDelete(id);
         if (!deletedUser) {
@@ -55,11 +58,15 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
 // UPDATE a user by ID
-router.patch('/:id', async (req, res) => {
-    const { id } = req.params;
+
+const updateUserInfo = async (req,res) => {
+    const { id } = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such user'})
+    }
     const { Username, Password } = req.body;
     try {
         const updatedUser = await User.findByIdAndUpdate(id, { Username, Password }, { new: true });
@@ -70,6 +77,12 @@ router.patch('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
-module.exports = router;
+module.exports = {
+    deleteUserByID,
+    updateUserInfo,
+    getAllUsers,
+    getSingleUser,
+    registration
+}

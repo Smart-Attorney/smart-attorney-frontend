@@ -1,43 +1,21 @@
-const express = require('express')
-const User = require('../model/userModel')
+const express = require('express');
+const { getAllUsers, getSingleUser, updateUserInfo, deleteUserByID, registration } = require('../controllers/userController');
 
-const router = express.Router()
+const router = express.Router();
 
 // GET all users
-router.get('/', (req,res) => {
-    res.json({mssg: 'GET all users'})
-})
+router.get('/', getAllUsers);
 
 // GET a single user
-router.get('/:id', (req,res) => {
-    res.json({mssg: 'GET a single user'})
-})
+router.get('/:id', getSingleUser);
 
 // POST a new user, AKA registration
-router.post('/', async (req, res) => {
-    const { Username, Password } = req.body;
-    
-    try {
-        // Check if the username already exists in the database
-        const existingUser = await User.findOne({ Username });
-        if (existingUser) {
-            return res.status(400).json({ error: 'Username already exists' });
-        }
-        const user = await User.create({ Username, Password });
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
+router.post('/', registration);
 
-// DELETE a new case folder
-router.delete('/:id', (req, res) => {
-    res.json({mssg: 'DELETE a case folder'})
-}) 
+// DELETE a user by ID
+router.delete('/:id', deleteUserByID);
 
-// UPDATE a new case folder
-router.patch('/:id', (req, res) => {
-    res.json({mssg: 'UPDATE a new case folder'})
-}) 
+// UPDATE a user by ID
+router.patch('/:id', updateUserInfo);
 
-module.exports = router
+module.exports = router;
