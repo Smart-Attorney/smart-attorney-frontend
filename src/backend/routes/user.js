@@ -10,7 +10,7 @@ router.get('/', getAllUsers);
 router.get('/:id', getSingleUser);
 
 // POST a new user, AKA registration
-router.post('/', registration);
+router.post('/registration', registration);
 
 // DELETE a user by ID
 router.delete('/:id', deleteUserByID);
