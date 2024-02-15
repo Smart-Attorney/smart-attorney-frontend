@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const caseFolderSchema = require('../Schema/caseFolderSchema')
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -15,7 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        required: true
+        reqired: true
     },
     folders: [caseFolderSchema] 
 })

@@ -7,15 +7,15 @@ const router = express.Router();
 router.get('/', getAllUsers);
 
 // GET a single user
-router.get('/user/:id', getSingleUser);
+router.get('/:id', getSingleUser);
 
 // POST a new user, AKA registration
-router.post('/user/registration', registration);
+router.post('/registration', registration);
 
 // DELETE a user by ID
-router.delete('/user/:id', deleteUserByID);
+router.delete('/:id', deleteUserByID);
 
 // UPDATE a user by ID
-router.patch('/user/:id', updateUserInfo);
+router.patch('/:id', updateUserInfo);
 
 module.exports = router;
