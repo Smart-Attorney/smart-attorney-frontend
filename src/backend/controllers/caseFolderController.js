@@ -1,13 +1,13 @@
 const CaseFolder = require('../model/caseFolderModel')
 const mongoose = require('mongoose')
-// GET all caseFolders
 
+// GET all caseFolders
 const getCaseFolders = async (req,res) => {
     const caseFolders = await CaseFolder.find({}).sort({createdAt: -1})
     res.status(200).json(caseFolders)
 }
-// GET a single caseFolder
 
+// GET a single caseFolder
 const getCaseFolder = async (req,res) => {
     const { id } = req.params
 
@@ -25,8 +25,8 @@ const getCaseFolder = async (req,res) => {
 
 // CREATE a new caseFolder
 const createCaseFolder = async (req, res) => {
-    // const { Title, Owner, FirstName, LastName, Language, DOB, Notes } = req.body;
-    const { Title, FirstName, LastName, Language, DOB, Notes } = req.body;
+    const { Title, Owner, FirstName, LastName, Language, DOB, Notes } = req.body;
+    // const { Title, FirstName, LastName, Language, DOB, Notes } = req.body;
     try {
         const existingCaseFolder = await CaseFolder.findOne({ Title });
         if (existingCaseFolder) {
@@ -39,9 +39,9 @@ const createCaseFolder = async (req, res) => {
                 size: file.size
             }));
         }
-
         const caseFolder = await CaseFolder.create({
             Title,
+            Owner,
             FirstName,
             LastName,
             Language,
