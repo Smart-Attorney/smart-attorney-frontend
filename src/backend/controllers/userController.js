@@ -30,13 +30,13 @@ const getSingleUser = async (req,res) => {
 
 // POST a new user (registration)
 const registration = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, firstName, lastName } = req.body;
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ error: 'Username already exists' });
         }
-        const user = await User.create({ email, password });
+        const user = await User.create({ email, password, firstName, lastName });
         res.status(200).json(user);
     } catch (error) {
         console.error('Error in registration:', error);
@@ -47,7 +47,6 @@ const registration = async (req, res) => {
         if (error.name === 'ValidationError') {
             errorMessage = 'Validation error. Please check your input.';
         }
-
         res.status(400).json({ error: errorMessage });
     }
 };
