@@ -9,7 +9,7 @@ class UserService {
 		if (emailFieldEmpty) return null;
 		if (passwordFieldEmpty) return null;
 
-		const foundUser = await UserDAO.findUserBySignInCredentials(data);
+		const foundUser = await UserDAO.verifyUserCredentials(data);
 		return foundUser;
 	}
 }

@@ -23,8 +23,9 @@ function SignIn() {
 	const handleSignIn = async () => {
 		try {
 			const response = await signInWithEmailAndPassword(credentials);
-			if (response) {
-				setCurrentUser(response);
+			const data = await response.json();
+			if (data) {
+				setCurrentUser(data);
 				navigate("/dashboard");
 			}
 		} catch (error) {

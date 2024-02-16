@@ -27,7 +27,7 @@ class UserDAO extends DAO {
 		return null;
 	}
 
-	static async findUserBySignInCredentials(data: SignInCredentialsDTO) {
+	static async verifyUserCredentials(data: SignInCredentialsDTO) {
 		const matchEmail = await this.findUserByEmail(data.email);
 		const matchPassword = await this.findUserByPassword(data.password);
 

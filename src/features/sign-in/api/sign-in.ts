@@ -5,7 +5,11 @@ export interface SignInCredentialsDTO {
 	password: string;
 }
 
+const mockApi = async (data: SignInCredentialsDTO) => {
+	const request = new Request("/signin", { method: "POST", body: JSON.stringify(data) });
+	return await UserController.verifyUser(request);
+};
+
 export const signInWithEmailAndPassword = async (data: SignInCredentialsDTO) => {
-	// return axios.post("/signin", data); for when there is a dedicated backend
-	return await UserController.verifyUser(data);
+	return await mockApi(data); // replace this when using dedicated backend
 };
