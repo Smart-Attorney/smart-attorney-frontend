@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const fileSchema = require('../Schema/fileSchema')
+const fileSchema = require('./fileSchema')
 const Schema = mongoose.Schema
 
 const caseFolderSchema = new Schema({
