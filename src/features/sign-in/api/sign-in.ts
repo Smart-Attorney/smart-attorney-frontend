@@ -1,12 +1,13 @@
 import UserController from "../../../services/mock-backend/controller/user-controller";
 
 export interface SignInCredentialsDTO {
-	email: string;
+	companyEmail: string;
 	password: string;
 }
 
 const mockApi = async (data: SignInCredentialsDTO) => {
-	const request = new Request("/signin", { method: "POST", body: JSON.stringify(data) });
+	const options = { method: "POST", body: JSON.stringify(data) };
+	const request = new Request("/signin", options);
 	return await UserController.verifyUser(request);
 };
 

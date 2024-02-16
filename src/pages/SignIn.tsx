@@ -1,23 +1,22 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
-import { signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
+import { SignInCredentialsDTO, signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
 import { CurrentUserContext } from "../providers/CurrentUserProvider";
 
 function SignIn() {
 	const { setCurrentUser } = useContext(CurrentUserContext);
 	const navigate = useNavigate();
-	const [credentials, setCredentials] = useState({ email: "", password: "" });
+	const [credentials, setCredentials] = useState<SignInCredentialsDTO>({ companyEmail: "", password: "" });
 
-	const handleInputChange = (event: { target: { value: any; name: any } }) => {
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-		setCredentials((prev) => {
-			return {
-				...prev,
-				[name]: value,
-			};
-		});
+
+		setCredentials((prev) => ({
+			...prev,
+			[name]: value,
+		}));
 	};
 
 	const handleSignIn = async () => {
@@ -57,15 +56,15 @@ function SignIn() {
 						</div>
 
 						<div className="flex flex-col w-full mb-6">
-							<label className="text-white" htmlFor="email">
+							<label className="text-white" htmlFor="companyEmail">
 								Company Email
 							</label>
 							<input
 								className="h-8 px-3"
-								id="email"
+								id="companyEmail"
 								type="email"
-								name="email"
-								value={credentials.email}
+								name="companyEmail"
+								value={credentials.companyEmail}
 								onChange={handleInputChange}
 							/>
 						</div>

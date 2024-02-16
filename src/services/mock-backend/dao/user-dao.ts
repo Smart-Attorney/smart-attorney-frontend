@@ -1,24 +1,23 @@
-import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
+import { RegisterCredentialsDTO } from "../../../features/register/api/register";
+import { nanoid } from "../../../lib/nanoid";
 import { Users } from "../../mock-sql/models";
 import DAO from "./dao";
 
 class UserDAO extends DAO {
 	static USER_STORAGE_KEY = "users";
 
-	static async findUserByEmail(email: string) {
-		const userArray: Users[] = super.getArray(this.USER_STORAGE_KEY);
-
+	static async getUserIdByCompanyEmail(companyEmail: string) {
+		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0; i < userArray.length; i++) {
-			if (userArray[i].email === email) {
+			if (userArray[i].company_email === companyEmail) {
 				return userArray[i].id;
 			}
 		}
 		return null;
 	}
 
-	static async findUserByPassword(password: string) {
-		const userArray: Users[] = super.getArray(this.USER_STORAGE_KEY);
-
+	static async getUserIdByPassword(password: string) {
+		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0; i < userArray.length; i++) {
 			if (userArray[i].password === password) {
 				return userArray[i].id;
@@ -27,27 +26,30 @@ class UserDAO extends DAO {
 		return null;
 	}
 
-	static async verifyUserCredentials(data: SignInCredentialsDTO) {
-		const matchEmail = await this.findUserByEmail(data.email);
-		const matchPassword = await this.findUserByPassword(data.password);
-
-		if (!matchPassword) return null;
-		if (!matchEmail) return null;
-
-		if (matchEmail === matchPassword) {
-			const userArray: Users[] = super.getArray(this.USER_STORAGE_KEY);
-			const userId = matchEmail;
-			for (let i = 0; i < userArray.length; i++) {
-				if (userArray[i].id === userId) {
-					return {
-						id: userArray[i].id,
-						firstName: userArray[i].first_name,
-						lastName: userArray[i].last_name,
-					};
-				}
+	static async getUserById(id: string) {
+		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
+		for (let i = 0; i < userArray.length; i++) {
+			if (userArray[i].id === id) {
+				return userArray[i];
 			}
 		}
 		return null;
+	}
+
+	static async createUser(data: RegisterCredentialsDTO) {
+		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
+		const newUser: Users = {
+			id: nanoid(32),
+			first_name: data.firstName,
+			last_name: data.lastName,
+			firm_name: data.firmName,
+			company_email: data.companyEmail,
+			email: "",
+			password: data.password,
+		};
+		const updatedArray = [...userArray, newUser];
+		super.setArray(this.USER_STORAGE_KEY, updatedArray);
+		return newUser;
 	}
 }
 
