@@ -9,8 +9,9 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Database from "../services/database";
-import { DASHBOARD_SORT_OPTIONS } from "../utils/constants";
+import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
+// import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
 
 function Dashboard() {
 	const db = new Database();
@@ -31,6 +32,8 @@ function Dashboard() {
 			db.initNewArray();
 			setCaseFolders([]);
 		}
+
+		// getCaseFolders();
 	}, []);
 
 	const newCaseBtnGradient = {
@@ -48,11 +51,7 @@ function Dashboard() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar
-					options={DASHBOARD_SORT_OPTIONS}
-					unsortedArray={caseFolders}
-					setSortedArray={setCaseFolders}
-				/>
+				<SortBar options={DASHBOARD} unsortedArray={caseFolders} setSortedArray={setCaseFolders} />
 
 				{/* New Case Button */}
 				<button

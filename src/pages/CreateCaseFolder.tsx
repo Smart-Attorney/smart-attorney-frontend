@@ -12,6 +12,7 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
+import ClientInfoModal from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
 import PageHeader from "../layouts/PageHeader";
@@ -20,10 +21,8 @@ import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
-import { NEW_CASE_SORT_OPTIONS } from "../utils/constants";
-import { CaseFileObj, FileForUploadObj, ClientInfoObj } from "../utils/types";
-import ClientInfoModal from "../features/create-case-folder/ClientInfoModal";
-
+import { NEW_CASE } from "../utils/constants/sort-options";
+import { CaseFileObj, ClientInfoObj, FileForUploadObj } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -32,7 +31,7 @@ function CreateCaseFolder() {
 	const caseFolderId = useRef("");
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
-	
+
 	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 
@@ -46,7 +45,7 @@ function CreateCaseFolder() {
 		primaryLanguage: "",
 		countryOfCitizenship: "",
 		dateOfBirth: "",
-	})
+	});
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
@@ -67,7 +66,7 @@ function CreateCaseFolder() {
 
 	const handleCloseClientInfoModal = () => {
 		setClientInfoModalOpen(false);
-	}
+	};
 
 	// const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
 	// 	console.log(event);
@@ -150,7 +149,6 @@ function CreateCaseFolder() {
 		return uploadedFiles;
 	};
 
-
 	const handleCreateCaseFolder = async (): Promise<void> => {
 		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
@@ -176,11 +174,10 @@ function CreateCaseFolder() {
 			files: uploadedFilesArray,
 			clientInfo: clientInfo,
 		};
-	
+
 		db.addNewCaseFolder(newCaseFolderObject);
 		navigate("/dashboard");
 	};
-	
 
 	return (
 		<SidebarLayout>
@@ -203,14 +200,14 @@ function CreateCaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={NEW_CASE_SORT_OPTIONS} />
+				<SortBar options={NEW_CASE} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
-					<PillButton name="Create" img={PenPurple} />
-					<PillButton name="Upload" img={UploadPurple} onClick={handleOpenFileBrowser} />
-					<PillButton name="Translate" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" img={LightBulbPurple} />
-					<PillButton name="Create Case" img={FolderPurple} onClick={handleCreateCaseFolder} />
+					<PillButton name="Create" type="button" img={PenPurple} />
+					<PillButton name="Upload" type="button" img={UploadPurple} onClick={handleOpenFileBrowser} />
+					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
+					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} />
+					<PillButton name="Create Case" type="button" img={FolderPurple} onClick={handleCreateCaseFolder} />
 				</div>
 			</SortBarWithButtons>
 
@@ -231,11 +228,7 @@ function CreateCaseFolder() {
 				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
 			/>
 
-			{clientInfoModalOpen && (
-				<ClientInfoModal
-					closeModal={handleCloseClientInfoModal}
-				/>
-			)}
+			{clientInfoModalOpen && <ClientInfoModal closeModal={handleCloseClientInfoModal} />}
 		</SidebarLayout>
 	);
 }

@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
+import { signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
-/* temporary workaround */
-import { mockUser } from "../utils/mock-user";
+import { CurrentUserContext } from "../providers/CurrentUserProvider";
 
-function Signin() {
+function SignIn() {
+	const { setCurrentUser } = useContext(CurrentUserContext);
 	const navigate = useNavigate();
-
 	const [credentials, setCredentials] = useState({ email: "", password: "" });
 
 	const handleInputChange = (event: { target: { value: any; name: any } }) => {
@@ -20,20 +20,16 @@ function Signin() {
 		});
 	};
 
-	const handleSignIn = () => {
-		/* temporary workaround */
-		const passwordMatch = credentials.password === mockUser.password;
-		const emailMatch = credentials.email === mockUser.email;
-		if (!passwordMatch) {
-			alert("Incorrect login information.");
-			return;
+	const handleSignIn = async () => {
+		try {
+			const response = await signInWithEmailAndPassword(credentials);
+			if (response) {
+				setCurrentUser(response);
+				navigate("/dashboard");
+			}
+		} catch (error) {
+			alert(error);
 		}
-		if (!emailMatch) {
-			alert("Incorrect login information.");
-			return;
-		}
-
-		navigate("/dashboard");
 	};
 
 	const handleRedirectToRegister = () => navigate("/register");
@@ -107,4 +103,4 @@ function Signin() {
 	);
 }
 
-export default Signin;
+export default SignIn;
