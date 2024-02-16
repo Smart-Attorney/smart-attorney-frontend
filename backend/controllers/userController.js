@@ -1,6 +1,6 @@
-
 const express = require('express');
 const User = require('../model/userModel');
+const mongoose = require('mongoose')
 
 const router = express.Router();
 
@@ -68,15 +68,14 @@ const deleteUserByID = async (req,res) => {
 }
 
 // UPDATE a user by ID
-
 const updateUserInfo = async (req,res) => {
     const { id } = req.params
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'No such user'})
     }
-    const { email, passowrd } = req.body;
+    const { email, password, firstName, lastName } = req.body;
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, { email, password }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(id, { email, password, firstName, lastName }, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' });
         }
