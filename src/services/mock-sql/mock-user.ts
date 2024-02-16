@@ -6,7 +6,7 @@ class MockUser {
 		first_name: "Jane",
 		last_name: "Doe",
 		firm_name: "",
-		company_email: "",
+		company_email: "lawyer@email.com",
 		email: "lawyer@email.com",
 		password: "password123",
 	};
