@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../model/userModel');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
@@ -36,7 +37,10 @@ const registration = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: 'Username already exists' });
         }
-        const user = await User.create({ email, password, firstName, lastName });
+        const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt round
+
+        // Create a new user with the hashed password
+        const user = await User.create({ email, password: hashedPassword, firstName, lastName });
         res.status(200).json(user);
     } catch (error) {
         console.error('Error in registration:', error);
@@ -50,7 +54,35 @@ const registration = async (req, res) => {
         res.status(400).json({ error: errorMessage });
     }
 };
+// POST a user (login)
 
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Check if user exists
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({ error: 'no user' });
+        }
+
+        // Compare passwords
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            console.log('Plain text password:', password);
+            console.log('Stored hashed password:', user.password);
+            return res.status(401).json({ error: 'Password no match' });
+        }
+
+        // Passwords match, authentication successful
+        return res.status(200).json({ message: 'Login successful', user });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
 // DELETE a user by ID
 
 const deleteUserByID = async (req,res) => {
@@ -90,5 +122,6 @@ module.exports = {
     updateUserInfo,
     getAllUsers,
     getSingleUser,
-    registration
+    registration,
+    login
 }

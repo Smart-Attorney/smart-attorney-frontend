@@ -11,7 +11,7 @@ import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import Database from "../services/database";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
-// import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
+import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
 
 function Dashboard() {
 	const db = new Database();
@@ -25,6 +25,14 @@ function Dashboard() {
 	 * Empty dependency array since it should only run once on initial load.
 	 */
 	useEffect(() => {
+		// const fetchCaseFolders = async () => {
+		// 	const response = await fetch('localhost:4000/api/caseFolders')
+		// 	const json = await response.json()
+
+		// 	if (response.ok) {
+		// 		setCaseFolders(json)
+		// 	}
+		// }
 		const caseArray = db.getCaseArray();
 		if (caseArray !== null) {
 			setCaseFolders(caseArray);
@@ -32,8 +40,8 @@ function Dashboard() {
 			db.initNewArray();
 			setCaseFolders([]);
 		}
-
-		// getCaseFolders();
+		// fetchCaseFolders()
+		getCaseFolders();
 	}, []);
 
 	const newCaseBtnGradient = {
