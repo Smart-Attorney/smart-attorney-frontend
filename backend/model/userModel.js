@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const caseFolderSchema = require('../Schema/caseFolderSchema')
 
 const userSchema = new mongoose.Schema({
-    email: {
+    companyEmail: {
         type: String,
         reqired: true
     },

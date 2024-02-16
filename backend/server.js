@@ -1,14 +1,17 @@
 require('dotenv').config()
 
 const express = require('express')
+const cors = require('cors')
 const mongoose = require('mongoose') 
 const caseFolderRoutes = require('./routes/caseFolder')
 const userRoutes = require('./routes/user')
+
 // express app
 const app = express()
 
 // middleware
 app.use(express.json())
+app.use(cors({origin:"*"}))
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)

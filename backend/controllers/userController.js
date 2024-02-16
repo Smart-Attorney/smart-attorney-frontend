@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../model/userModel');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
@@ -31,16 +31,17 @@ const getSingleUser = async (req,res) => {
 
 // POST a new user (registration)
 const registration = async (req, res) => {
-    const { email, password, firstName, lastName } = req.body;
+    const { companyEmail, password, firstName, lastName } = req.body;
     try {
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ companyEmail });
         if (existingUser) {
             return res.status(400).json({ error: 'Username already exists' });
         }
-        const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt round
+        // const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt round
 
         // Create a new user with the hashed password
-        const user = await User.create({ email, password: hashedPassword, firstName, lastName });
+        // const user = await User.create({ companyEmail, password: hashedPassword, firstName, lastName });
+        const user = await User.create({ companyEmail, password, firstName, lastName });
         res.status(200).json(user);
     } catch (error) {
         console.error('Error in registration:', error);
@@ -54,24 +55,28 @@ const registration = async (req, res) => {
         res.status(400).json({ error: errorMessage });
     }
 };
-// POST a user (login)
 
+// POST a user (login)
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const {companyEmail, password} = req.body
+    let passwordMatch = false
 
     try {
         // Check if user exists
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ companyEmail });
 
         if (!user) {
             return res.status(401).json({ error: 'no user' });
         }
 
         // Compare passwords
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
+        // const passwordMatch = await bcrypt.compare(password, user.password);
+        if (password == user.password) {
+            passwordMatch = true
+        }
         if (!passwordMatch) {
-            console.log('Plain text password:', password);
+            console.log('inputted Email', companyEmail)
+            console.log('inputted password:', password);
             console.log('Stored hashed password:', user.password);
             return res.status(401).json({ error: 'Password no match' });
         }
@@ -105,9 +110,9 @@ const updateUserInfo = async (req,res) => {
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'No such user'})
     }
-    const { email, password, firstName, lastName } = req.body;
+    const { companyEmail, password, firstName, lastName } = req.body;
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, { email, password, firstName, lastName }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(id, { companyEmail, password, firstName, lastName }, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ error: 'User not found' });
         }
