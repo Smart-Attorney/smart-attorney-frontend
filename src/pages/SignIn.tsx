@@ -23,14 +23,10 @@ function SignIn() {
 		try {
 			const response = await signInWithEmailAndPassword(credentials);
 			if (response.ok) {
-				console.log("true")
+				const data = await response.json();
+				setCurrentUser(data);
 				navigate("/dashboard");
 			}
-			// const data = await response.json();
-			// if (data) {
-			// 	setCurrentUser(data);
-			// 	navigate("/dashboard");
-			// }
 		} catch (error) {
 			alert(error);
 		}

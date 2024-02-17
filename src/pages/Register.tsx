@@ -38,8 +38,7 @@ function Register() {
 
 		try {
 			const response = await registerNewUser(credentials);
-			const data = await response.json();
-			if (data) {
+			if (response.ok) {
 				navigate("/signin");
 			}
 		} catch (error) {
