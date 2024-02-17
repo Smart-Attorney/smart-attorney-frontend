@@ -26,10 +26,10 @@ class UserDAO extends DAO {
 		return null;
 	}
 
-	static async getUserById(id: string) {
+	static async getUserById(userId: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0; i < userArray.length; i++) {
-			if (userArray[i].id === id) {
+			if (userArray[i].id === userId) {
 				return userArray[i];
 			}
 		}
@@ -39,7 +39,7 @@ class UserDAO extends DAO {
 	static async createUser(data: RegisterCredentialsDTO) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		const newUser: Users = {
-			id: nanoid(32),
+			id: nanoid(16),
 			first_name: data.firstName,
 			last_name: data.lastName,
 			firm_name: data.firmName,

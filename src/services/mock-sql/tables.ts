@@ -3,7 +3,7 @@ class MockSqlTables {
 	static CASE_FOLDERS = "case_folders";
 	static CASE_FILES = "case_files";
 	static FOLDER_LABELS = "folder_labels";
-	static CLIENT_INFO = " client_info";
+	static CLIENTS = "clients";
 
 	constructor() {}
 
@@ -40,10 +40,10 @@ class MockSqlTables {
 		this.initArray(this.FOLDER_LABELS);
 	}
 
-	static createClientInfo() {
-		const clientInfoTable = this.getArray(this.CLIENT_INFO);
-		if (clientInfoTable) return;
-		this.initArray(this.CLIENT_INFO);
+	static createClients() {
+		const clientsTable = this.getArray(this.CLIENTS);
+		if (clientsTable) return;
+		this.initArray(this.CLIENTS);
 	}
 
 	static createMockTables() {
@@ -51,7 +51,7 @@ class MockSqlTables {
 		this.createCaseFolders();
 		this.createCaseFiles();
 		this.createFolderLabels();
-		this.createClientInfo();
+		this.createClients();
 	}
 }
 

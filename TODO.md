@@ -74,3 +74,26 @@ Git Naming Conventions
 
 Unicode Characters
  - https://stackoverflow.com/questions/5353461/unicode-character-for-x-cancel-close
+
+Check Production or Development at Runtime
+ - https://stackoverflow.com/questions/35469836/detecting-production-vs-development-react-at-runtime
+
+
+
+### notes
+fetch('/user')
+  .then(res => {
+    if (!res.ok) {
+      switch (res.status) {
+        case 100: break;
+        case 200: break;
+        case 300: break;
+        case 400: break;
+        case 500: break;
+      }
+    }
+    return res.json();
+  })
+  .catch(err => {
+    // handle err
+  })

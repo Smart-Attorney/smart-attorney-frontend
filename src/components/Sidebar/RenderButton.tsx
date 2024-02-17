@@ -13,7 +13,7 @@ function RenderButton({ path, imageActive, imageInactive, label }: ButtonProps) 
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const isCurrentPath = (path: string): boolean => location.pathname === path;
+	const isCurrentPath = (path: string): boolean => location.pathname.includes(path);
 
 	return (
 		<div

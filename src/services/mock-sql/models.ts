@@ -1,4 +1,4 @@
-interface Users {
+export interface Users {
 	id: string;
 	first_name: string;
 	last_name: string;
@@ -8,7 +8,7 @@ interface Users {
 	password: string;
 }
 
-interface CaseFolders {
+export interface CaseFolders {
 	id: string; // from nanoid
 	folder_name: string;
 	created_date: number; // as unix time
@@ -18,7 +18,7 @@ interface CaseFolders {
 	user_id_fk: string; // from nanoid
 }
 
-interface CaseFiles {
+export interface CaseFiles {
 	id: string;
 	file_name: string;
 	created_date: number;
@@ -28,13 +28,13 @@ interface CaseFiles {
 	case_folder_id_fk: string;
 }
 
-interface FolderLabels {
+export interface FolderLabels {
 	id: string;
 	label_name: string;
 	case_folder_id_fk: string;
 }
 
-interface ClientInfo {
+export interface Client {
 	id: string;
 	first_name: string;
 	last_name: string;
@@ -57,5 +57,3 @@ enum sex_options {
   ref:    case_files.case_folder_id_fk > case_folders.id
   ref:   client_info.case_folder_id_fk > case_folders.id
 */
-
-export type { CaseFiles, CaseFolders, ClientInfo, FolderLabels, Users };

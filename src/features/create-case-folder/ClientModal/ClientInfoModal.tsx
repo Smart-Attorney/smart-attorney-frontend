@@ -7,7 +7,7 @@ import ModalDialog from "../../../components/Modal/ModalDialog";
 import { COUNTRIES } from "../../../utils/constants/countries";
 import { LANGUAGES } from "../../../utils/constants/languages";
 import { SEX } from "../../../utils/constants/sex";
-import { ClientInfoObj, SexOptions } from "../../../utils/types";
+import { ClientObj, SexOptions } from "../../../utils/types";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 
@@ -68,7 +68,7 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 	};
 
 	const handleSave = () => {
-		const clientInfoForm: ClientInfoObj = {
+		const clientInfoForm: ClientObj = {
 			firstName: firstName.current,
 			lastName: lastName.current,
 			dateOfBirth: birthday.current,

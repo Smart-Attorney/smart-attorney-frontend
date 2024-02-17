@@ -1,4 +1,4 @@
-interface ButtonProps {
+export interface ButtonProps {
 	name: string;
 	type: "button" | "submit" | "reset";
 	img?: string;
@@ -8,23 +8,23 @@ interface ButtonProps {
 	onClick?: () => void;
 }
 
-interface SortOptionsObj {
+export interface SortOptionsObj {
 	clicked: boolean;
 	name: string;
 }
 
-interface CaseFolderLabelObj {
+export interface CaseFolderLabelObj {
 	id: string;
 	name: string;
 }
 
-interface FileForUploadObj {
+export interface FileForUploadObj {
 	id: string;
 	data: File;
 	selected: boolean;
 }
 
-interface CaseFileObj {
+export interface CaseFileObj {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -33,11 +33,11 @@ interface CaseFileObj {
 	url: string;
 }
 
-interface SexOptions {
+export interface SexOptions {
 	sex: "Male" | "Female" | "Other";
 }
 
-interface ClientInfoObj {
+export interface ClientObj {
 	firstName: string;
 	lastName: string;
 	dateOfBirth: string;
@@ -46,7 +46,7 @@ interface ClientInfoObj {
 	primaryLanguage: string;
 }
 
-interface CaseFolderObj {
+export interface CaseFolderObj {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -55,16 +55,5 @@ interface CaseFolderObj {
 	deadline: string;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
-	clientInfo: ClientInfoObj;
+	clients: ClientObj;
 }
-
-export type {
-	ButtonProps,
-	CaseFileObj,
-	CaseFolderLabelObj,
-	CaseFolderObj,
-	ClientInfoObj,
-	FileForUploadObj,
-	SexOptions,
-	SortOptionsObj,
-};

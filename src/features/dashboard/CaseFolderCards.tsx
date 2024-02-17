@@ -90,7 +90,7 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 					{/* Case Folder Name */}
 					<p
 						className="relative top-[120px] w-fit cursor-pointer font-semibold hover:text-blue-500"
-						onClick={() => navigate(caseFolder.id)}
+						onClick={() => navigate(`/case/${caseFolder.id}`)}
 					>
 						{caseFolder.name}
 					</p>

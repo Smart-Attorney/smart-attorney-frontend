@@ -1,3 +1,3 @@
-class ClientInfoController {}
+class ClientController {}
 
-export default ClientInfoController;
+export default ClientController;

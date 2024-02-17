@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
+import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Database from "../services/database";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
-import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
+// import Database from "../services/database";
 
 function Dashboard() {
-	const db = new Database();
+	// const db = new Database();
+	const location = useLocation();
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
@@ -26,23 +27,35 @@ function Dashboard() {
 	 */
 	useEffect(() => {
 		// const fetchCaseFolders = async () => {
-		// 	const response = await fetch('localhost:4000/api/caseFolders')
-		// 	const json = await response.json()
-
+		// 	const response = await fetch("localhost:4000/api/caseFolders");
+		// 	const json = await response.json();
 		// 	if (response.ok) {
-		// 		setCaseFolders(json)
+		// 		setCaseFolders(json);
 		// 	}
+		// };
+		// fetchCaseFolders();
+		/****/
+		// const caseArray = db.getCaseArray();
+		// if (caseArray !== null) {
+		// 	setCaseFolders(caseArray);
+		// } else {
+		// 	db.initNewArray();
+		// 	setCaseFolders([]);
 		// }
-		const caseArray = db.getCaseArray();
-		if (caseArray !== null) {
-			setCaseFolders(caseArray);
-		} else {
-			db.initNewArray();
-			setCaseFolders([]);
-		}
-		// fetchCaseFolders()
-		getCaseFolders();
+		/****/
+
+		getUserCaseFolders();
 	}, []);
+
+	const getUserCaseFolders = async () => {
+		try {
+			const response = await getCaseFolders(location.pathname);
+			console.log(response);
+      
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	const newCaseBtnGradient = {
 		background:

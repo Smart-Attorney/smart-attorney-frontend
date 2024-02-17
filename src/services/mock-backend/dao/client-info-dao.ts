@@ -1,3 +1,3 @@
-class ClientInfoDAO {}
+class ClientDAO {}
 
-export default ClientInfoDAO;
+export default ClientDAO;

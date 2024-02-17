@@ -44,7 +44,7 @@ function CaseFolder() {
 		deadline: "",
 		labels: [],
 		files: [],
-		clientInfo: {
+		clients: {
 			firstName: "",
 			lastName: "",
 			sex: null,

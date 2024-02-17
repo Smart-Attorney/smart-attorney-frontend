@@ -1,3 +1,3 @@
-class ClientInfoService {}
+class ClientService {}
 
-export default ClientInfoService;
+export default ClientService;
