@@ -1,88 +1,58 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import { UploadPurple } from "../../../assets/smart-attorney-figma/buttons";
 import { UserIcon } from "../../../assets/smart-attorney-figma/global";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import PillSpecialButton from "../../../components/Buttons/PillSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import { nanoid } from "../../../lib/nanoid";
 import { COUNTRIES } from "../../../utils/constants/countries";
 import { LANGUAGES } from "../../../utils/constants/languages";
 import { SEX } from "../../../utils/constants/sex";
-import { ClientObj, SexOptions } from "../../../utils/types";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 
+export interface ClientInfoForm {
+	firstName: string;
+	lastName: string;
+	dateOfBirth: string;
+	sex: string;
+	countryOfCitizenship: string;
+	primaryLanguage: string;
+}
+
 interface ClientInfoModalProps {
+	client: ClientInfoForm;
+	setClient: React.Dispatch<React.SetStateAction<ClientInfoForm>>;
 	closeModal: () => void;
 }
 
-function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
-	/* Maintains consistency between switch case names and input field names. */
-	const FORM = {
-		FIRST_NAME: "First Name",
-		LAST_NAME: "Last Name",
-		BIRTHDAY: "Date of Birth",
-		SEX: "Sex",
-		COUNTRY: "Country of Citizenship",
-		LANGUAGE: "Primary Language",
-	};
+function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps) {
+	useEffect(() => {
+		setClientForm(client);
+	}, []);
 
-	const firstName = useRef("");
-	const lastName = useRef("");
-	const sex = useRef("");
-	const language = useRef("");
-	const country = useRef("");
-	const birthday = useRef(0);
+	const [clientForm, setClientForm] = useState<ClientInfoForm>({
+		firstName: "",
+		lastName: "",
+		dateOfBirth: "",
+		sex: "",
+		countryOfCitizenship: "",
+		primaryLanguage: "",
+	});
 
 	const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
-		const { name, value } = event.target as HTMLInputElement;
-		switch (name) {
-			case FORM.FIRST_NAME:
-				firstName.current = value;
-				break;
-			case FORM.LAST_NAME:
-				lastName.current = value;
-				break;
-			case FORM.BIRTHDAY:
-				const dateInUnixTime = Date.parse(value);
-				birthday.current = dateInUnixTime;
-				break;
-			default:
-				break;
-		}
+		const { id, value } = event.target as HTMLInputElement;
+		setClientForm((prev) => ({ ...prev, [id]: value }));
 	};
 
 	const handleSelectChange = (event: React.FormEvent<HTMLSelectElement>) => {
-		const { name, value } = event.target as HTMLSelectElement;
-		switch (name) {
-			case FORM.SEX:
-				sex.current = value;
-				break;
-			case FORM.COUNTRY:
-				country.current = value;
-				break;
-			case FORM.LANGUAGE:
-				language.current = value;
-				break;
-			default:
-				break;
-		}
+		const { id, value } = event.target as HTMLSelectElement;
+		setClientForm((prev) => ({ ...prev, [id]: value }));
 	};
 
-	const handleSave = () => {
-		const clientInfoForm: ClientObj = {
-			id: nanoid(8),
-			firstName: firstName.current,
-			lastName: lastName.current,
-			dateOfBirth: birthday.current,
-			sex: sex.current as SexOptions,
-			countryOfCitizenship: country.current,
-			primaryLanguage: language.current,
-		};
-
+	const handleSave = (event: React.FormEvent) => {
+		event.preventDefault();
+		setClient(clientForm);
 		closeModal();
-		// console.log(clientInfoForm);
-		return clientInfoForm; // returns form info to parent
 	};
 
 	return (
@@ -95,8 +65,8 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 			{/* Outer most div contains all of the contents of modal body. */}
 			<div id="modal-body" className="flex flex-row justify-between w-full pl-10 pr-14">
 				{/* This div contains the icon on the left side. */}
-				<div id="left-side" className="">
-					<span className="">
+				<div id="left-side">
+					<span>
 						<img className="w-[134px] relative bottom-2" src={UserIcon} />
 					</span>
 				</div>
@@ -115,21 +85,58 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 					</div>
 
 					{/* This div contains and formats the form input elements. */}
-					<form id="form" className="grid grid-cols-2 gap-x-20 gap-y-4">
-						<InputField name={FORM.FIRST_NAME} type="text" onChange={handleInputChange} />
-						<InputField name={FORM.LAST_NAME} type="text" onChange={handleInputChange} />
-						<InputField name={FORM.BIRTHDAY} type="date" onChange={handleInputChange} />
-						<SelectField name={FORM.SEX} options={SEX} onChange={handleSelectChange} />
-						<SelectField name={FORM.COUNTRY} options={COUNTRIES} onChange={handleSelectChange} />
-						<SelectField name={FORM.LANGUAGE} options={LANGUAGES} onChange={handleSelectChange} />
+					<form id="form" className="flex flex-col gap-8" onSubmit={handleSave}>
+						<div className="grid grid-cols-2 gap-x-20 gap-y-4">
+							<InputField
+								id="firstName"
+								name="First Name"
+								type="text"
+								value={clientForm.firstName}
+								onChange={handleInputChange}
+							/>
+							<InputField
+								id="lastName"
+								name="Last Name"
+								type="text"
+								value={clientForm.lastName}
+								onChange={handleInputChange}
+							/>
+							<InputField
+								id="dateOfBirth"
+								name="Date of Birth"
+								type="date"
+								value={clientForm.dateOfBirth}
+								onChange={handleInputChange}
+							/>
+							<SelectField
+								id="sex"
+								name="Sex"
+								options={SEX}
+								value={clientForm.sex}
+								onChange={handleSelectChange}
+							/>
+							<SelectField
+								id="countryOfCitizenship"
+								name="Country of Citizenship"
+								options={COUNTRIES}
+								value={clientForm.countryOfCitizenship}
+								onChange={handleSelectChange}
+							/>
+							<SelectField
+								id="primaryLanguage"
+								name="Primary Language"
+								options={LANGUAGES}
+								value={clientForm.primaryLanguage}
+								onChange={handleSelectChange}
+							/>
+						</div>
 
 						{/* FOR FUTURE FEATURE: */}
 						{/* button/option to show additional input field */}
 						{/* user decides label of new input */}
+						{/* This is button. */}
+						<ModalButton name="Save" type="submit" className="h-[52px] border-[3px]" />
 					</form>
-
-					{/* This is button. */}
-					<ModalButton name="Save" type="button" className="h-[52px] border-[3px]" onClick={handleSave} />
 				</div>
 			</div>
 		</ModalDialog>

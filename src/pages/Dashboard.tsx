@@ -50,11 +50,18 @@ function Dashboard() {
 	const getUserCaseFolders = async () => {
 		try {
 			const response = await getCaseFolders(location.pathname);
-      if (response.ok) {
-        console.log(response.statusText);
-        
-      }
-      
+			switch (response.status) {
+				case 200:
+					const data = await response.json();
+					setCaseFolders(data);
+					break;
+				case 204:
+					console.log(response.statusText);
+					setCaseFolders([]);
+					break;
+				default:
+					break;
+			}
 		} catch (error) {
 			alert(error);
 		}

@@ -12,7 +12,7 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import ClientInfoModal from "../features/create-case-folder/ClientModal/ClientInfoModal";
+import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
 import PageHeader from "../layouts/PageHeader";
@@ -28,25 +28,22 @@ function CreateCaseFolder() {
 	const navigate = useNavigate();
 	const db = new Database();
 
-	const caseFolderId = useRef("");
+	const caseFolderId = useRef<string>("");
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 
-	const [clientInfoModalOpen, setClientInfoModalOpen] = useState<boolean>(true);
+	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
 
-	// removed state setter to appease compiler, add back later
-	// TODO
-	const [clientInfo] = useState({
-		id: "",
+	const [client, setClient] = useState<ClientInfoForm>({
 		firstName: "",
 		lastName: "",
-		sex: "",
-		primaryLanguage: "",
-		countryOfCitizenship: "",
 		dateOfBirth: "",
+		sex: "",
+		countryOfCitizenship: "",
+		primaryLanguage: "",
 	});
 
 	useEffect(() => {
@@ -66,13 +63,13 @@ function CreateCaseFolder() {
 		}
 	}, []);
 
-	const handleCloseClientInfoModal = () => {
-		setClientInfoModalOpen(false);
+	const handleCloseClientModal = () => {
+		setClientModalOpen(false);
 	};
 
-	// const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
-	// 	console.log(event);
-	// }
+	const toggleClientModal = () => {
+		setClientModalOpen((prev) => !prev);
+	};
 
 	const handleOpenFileBrowser = (): void => {
 		inputRef.current?.click();
@@ -174,7 +171,7 @@ function CreateCaseFolder() {
 			deadline: 0,
 			labels: [],
 			files: uploadedFilesArray,
-			client: clientInfo,
+			client: client,
 		};
 
 		db.addNewCaseFolder(newCaseFolderObject);
@@ -184,7 +181,12 @@ function CreateCaseFolder() {
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-4">
-				<img className="h-[58px]" src={UserIcon} />
+				<img
+					className="h-[58px] cursor-pointer"
+					src={UserIcon}
+					onClick={toggleClientModal}
+					title="Click to enter client info"
+				/>
 				<h1
 					id="case-name"
 					className="text-3xl font-bold text-white"
@@ -230,7 +232,9 @@ function CreateCaseFolder() {
 				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
 			/>
 
-			{clientInfoModalOpen && <ClientInfoModal closeModal={handleCloseClientInfoModal} />}
+			{clientModalOpen && (
+				<ClientInfoModal client={client} setClient={setClient} closeModal={handleCloseClientModal} />
+			)}
 		</SidebarLayout>
 	);
 }
