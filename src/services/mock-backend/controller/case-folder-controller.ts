@@ -2,11 +2,12 @@ import { CaseFolderService } from "../service/case-folder-service";
 
 export class CaseFolderController {
 	static async getAllCaseFolders(request: Request) {
-		const urlArray = request.url.split("/");
-		const userId = urlArray[urlArray.length - 1];
-		if (!userId) {
-			throw new Error("Request does not contain a user identification.");
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized.");
 		}
+		const authToken = JSON.parse(authHeader);
+		const userId = authToken.id;
 		const userCaseFolders = await CaseFolderService.getAllCaseFolders(userId);
 		if (userCaseFolders !== null) {
 			const body = JSON.stringify(userCaseFolders);

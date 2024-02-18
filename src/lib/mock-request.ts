@@ -5,9 +5,9 @@ export class mockRequest {
 	private static DELETE = "DELETE";
 
 	private static getToken() {
-		const currentUser = JSON.parse(localStorage.getItem("current_user") as string);
+		const currentUser = localStorage.getItem("current_user");
 		if (currentUser) {
-			const token = currentUser.id;
+			const token = currentUser;
 			return token;
 		}
 		return "";
