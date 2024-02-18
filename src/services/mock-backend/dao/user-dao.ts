@@ -1,16 +1,17 @@
 import { RegisterCredentialsDTO } from "../../../features/register/api/register";
 import { nanoid } from "../../../lib/nanoid";
-import { Users } from "../../mock-sql/models";
-import DAO from "./dao";
+import { Users } from "../../mock-sql/schemas";
+import { MockSqlTables } from "../../mock-sql/tables";
+import { DAO } from "./dao";
 
-class UserDAO extends DAO {
-	static USER_STORAGE_KEY = "users";
+export class UserDAO extends DAO {
+	static USER_STORAGE_KEY = MockSqlTables.USERS;
 
 	static async getUserIdByCompanyEmail(companyEmail: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0; i < userArray.length; i++) {
 			if (userArray[i].company_email === companyEmail) {
-				return userArray[i].id;
+				return userArray[i].user_id;
 			}
 		}
 		return null;
@@ -20,7 +21,7 @@ class UserDAO extends DAO {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0; i < userArray.length; i++) {
 			if (userArray[i].password === password) {
-				return userArray[i].id;
+				return userArray[i].user_id;
 			}
 		}
 		return null;
@@ -29,7 +30,7 @@ class UserDAO extends DAO {
 	static async getUserById(userId: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0; i < userArray.length; i++) {
-			if (userArray[i].id === userId) {
+			if (userArray[i].user_id === userId) {
 				return userArray[i];
 			}
 		}
@@ -39,7 +40,7 @@ class UserDAO extends DAO {
 	static async createUser(data: RegisterCredentialsDTO) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
 		const newUser: Users = {
-			id: nanoid(16),
+			user_id: nanoid(16),
 			first_name: data.firstName,
 			last_name: data.lastName,
 			firm_name: data.firmName,
@@ -52,5 +53,3 @@ class UserDAO extends DAO {
 		return newUser;
 	}
 }
-
-export default UserDAO;

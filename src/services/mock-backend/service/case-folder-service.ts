@@ -1,11 +1,11 @@
+import { CaseFolderDAO } from "../dao/case-folder-dao";
 
-import CaseFolderDAO from "../dao/case-folder-dao";
-
-class CaseFolderService {
+export class CaseFolderService {
 	static async getAllCaseFolders(userId: string) {
-    const userCaseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
-    return userCaseFolders;
+		const userCaseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
+		if (userCaseFolders.length === 0) {
+			return null;
+		}
+		return userCaseFolders;
 	}
 }
-
-export default CaseFolderService;

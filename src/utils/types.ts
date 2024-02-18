@@ -33,15 +33,18 @@ export interface CaseFileObj {
 	url: string;
 }
 
-export interface SexOptions {
-	sex: "Male" | "Female" | "Other";
+export enum SexOptions {
+	Male = "Male",
+	Female = "Female",
+	Other = "Other",
 }
 
 export interface ClientObj {
+	id: string;
 	firstName: string;
 	lastName: string;
-	dateOfBirth: string;
-	sex: SexOptions | null;
+	dateOfBirth: number;
+	sex: "Male" | "Female" | "Other";
 	countryOfCitizenship: string;
 	primaryLanguage: string;
 }
@@ -52,8 +55,8 @@ export interface CaseFolderObj {
 	createdDate: number;
 	lastOpenedDate: number;
 	status: string;
-	deadline: string;
+	deadline: number;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
-	clients: ClientObj;
+	client: ClientObj | {};
 }

@@ -41,10 +41,11 @@ function CaseFolder() {
 		createdDate: NaN,
 		lastOpenedDate: NaN,
 		status: "",
-		deadline: "",
+		deadline: 0,
 		labels: [],
 		files: [],
-		clients: {
+		client: {
+			id: "",
 			firstName: "",
 			lastName: "",
 			sex: null,

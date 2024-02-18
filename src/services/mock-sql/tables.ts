@@ -1,4 +1,4 @@
-class MockSqlTables {
+export class MockSqlTables {
 	static USERS = "users";
 	static CASE_FOLDERS = "case_folders";
 	static CASE_FILES = "case_files";
@@ -54,5 +54,3 @@ class MockSqlTables {
 		this.createClients();
 	}
 }
-
-export default MockSqlTables;

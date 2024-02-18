@@ -4,6 +4,7 @@ import { UserIcon } from "../../../assets/smart-attorney-figma/global";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import PillSpecialButton from "../../../components/Buttons/PillSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
+import { nanoid } from "../../../lib/nanoid";
 import { COUNTRIES } from "../../../utils/constants/countries";
 import { LANGUAGES } from "../../../utils/constants/languages";
 import { SEX } from "../../../utils/constants/sex";
@@ -28,10 +29,10 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 
 	const firstName = useRef("");
 	const lastName = useRef("");
-	const sex = useRef<SexOptions | null>(null);
+	const sex = useRef("");
 	const language = useRef("");
 	const country = useRef("");
-	const birthday = useRef("");
+	const birthday = useRef(0);
 
 	const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
 		const { name, value } = event.target as HTMLInputElement;
@@ -43,7 +44,8 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 				lastName.current = value;
 				break;
 			case FORM.BIRTHDAY:
-				birthday.current = value;
+				const dateInUnixTime = Date.parse(value);
+				birthday.current = dateInUnixTime;
 				break;
 			default:
 				break;
@@ -54,7 +56,7 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 		const { name, value } = event.target as HTMLSelectElement;
 		switch (name) {
 			case FORM.SEX:
-				sex.current = value as unknown as SexOptions;
+				sex.current = value;
 				break;
 			case FORM.COUNTRY:
 				country.current = value;
@@ -69,10 +71,11 @@ function ClientInfoModal({ closeModal }: ClientInfoModalProps) {
 
 	const handleSave = () => {
 		const clientInfoForm: ClientObj = {
+			id: nanoid(8),
 			firstName: firstName.current,
 			lastName: lastName.current,
 			dateOfBirth: birthday.current,
-			sex: sex.current,
+			sex: sex.current as SexOptions,
 			countryOfCitizenship: country.current,
 			primaryLanguage: language.current,
 		};

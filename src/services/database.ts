@@ -40,7 +40,7 @@ class Database {
 
 	/**************************************************/
 	/* Case Folder Deadline Methods */
-	public addCaseFolderDeadline(folderId: string, newDeadline: string): CaseFolderObj[] {
+	public addCaseFolderDeadline(folderId: string, newDeadline: number): CaseFolderObj[] {
 		return CaseDeadline.add(folderId, newDeadline);
 	}
 

@@ -22,7 +22,7 @@ import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
 import nanoid from "../services/nanoid";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { CaseFileObj, ClientObj, FileForUploadObj } from "../utils/types";
+import { CaseFileObj, FileForUploadObj } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -38,10 +38,12 @@ function CreateCaseFolder() {
 	const [clientInfoModalOpen, setClientInfoModalOpen] = useState<boolean>(true);
 
 	// removed state setter to appease compiler, add back later
-	const [clientInfo] = useState<ClientObj>({
+	// TODO
+	const [clientInfo] = useState({
+		id: "",
 		firstName: "",
 		lastName: "",
-		sex: null,
+		sex: "",
 		primaryLanguage: "",
 		countryOfCitizenship: "",
 		dateOfBirth: "",
@@ -169,10 +171,10 @@ function CreateCaseFolder() {
 			createdDate: Date.now(),
 			lastOpenedDate: Date.now(),
 			status: "#53EF0A",
-			deadline: "",
+			deadline: 0,
 			labels: [],
 			files: uploadedFilesArray,
-			clients: clientInfo,
+			client: clientInfo,
 		};
 
 		db.addNewCaseFolder(newCaseFolderObject);

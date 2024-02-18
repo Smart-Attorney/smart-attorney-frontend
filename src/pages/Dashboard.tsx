@@ -50,7 +50,10 @@ function Dashboard() {
 	const getUserCaseFolders = async () => {
 		try {
 			const response = await getCaseFolders(location.pathname);
-			console.log(response);
+      if (response.ok) {
+        console.log(response.statusText);
+        
+      }
       
 		} catch (error) {
 			alert(error);

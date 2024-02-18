@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import CardGrid from "../../layouts/CardGrid";
 import Database from "../../services/database";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
-import CardGrid from "../../layouts/CardGrid";
 
 interface CaseFolderCardProps {
 	caseFolders: CaseFolderObj[] | null;
@@ -17,8 +17,9 @@ function CaseFolderCards(props: CaseFolderCardProps) {
 	const { caseFolders, setCaseFolders } = props;
 
 	const handleAddFolderDeadline = (folderId: string, event: React.ChangeEvent<HTMLInputElement>): void => {
-		const { value: newDeadline } = event.target;
-		const updatedArray = db.addCaseFolderDeadline(folderId, newDeadline);
+		const { value } = event.target;
+		const deadlineInUnixTime = Date.parse(value);
+		const updatedArray = db.addCaseFolderDeadline(folderId, deadlineInUnixTime);
 		setCaseFolders(updatedArray);
 	};
 

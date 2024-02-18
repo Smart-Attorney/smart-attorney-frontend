@@ -1,4 +1,4 @@
-class DAO {
+export class DAO {
 	static async getArray(key: string): Promise<[]> {
 		return await JSON.parse(localStorage.getItem(key) as string);
 	}
@@ -7,5 +7,3 @@ class DAO {
 		localStorage.setItem(key, JSON.stringify(data));
 	}
 }
-
-export default DAO;

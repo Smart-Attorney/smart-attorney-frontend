@@ -1,4 +1,4 @@
-import CaseFolderController from "../../../services/mock-backend/controller/case-folder-controller";
+import { CaseFolderController } from "../../../services/mock-backend/controller/case-folder-controller";
 
 const mockApi = async (url: string) => {
 	const options = { method: "GET" };

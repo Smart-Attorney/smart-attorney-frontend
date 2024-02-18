@@ -1,4 +1,4 @@
-import UserController from "../../../services/mock-backend/controller/user-controller";
+import { UserController } from "../../../services/mock-backend/controller/user-controller";
 
 export interface SignInCredentialsDTO {
 	companyEmail: string;
