@@ -25,7 +25,7 @@ function SignIn() {
 			if (response.ok) {
 				const verifiedUser: CurrentUser = await response.json();
 				setCurrentUser(verifiedUser);
-				navigate(`/dashboard/${verifiedUser.id}`);
+				navigate(`/dashboard`);
 			}
 		} catch (error) {
 			alert(error);

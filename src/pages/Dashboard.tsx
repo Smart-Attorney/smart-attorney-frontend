@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
-import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
+import { getCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
@@ -15,7 +15,6 @@ import { CaseFolderObj } from "../utils/types";
 
 function Dashboard() {
 	// const db = new Database();
-	const location = useLocation();
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
@@ -49,7 +48,7 @@ function Dashboard() {
 
 	const getUserCaseFolders = async () => {
 		try {
-			const response = await getCaseFolders(location.pathname);
+			const response = await getCaseFolders();
 			switch (response.status) {
 				case 200:
 					const data = await response.json();

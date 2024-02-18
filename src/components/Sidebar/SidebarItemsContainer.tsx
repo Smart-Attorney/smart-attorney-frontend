@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { SmartAttorneyIcon } from "../../assets/smart-attorney-figma/sidebar";
 import {
 	Calendar_Active,
@@ -16,7 +15,6 @@ import {
 	Settings_Inactive,
 	Team_Inactive,
 } from "../../assets/smart-attorney-figma/sidebar/icons-inactive";
-import { CurrenUserContextType, CurrentUserContext } from "../../providers/CurrentUserProvider";
 import RenderButton from "./RenderButton";
 
 /* 
@@ -25,9 +23,6 @@ For the future, a much better method is to style the active-icon effect with CSS
 */
 
 function SidebarItemsContainer() {
-	const { getCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
-	const { id: userId } = getCurrentUser();
-
 	return (
 		// This outer div keeps the buttons in place, even when scrolling past view height.
 		<div className="fixed">
@@ -38,7 +33,7 @@ function SidebarItemsContainer() {
 
 			<div className="flex flex-col items-center">
 				<RenderButton
-					path={`/dashboard/${userId}`}
+					path={`/dashboard`}
 					imageActive={Dashboard_Active}
 					imageInactive={Dashboard_Inactive}
 					label="Dashboard"

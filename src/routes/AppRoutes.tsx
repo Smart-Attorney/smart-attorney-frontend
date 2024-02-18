@@ -18,7 +18,7 @@ function AppRoutes() {
 				<Route path="/" element={<Home />} />
 				<Route path="/signin" element={<SignIn />} />
 				<Route path="/register" element={<Register />} />
-				<Route path="/dashboard/:id" element={<Dashboard />} />
+				<Route path="/dashboard" element={<Dashboard />} />
 				<Route path="/case/:id" element={<CaseFolder />} />
 				<Route path="/create-case" element={<CreateCaseFolder />} />
 				<Route path="/calendar" element={<Error />} />

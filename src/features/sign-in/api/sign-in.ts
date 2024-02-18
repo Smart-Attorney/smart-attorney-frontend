@@ -1,3 +1,4 @@
+import { mockRequest } from "../../../lib/mock-request";
 import { UserController } from "../../../services/mock-backend/controller/user-controller";
 
 export interface SignInCredentialsDTO {
@@ -6,8 +7,7 @@ export interface SignInCredentialsDTO {
 }
 
 const mockApi = async (data: SignInCredentialsDTO) => {
-	const options = { method: "POST", body: JSON.stringify(data) };
-	const request = new Request("/signin", options);
+	const request = mockRequest.post("/signin", data);
 	return await UserController.verifyUser(request);
 };
 
