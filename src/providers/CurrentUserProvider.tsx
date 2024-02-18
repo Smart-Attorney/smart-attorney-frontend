@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-interface CurrentUser {
+export interface CurrentUser {
 	id: string;
 	firstName: string;
 	lastName: string;

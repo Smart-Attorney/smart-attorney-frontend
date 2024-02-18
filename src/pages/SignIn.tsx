@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import { SignInCredentialsDTO, signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
-import { CurrenUserContextType, CurrentUserContext } from "../providers/CurrentUserProvider";
+import { CurrenUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
 
 function SignIn() {
 	const { setCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
@@ -23,7 +23,7 @@ function SignIn() {
 		try {
 			const response = await signInWithEmailAndPassword(credentials);
 			if (response.ok) {
-				const verifiedUser = await response.json();
+				const verifiedUser: CurrentUser = await response.json();
 				setCurrentUser(verifiedUser);
 				navigate(`/dashboard/${verifiedUser.id}`);
 			}
