@@ -2,7 +2,8 @@ import { CaseFolderService } from "../service/case-folder-service";
 
 export class CaseFolderController {
 	static async getAllCaseFolders(request: Request) {
-		const userId = request.headers.get("Authorization");
+		const urlArray = request.url.split("/");
+		const userId = urlArray[urlArray.length - 1];
 		if (!userId) {
 			throw new Error("Request does not contain a user identification.");
 		}

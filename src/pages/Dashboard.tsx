@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import { DashboardIcon } from "../assets/smart-attorney-figma/global";
@@ -9,6 +9,7 @@ import { getCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
+import { CurrenUserContextType, CurrentUserContext } from "../providers/CurrentUserProvider";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
 // import Database from "../services/database";
@@ -16,6 +17,9 @@ import { CaseFolderObj } from "../utils/types";
 function Dashboard() {
 	// const db = new Database();
 	const navigate = useNavigate();
+
+	const { getCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
+	const userId = getCurrentUser().id;
 
 	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
 
@@ -48,7 +52,7 @@ function Dashboard() {
 
 	const getUserCaseFolders = async () => {
 		try {
-			const response = await getCaseFolders();
+			const response = await getCaseFolders(userId);
 			switch (response.status) {
 				case 200:
 					const data = await response.json();
