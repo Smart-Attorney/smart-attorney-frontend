@@ -15,14 +15,22 @@ import SortBar from "../components/SortBar/SortBar";
 import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
+import {
+	CreateCaseFolderDTO,
+	CreateClientDTO,
+	createCaseFolder,
+} from "../features/create-case-folder/api/create-case-folder";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Firebase from "../services/cloud-storage/firebase";
+import { nanoid } from "../lib/nanoid";
 import Database from "../services/database";
-import nanoid from "../services/nanoid";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { CaseFileObj, FileForUploadObj } from "../utils/types";
+import { FileForUploadObj, SexOptions } from "../utils/types";
+
+//since file upload is handled on the backend
+//new case folder doesnt need an id up until user makes request to create new folder
+//then pass an id into the data object for request
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -34,9 +42,7 @@ function CreateCaseFolder() {
 
 	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
-
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
-
 	const [client, setClient] = useState<ClientInfoForm>({
 		firstName: "",
 		lastName: "",
@@ -48,7 +54,7 @@ function CreateCaseFolder() {
 
 	useEffect(() => {
 		if (caseFolderId.current.length < 1) {
-			caseFolderId.current = nanoid();
+			caseFolderId.current = nanoid(8);
 		}
 	}, []);
 
@@ -103,50 +109,50 @@ function CreateCaseFolder() {
 		}
 	};
 
-	const addFilesToFilesForUploadArray = (filesFromUpload: FileList): void => {
-		for (let i = 0; i < filesFromUpload.length; i++) {
+	const addToFilesForUploadArray = (filesFromUser: FileList): void => {
+		for (let i = 0; i < filesFromUser.length; i++) {
 			setFilesForUpload((prev) => [
 				...prev,
 				{
-					id: nanoid(),
-					data: filesFromUpload[i],
-					selected: false,
+					id: nanoid(8),
+					data: filesFromUser[i],
 				},
 			]);
 		}
 	};
 
-	const removeFileFromFilesForUploadArray = (id: string): void => {
-		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
+	const removeFromFilesForUploadArray = (fileId: string): void => {
+		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
 	};
 
-	const uploadFilesToCloudStorage = async (filesArray: FileForUploadObj[]): Promise<null | CaseFileObj[]> => {
-		if (filesArray === null) return null;
-		if (filesArray.length < 1) return null;
+	// this function will be moved to the backend
+	// const uploadFilesToCloudStorage = async (filesArray: FileForUploadObj[]): Promise<null | CaseFileObj[]> => {
+	// 	if (filesArray === null) return null;
+	// 	if (filesArray.length < 1) return null;
 
-		let uploadedFiles: CaseFileObj[] = [];
+	// 	let uploadedFiles: CaseFileObj[] = [];
 
-		for (let i = 0; i < filesArray.length; i++) {
-			const uploadedFileRef = await Firebase.uploadFile(
-				filesArray[i].data,
-				filesArray[i].id,
-				caseFolderId.current
-			);
-			const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
-			const uploadedFileObject = {
-				id: filesArray[i].id,
-				name: filesArray[i].data.name,
-				createdDate: Date.now(),
-				lastOpenedDate: Date.now(),
-				status: "Submitted",
-				url: uploadedFileUrl ? uploadedFileUrl : "",
-			};
+	// 	for (let i = 0; i < filesArray.length; i++) {
+	// 		const uploadedFileRef = await Firebase.uploadFile(
+	// 			filesArray[i].data,
+	// 			filesArray[i].id,
+	// 			caseFolderId.current
+	// 		);
+	// 		const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
+	// 		const uploadedFileObject = {
+	// 			id: filesArray[i].id,
+	// 			name: filesArray[i].data.name,
+	// 			createdDate: Date.now(),
+	// 			lastOpenedDate: Date.now(),
+	// 			status: "Submitted",
+	// 			url: uploadedFileUrl ? uploadedFileUrl : "",
+	// 		};
 
-			uploadedFiles.push(uploadedFileObject);
-		}
+	// 		uploadedFiles.push(uploadedFileObject);
+	// 	}
 
-		return uploadedFiles;
-	};
+	// 	return uploadedFiles;
+	// };
 
 	const handleCreateCaseFolder = async (): Promise<void> => {
 		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
@@ -154,28 +160,32 @@ function CreateCaseFolder() {
 			return;
 		}
 
-		// Checks if there are files to upload to prevent unnecessary calls to cloud service.
-		let uploadedFilesArray: CaseFileObj[];
-		if (filesForUpload === null || filesForUpload.length === 0) {
-			uploadedFilesArray = [];
-		} else {
-			uploadedFilesArray = (await uploadFilesToCloudStorage(filesForUpload)) as CaseFileObj[];
-		}
-
-		const newCaseFolderObject = {
-			id: caseFolderId.current,
-			name: caseFolderName,
-			createdDate: Date.now(),
-			lastOpenedDate: Date.now(),
-			status: "#53EF0A",
-			deadline: 0,
-			labels: [],
-			files: uploadedFilesArray,
-			client: client,
+		const newClient: CreateClientDTO = {
+			firstName: client.firstName,
+			lastName: client.lastName,
+			dateOfBirth: Date.parse(client.dateOfBirth),
+			sex: client.sex as SexOptions,
+			countryOfCitizenship: client.countryOfCitizenship,
+			primaryLanguage: client.primaryLanguage,
 		};
 
-		db.addNewCaseFolder(newCaseFolderObject);
-		navigate("/dashboard");
+		const newCaseFolderObject: CreateCaseFolderDTO = {
+			name: caseFolderName,
+			files: filesForUpload,
+			client: newClient,
+		};
+
+		try {
+			const response = await createCaseFolder(newCaseFolderObject);
+			if (response.ok) {
+				navigate("/dashboard");
+			}
+		} catch (error) {
+			alert(error);
+		}
+
+		// db.addNewCaseFolder(newCaseFolderObject);
+		return;
 	};
 
 	return (
@@ -185,7 +195,7 @@ function CreateCaseFolder() {
 					className="h-[58px] cursor-pointer"
 					src={UserIcon}
 					onClick={toggleClientModal}
-					title="Click to enter client info"
+					title="Click to edit client info"
 				/>
 				<h1
 					id="case-name"
@@ -218,7 +228,7 @@ function CreateCaseFolder() {
 			{filesForUpload.length > 0 && (
 				<FileForUploadCards
 					filesForUpload={filesForUpload}
-					removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
+					removeFromFilesForUploadArray={removeFromFilesForUploadArray}
 				/>
 			)}
 
@@ -229,12 +239,10 @@ function CreateCaseFolder() {
 					display: filesForUpload.length > 0 ? "none" : "flex",
 				}}
 				handleOpenFileBrowser={handleOpenFileBrowser}
-				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
+				addToFilesForUploadArray={addToFilesForUploadArray}
 			/>
 
-			{clientModalOpen && (
-				<ClientInfoModal client={client} setClient={setClient} closeModal={handleCloseClientModal} />
-			)}
+			{clientModalOpen && <ClientInfoModal client={client} setClient={setClient} closeModal={handleCloseClientModal} />}
 		</SidebarLayout>
 	);
 }

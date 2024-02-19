@@ -1,13 +1,14 @@
+import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
 import { CaseFolderService } from "../service/case-folder-service";
 
 export class CaseFolderController {
 	static async getAllCaseFolders(request: Request) {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
-			throw new Error("User is not authorized.");
+			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id;
+		const userId: string = authToken.id;
 		const userCaseFolders = await CaseFolderService.getAllCaseFolders(userId);
 		if (userCaseFolders !== null) {
 			const body = JSON.stringify(userCaseFolders);
@@ -21,6 +22,20 @@ export class CaseFolderController {
 	}
 
 	static async createCaseFolder(request: Request) {
-		return request;
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const folderObj: CreateCaseFolderDTO = await request.json();
+		const createdCaseFolder = await CaseFolderService.createCaseFolder(userId, folderObj);
+		if (createdCaseFolder) {
+			const body = JSON.stringify(createdCaseFolder);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with creating the case folder.");
+		}
 	}
 }

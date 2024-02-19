@@ -23,4 +23,23 @@ export class CaseFileDAO extends DAO {
 		}
 		return caseFolderFiles;
 	}
+
+	static async addNewCaseFile(fileId: string, fileName: string, fileUrl: string, caseFolderId: string) {
+		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const newCaseFile: CaseFiles = {
+			file_id: fileId,
+			file_name: fileName,
+			created_date: Date.now(),
+			last_opened_date: Date.now(),
+			status: "",
+			url: fileUrl,
+			case_folder_id_fk: caseFolderId,
+		};
+		const updatedArray = [...caseFileArray, newCaseFile];
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, updatedArray);
+		if (success) {
+			return newCaseFile;
+		}
+		return null;
+	}
 }

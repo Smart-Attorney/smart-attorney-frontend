@@ -1,23 +1,32 @@
 import { initializeApp } from "firebase/app";
-import {
-	StorageReference,
-	deleteObject,
-	getDownloadURL,
-	getStorage,
-	ref,
-	uploadBytes,
-} from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import config from "../../config/firebase-config";
 
 const app = initializeApp(config);
 const storage = getStorage(app);
 
-class Firebase {
-	/**
-	 *
-	 */
-	public static async getFileById(fileId: string, fileName: string, folderId: string): Promise<string | null> {
-		const fileRef = ref(storage, `${folderId}/${fileId}_${fileName}`);
+export class Firebase {
+	public static async uploadFile(userId: string, folderId: string, fileId: string, file: File) {
+		const metadata = {
+			name: file.name,
+			size: file.size,
+			contentType: file.type,
+		};
+		const filePath = `${userId}/${folderId}/${fileId}`;
+		const fileRef = ref(storage, filePath);
+		try {
+			const snapshot = await uploadBytes(fileRef, file, metadata);
+			const fileUrl = await getDownloadURL(snapshot.ref);
+			return fileUrl;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	}
+
+	public static async getFileById(userId: string, folderId: string, fileId: string) {
+		const filePath = `${userId}/${folderId}/${fileId}`;
+		const fileRef = ref(storage, filePath);
 		try {
 			const url = await getDownloadURL(fileRef);
 			return url;
@@ -27,35 +36,9 @@ class Firebase {
 		}
 	}
 
-	public static async getFileByRef(fileRef: StorageReference | null) {
-		if (fileRef === null) return;
-		try {
-			const url = await getDownloadURL(fileRef);
-			return url;
-		} catch (error) {
-			console.log(error);
-			return null;
-		}
-	}
-
-	public static async uploadFile(
-		file: File,
-		fileId: string,
-		folderId: string
-	): Promise<StorageReference | null> {
-		const fileName = file.name;
-		const fileRef = ref(storage, `${folderId}/${fileId}_${fileName}`);
-		try {
-			const response = await uploadBytes(fileRef, file);
-			return response.ref;
-		} catch (error) {
-			console.log(error);
-			return null;
-		}
-	}
-
-	public static async deleteFileById(fileId: string, fileName: string, folderId: string): Promise<void> {
-		const fileRef = ref(storage, `${folderId}/${fileId}_${fileName}`);
+	public static async deleteFileById(userId: string, folderId: string, fileId: string) {
+		const filePath = `${userId}/${folderId}/${fileId}`;
+		const fileRef = ref(storage, filePath);
 		try {
 			await deleteObject(fileRef);
 		} catch (error) {
@@ -63,5 +46,3 @@ class Firebase {
 		}
 	}
 }
-
-export default Firebase;

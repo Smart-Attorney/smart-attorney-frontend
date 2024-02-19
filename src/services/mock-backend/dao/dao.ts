@@ -3,7 +3,8 @@ export class DAO {
 		return await JSON.parse(localStorage.getItem(key) as string);
 	}
 
-	static async setArray(key: string, data: unknown[]): Promise<void> {
-		localStorage.setItem(key, JSON.stringify(data));
+	static async setArray(key: string, data: unknown[]): Promise<boolean> {
+		await localStorage.setItem(key, JSON.stringify(data));
+		return true;
 	}
 }

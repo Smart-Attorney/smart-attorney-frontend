@@ -4,11 +4,11 @@ import KebabMenu from "./KebabMenu";
 
 interface CaseFileProps {
 	filesForUpload: FileForUploadObj[];
-	removeFileFromFilesForUploadArray: (id: string) => void;
+	removeFromFilesForUploadArray: (id: string) => void;
 }
 
 function FileForUploadCards(props: CaseFileProps) {
-	const { filesForUpload, removeFileFromFilesForUploadArray } = props;
+	const { filesForUpload, removeFromFilesForUploadArray: removeFileFromFilesForUploadArray } = props;
 
 	return (
 		<CardGrid>

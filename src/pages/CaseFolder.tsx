@@ -19,8 +19,8 @@ import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Firebase from "../services/cloud-storage/firebase";
 import Database from "../services/database";
+import { Firebase } from "../services/cloud-storage/firebase";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
@@ -157,12 +157,7 @@ function CaseFolder() {
 					<PillButton name="Create" type="button" img={PenPurple} />
 					<PillButton name="Upload" type="button" img={UploadPurple} onClick={toggleUploadModal} />
 					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
-					<PillSpecialButton
-						name="Generate"
-						type="button"
-						img={LightBulbPurple}
-						onClick={toggleGenerateModal}
-					/>
+					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} onClick={toggleGenerateModal} />
 					<PillButton name="Save" type="button" img={SavePurple} onClick={handleSaveChanges} />
 				</div>
 			</SortBarWithButtons>

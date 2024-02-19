@@ -5,11 +5,11 @@ interface DropAreaProps {
 	ref: React.MutableRefObject<null>;
 	style?: React.CSSProperties;
 	handleOpenFileBrowser: () => void;
-	addFilesToFilesForUploadArray: (files: FileList) => void;
+	addToFilesForUploadArray: (files: FileList) => void;
 }
 
 const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(props, ref) {
-	const { style, handleOpenFileBrowser, addFilesToFilesForUploadArray } = props;
+	const { style, handleOpenFileBrowser, addToFilesForUploadArray: addFilesToFilesForUploadArray } = props;
 
 	const dropAreaStyle = {
 		...style,
@@ -32,6 +32,12 @@ const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(p
 
 		return event.preventDefault();
 	};
+
+	/**
+	 * TODO
+	 * Add 'accept' attribute to upload input to restrict the file types user can upload.
+	 * Add file size limit to restrict size of file user can upload.
+	 */
 
 	return (
 		<div
@@ -60,4 +66,5 @@ const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(p
 		</div>
 	);
 });
+
 export default DropArea;

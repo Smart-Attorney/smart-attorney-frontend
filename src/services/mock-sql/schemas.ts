@@ -45,11 +45,7 @@ export interface Clients {
 	case_folder_id_fk: string;
 }
 
-enum sex_options {
-	Male = "Male",
-	Female = "Female",
-	Other = "Other",
-}
+export type sex_options = "Male" | "Female" | "Other";
 
 /* 
   ref:         case_folders.user_id_fk > users.id

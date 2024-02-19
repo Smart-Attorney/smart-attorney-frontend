@@ -19,4 +19,8 @@ export class FolderLabelDAO extends DAO {
 		}
 		return caseFolderLabels;
 	}
+
+	static async addNewLabel(label: string) {
+		label;
+	}
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import Firebase from "../../../services/cloud-storage/firebase";
+import { Firebase } from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
 import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
 import DropZone from "./modal-components/DropZone";
@@ -28,12 +28,12 @@ function UploadModal(props: UploadModalProps) {
 		if (filesForUpload.length < 1) return;
 
 		for (let i = 0; i < filesForUpload.length; i++) {
-			const uploadedFileRef = await Firebase.uploadFile(
-				filesForUpload[i].data,
+			const uploadedFileUrl = await Firebase.uploadFile(
+				"",
+				props.caseFolderId,
 				filesForUpload[i].id,
-				props.caseFolderId
+				filesForUpload[i].data
 			);
-			const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
 
 			const uploadedFileObject: CaseFileObj = {
 				id: filesForUpload[i].id,
@@ -107,9 +107,7 @@ function UploadModal(props: UploadModalProps) {
 				</div>
 
 				{uploadDone && (
-					<p className="text-xl font-semibold text-green-600">
-						Selected files have been successfully uploaded!
-					</p>
+					<p className="text-xl font-semibold text-green-600">Selected files have been successfully uploaded!</p>
 				)}
 			</div>
 		</ModalDialog>

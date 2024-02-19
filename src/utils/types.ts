@@ -11,7 +11,6 @@ export interface ButtonProps {
 export interface FileForUploadObj {
 	id: string;
 	data: File;
-	selected: boolean;
 }
 
 export interface CaseFolderObj {
@@ -50,8 +49,4 @@ export interface ClientObj {
 	primaryLanguage: string;
 }
 
-export enum SexOptions {
-	Male = "Male",
-	Female = "Female",
-	Other = "Other",
-}
+export type SexOptions = "Male" | "Female" | "Other";
