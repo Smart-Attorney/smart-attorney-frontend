@@ -1,12 +1,13 @@
+import { nanoid } from "../../../lib/nanoid";
 import { CaseFolderLabelObj } from "../../../utils/types";
 import { FolderLabels } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
 import { DAO } from "./dao";
 
 export class FolderLabelDAO extends DAO {
-	static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.FOLDER_LABELS;
+	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.FOLDER_LABELS;
 
-	static async getAllFolderLabelsByCaseFolderId(caseFolderId: string) {
+	static async getAllCaseFolderLabelsById(caseFolderId: string) {
 		const caseFolderLabels: CaseFolderLabelObj[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		for (let i = 0; i < folderLabelArray.length; i++) {
@@ -20,7 +21,18 @@ export class FolderLabelDAO extends DAO {
 		return caseFolderLabels;
 	}
 
-	static async addNewLabel(label: string) {
-		label;
+	static async addNewLabel(folderId: string, label: string) {
+		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
+		const newLabel: FolderLabels = {
+			label_id: nanoid(8),
+			label_name: label,
+			case_folder_id_fk: folderId,
+		};
+		const updatedArray = [...folderLabelArray, newLabel];
+		const success = await super.setArray(this.FOLDER_LABEL_STORAGE_KEY, updatedArray);
+		if (success) {
+			return label;
+		}
+		return null;
 	}
 }

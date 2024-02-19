@@ -3,7 +3,7 @@ import { CaseFolderController } from "../../../services/mock-backend/controller/
 
 const mockApi = async () => {
 	const request = mockRequest.get(`/dashboard`);
-	return await CaseFolderController.getAllCaseFolders(request);
+	return await CaseFolderController.getAllUserCaseFolders(request);
 };
 
 export const getCaseFolders = async () => {

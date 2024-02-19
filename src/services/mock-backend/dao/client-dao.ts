@@ -5,9 +5,9 @@ import { MockSqlTables } from "../../mock-sql/tables";
 import { DAO } from "./dao";
 
 export class ClientDAO extends DAO {
-	static CLIENT_STORAGE_KEY = MockSqlTables.CLIENTS;
+	private static CLIENT_STORAGE_KEY = MockSqlTables.CLIENTS;
 
-	static async getAllClientsByCaseFolderId(caseFolderId: string) {
+	static async getCaseFolderClientById(caseFolderId: string) {
 		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
 		for (let i = 0; i < clientArray.length; i++) {
 			if (clientArray[i].case_folder_id_fk === caseFolderId) {

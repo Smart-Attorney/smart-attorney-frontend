@@ -7,7 +7,7 @@ export interface SignInCredentialsDTO {
 }
 
 const mockApi = async (data: SignInCredentialsDTO) => {
-	const request = mockRequest.post("/signin", data);
+	const request = mockRequest.put("/signin", data);
 	return await UserController.verifyUser(request);
 };
 

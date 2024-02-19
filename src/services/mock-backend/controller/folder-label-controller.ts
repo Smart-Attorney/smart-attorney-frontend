@@ -1,3 +1,26 @@
-class FolderLabelController {}
+import { CreateFolderLabelDTO } from "../../../features/dashboard/api/create-folder-label";
+import { CaseFolderService } from "../service/case-folder-service";
+import { FolderLabelService } from "../service/folder-label-service";
 
-export default FolderLabelController;
+export class FolderLabelController {
+	static async createFolderLabel(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const newLabel: CreateFolderLabelDTO = await request.json();
+		const createdLabel = await FolderLabelService.createFolderLabel(folderId, newLabel);
+		if (createdLabel !== null) {
+			const updatedCaseFolders = await CaseFolderService.getAllUserCaseFoldersById(userId);
+			const body = JSON.stringify(updatedCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with creating the case folder label.");
+		}
+	}
+}

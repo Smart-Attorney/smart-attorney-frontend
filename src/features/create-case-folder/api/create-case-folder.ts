@@ -17,11 +17,11 @@ export interface CreateCaseFolderDTO {
 	client: CreateClientDTO;
 }
 
-const mockApi = async (data: any) => {
-	const request = mockRequest.post("/create-case", data);
+const mockApi = async (data: CreateCaseFolderDTO) => {
+	const request = mockRequest.put("/create-case", data);
 	return await CaseFolderController.createCaseFolder(request);
 };
 
-export const createCaseFolder = async (data: any) => {
+export const createCaseFolder = async (data: CreateCaseFolderDTO) => {
 	return await mockApi(data);
 };

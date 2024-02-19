@@ -5,7 +5,7 @@ import { MockSqlTables } from "../../mock-sql/tables";
 import { DAO } from "./dao";
 
 export class UserDAO extends DAO {
-	static USER_STORAGE_KEY = MockSqlTables.USERS;
+	private static USER_STORAGE_KEY = MockSqlTables.USERS;
 
 	static async getUserIdByCompanyEmail(companyEmail: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
