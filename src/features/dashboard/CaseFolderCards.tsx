@@ -5,6 +5,7 @@ import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
+import { deleteFolderLabel } from "./api/delete-folder-label";
 import { updateDeadline } from "./api/update-deadline";
 
 interface CaseFolderCardProps {
@@ -56,11 +57,18 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleDeleteFolderLabel = (event: React.MouseEvent<HTMLParagraphElement>): void => {
+	const handleDeleteFolderLabel = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id: folderId } = event.target as HTMLParagraphElement;
 		const { id: labelId } = (event.target as HTMLDivElement).parentElement!;
-		const updatedArray = db.deleteCaseFolderLabelById(folderId, labelId);
-		setCaseFolders(updatedArray);
+		try {
+			const response = await deleteFolderLabel(folderId, labelId);
+			if (response.ok) {
+				const updatedCaseFolderArray = await response.json();
+				setCaseFolders(updatedCaseFolderArray);
+			}
+		} catch (error) {
+			alert(error);
+		}
 	};
 
 	const handleDeleteFolder = (folderId: string): void => {

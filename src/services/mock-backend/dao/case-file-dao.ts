@@ -6,7 +6,7 @@ import { DAO } from "./dao";
 export class CaseFileDAO extends DAO {
 	private static CASE_FILE_STORAGE_KEY = MockSqlTables.CASE_FILES;
 
-	static async getAllCaseFilesByCaseFolderId(caseFolderId: string) {
+	static async getAllCaseFolderFilesById(caseFolderId: string) {
 		const caseFolderFiles: CaseFileObj[] = [];
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0; i < caseFileArray.length; i++) {

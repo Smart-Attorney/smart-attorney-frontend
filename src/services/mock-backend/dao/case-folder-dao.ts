@@ -17,7 +17,7 @@ export class CaseFolderDAO extends DAO {
 			if (caseFolderArray[i].user_id_fk === userId) {
 				const caseFolderId = caseFolderArray[i].folder_id;
 				const labels = await FolderLabelDAO.getAllCaseFolderLabelsById(caseFolderId);
-				const files = await CaseFileDAO.getAllCaseFilesByCaseFolderId(caseFolderId);
+				const files = await CaseFileDAO.getAllCaseFolderFilesById(caseFolderId);
 				const client = await ClientDAO.getCaseFolderClientById(caseFolderId);
 				// format the caseFolder to match the caseFolderObj type
 				userCaseFolders.push({

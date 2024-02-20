@@ -12,4 +12,15 @@ export class FolderLabelService {
 		}
 		return null;
 	}
+
+	static async deleteFolderLabel(folderId: string, labelId: string) {
+		if (!folderId || !labelId) {
+			return null;
+		}
+		const deletedLabel = await FolderLabelDAO.deleteFolderLabelById(folderId, labelId);
+		if (deletedLabel !== null) {
+			return deletedLabel;
+		}
+		return null;
+	}
 }
