@@ -22,7 +22,7 @@ export interface CaseFolderObj {
 	deadline: number;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
-	client: ClientObj | {};
+	client: ClientObj | null;
 }
 
 export interface CaseFolderLabelObj {

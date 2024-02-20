@@ -15,7 +15,7 @@ export class FolderLabelController {
 		const newLabel: CreateFolderLabelDTO = await request.json();
 		const createdLabel = await FolderLabelService.createFolderLabel(folderId, newLabel);
 		if (createdLabel !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllUserCaseFoldersById(userId);
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
 			const options = { status: 200 };
 			return new Response(body, options);
@@ -36,7 +36,7 @@ export class FolderLabelController {
 		const labelId: string = urlArray[urlArray.length - 1];
 		const deletedLabel = await FolderLabelService.deleteFolderLabel(folderId, labelId);
 		if (deletedLabel !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllUserCaseFoldersById(userId);
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
 			const options = { status: 200 };
 			return new Response(body, options);

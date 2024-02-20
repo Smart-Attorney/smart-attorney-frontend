@@ -28,11 +28,35 @@ export class CaseFolderDAO extends DAO {
 					deadline: caseFolderArray[i].deadline,
 					labels: labels,
 					files: files,
-					client: client ? client : {},
+					client: client,
 				});
 			}
 		}
 		return userCaseFolders;
+	}
+
+	static async getCaseFolderById(folderId: string) {
+		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		for (let i = 0; i < caseFolderArray.length; i++) {
+			if (caseFolderArray[i].folder_id === folderId) {
+				const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
+				const files = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+				const client = await ClientDAO.getClientByCaseFolderId(folderId);
+				const caseFolder: CaseFolderObj = {
+					id: caseFolderArray[i].folder_id,
+					name: caseFolderArray[i].folder_name,
+					createdDate: caseFolderArray[i].created_date,
+					lastOpenedDate: caseFolderArray[i].last_opened_date,
+					status: caseFolderArray[i].status,
+					deadline: caseFolderArray[i].deadline,
+					labels: labels,
+					files: files,
+					client: client,
+				};
+				return caseFolder;
+			}
+		}
+		return null;
 	}
 
 	static async addNewCaseFolder(userId: string, name: string) {

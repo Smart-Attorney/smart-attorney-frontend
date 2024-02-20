@@ -3,14 +3,14 @@ import { UpdateDeadlineDTO } from "../../../features/dashboard/api/update-deadli
 import { CaseFolderService } from "../service/case-folder-service";
 
 export class CaseFolderController {
-	static async getAllUserCaseFolders(request: Request) {
+	static async getUserCaseFolders(request: Request) {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId: string = authToken.id;
-		const userCaseFolders = await CaseFolderService.getAllUserCaseFoldersById(userId);
+		const userCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 		if (userCaseFolders !== null) {
 			const body = JSON.stringify(userCaseFolders);
 			const options = { status: 200 };
@@ -19,6 +19,19 @@ export class CaseFolderController {
 			const body = null;
 			const options = { status: 204, statusText: "No case folders exist for this user." };
 			return new Response(body, options);
+		}
+	}
+
+	static async getCaseFolder(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const retrievedCaseFolder = await CaseFolderService.getCaseFolderById(folderId);
+		if (retrievedCaseFolder !== null) {
+			const body = JSON.stringify(retrievedCaseFolder);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with retrieving the case folder.");
 		}
 	}
 
@@ -52,7 +65,7 @@ export class CaseFolderController {
 		const newDeadline: UpdateDeadlineDTO = await request.json();
 		const updatedDeadline = await CaseFolderService.updateCaseFolderDeadline(folderId, newDeadline);
 		if (updatedDeadline !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllUserCaseFoldersById(userId);
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
 			const options = { status: 200 };
 			return new Response(body, options);
@@ -72,7 +85,7 @@ export class CaseFolderController {
 		const folderId: string = urlArray[urlArray.length - 1];
 		const deletedCaseFolder = await CaseFolderService.deleteCaseFolder(userId, folderId);
 		if (deletedCaseFolder !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllUserCaseFoldersById(userId);
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
 			const options = { status: 200 };
 			return new Response(body, options);

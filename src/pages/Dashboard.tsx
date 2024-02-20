@@ -5,7 +5,7 @@ import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
-import { getCaseFolders } from "../features/dashboard/api/get-case-folders";
+import { getUserCaseFolders as getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
@@ -42,15 +42,15 @@ function Dashboard() {
 		// }
 		/****/
 
-		getUserCaseFolders();
+		handleGetUserCaseFolders();
 	}, []);
 
-	const getUserCaseFolders = async () => {
+	const handleGetUserCaseFolders = async () => {
 		try {
-			const response = await getCaseFolders();
+			const response = await getUserCaseFolders();
 			switch (response.status) {
 				case 200:
-					const data = await response.json();
+					const data: CaseFolderObj[] = await response.json();
 					setCaseFolders(data);
 					break;
 				case 204:

@@ -15,12 +15,13 @@ import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
+import { getCaseFolder } from "../features/case-folder/api/get-case-folder";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Database from "../services/database";
 import { Firebase } from "../services/cloud-storage/firebase";
+import Database from "../services/database";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
@@ -48,10 +49,10 @@ function CaseFolder() {
 			id: "",
 			firstName: "",
 			lastName: "",
-			sex: null,
+			sex: "Other",
 			primaryLanguage: "",
 			countryOfCitizenship: "",
-			dateOfBirth: "",
+			dateOfBirth: NaN,
 		},
 	});
 
@@ -65,14 +66,28 @@ function CaseFolder() {
 			navigate("/404");
 			return;
 		}
-		const caseFolderExists = db.getCaseFolderById(folderId.current);
-		if (caseFolderExists) {
-			setCaseFolder(caseFolderExists);
-			setCaseFiles(caseFolderExists.files);
-		} else {
-			navigate("/404");
-		}
+		// const caseFolderExists = db.getCaseFolderById(folderId.current);
+		// if (caseFolderExists) {
+		// 	setCaseFolder(caseFolderExists);
+		// 	setCaseFiles(caseFolderExists.files);
+		// } else {
+		// 	navigate("/404");
+		// }
+		handleGetCaseFolder();
 	}, []);
+
+	const handleGetCaseFolder = async () => {
+		try {
+			const response = await getCaseFolder(folderId.current!);
+			if (response.ok) {
+				const data: CaseFolderObj = await response.json();
+				setCaseFolder(data);
+				setCaseFiles(data.files);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id, innerText: name } = event.target as HTMLParagraphElement;

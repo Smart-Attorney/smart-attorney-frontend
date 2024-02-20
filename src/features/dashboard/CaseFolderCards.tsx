@@ -27,8 +27,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await updateDeadline(folderId, deadlineInUnixTime);
 			if (response.ok) {
-				const updatedCaseFolderArray = await response.json();
-				setCaseFolders(updatedCaseFolderArray);
+				const data: CaseFolderObj[] = await response.json();
+				setCaseFolders(data);
 			}
 		} catch (error) {
 			alert(error);
@@ -47,8 +47,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await createFolderLabel(folderId, newLabel);
 			if (response.ok) {
-				const updatedCaseFolderArray = await response.json();
-				setCaseFolders(updatedCaseFolderArray);
+				const data: CaseFolderObj[] = await response.json();
+				setCaseFolders(data);
 			}
 		} catch (error) {
 			alert(error);
@@ -64,8 +64,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
-				const updatedCaseFolderArray = await response.json();
-				setCaseFolders(updatedCaseFolderArray);
+				const data: CaseFolderObj[] = await response.json();
+				setCaseFolders(data);
 			}
 		} catch (error) {
 			alert(error);
@@ -76,8 +76,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteCaseFolder(folderId);
 			if (response.ok) {
-				const updatedCaseFolderArray = await response.json();
-				setCaseFolders(updatedCaseFolderArray);
+				const data: CaseFolderObj[] = await response.json();
+				setCaseFolders(data);
 			}
 		} catch (error) {
 			alert(error);

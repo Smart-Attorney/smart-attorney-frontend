@@ -23,8 +23,8 @@ function SignIn() {
 		try {
 			const response = await signInWithEmailAndPassword(credentials);
 			if (response.ok) {
-				const verifiedUser: CurrentUser = await response.json();
-				setCurrentUser(verifiedUser);
+				const data: CurrentUser = await response.json();
+				setCurrentUser(data);
 				navigate(`/dashboard`);
 			}
 		} catch (error) {

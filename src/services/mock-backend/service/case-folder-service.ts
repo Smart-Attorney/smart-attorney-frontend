@@ -8,12 +8,23 @@ import { ClientDAO } from "../dao/client-dao";
 import { FolderLabelDAO } from "../dao/folder-label-dao";
 
 export class CaseFolderService {
-	static async getAllUserCaseFoldersById(userId: string) {
+	static async getAllCaseFoldersByUserId(userId: string) {
 		const userCaseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
 		if (userCaseFolders.length === 0) {
 			return null;
 		}
 		return userCaseFolders;
+	}
+
+	static async getCaseFolderById(folderId: string) {
+		if (!folderId) {
+			return null;
+		}
+		const retrievedCaseFolder = await CaseFolderDAO.getCaseFolderById(folderId);
+		if (retrievedCaseFolder !== null) {
+			return retrievedCaseFolder;
+		}
+		return null;
 	}
 
 	static async createCaseFolder(userId: string, folderObj: CreateCaseFolderDTO) {
