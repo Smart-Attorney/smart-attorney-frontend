@@ -84,33 +84,56 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
+	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
+		const { id } = event.target as HTMLElement;
+		const folderClicked = id === folderId;
+		const nameClicked = id === "case-folder-name";
+		const deadlineClicked = id === "case-folder-deadline";
+		const deadlineTextClicked = id === "deadline-text";
+		const deadlineStatusClicked = id === "deadline-status";
+		if (folderClicked || nameClicked || deadlineClicked || deadlineTextClicked || deadlineStatusClicked) {
+			navigate(`/case/${folderId}`);
+		}
+		return;
+	};
+
 	return (
 		<CardGrid>
 			{caseFolders?.map((caseFolder) => {
 				const deadline = caseFolder.deadline === 0 ? "" : formatUnixDateToStringDate(caseFolder.deadline);
 				return (
 					<div
-						className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
+						className="flex flex-col w-64 h-64 py-4 pl-5 bg-white cursor-pointer rounded-3xl"
 						key={caseFolder.id}
 						id={caseFolder.id}
+						onClick={(event) => handleViewCaseFolder(event, caseFolder.id)}
 					>
 						{/* Kebab Menu */}
 						<div className="relative left-[200px] max-w-fit">
 							<KebabMenu
-								addDeadline={(event) => handleUpdateFolderDeadline(caseFolder.id, event)}
+								addDeadline={(event) => {
+									event.stopPropagation(), handleUpdateFolderDeadline(caseFolder.id, event);
+								}}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
 						</div>
 
 						{/* Case Deadline */}
-						<div className="relative flex flex-row items-center w-[200px] bottom-[26px] justify-between pr-2">
-							<p>Deadline: {deadline}</p>
-							<div className="w-4 h-4 rounded-full" style={{ backgroundColor: `${caseFolder.status}` }}></div>
+						<div
+							id="case-folder-deadline"
+							className="relative flex flex-row items-center w-[200px] bottom-[26px] justify-between pr-2"
+						>
+							<p id="deadline-text">Deadline: {deadline}</p>
+							<div
+								id="deadline-status"
+								className="w-4 h-4 rounded-full"
+								style={{ backgroundColor: `${caseFolder.status}` }}
+							></div>
 						</div>
 
 						{/* Case Folder Labels */}
-						<div className="relative flex flex-row flex-wrap w-[85%] h-6 gap-2 bottom-[24px]">
+						<div id="case-folder-labels" className="relative flex flex-row flex-wrap w-[85%] h-6 gap-2 bottom-[24px]">
 							{caseFolder.labels.map((label) => (
 								<div key={label.id} id={label.id}>
 									<p
@@ -126,8 +149,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 						{/* Case Folder Name */}
 						<p
+							id="case-folder-name"
 							className="relative top-[120px] w-fit cursor-pointer font-semibold hover:text-blue-500"
-							onClick={() => navigate(`/case/${caseFolder.id}`)}
 						>
 							{caseFolder.name}
 						</p>

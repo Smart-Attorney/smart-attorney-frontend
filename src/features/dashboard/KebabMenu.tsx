@@ -7,7 +7,7 @@ interface KebabMenuProps {
 	deleteFolder: () => void;
 }
 
-function KebabMenu(props: KebabMenuProps) {
+function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
@@ -41,7 +41,7 @@ function KebabMenu(props: KebabMenuProps) {
 	return (
 		<>
 			{/* Kebab Menu Icon */}
-			<div className="p-1 cursor-pointer w-fit " onClick={toggleMenu}>
+			<div id="kebab-menu" className="p-1 cursor-pointer w-fit " onClick={toggleMenu}>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>
@@ -75,7 +75,7 @@ function KebabMenu(props: KebabMenuProps) {
 						className="left-[5px] rounded-sm cursor-pointer px-2 border border-black"
 						id="date-picker"
 						type="date"
-						onChange={props.addDeadline}
+						onChange={addDeadline}
 					/>
 					<img
 						className="w-6 h-6 rounded-full cursor-pointer hover:bg-gray-400"
@@ -90,7 +90,7 @@ function KebabMenu(props: KebabMenuProps) {
 				className="absolute right-[25px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3]"
 				style={{ display: isLabelInputOpen ? "block" : "none" }}
 			>
-				<form className="flex flex-col gap-2" name="label-form" onSubmit={props.addLabel}>
+				<form className="flex flex-col gap-2" name="label-form" onSubmit={addLabel}>
 					<label htmlFor="label-input">New Label:</label>
 					<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="label-input" type="text" />
 					<div className="flex flex-row justify-between w-full">
@@ -117,18 +117,10 @@ function KebabMenu(props: KebabMenuProps) {
 					<h3 className="text-lg font-semibold w-max">Delete Case Folder?</h3>
 					<p className="w-full">This process cannot be undone.</p>
 					<div className="flex flex-row w-full justify-evenly">
-						<button
-							className="w-20 bg-[#c1c1c1] text-white rounded-md py-1"
-							type="button"
-							onClick={closeDeleteAlert}
-						>
+						<button className="w-20 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
 							Cancel
 						</button>
-						<button
-							className="w-20 bg-[#f15e5e] text-white rounded-md py-1"
-							type="button"
-							onClick={props.deleteFolder}
-						>
+						<button className="w-20 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={deleteFolder}>
 							Delete
 						</button>
 					</div>
