@@ -10,7 +10,7 @@ import {
 	UnknownFile,
 } from "../assets/file-type";
 
-const getFileTypeImg = (fileType: string) => {
+export const getFileTypeImg = (fileType: string) => {
 	switch (fileType) {
 		case "doc":
 			return DocFile;
@@ -32,5 +32,3 @@ const getFileTypeImg = (fileType: string) => {
 			return UnknownFile;
 	}
 };
-
-export { getFileTypeImg };

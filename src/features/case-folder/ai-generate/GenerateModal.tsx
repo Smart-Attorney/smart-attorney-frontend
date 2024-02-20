@@ -9,6 +9,7 @@ interface GenerateModalProps {
 }
 
 function GenerateModal({ closeModal }: GenerateModalProps) {
+	// @ts-ignore
 	const parseSelectedFiles = (files: FileList): string => {
 		let chatGptInput = "";
 		for (let i = 0; i < files.length; i++) {
@@ -34,22 +35,13 @@ function GenerateModal({ closeModal }: GenerateModalProps) {
 	const mockArray = ["abc", "def", "ghi", "jkl", "mno", "pqr"];
 
 	return (
-		<ModalDialog
-			className="w-[768px]"
-			closeModal={closeModal}
-			enableBackdropClose={true}
-		>
+		<ModalDialog className="w-[768px]" closeModal={closeModal} enableBackdropClose={true}>
 			{/* Contains all the elements of the body. */}
-			<div
-				id="modal-body"
-				className="flex flex-col items-center justify-center w-full pb-4 gap-7 px-14"
-			>
+			<div id="modal-body" className="flex flex-col items-center justify-center w-full pb-4 gap-7 px-14">
 				{/* Contains the header and subtext. */}
 				<div className="flex flex-col items-center">
 					<h1 className="text-xl text-white">Generate</h1>
-					<p className="text-white">
-						Select the documents you want to generate an argument for.
-					</p>
+					<p className="text-white">Select the documents you want to generate an argument for.</p>
 				</div>
 
 				{/* Contains the select-all checkbox and document grid. */}

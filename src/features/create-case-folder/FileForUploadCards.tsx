@@ -1,15 +1,16 @@
 import RenderDocument from "../../components/Pdf/RenderDocument";
 import CardGrid from "../../layouts/CardGrid";
 import { FileForUploadObj } from "../../utils/types";
+// @ts-ignore
 import KebabMenu from "./KebabMenu";
 
 interface CaseFileProps {
 	filesForUpload: FileForUploadObj[];
-	removeFileFromFilesForUploadArray: (id: string) => void;
+	removeFromFilesForUploadArray: (id: string) => void;
 }
 
 function FileForUploadCards(props: CaseFileProps) {
-	const { filesForUpload, removeFileFromFilesForUploadArray } = props;
+	const { filesForUpload, removeFromFilesForUploadArray: removeFileFromFilesForUploadArray } = props;
 
 	return (
 		<CardGrid>
@@ -20,10 +21,7 @@ function FileForUploadCards(props: CaseFileProps) {
 				// 	</div>
 				// 	<p className="mb-8 w-fit">{file.data.name}</p>
 				// </div>
-				<RenderDocument
-					file={file}
-					removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
-				/>
+				<RenderDocument file={file} removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray} />
 			))}
 		</CardGrid>
 	);

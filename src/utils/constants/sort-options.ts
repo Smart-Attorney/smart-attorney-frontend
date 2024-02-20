@@ -1,4 +1,7 @@
-import type { SortOptionsObj } from "../types";
+export interface SortOptionsObj {
+	clicked: boolean;
+	name: string;
+}
 
 export const DASHBOARD: SortOptionsObj[] = [
 	{ clicked: false, name: "Name" },

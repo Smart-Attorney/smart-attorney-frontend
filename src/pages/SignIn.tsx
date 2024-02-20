@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import { SignInCredentialsDTO, signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
-import { CurrentUserContext } from "../providers/CurrentUserProvider";
+import { CurrenUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
 
 function SignIn() {
-	const { setCurrentUser } = useContext(CurrentUserContext);
+	const { setCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
 	const navigate = useNavigate();
 	const [credentials, setCredentials] = useState<SignInCredentialsDTO>({ companyEmail: "", password: "" });
 
@@ -23,14 +23,10 @@ function SignIn() {
 		try {
 			const response = await signInWithEmailAndPassword(credentials);
 			if (response.ok) {
-				console.log("true")
-				navigate("/dashboard");
+				const data: CurrentUser = await response.json();
+				setCurrentUser(data);
+				navigate(`/dashboard`);
 			}
-			// const data = await response.json();
-			// if (data) {
-			// 	setCurrentUser(data);
-			// 	navigate("/dashboard");
-			// }
 		} catch (error) {
 			alert(error);
 		}

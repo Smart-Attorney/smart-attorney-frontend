@@ -33,7 +33,7 @@ function SidebarItemsContainer() {
 
 			<div className="flex flex-col items-center">
 				<RenderButton
-					path="/dashboard"
+					path={`/dashboard`}
 					imageActive={Dashboard_Active}
 					imageInactive={Dashboard_Inactive}
 					label="Dashboard"

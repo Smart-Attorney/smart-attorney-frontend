@@ -35,6 +35,7 @@ const fileExtractor = (file: File): Promise<string> => {
 						for (let j = 1; j <= maxPages; j++) {
 							const page = pdf.getPage(j);
 
+							// @ts-ignore
 							const txt = "";
 							countPromises.push(
 								page.then(function (page) {

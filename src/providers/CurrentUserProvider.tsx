@@ -1,33 +1,26 @@
 import { createContext } from "react";
 
-interface CurrentUserProviderProps {
-	children: React.ReactNode;
-}
-
-interface CurrentUser {
+export interface CurrentUser {
 	id: string;
 	firstName: string;
 	lastName: string;
 }
 
-interface CurrenUserContextType {
-	getCurrentUser: () => any;
+export interface CurrenUserContextType {
+	getCurrentUser: () => CurrentUser;
 	setCurrentUser: (user: CurrentUser) => void;
 }
 
-export const CurrentUserContext = createContext<CurrenUserContextType>({
-	getCurrentUser: () => {},
-	setCurrentUser: () => {},
-});
+export const CurrentUserContext = createContext<CurrenUserContextType | null>(null);
 
-export function CurrentUserProvider({ children }: CurrentUserProviderProps) {
+export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
 	const CURRENT_USER_KEY = "current_user";
 
-	const getCurrentUser = () => {
+	const getCurrentUser = (): CurrentUser => {
 		return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) as string);
 	};
 
-	const setCurrentUser = (user: CurrentUser) => {
+	const setCurrentUser = (user: CurrentUser): void => {
 		localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 	};
 
@@ -41,4 +34,6 @@ export function CurrentUserProvider({ children }: CurrentUserProviderProps) {
 /* 
   Reference/Source for useContext():
   https://stackoverflow.com/questions/73117229/how-to-use-usecontext-in-typescript
+
+  https://blog.logrocket.com/how-to-use-react-context-typescript/
 */

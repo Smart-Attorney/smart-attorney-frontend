@@ -5,13 +5,11 @@ interface DropAreaProps {
 	ref: React.MutableRefObject<null>;
 	style?: React.CSSProperties;
 	handleOpenFileBrowser: () => void;
-	addFilesToFilesForUploadArray: (files: FileList) => void;
+	addToFilesForUploadArray: (files: FileList) => void;
 }
 
-const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(
-	function DropArea(props, ref) {
-		const { style, handleOpenFileBrowser, addFilesToFilesForUploadArray } =
-			props;
+const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(props, ref) {
+	const { style, handleOpenFileBrowser, addToFilesForUploadArray } = props;
 
 		const dropAreaStyle = {
 			...style,
@@ -22,13 +20,13 @@ const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(
 		): void => {
 			const { files } = event.target;
 			if (!files) return;
-			addFilesToFilesForUploadArray(files);
+			addToFilesForUploadArray(files);
 		};
 
 		const handleUploadFilesFromDrop = (event: React.DragEvent): void => {
 			event.preventDefault();
 			const { files } = event.dataTransfer;
-			addFilesToFilesForUploadArray(files);
+			addToFilesForUploadArray(files);
 		};
 
 		const handleDragOver = (event: React.DragEvent): void => {

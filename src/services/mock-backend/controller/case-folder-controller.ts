@@ -1,3 +1,118 @@
-class CaseFolderController {}
+import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
+import { UpdateDeadlineDTO } from "../../../features/dashboard/api/update-deadline";
+import { CaseFolderService } from "../service/case-folder-service";
 
-export default CaseFolderController;
+export class CaseFolderController {
+	static async getUserCaseFolders(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const userCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+		if (userCaseFolders !== null) {
+			const body = JSON.stringify(userCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			const body = null;
+			const options = { status: 204, statusText: "No case folders exist for this user." };
+			return new Response(body, options);
+		}
+	}
+
+	static async getCaseFolder(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const retrievedCaseFolder = await CaseFolderService.getCaseFolderById(folderId);
+		if (retrievedCaseFolder !== null) {
+			const body = JSON.stringify(retrievedCaseFolder);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with retrieving the case folder.");
+		}
+	}
+
+	static async createCaseFolder(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const newFolder: CreateCaseFolderDTO = await request.json();
+		const { folderId, folderName } = newFolder;
+		const createdCaseFolder = await CaseFolderService.createCaseFolder(userId, folderId, folderName);
+		if (createdCaseFolder !== null) {
+			const body = JSON.stringify(createdCaseFolder);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with creating the case folder.");
+		}
+	}
+
+	static async updateCaseFolderDeadline(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const newDeadline: UpdateDeadlineDTO = await request.json();
+		const updatedDeadline = await CaseFolderService.updateCaseFolderDeadline(userId, folderId, newDeadline);
+		if (updatedDeadline !== null) {
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+			const body = JSON.stringify(updatedCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case folder deadline.");
+		}
+	}
+
+	static async updateLastOpenedDate(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const newDate = await request.json();
+		const updatedDate = await CaseFolderService.updateLastOpenedDate(userId, folderId, newDate);
+		if (updatedDate !== null) {
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+			const body = JSON.stringify(updatedCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case folder last opened date.");
+		}
+	}
+
+	static async deleteCaseFolder(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const deletedCaseFolder = await CaseFolderService.deleteCaseFolder(userId, folderId);
+		if (deletedCaseFolder !== null) {
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+			const body = JSON.stringify(updatedCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with deleting the case folder.");
+		}
+	}
+}

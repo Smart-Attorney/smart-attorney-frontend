@@ -1,6 +1,10 @@
+// @ts-ignore
 import axios from "axios";
+// @ts-ignore
 import React, { FormEvent, useEffect, useState } from "react";
+// @ts-ignore
 import styled from "styled-components";
+// @ts-ignore
 import PdfExtractor from "./PdfExtractor";
 
 const Body = styled.div`
@@ -46,17 +50,12 @@ const Header = styled.span`
 	gap: 1rem;
 `;
 
-const Container = (props: {
-	heading: string;
-	index: number;
-	children: React.ReactNode;
-}) => {
+const Container = (props: { heading: string; index: number; children: React.ReactNode }) => {
 	const { index, heading, children } = props;
 	return (
 		<div className="mb-[2rem]">
 			<Header className="mb-[1rem]">
-				<Circle>{index}</Circle>{" "}
-				<p className="font-semibold text-[1.25rem]">{heading}</p>
+				<Circle>{index}</Circle> <p className="font-semibold text-[1.25rem]">{heading}</p>
 			</Header>
 
 			<hr />
@@ -67,6 +66,8 @@ const Container = (props: {
 
 const ChatGPT = () => {
 	const [res, setRes] = useState<string>();
+
+	// @ts-ignore
 	const [isLoading, setIsLoading] = useState(false);
 	// const apiKey = "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";
 	// const apiKey = "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";
@@ -75,7 +76,9 @@ const ChatGPT = () => {
 	const turbo_endpoint = "https://api.openai.com/v1/chat/completions";
 	const turbo_model = "gpt-4";
 
+	// @ts-ignore
 	const daVinci_endpoint = "https://api.openai.com/v1/completions";
+	// @ts-ignore
 	const daVinciMode = "text-davinci-003";
 
 	const [pdfContent, setPdfContent] = useState("");
@@ -126,11 +129,13 @@ const ChatGPT = () => {
 
 		client
 			.post(turbo_endpoint, params)
+			// @ts-ignore
 			.then((res) => {
 				console.log("res", res);
 				setRes(res.data.choices[0].message.content);
 				setIsLoading(false);
 			})
+			// @ts-ignore
 			.catch((err) => {
 				setRes(err.message);
 				console.log("err", err);
@@ -169,11 +174,7 @@ const ChatGPT = () => {
 					</button> */}
 				</Container>
 				<Container heading="Settings" index={3}>
-					<input
-						type="number"
-						name="maxWordCount"
-						placeholder="Word Count (default: 200)"
-					/>
+					<input type="number" name="maxWordCount" placeholder="Word Count (default: 200)" />
 				</Container>
 
 				{/* <input
@@ -181,10 +182,7 @@ const ChatGPT = () => {
 					value="Generate Letter"
 					placeholder="Max Word Count"
 				/> */}
-				<button
-					type="submit"
-					className="bg-purple-900 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded"
-				>
+				<button type="submit" className="px-4 py-2 font-semibold text-white bg-purple-900 rounded hover:bg-purple-800">
 					Generate Letter
 				</button>
 			</form>

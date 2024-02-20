@@ -1,8 +1,8 @@
 import { RegisterCredentialsDTO } from "../../../features/register/api/register";
 import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
-import UserDAO from "../dao/user-dao";
+import { UserDAO } from "../dao/user-dao";
 
-class UserService {
+export class UserService {
 	static async verifyUser(data: SignInCredentialsDTO) {
 		if (data.companyEmail.trim().length === 0) return null;
 		if (data.password.trim().length === 0) return null;
@@ -14,7 +14,7 @@ class UserService {
 		const userData = await UserDAO.getUserById(foundIdByPassword);
 		if (userData) {
 			const foundUser = {
-				id: userData.id,
+				id: userData.user_id,
 				firstName: userData.first_name,
 				lastName: userData.last_name,
 			};
@@ -24,18 +24,16 @@ class UserService {
 	}
 
 	static async registerUser(data: RegisterCredentialsDTO) {
-    if (data.firstName.trim().length === 0) return null;
+		if (data.firstName.trim().length === 0) return null;
 		if (data.lastName.trim().length === 0) return null;
 		if (data.firmName.trim().length === 0) return null;
 		if (data.companyEmail.trim().length === 0) return null;
 		if (data.password.trim().length === 0) return null;
 		const registeredUser = await UserDAO.createUser(data);
-    
+
 		if (registeredUser) {
 			return registeredUser;
 		}
 		return null;
 	}
 }
-
-export default UserService;

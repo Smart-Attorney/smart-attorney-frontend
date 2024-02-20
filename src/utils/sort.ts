@@ -87,7 +87,7 @@ class SortArrayBy {
 	// }
 }
 
-const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray => {
+export const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray => {
 	switch (option) {
 		case "Name":
 			return SortArrayBy.name(array);
@@ -111,5 +111,3 @@ const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray =>
 			return array;
 	}
 };
-
-export { sortArrayByOption };

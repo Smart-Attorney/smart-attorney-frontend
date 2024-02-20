@@ -12,65 +12,51 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import ClientInfoModal from "../features/create-case-folder/ClientModal/ClientInfoModal";
+import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
+import { createCaseFiles } from "../features/create-case-folder/api/create-case-files";
+import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
+import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Firebase from "../services/cloud-storage/firebase";
-import Database from "../services/database";
-import nanoid from "../services/nanoid";
+import { nanoid } from "../lib/nanoid";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { CaseFileObj, ClientInfoObj, FileForUploadObj } from "../utils/types";
+import { FileForUploadObj, SexOptions } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
-	const db = new Database();
 
-	const caseFolderId = useRef("");
+	const caseFolderId = useRef<string>("");
+	useEffect(() => {
+		if (caseFolderId.current.length < 1) {
+			caseFolderId.current = nanoid(8);
+		}
+	}, []);
+
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
-
-	const [clientInfoModalOpen, setClientInfoModalOpen] = useState<boolean>(true);
-
-	// removed state setter to appease compiler, add back later
-	const [clientInfo] = useState<ClientInfoObj>({
+	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
+	const [client, setClient] = useState<ClientInfoForm>({
 		firstName: "",
 		lastName: "",
-		sex: null,
-		primaryLanguage: "",
-		countryOfCitizenship: "",
 		dateOfBirth: "",
+		sex: "",
+		countryOfCitizenship: "",
+		primaryLanguage: "",
 	});
 
-	useEffect(() => {
-		if (caseFolderId.current.length < 1) {
-			caseFolderId.current = nanoid();
-		}
-	}, []);
-
-	/**
-	 * On initial load, checks if cases array exists in local storage.
-	 * If not, creates and saves a cases array to local storage.
-	 */
-	useEffect(() => {
-		const caseArray = db.getCaseArray();
-		if (caseArray === null) {
-			db.initNewArray();
-		}
-	}, []);
-
-	const handleCloseClientInfoModal = () => {
-		setClientInfoModalOpen(false);
+	const handleCloseClientModal = () => {
+		setClientModalOpen(false);
 	};
 
-	// const handleClientInfoInput = (event: React.FormEvent<HTMLInputElement>): void => {
-	// 	console.log(event);
-	// }
+	const toggleClientModal = () => {
+		setClientModalOpen((prev) => !prev);
+	};
 
 	const handleOpenFileBrowser = (): void => {
 		inputRef.current?.click();
@@ -108,51 +94,20 @@ function CreateCaseFolder() {
 		}
 	};
 
-	const addFilesToFilesForUploadArray = (filesFromUpload: FileList): void => {
-		for (let i = 0; i < filesFromUpload.length; i++) {
+	const addToFilesForUploadArray = (filesFromUser: FileList): void => {
+		for (let i = 0; i < filesFromUser.length; i++) {
 			setFilesForUpload((prev) => [
 				...prev,
 				{
-					id: nanoid(),
-					data: filesFromUpload[i],
-					selected: false,
+					id: nanoid(8),
+					data: filesFromUser[i],
 				},
 			]);
 		}
 	};
 
-	const removeFileFromFilesForUploadArray = (id: string): void => {
-		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
-	};
-
-	const uploadFilesToCloudStorage = async (
-		filesArray: FileForUploadObj[]
-	): Promise<null | CaseFileObj[]> => {
-		if (filesArray === null) return null;
-		if (filesArray.length < 1) return null;
-
-		let uploadedFiles: CaseFileObj[] = [];
-
-		for (let i = 0; i < filesArray.length; i++) {
-			const uploadedFileRef = await Firebase.uploadFile(
-				filesArray[i].data,
-				filesArray[i].id,
-				caseFolderId.current
-			);
-			const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
-			const uploadedFileObject = {
-				id: filesArray[i].id,
-				name: filesArray[i].data.name,
-				createdDate: Date.now(),
-				lastOpenedDate: Date.now(),
-				status: "Submitted",
-				url: uploadedFileUrl ? uploadedFileUrl : "",
-			};
-
-			uploadedFiles.push(uploadedFileObject);
-		}
-
-		return uploadedFiles;
+	const removeFromFilesForUploadArray = (fileId: string): void => {
+		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
 	};
 
 	const handleCreateCaseFolder = async (): Promise<void> => {
@@ -164,36 +119,56 @@ function CreateCaseFolder() {
 			return;
 		}
 
-		// Checks if there are files to upload to prevent unnecessary calls to cloud service.
-		let uploadedFilesArray: CaseFileObj[];
-		if (filesForUpload === null || filesForUpload.length === 0) {
-			uploadedFilesArray = [];
-		} else {
-			uploadedFilesArray = (await uploadFilesToCloudStorage(
-				filesForUpload
-			)) as CaseFileObj[];
+		const filesFormData = new FormData();
+		filesFormData.append("caseFolderId", caseFolderId.current);
+		for (let i = 0; i < filesForUpload.length; i++) {
+			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
 
-		const newCaseFolderObject = {
-			id: caseFolderId.current,
-			name: caseFolderName,
-			createdDate: Date.now(),
-			lastOpenedDate: Date.now(),
-			status: "#53EF0A",
-			deadline: "",
-			labels: [],
-			files: uploadedFilesArray,
-			clientInfo: clientInfo,
+		const newClient: CreateClientDTO = {
+			firstName: client.firstName,
+			lastName: client.lastName,
+			dateOfBirth: Date.parse(client.dateOfBirth),
+			sex: client.sex as SexOptions,
+			countryOfCitizenship: client.countryOfCitizenship,
+			primaryLanguage: client.primaryLanguage,
+			caseFolderId: caseFolderId.current,
 		};
 
-		db.addNewCaseFolder(newCaseFolderObject);
-		navigate("/dashboard");
+		const newCaseFolder: CreateCaseFolderDTO = {
+			folderId: caseFolderId.current,
+			folderName: caseFolderName,
+		};
+
+		try {
+			if (filesForUpload.length > 0) {
+				const caseFolderResponse = await createCaseFolder(newCaseFolder);
+				const clientResponse = await createClient(newClient);
+				const caseFilesResponse = await createCaseFiles(filesFormData);
+				if (caseFolderResponse.ok && clientResponse.ok && caseFilesResponse.ok) {
+					navigate("/dashboard");
+				}
+			} else {
+				const caseFolderResponse = await createCaseFolder(newCaseFolder);
+				const clientResponse = await createClient(newClient);
+				if (caseFolderResponse.ok && clientResponse.ok) {
+					navigate("/dashboard");
+				}
+			}
+		} catch (error) {
+			alert(error);
+		}
 	};
 
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-4">
-				<img className="h-[58px]" src={UserIcon} />
+				<img
+					className="h-[58px] cursor-pointer"
+					src={UserIcon}
+					onClick={toggleClientModal}
+					title="Click to edit client info"
+				/>
 				<h1
 					id="case-name"
 					className="text-3xl font-bold text-white"
@@ -243,7 +218,7 @@ function CreateCaseFolder() {
 			{filesForUpload.length > 0 && (
 				<FileForUploadCards
 					filesForUpload={filesForUpload}
-					removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray}
+					removeFromFilesForUploadArray={removeFromFilesForUploadArray}
 				/>
 			)}
 
@@ -254,12 +229,10 @@ function CreateCaseFolder() {
 					display: filesForUpload.length > 0 ? "none" : "flex",
 				}}
 				handleOpenFileBrowser={handleOpenFileBrowser}
-				addFilesToFilesForUploadArray={addFilesToFilesForUploadArray}
+				addToFilesForUploadArray={addToFilesForUploadArray}
 			/>
 
-			{clientInfoModalOpen && (
-				<ClientInfoModal closeModal={handleCloseClientInfoModal} />
-			)}
+			{clientModalOpen && <ClientInfoModal client={client} setClient={setClient} closeModal={handleCloseClientModal} />}
 		</SidebarLayout>
 	);
 }

@@ -5,44 +5,40 @@ import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
+import { getUserCaseFolders as getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Database from "../services/database";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
-import { getCaseFolders } from "../features/dashboard/apis/get-case-folders";
 
 function Dashboard() {
-	const db = new Database();
 	const navigate = useNavigate();
-
 	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
 
-	/**
-	 * On initial load, retrieves case array from local storage.
-	 * Then, sets case array to cases state.
-	 * Empty dependency array since it should only run once on initial load.
-	 */
 	useEffect(() => {
-		// const fetchCaseFolders = async () => {
-		// 	const response = await fetch('localhost:4000/api/caseFolders')
-		// 	const json = await response.json()
-
-		// 	if (response.ok) {
-		// 		setCaseFolders(json)
-		// 	}
-		// }
-		const caseArray = db.getCaseArray();
-		if (caseArray !== null) {
-			setCaseFolders(caseArray);
-		} else {
-			db.initNewArray();
-			setCaseFolders([]);
-		}
-		// fetchCaseFolders()
-		getCaseFolders();
+		handleGetUserCaseFolders();
 	}, []);
+
+	const handleGetUserCaseFolders = async () => {
+		try {
+			const response = await getUserCaseFolders();
+			switch (response.status) {
+				case 200:
+					const data: CaseFolderObj[] = await response.json();
+					setCaseFolders(data);
+					break;
+				case 204:
+					console.log(response.statusText);
+					setCaseFolders([]);
+					break;
+				default:
+					break;
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	const newCaseBtnGradient = {
 		background:

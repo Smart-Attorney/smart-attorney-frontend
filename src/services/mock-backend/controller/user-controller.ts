@@ -1,8 +1,8 @@
 import { RegisterCredentialsDTO } from "../../../features/register/api/register";
 import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
-import UserService from "../service/user-service";
+import { UserService } from "../service/user-service";
 
-class UserController {
+export class UserController {
 	static async verifyUser(request: Request) {
 		const data: SignInCredentialsDTO = await request.json();
 		const verifiedUserID = await UserService.verifyUser(data);
@@ -27,5 +27,3 @@ class UserController {
 		}
 	}
 }
-
-export default UserController;

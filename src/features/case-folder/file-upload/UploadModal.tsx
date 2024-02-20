@@ -2,9 +2,9 @@ import { useState } from "react";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import Firebase from "../../../services/cloud-storage/firebase";
 import nanoid from "../../../services/nanoid";
 import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
+import { createCaseFiles } from "../api/create-case-files";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
@@ -13,39 +13,44 @@ interface UploadModalProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
 	addUploadedFileToCaseFileArray: (uploadedFile: CaseFileObj) => void;
-	updateCaseFolder: () => void;
+	updateCaseFolderAfterNewUpload: () => void;
 }
 
-function UploadModal(props: UploadModalProps) {
+function UploadModal({
+	caseFolderId,
+	closeUploadModal,
+	addUploadedFileToCaseFileArray,
+	updateCaseFolderAfterNewUpload,
+}: UploadModalProps) {
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 	const [uploadDone, setUploadDone] = useState(false);
 
-	/*TODO
-    Break up this function. Currently does too much.
-  */
 	const handleUploadFiles = async (): Promise<void> => {
 		if (filesForUpload === null) return;
 		if (filesForUpload.length < 1) return;
 
+		const filesFormData = new FormData();
+		filesFormData.append("caseFolderId", caseFolderId);
 		for (let i = 0; i < filesForUpload.length; i++) {
-			const uploadedFileRef = await Firebase.uploadFile(
-				filesForUpload[i].data,
-				filesForUpload[i].id,
-				props.caseFolderId
-			);
-			const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
-
-			const uploadedFileObject: CaseFileObj = {
-				id: filesForUpload[i].id,
-				name: filesForUpload[i].data.name,
-				createdDate: Date.now(),
-				lastOpenedDate: Date.now(),
-				status: "Submitted",
-				url: uploadedFileUrl ? uploadedFileUrl : "",
-			};
-			props.addUploadedFileToCaseFileArray(uploadedFileObject);
+			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
-		setUploadDone(true);
+
+		try {
+			const response = await createCaseFiles(caseFolderId, filesFormData);
+			if (response.ok) {
+				const createdCaseFiles: CaseFileObj[] = await response.json();
+				for (let i = 0; i < createdCaseFiles.length; i++) {
+					addUploadedFileToCaseFileArray(createdCaseFiles[i]);
+				}
+				setUploadDone(true);
+			}
+		} catch (error) {
+			alert(error);
+		} finally {
+			updateCaseFolderAfterNewUpload();
+			setUploadDone(false);
+			closeUploadModal();
+		}
 	};
 
 	const addFilesToUploadArray = (files: FileList): void => {
@@ -55,7 +60,6 @@ function UploadModal(props: UploadModalProps) {
 				{
 					id: nanoid(),
 					data: files[i],
-					selected: false,
 				},
 			]);
 		}
@@ -65,13 +69,7 @@ function UploadModal(props: UploadModalProps) {
 		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
 
 	const handleCloseUploadModal = (): void => {
-		/*
-      'props.updateCaseFolder()' does not work when placed at the end of 
-      'handleUploadSelectedFiles'. But oddly works when placed here.
-    */
-		props.updateCaseFolder();
-		setUploadDone(false);
-		props.closeUploadModal();
+		closeUploadModal();
 	};
 
 	return (
@@ -107,9 +105,7 @@ function UploadModal(props: UploadModalProps) {
 				</div>
 
 				{uploadDone && (
-					<p className="text-xl font-semibold text-green-600">
-						Selected files have been successfully uploaded!
-					</p>
+					<p className="text-xl font-semibold text-green-600">Selected files have been successfully uploaded!</p>
 				)}
 			</div>
 		</ModalDialog>
