@@ -8,7 +8,6 @@ import { deleteCaseFileById } from "./api/delete-case-file";
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	updateCaseFolder: () => void;
 	updateCaseFolderAndFiles: (newCaseFolder: CaseFolderObj) => void;
 }
 

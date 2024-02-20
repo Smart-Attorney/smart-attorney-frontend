@@ -22,13 +22,11 @@ import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import Database from "../services/database";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
 function CaseFolder() {
 	const navigate = useNavigate();
-	const db = new Database();
 
 	const { id: idFromParams } = useParams();
 	const folderId = useRef(idFromParams);
@@ -124,12 +122,11 @@ function CaseFolder() {
 		setCaseFiles((prev) => [...prev, uploadedFile]);
 	};
 
-	const updateCaseFolder = (): void => {
-		const newCaseFolder = {
+	const updateCaseFolderAfterNewUpload = (): void => {
+		const updatedCaseFolder = {
 			...caseFolder,
 			files: caseFiles,
 		};
-		const updatedCaseFolder = db.updateCaseFolder(folderId.current!, newCaseFolder);
 		setCaseFolder(updatedCaseFolder);
 	};
 
@@ -179,7 +176,6 @@ function CaseFolder() {
 			<CaseFileCards
 				files={caseFiles}
 				onClick={(event) => handleViewFileModal(event)}
-				updateCaseFolder={updateCaseFolder}
 				updateCaseFolderAndFiles={updateCaseFolderAndFiles}
 			/>
 
@@ -188,7 +184,7 @@ function CaseFolder() {
 					caseFolderId={idFromParams!}
 					closeUploadModal={closeUploadModal}
 					addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
-					updateCaseFolder={updateCaseFolder}
+					updateCaseFolderAfterNewUpload={updateCaseFolderAfterNewUpload}
 				/>
 			)}
 

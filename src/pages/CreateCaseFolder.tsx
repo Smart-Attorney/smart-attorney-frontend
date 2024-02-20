@@ -135,16 +135,16 @@ function CreateCaseFolder() {
 
 		try {
 			if (filesForUpload.length > 0) {
-				const caseFolderCreated = await createCaseFolder(newCaseFolder);
-				const clientCreated = await createClient(newClient);
-				const caseFilesCreated = await createCaseFiles(filesFormData);
-				if (caseFolderCreated.ok && clientCreated.ok && caseFilesCreated.ok) {
+				const caseFolderResponse = await createCaseFolder(newCaseFolder);
+				const clientResponse = await createClient(newClient);
+				const caseFilesResponse = await createCaseFiles(filesFormData);
+				if (caseFolderResponse.ok && clientResponse.ok && caseFilesResponse.ok) {
 					navigate("/dashboard");
 				}
 			} else {
-				const caseFolderCreated = await createCaseFolder(newCaseFolder);
-				const clientCreated = await createClient(newClient);
-				if (caseFolderCreated.ok && clientCreated.ok) {
+				const caseFolderResponse = await createCaseFolder(newCaseFolder);
+				const clientResponse = await createClient(newClient);
+				if (caseFolderResponse.ok && clientResponse.ok) {
 					navigate("/dashboard");
 				}
 			}
