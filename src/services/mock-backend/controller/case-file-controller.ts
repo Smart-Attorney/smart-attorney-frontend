@@ -1,3 +1,1 @@
-class CaseFileController {}
-
-export default CaseFileController;
+export class CaseFileController {}

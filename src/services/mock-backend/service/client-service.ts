@@ -1,3 +1,1 @@
-class ClientService {}
-
-export default ClientService;
+export class ClientService {}

@@ -1,3 +1,1 @@
-class ClientController {}
-
-export default ClientController;
+export class ClientController {}

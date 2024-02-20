@@ -10,16 +10,15 @@ import { FolderLabelDAO } from "./folder-label-dao";
 export class CaseFolderDAO extends DAO {
 	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.CASE_FOLDERS;
 
-	static async getAllUserCaseFoldersById(userId: string) {
+	static async getAllCaseFoldersByUserId(userId: string) {
 		const userCaseFolders: CaseFolderObj[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0; i < caseFolderArray.length; i++) {
 			if (caseFolderArray[i].user_id_fk === userId) {
 				const caseFolderId = caseFolderArray[i].folder_id;
-				const labels = await FolderLabelDAO.getAllCaseFolderLabelsById(caseFolderId);
-				const files = await CaseFileDAO.getAllCaseFolderFilesById(caseFolderId);
-				const client = await ClientDAO.getCaseFolderClientById(caseFolderId);
-				// format the caseFolder to match the caseFolderObj type
+				const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(caseFolderId);
+				const files = await CaseFileDAO.getAllFilesByCaseFolderId(caseFolderId);
+				const client = await ClientDAO.getClientByCaseFolderId(caseFolderId);
 				userCaseFolders.push({
 					id: caseFolderArray[i].folder_id,
 					name: caseFolderArray[i].folder_name,
@@ -66,6 +65,22 @@ export class CaseFolderDAO extends DAO {
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
 		if (success) {
 			return deadline;
+		}
+		return null;
+	}
+
+	static async deleteCaseFolderById(userId: string, folderId: string) {
+		const updatedArray: CaseFolders[] = [];
+		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		for (let i = 0; i < caseFolderArray.length; i++) {
+			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
+				continue;
+			}
+			updatedArray.push(caseFolderArray[i]);
+		}
+		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, updatedArray);
+		if (success) {
+			return folderId;
 		}
 		return null;
 	}

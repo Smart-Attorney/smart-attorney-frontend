@@ -1,3 +1,1 @@
-class CaseFileService {}
-
-export default CaseFileService;
+export class CaseFileService {}

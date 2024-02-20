@@ -7,7 +7,7 @@ import { DAO } from "./dao";
 export class FolderLabelDAO extends DAO {
 	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.FOLDER_LABELS;
 
-	static async getAllCaseFolderLabelsById(caseFolderId: string) {
+	static async getAllLabelsByCaseFolderId(caseFolderId: string) {
 		const caseFolderLabels: CaseFolderLabelObj[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		for (let i = 0; i < folderLabelArray.length; i++) {
@@ -36,7 +36,7 @@ export class FolderLabelDAO extends DAO {
 		return null;
 	}
 
-	static async deleteFolderLabelById(folderId: string, labelId: string) {
+	static async deleteLabelById(folderId: string, labelId: string) {
 		const updatedArray: FolderLabels[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		for (let i = 0; i < folderLabelArray.length; i++) {
@@ -50,5 +50,21 @@ export class FolderLabelDAO extends DAO {
 			return labelId;
 		}
 		return null;
+	}
+
+	static async deleteAllLabelsByFolderId(folderId: string) {
+		const updatedArray: FolderLabels[] = [];
+		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
+		for (let i = 0; i < folderLabelArray.length; i++) {
+			if (folderLabelArray[i].case_folder_id_fk === folderId) {
+				continue;
+			}
+			updatedArray.push(folderLabelArray[i]);
+		}
+		const success = await super.setArray(this.FOLDER_LABEL_STORAGE_KEY, updatedArray);
+		if (success) {
+			return true;
+		}
+		return false;
 	}
 }

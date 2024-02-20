@@ -41,8 +41,10 @@ export class Firebase {
 		const fileRef = ref(storage, filePath);
 		try {
 			await deleteObject(fileRef);
+			return true;
 		} catch (error) {
 			console.log(error);
+			return false;
 		}
 	}
 }

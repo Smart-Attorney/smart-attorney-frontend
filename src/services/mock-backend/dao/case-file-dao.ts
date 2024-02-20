@@ -6,7 +6,7 @@ import { DAO } from "./dao";
 export class CaseFileDAO extends DAO {
 	private static CASE_FILE_STORAGE_KEY = MockSqlTables.CASE_FILES;
 
-	static async getAllCaseFolderFilesById(caseFolderId: string) {
+	static async getAllFilesByCaseFolderId(caseFolderId: string) {
 		const caseFolderFiles: CaseFileObj[] = [];
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0; i < caseFileArray.length; i++) {
@@ -41,5 +41,21 @@ export class CaseFileDAO extends DAO {
 			return newCaseFile;
 		}
 		return null;
+	}
+
+	static async deleteAllFilesByFolderId(folderId: string) {
+		const updatedArray: CaseFiles[] = [];
+		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0; i < caseFileArray.length; i++) {
+			if (caseFileArray[i].case_folder_id_fk === folderId) {
+				continue;
+			}
+			updatedArray.push(caseFileArray[i]);
+		}
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, updatedArray);
+		if (success) {
+			return true;
+		}
+		return false;
 	}
 }

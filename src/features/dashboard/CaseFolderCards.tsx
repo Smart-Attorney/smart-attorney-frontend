@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
-import Database from "../../services/database";
+// import Database from "../../services/database";
 import { formatDateInput } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
+import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
 import { updateDeadline } from "./api/update-deadline";
 
@@ -14,7 +15,7 @@ interface CaseFolderCardProps {
 }
 
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
-	const db = new Database();
+	// const db = new Database();
 	const navigate = useNavigate();
 
 	const handleUpdateFolderDeadline = async (
@@ -71,9 +72,16 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleDeleteFolder = (folderId: string): void => {
-		const updatedArray = db.deleteCaseFolderById(folderId);
-		setCaseFolders(updatedArray);
+	const handleDeleteFolder = async (folderId: string): Promise<void> => {
+		try {
+			const response = await deleteCaseFolder(folderId);
+			if (response.ok) {
+				const updatedCaseFolderArray = await response.json();
+				setCaseFolders(updatedCaseFolderArray);
+			}
+		} catch (error) {
+			alert(error);
+		}
 	};
 
 	return (

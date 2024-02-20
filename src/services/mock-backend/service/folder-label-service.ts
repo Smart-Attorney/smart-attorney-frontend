@@ -17,7 +17,7 @@ export class FolderLabelService {
 		if (!folderId || !labelId) {
 			return null;
 		}
-		const deletedLabel = await FolderLabelDAO.deleteFolderLabelById(folderId, labelId);
+		const deletedLabel = await FolderLabelDAO.deleteLabelById(folderId, labelId);
 		if (deletedLabel !== null) {
 			return deletedLabel;
 		}

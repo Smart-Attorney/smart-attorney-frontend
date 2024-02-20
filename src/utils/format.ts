@@ -11,7 +11,7 @@ export const formatDateInput = (unixDate: number): string => {
 	let day = date.getUTCDate().toString();
 	month = month.length === 1 ? "0" + month : month;
 	day = day.length === 1 ? "0" + day : day;
-	const formattedDate = `${month}-${day}-${year}`;
+	const formattedDate = `${month}/${day}/${year}`;
 	return formattedDate;
 };
 
