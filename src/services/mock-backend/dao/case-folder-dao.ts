@@ -1,4 +1,3 @@
-import { nanoid } from "../../../lib/nanoid";
 import { CaseFolderObj } from "../../../utils/types";
 import { CaseFolders } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
@@ -59,11 +58,11 @@ export class CaseFolderDAO extends DAO {
 		return null;
 	}
 
-	static async addNewCaseFolder(userId: string, name: string) {
+	static async addNewCaseFolder(userId: string, folderId: string, folderName: string) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		const newCaseFolder: CaseFolders = {
-			folder_id: nanoid(8),
-			folder_name: name,
+			folder_id: folderId,
+			folder_name: folderName,
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
 			status: "#53EF0A",

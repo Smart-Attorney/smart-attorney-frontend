@@ -4,7 +4,7 @@ export class mockRequest {
 	private static PUT = "PUT";
 	private static DELETE = "DELETE";
 
-	private static getToken() {
+	static getToken() {
 		const currentUser = localStorage.getItem("current_user");
 		if (currentUser) {
 			const token = currentUser;

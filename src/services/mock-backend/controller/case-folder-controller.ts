@@ -42,9 +42,10 @@ export class CaseFolderController {
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId: string = authToken.id;
-		const folderObj: CreateCaseFolderDTO = await request.json();
-		const createdCaseFolder = await CaseFolderService.createCaseFolder(userId, folderObj);
-		if (createdCaseFolder) {
+		const newFolder: CreateCaseFolderDTO = await request.json();
+		const { folderId, folderName } = newFolder;
+		const createdCaseFolder = await CaseFolderService.createCaseFolder(userId, folderId, folderName);
+		if (createdCaseFolder !== null) {
 			const body = JSON.stringify(createdCaseFolder);
 			const options = { status: 200 };
 			return new Response(body, options);

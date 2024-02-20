@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
-import Database from "../../services/database";
 import { Firebase } from "../../services/cloud-storage/firebase";
+import Database from "../../services/database";
 import { CaseFileObj, CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 

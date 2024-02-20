@@ -15,11 +15,9 @@ import SortBar from "../components/SortBar/SortBar";
 import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
-import {
-	CreateCaseFolderDTO,
-	CreateClientDTO,
-	createCaseFolder,
-} from "../features/create-case-folder/api/create-case-folder";
+import { createCaseFiles } from "../features/create-case-folder/api/create-case-files";
+import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
+import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
@@ -28,15 +26,17 @@ import Database from "../services/database";
 import { NEW_CASE } from "../utils/constants/sort-options";
 import { FileForUploadObj, SexOptions } from "../utils/types";
 
-//since file upload is handled on the backend
-//new case folder doesnt need an id up until user makes request to create new folder
-//then pass an id into the data object for request
-
 function CreateCaseFolder() {
 	const navigate = useNavigate();
 	const db = new Database();
 
 	const caseFolderId = useRef<string>("");
+	useEffect(() => {
+		if (caseFolderId.current.length < 1) {
+			caseFolderId.current = nanoid(8);
+		}
+	}, []);
+
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -51,12 +51,6 @@ function CreateCaseFolder() {
 		countryOfCitizenship: "",
 		primaryLanguage: "",
 	});
-
-	useEffect(() => {
-		if (caseFolderId.current.length < 1) {
-			caseFolderId.current = nanoid(8);
-		}
-	}, []);
 
 	/**
 	 * On initial load, checks if cases array exists in local storage.
@@ -160,6 +154,12 @@ function CreateCaseFolder() {
 			return;
 		}
 
+		const filesFormData = new FormData();
+		filesFormData.append("caseFolderId", caseFolderId.current);
+		for (let i = 0; i < filesForUpload.length; i++) {
+			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
+		}
+
 		const newClient: CreateClientDTO = {
 			firstName: client.firstName,
 			lastName: client.lastName,
@@ -167,18 +167,28 @@ function CreateCaseFolder() {
 			sex: client.sex as SexOptions,
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
+			caseFolderId: caseFolderId.current,
 		};
 
-		const newCaseFolderObject: CreateCaseFolderDTO = {
-			name: caseFolderName,
-			files: filesForUpload,
-			client: newClient,
+		const newCaseFolder: CreateCaseFolderDTO = {
+			folderId: caseFolderId.current,
+			folderName: caseFolderName,
 		};
 
 		try {
-			const response = await createCaseFolder(newCaseFolderObject);
-			if (response.ok) {
-				navigate("/dashboard");
+			if (filesForUpload.length > 0) {
+				const caseFolderCreated = await createCaseFolder(newCaseFolder);
+				const clientCreated = await createClient(newClient);
+				const caseFilesCreated = await createCaseFiles(filesFormData);
+				if (caseFolderCreated.ok && clientCreated.ok && caseFilesCreated.ok) {
+					navigate("/dashboard");
+				}
+			} else {
+				const caseFolderCreated = await createCaseFolder(newCaseFolder);
+				const clientCreated = await createClient(newClient);
+				if (caseFolderCreated.ok && clientCreated.ok) {
+					navigate("/dashboard");
+				}
 			}
 		} catch (error) {
 			alert(error);
