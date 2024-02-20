@@ -69,7 +69,9 @@ function CreateCaseFolder() {
 		}
 	};
 
-	const handleFocusOffCaseName = (event: React.FocusEvent<HTMLHeadingElement>): void => {
+	const handleFocusOffCaseName = (
+		event: React.FocusEvent<HTMLHeadingElement>
+	): void => {
 		const { innerText } = event.target;
 		if (innerText.trim() === "") {
 			setCaseFolderName("New Case |");
@@ -78,7 +80,9 @@ function CreateCaseFolder() {
 		}
 	};
 
-	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
+	const handleEnterKeyPress = (
+		event: React.KeyboardEvent<HTMLHeadingElement>
+	): void => {
 		if (event.key !== "Enter") return;
 		const { innerText } = event.target as HTMLHeadingElement;
 		if (innerText.trim() === "") {
@@ -107,7 +111,10 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateCaseFolder = async (): Promise<void> => {
-		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
+		if (
+			caseFolderName.trim() === "New Case |" ||
+			caseFolderName.trim().length === 0
+		) {
 			alert("Please change the case name before creating.");
 			return;
 		}
@@ -183,10 +190,28 @@ function CreateCaseFolder() {
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
 					<PillButton name="Create" type="button" img={PenPurple} />
-					<PillButton name="Upload" type="button" img={UploadPurple} onClick={handleOpenFileBrowser} />
-					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} />
-					<PillButton name="Create Case" type="button" img={FolderPurple} onClick={handleCreateCaseFolder} />
+					<PillButton
+						name="Upload"
+						type="button"
+						img={UploadPurple}
+						onClick={handleOpenFileBrowser}
+					/>
+					<PillButton
+						name="Translate"
+						type="button"
+						img={SphereLatticePurple}
+					/>
+					<PillSpecialButton
+						name="Generate"
+						type="button"
+						img={LightBulbPurple}
+					/>
+					<PillButton
+						name="Create Case"
+						type="button"
+						img={FolderPurple}
+						onClick={handleCreateCaseFolder}
+					/>
 				</div>
 			</SortBarWithButtons>
 

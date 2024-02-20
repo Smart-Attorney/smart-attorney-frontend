@@ -197,7 +197,12 @@ function CaseFolder() {
 				/>
 			)}
 
-			{generateModalOpen && <GenerateModal closeModal={handleCloseGenerateModal} />}
+			{generateModalOpen && (
+				<GenerateModal
+					closeModal={handleCloseGenerateModal}
+					files={caseFiles}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }

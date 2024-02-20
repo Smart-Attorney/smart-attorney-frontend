@@ -9,62 +9,59 @@ interface DropAreaProps {
 }
 
 const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(props, ref) {
-	const { style, handleOpenFileBrowser, addToFilesForUploadArray: addFilesToFilesForUploadArray } = props;
+	const { style, handleOpenFileBrowser, addToFilesForUploadArray } = props;
 
-	const dropAreaStyle = {
-		...style,
-	};
+		const dropAreaStyle = {
+			...style,
+		};
 
-	const handleUploadFilesFromBrowser = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const { files } = event.target;
-		if (!files) return;
-		addFilesToFilesForUploadArray(files);
-	};
+		const handleUploadFilesFromBrowser = (
+			event: React.ChangeEvent<HTMLInputElement>
+		): void => {
+			const { files } = event.target;
+			if (!files) return;
+			addToFilesForUploadArray(files);
+		};
 
-	const handleUploadFilesFromDrop = (event: React.DragEvent): void => {
-		event.preventDefault();
-		const { files } = event.dataTransfer;
-		addFilesToFilesForUploadArray(files);
-	};
+		const handleUploadFilesFromDrop = (event: React.DragEvent): void => {
+			event.preventDefault();
+			const { files } = event.dataTransfer;
+			addToFilesForUploadArray(files);
+		};
 
-	const handleDragOver = (event: React.DragEvent): void => {
-		console.log(event);
+		const handleDragOver = (event: React.DragEvent): void => {
+			console.log(event);
 
-		return event.preventDefault();
-	};
+			return event.preventDefault();
+		};
 
-	/**
-	 * TODO
-	 * Add 'accept' attribute to upload input to restrict the file types user can upload.
-	 * Add file size limit to restrict size of file user can upload.
-	 */
-
-	return (
-		<div
-			className="self-center h-[50vh] ml-[108px] mr-40 cursor-pointer border-dashed-custom flex items-center justify-center"
-			style={dropAreaStyle}
-			onDragOver={handleDragOver}
-			onDrop={handleUploadFilesFromDrop}
-			onClick={handleOpenFileBrowser}
-		>
-			<div className="w-fit h-fit">
-				<div className="flex flex-col items-center gap-10">
-					<img className="w-[88px]" src={UploadIcon} />
-					<h1 className="text-2xl font-normal text-white">
-						Drag and drop or <b>select</b> files from your device.
-					</h1>
+		return (
+			<div
+				className="self-center h-[50vh] ml-[108px] mr-40 cursor-pointer border-dashed-custom flex items-center justify-center"
+				style={dropAreaStyle}
+				onDragOver={handleDragOver}
+				onDrop={handleUploadFilesFromDrop}
+				onClick={handleOpenFileBrowser}
+			>
+				<div className="w-fit h-fit">
+					<div className="flex flex-col items-center gap-10">
+						<img className="w-[88px]" src={UploadIcon} />
+						<h1 className="text-2xl font-normal text-white">
+							Drag and drop or <b>select</b> files from your device.
+						</h1>
+					</div>
+					<input
+						name="upload"
+						type="file"
+						accept="application/pdf"
+						multiple
+						ref={ref}
+						style={{ display: "none" }}
+						onChange={handleUploadFilesFromBrowser}
+					/>
 				</div>
-				<input
-					name="upload"
-					type="file"
-					multiple
-					ref={ref}
-					style={{ display: "none" }}
-					onChange={handleUploadFilesFromBrowser}
-				/>
 			</div>
-		</div>
-	);
-});
-
+		);
+	}
+);
 export default DropArea;

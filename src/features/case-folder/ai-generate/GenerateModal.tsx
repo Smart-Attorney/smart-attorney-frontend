@@ -1,11 +1,26 @@
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
+import fileExtractor from "../../../components/Pdf/FileExtractor";
+import { CaseFileObj } from "../../../utils/types";
 
 interface GenerateModalProps {
 	closeModal: () => void;
+	files: CaseFileObj[];
 }
 
 function GenerateModal({ closeModal }: GenerateModalProps) {
+	// @ts-ignore
+	const parseSelectedFiles = (files: FileList): string => {
+		let chatGptInput = "";
+		for (let i = 0; i < files.length; i++) {
+			const fileString = fileExtractor(files[i]);
+
+			fileString.then((res) => chatGptInput + res);
+		}
+
+		return chatGptInput;
+	};
+
 	/* 
     workaround ¯\_(ツ)_/¯
     link opens new tab to jun's deployed app
