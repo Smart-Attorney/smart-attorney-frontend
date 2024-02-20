@@ -31,50 +31,26 @@ export class CaseFolderService {
 			return newFolder;
 		}
 		return null;
-		// // create new client thats tied to folder id
-		// const newClient = await ClientDAO.addNewClient(
-		// 	firstName,
-		// 	lastName,
-		// 	dateOfBirth,
-		// 	sex,
-		// 	countryOfCitizenship,
-		// 	primaryLanguage,
-		// 	newFolder.folder_id
-		// );
-		// if (!newClient) {
-		// 	return false;
-		// }
-		// // add files that are tied to folder id
-		// const newCaseFiles: CaseFiles[] = [];
-		// for (let i = 0; i < files.length; i++) {
-		// 	try {
-		// 		const fileUrl = await Firebase.uploadFile(userId, newFolder.folder_id, files[i].id, files[i].data);
-		// 		if (!fileUrl) {
-		// 			continue;
-		// 		}
-		// 		const newFile = await CaseFileDAO.addNewCaseFile(files[i].id, files[i].data.name, fileUrl, newFolder.folder_id);
-		// 		if (!newFile) {
-		// 			continue;
-		// 		}
-		// 		newCaseFiles.push(newFile);
-		// 	} catch (error) {
-		// 		console.log(error);
-		// 	}
-		// }
-		// if (newFolder && newClient && newCaseFiles) {
-		// 	return true;
-		// } else {
-		// 	return false;
-		// }
 	}
 
-	static async updateCaseFolderDeadline(folderId: string, deadline: UpdateDeadlineDTO) {
+	static async updateCaseFolderDeadline(userId: string, folderId: string, deadline: UpdateDeadlineDTO) {
 		if (!folderId || !deadline) {
 			return null;
 		}
-		const updatedDeadline = await CaseFolderDAO.updateCaseFolderDeadline(folderId, deadline);
+		const updatedDeadline = await CaseFolderDAO.updateCaseFolderDeadline(userId, folderId, deadline);
 		if (updatedDeadline !== null) {
-			return deadline;
+			return updatedDeadline;
+		}
+		return null;
+	}
+
+	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
+		if (!userId || !folderId || !newDate) {
+			return null;
+		}
+		const updatedDate = await CaseFolderDAO.updateLastOpenedDate(userId, folderId, newDate);
+		if (updatedDate !== null) {
+			return updatedDate;
 		}
 		return null;
 	}

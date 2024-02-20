@@ -77,17 +77,32 @@ export class CaseFolderDAO extends DAO {
 		return null;
 	}
 
-	static async updateCaseFolderDeadline(folderId: string, deadline: number) {
+	static async updateCaseFolderDeadline(userId: string, folderId: string, newDeadline: number) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0; i < caseFolderArray.length; i++) {
-			if (caseFolderArray[i].folder_id === folderId) {
-				caseFolderArray[i].deadline = deadline;
+			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
+				caseFolderArray[i].deadline = newDeadline;
 				break;
 			}
 		}
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
 		if (success) {
-			return deadline;
+			return newDeadline;
+		}
+		return null;
+	}
+
+	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
+		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		for (let i = 0; i < caseFolderArray.length; i++) {
+			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
+				caseFolderArray[i].last_opened_date = newDate;
+				break;
+			}
+		}
+		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
+		if (success) {
+			return newDate;
 		}
 		return null;
 	}

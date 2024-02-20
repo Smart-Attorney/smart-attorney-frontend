@@ -29,4 +29,30 @@ export class CaseFileService {
 		}
 		return fileArray;
 	}
+
+	static async getCaseFileByIdFromDB(userId: string, folderId: string, fileId: string) {
+		if (!userId || !folderId || !fileId) {
+			return null;
+		}
+		const retrievedCaseFile = await CaseFileDAO.getCaseFileById(folderId, fileId);
+		if (retrievedCaseFile !== null) {
+			return retrievedCaseFile;
+		}
+		return null;
+	}
+
+	static async deleteCaseFileById(userId: string, folderId: string, fileId: string) {
+		if (!userId || !folderId || !fileId) {
+			return false;
+		}
+		const fileRemovedFromCloud = await Firebase.deleteFileById(userId, folderId, fileId);
+		if (!fileRemovedFromCloud) {
+			return false;
+		}
+		const deletedFile = await CaseFileDAO.deleteFileById(folderId, fileId);
+		if (deletedFile) {
+			return true;
+		}
+		return false;
+	}
 }

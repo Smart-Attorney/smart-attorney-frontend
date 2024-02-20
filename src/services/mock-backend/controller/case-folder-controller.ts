@@ -64,7 +64,7 @@ export class CaseFolderController {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
 		const newDeadline: UpdateDeadlineDTO = await request.json();
-		const updatedDeadline = await CaseFolderService.updateCaseFolderDeadline(folderId, newDeadline);
+		const updatedDeadline = await CaseFolderService.updateCaseFolderDeadline(userId, folderId, newDeadline);
 		if (updatedDeadline !== null) {
 			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
@@ -72,6 +72,27 @@ export class CaseFolderController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with updating the case folder deadline.");
+		}
+	}
+
+	static async updateLastOpenedDate(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const newDate = await request.json();
+		const updatedDate = await CaseFolderService.updateLastOpenedDate(userId, folderId, newDate);
+		if (updatedDate !== null) {
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+			const body = JSON.stringify(updatedCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case folder last opened date.");
 		}
 	}
 
