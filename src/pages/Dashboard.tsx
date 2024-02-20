@@ -11,37 +11,12 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { CaseFolderObj } from "../utils/types";
-// import Database from "../services/database";
 
 function Dashboard() {
-	// const db = new Database();
 	const navigate = useNavigate();
 	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
 
-	/**
-	 * On initial load, retrieves case array from local storage.
-	 * Then, sets case array to cases state.
-	 * Empty dependency array since it should only run once on initial load.
-	 */
 	useEffect(() => {
-		// const fetchCaseFolders = async () => {
-		// 	const response = await fetch("localhost:4000/api/caseFolders");
-		// 	const json = await response.json();
-		// 	if (response.ok) {
-		// 		setCaseFolders(json);
-		// 	}
-		// };
-		// fetchCaseFolders();
-		/****/
-		// const caseArray = db.getCaseArray();
-		// if (caseArray !== null) {
-		// 	setCaseFolders(caseArray);
-		// } else {
-		// 	db.initNewArray();
-		// 	setCaseFolders([]);
-		// }
-		/****/
-
 		handleGetUserCaseFolders();
 	}, []);
 

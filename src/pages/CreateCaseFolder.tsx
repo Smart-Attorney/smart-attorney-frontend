@@ -22,13 +22,11 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import Database from "../services/database";
 import { NEW_CASE } from "../utils/constants/sort-options";
 import { FileForUploadObj, SexOptions } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
-	const db = new Database();
 
 	const caseFolderId = useRef<string>("");
 	useEffect(() => {
@@ -51,17 +49,6 @@ function CreateCaseFolder() {
 		countryOfCitizenship: "",
 		primaryLanguage: "",
 	});
-
-	/**
-	 * On initial load, checks if cases array exists in local storage.
-	 * If not, creates and saves a cases array to local storage.
-	 */
-	useEffect(() => {
-		const caseArray = db.getCaseArray();
-		if (caseArray === null) {
-			db.initNewArray();
-		}
-	}, []);
 
 	const handleCloseClientModal = () => {
 		setClientModalOpen(false);
@@ -119,35 +106,6 @@ function CreateCaseFolder() {
 		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
 	};
 
-	// this function will be moved to the backend
-	// const uploadFilesToCloudStorage = async (filesArray: FileForUploadObj[]): Promise<null | CaseFileObj[]> => {
-	// 	if (filesArray === null) return null;
-	// 	if (filesArray.length < 1) return null;
-
-	// 	let uploadedFiles: CaseFileObj[] = [];
-
-	// 	for (let i = 0; i < filesArray.length; i++) {
-	// 		const uploadedFileRef = await Firebase.uploadFile(
-	// 			filesArray[i].data,
-	// 			filesArray[i].id,
-	// 			caseFolderId.current
-	// 		);
-	// 		const uploadedFileUrl = await Firebase.getFileByRef(uploadedFileRef);
-	// 		const uploadedFileObject = {
-	// 			id: filesArray[i].id,
-	// 			name: filesArray[i].data.name,
-	// 			createdDate: Date.now(),
-	// 			lastOpenedDate: Date.now(),
-	// 			status: "Submitted",
-	// 			url: uploadedFileUrl ? uploadedFileUrl : "",
-	// 		};
-
-	// 		uploadedFiles.push(uploadedFileObject);
-	// 	}
-
-	// 	return uploadedFiles;
-	// };
-
 	const handleCreateCaseFolder = async (): Promise<void> => {
 		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
@@ -193,9 +151,6 @@ function CreateCaseFolder() {
 		} catch (error) {
 			alert(error);
 		}
-
-		// db.addNewCaseFolder(newCaseFolderObject);
-		return;
 	};
 
 	return (
