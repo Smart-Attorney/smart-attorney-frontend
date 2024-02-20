@@ -18,11 +18,13 @@ import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import { getCaseFileByIdFromDB } from "../features/case-folder/api/get-case-file";
 import { getCaseFolder } from "../features/case-folder/api/get-case-folder";
 import { updateLastOpenedDate } from "../features/case-folder/api/update-last-opened-date";
+import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
+import { formatUnixDateToInputField } from "../utils/format";
 import { CaseFileObj, CaseFolderObj } from "../utils/types";
 
 function CaseFolder() {
@@ -56,6 +58,7 @@ function CaseFolder() {
 	});
 
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
+	const [clientModalOpen, setClientModalOpen] = useState<boolean>(false);
 	const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 	const [fileModalOpen, setFileModalOpen] = useState<boolean>(false);
 	const [generateModalOpen, setGenerateModalOpen] = useState<boolean>(false);
@@ -98,6 +101,14 @@ function CaseFolder() {
 		}
 	};
 
+	const handleCloseClientModal = (): void => {
+		setClientModalOpen(false);
+	};
+
+	const toggleClientModal = (): void => {
+		setClientModalOpen((prev) => !prev);
+	};
+
 	const handleCloseGenerateModal = (): void => {
 		setGenerateModalOpen(false);
 	};
@@ -122,6 +133,8 @@ function CaseFolder() {
 		setCaseFiles((prev) => [...prev, uploadedFile]);
 	};
 
+	// TODO
+	// test if this is necessary
 	const updateCaseFolderAfterNewUpload = (): void => {
 		const updatedCaseFolder = {
 			...caseFolder,
@@ -153,7 +166,12 @@ function CaseFolder() {
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-4">
-				<img className="h-[58px]" src={UserIcon} />
+				<img
+					className="h-[58px] cursor-pointer"
+					title="Click to view client info"
+					src={UserIcon}
+					onClick={toggleClientModal}
+				/>
 				<h1 id="case-name" className="text-3xl font-bold text-white">
 					{caseFolder?.name}
 				</h1>
@@ -197,10 +215,19 @@ function CaseFolder() {
 				/>
 			)}
 
-			{generateModalOpen && (
-				<GenerateModal
-					closeModal={handleCloseGenerateModal}
-					files={caseFiles}
+			{generateModalOpen && <GenerateModal closeModal={handleCloseGenerateModal} files={caseFiles} />}
+
+			{clientModalOpen && (
+				<ClientModal
+					client={{
+						firstName: caseFolder.client?.firstName!,
+						lastName: caseFolder.client?.lastName!,
+						dateOfBirth: formatUnixDateToInputField(caseFolder.client?.dateOfBirth!),
+						sex: caseFolder.client?.sex!,
+						countryOfCitizenship: caseFolder.client?.countryOfCitizenship!,
+						primaryLanguage: caseFolder.client?.lastName!,
+					}}
+					closeModal={handleCloseClientModal}
 				/>
 			)}
 		</SidebarLayout>
