@@ -73,7 +73,9 @@ function CaseFolder() {
 		}
 	}, []);
 
-	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
+	const handleViewFileModal = async (
+		event: React.MouseEvent<HTMLParagraphElement>
+	): Promise<void> => {
 		const { id, innerText: name } = event.target as HTMLParagraphElement;
 		const url = await Firebase.getFileById(id, name, folderId.current!);
 		fileName.current = name ? name : "";
@@ -111,7 +113,10 @@ function CaseFolder() {
 			...caseFolder,
 			files: caseFiles,
 		};
-		const updatedCaseFolder = db.updateCaseFolder(folderId.current!, newCaseFolder);
+		const updatedCaseFolder = db.updateCaseFolder(
+			folderId.current!,
+			newCaseFolder
+		);
 		setCaseFolder(updatedCaseFolder);
 	};
 
@@ -154,15 +159,29 @@ function CaseFolder() {
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
 					<PillButton name="Create" type="button" img={PenPurple} />
-					<PillButton name="Upload" type="button" img={UploadPurple} onClick={toggleUploadModal} />
-					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
+					<PillButton
+						name="Upload"
+						type="button"
+						img={UploadPurple}
+						onClick={toggleUploadModal}
+					/>
+					<PillButton
+						name="Translate"
+						type="button"
+						img={SphereLatticePurple}
+					/>
 					<PillSpecialButton
 						name="Generate"
 						type="button"
 						img={LightBulbPurple}
 						onClick={toggleGenerateModal}
 					/>
-					<PillButton name="Save" type="button" img={SavePurple} onClick={handleSaveChanges} />
+					<PillButton
+						name="Save"
+						type="button"
+						img={SavePurple}
+						onClick={handleSaveChanges}
+					/>
 				</div>
 			</SortBarWithButtons>
 
@@ -191,7 +210,12 @@ function CaseFolder() {
 				/>
 			)}
 
-			{generateModalOpen && <GenerateModal closeModal={handleCloseGenerateModal} />}
+			{generateModalOpen && (
+				<GenerateModal
+					closeModal={handleCloseGenerateModal}
+					files={caseFiles}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }
