@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
 // import Database from "../../services/database";
-import { formatDateInput } from "../../utils/format";
+import { formatUnixDateToStringDate } from "../../utils/format";
 import type { CaseFolderObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
@@ -87,7 +87,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	return (
 		<CardGrid>
 			{caseFolders?.map((caseFolder) => {
-				const deadline = caseFolder.deadline === 0 ? "" : formatDateInput(caseFolder.deadline);
+				const deadline = caseFolder.deadline === 0 ? "" : formatUnixDateToStringDate(caseFolder.deadline);
 				return (
 					<div
 						className="flex flex-col w-64 h-64 py-4 pl-5 bg-white rounded-3xl"
