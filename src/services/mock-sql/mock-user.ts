@@ -12,20 +12,46 @@ export class MockUser {
 	};
 
 	static setMockUser = (): void => {
-		const getLocalStorageUserArray = JSON.parse(localStorage.getItem("users") as string);
-		const updatedArray = [this.mockUser, ...getLocalStorageUserArray];
+		const userArray: Users[] = JSON.parse(localStorage.getItem("users") as string);
+		const updatedArray: Users[] = [this.mockUser, ...userArray];
+		localStorage.setItem("users", JSON.stringify(updatedArray));
+	};
+
+	static removeOldMockUser = (): void => {
+		const uniqueUsersArray = [];
+		const mockUserArray = [];
+		const trueJaneDoe = [];
+		const userArray = JSON.parse(localStorage.getItem("users") as string);
+		for (let i = 0; i < userArray.length; i++) {
+			const firstNameMatch = userArray[i].first_name === this.mockUser.first_name;
+			const lastNameMatch = userArray[i].last_name === this.mockUser.last_name;
+			const companyEmailMatch = userArray[i].company_email === this.mockUser.company_email;
+			const passwordMatch = userArray[i].password === this.mockUser.password;
+			if (firstNameMatch && lastNameMatch && companyEmailMatch && passwordMatch) {
+				mockUserArray.push(userArray[i]);
+			} else {
+				uniqueUsersArray.push(userArray[i]);
+			}
+		}
+		for (let i = 0; i < mockUserArray.length; i++) {
+			const idMatch = userArray[i].user_id === this.mockUser.user_id;
+			if (idMatch) {
+				trueJaneDoe.push(mockUserArray[i]);
+			}
+		}
+		const updatedArray = [...trueJaneDoe, ...uniqueUsersArray];
 		localStorage.setItem("users", JSON.stringify(updatedArray));
 	};
 
 	static mockUserExists = (): boolean => {
-		const getLocalStorageUserArray = JSON.parse(localStorage.getItem("users") as string);
-		for (let i = 0; i < getLocalStorageUserArray.length; i++) {
-			const idMatch = getLocalStorageUserArray[i].user_id === this.mockUser.user_id;
-			const firstNameMatch = getLocalStorageUserArray[i].first_name === this.mockUser.first_name;
-			const lastNameMatch = getLocalStorageUserArray[i].last_name === this.mockUser.last_name;
-			const firmNameMatch = getLocalStorageUserArray[i].firm_name === this.mockUser.firm_name;
-			const companyEmailMatch = getLocalStorageUserArray[i].company_email === this.mockUser.company_email;
-			const passwordMatch = getLocalStorageUserArray[i].password === this.mockUser.password;
+		const userArray: Users[] = JSON.parse(localStorage.getItem("users") as string);
+		for (let i = 0; i < userArray.length; i++) {
+			const idMatch = userArray[i].user_id === this.mockUser.user_id;
+			const firstNameMatch = userArray[i].first_name === this.mockUser.first_name;
+			const lastNameMatch = userArray[i].last_name === this.mockUser.last_name;
+			const firmNameMatch = userArray[i].firm_name === this.mockUser.firm_name;
+			const companyEmailMatch = userArray[i].company_email === this.mockUser.company_email;
+			const passwordMatch = userArray[i].password === this.mockUser.password;
 			if (idMatch && firstNameMatch && lastNameMatch && firmNameMatch && companyEmailMatch && passwordMatch) {
 				return true;
 			}
@@ -35,6 +61,7 @@ export class MockUser {
 
 	static createMockUser = () => {
 		if (this.mockUserExists()) {
+			this.removeOldMockUser();
 			return;
 		}
 		this.setMockUser();

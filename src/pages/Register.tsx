@@ -19,44 +19,69 @@ function Register() {
 		CONFIRM_PASSWORD: "confirmPassword",
 	};
 
-	const [credentials, setCredentials] = useState<RegisterCredentialsDTO>({
+	const [user, setUser] = useState<RegisterCredentialsDTO>({
 		firstName: "",
 		lastName: "",
 		firmName: "",
 		companyEmail: "",
 		password: "",
 	});
-
 	const [confirmPassword, setConfirmPassword] = useState({ confirmPassword: "" });
+	const [tos, setTos] = useState({
+		termsOfService: false,
+		privacyPolicy: false,
+	});
+
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { id, value } = event.target;
+		if (id === INPUT.CONFIRM_PASSWORD) {
+			setConfirmPassword((prev) => ({ ...prev, [id]: value }));
+		}
+		setUser((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+	};
+
+	const handleToggleCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = event.target;
+		setTos((prev) => ({
+			...prev,
+			[name]: checked,
+		}));
+	};
 
 	const handleRegistration = async () => {
 		// temp: checks whether password and confirm-password match
-		if (credentials.password !== confirmPassword.confirmPassword) {
+		if (user.password !== confirmPassword.confirmPassword) {
 			alert("Passwords do not match.");
 			return;
 		}
 
+		const fNameBlank = user.firstName.trim().length === 0;
+		const lNameBlank = user.lastName.trim().length === 0;
+		const firmNameBlank = user.firmName.trim().length === 0;
+		const emailBlank = user.companyEmail.trim().length === 0;
+		const passwordBlank = user.password.trim().length === 0;
+
+		if (fNameBlank || lNameBlank || firmNameBlank || emailBlank || passwordBlank) {
+			alert("Please fill out all fields.");
+			return;
+		}
+
+		if (!tos.termsOfService || !tos.privacyPolicy) {
+			alert("Please accept the terms of service and privacy policy.");
+			return;
+		}
+
 		try {
-			const response = await registerNewUser(credentials);
+			const response = await registerNewUser(user);
 			if (response.ok) {
 				navigate("/signin");
 			}
 		} catch (error) {
 			alert(error);
 		}
-	};
-
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { id, value } = event.target;
-
-		if (id === INPUT.CONFIRM_PASSWORD) {
-			setConfirmPassword((prev) => ({ ...prev, [id]: value }));
-		}
-
-		setCredentials((prev) => ({
-			...prev,
-			[id]: value,
-		}));
 	};
 
 	return (
@@ -113,7 +138,7 @@ function Register() {
 
 			{/* Terms of Service */}
 			<div className="flex flex-col items-center py-10">
-				<TermsOfService />
+				<TermsOfService tos={tos} onChange={(event) => handleToggleCheckBox(event)} />
 			</div>
 
 			<div className="flex flex-col items-center py-10">

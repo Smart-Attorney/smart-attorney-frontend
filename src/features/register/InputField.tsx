@@ -15,7 +15,7 @@ function InputField(props: InputFieldProps) {
 				{name}
 			</label>
 			<div className="flex flex-row items-center gap-4">
-				<input className="h-8 rounded-md min-w-[300px]" id={id} type={type} onChange={onChange} />
+				<input className="h-8 rounded-md min-w-[300px] px-2" id={id} type={type} onChange={onChange} />
 				<span className="">
 					{/* placeholder img to help me position elements properly */}
 					<img className="w-6 h-6" src={CheckIcon} />
