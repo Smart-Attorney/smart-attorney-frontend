@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UploadPurple } from "../../../assets/smart-attorney-figma/buttons";
 import { UserIcon } from "../../../assets/smart-attorney-figma/global";
 import ModalButton from "../../../components/Buttons/ModalButton";
@@ -26,6 +26,8 @@ interface ClientInfoModalProps {
 }
 
 function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps) {
+	const formSubmitRef = useRef<HTMLInputElement>(null);
+
 	useEffect(() => {
 		setClientForm(client);
 	}, []);
@@ -49,6 +51,11 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 		setClientForm((prev) => ({ ...prev, [id]: value }));
 	};
 
+	// prevents user from exiting out of the client modal before filling out all fields
+	const handleCloseIconClick = () => {
+		formSubmitRef.current?.click();
+	};
+
 	const handleSave = (event: React.FormEvent) => {
 		event.preventDefault();
 		setClient(clientForm);
@@ -58,7 +65,7 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 	return (
 		<ModalDialog className="w-[832px]" closeModal={closeModal} enableBackdropClose={false}>
 			{/* Close symbol "x" */}
-			<span className="cursor-pointer relative -mb-4 text-white left-[380px] bottom-8" onClick={closeModal}>
+			<span className="cursor-pointer relative -mb-4 text-white left-[380px] bottom-8" onClick={handleCloseIconClick}>
 				&#x2715;
 			</span>
 
@@ -86,6 +93,7 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 
 					{/* This div contains and formats the form input elements. */}
 					<form id="form" className="flex flex-col gap-8" onSubmit={handleSave}>
+						<input type="submit" className="hidden" ref={formSubmitRef} />
 						<div className="grid grid-cols-2 gap-x-20 gap-y-4">
 							<InputField
 								id="firstName"
@@ -108,13 +116,7 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 								value={clientForm.dateOfBirth}
 								onChange={handleInputChange}
 							/>
-							<SelectField
-								id="sex"
-								name="Sex"
-								options={SEX}
-								value={clientForm.sex}
-								onChange={handleSelectChange}
-							/>
+							<SelectField id="sex" name="Sex" options={SEX} value={clientForm.sex} onChange={handleSelectChange} />
 							<SelectField
 								id="countryOfCitizenship"
 								name="Country of Citizenship"
