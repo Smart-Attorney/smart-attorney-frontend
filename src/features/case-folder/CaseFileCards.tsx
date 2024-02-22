@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
 // import Database from "../../services/database";
-import { CaseFileObj, CaseFolderObj } from "../../utils/types";
+import { CaseFileObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	updateCaseFolderAndFiles: (newCaseFolder: CaseFolderObj) => void;
+	updateCaseFiles: (newCaseFileArray: CaseFileObj[]) => void;
 }
 
-function CaseFileCards({ files, onClick, updateCaseFolderAndFiles }: CaseFileCardsProps) {
+function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
 	// const db = new Database();
 	const { id: folderId } = useParams();
 
@@ -19,8 +19,8 @@ function CaseFileCards({ files, onClick, updateCaseFolderAndFiles }: CaseFileCar
 		try {
 			const response = await deleteCaseFileById(folderId!, file.id);
 			if (response.ok) {
-				const data: CaseFolderObj = await response.json();
-				updateCaseFolderAndFiles(data);
+				const data: CaseFileObj[] = await response.json();
+				updateCaseFiles(data);
 			}
 		} catch (error) {
 			console.error("Error deleting file:", error);

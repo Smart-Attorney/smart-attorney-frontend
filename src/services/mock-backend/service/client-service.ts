@@ -21,4 +21,15 @@ export class ClientService {
 		}
 		return null;
 	}
+
+	static async getClient(folderId: string) {
+		if (!folderId) {
+			return null;
+		}
+		const retrievedClient = await ClientDAO.getClientByCaseFolderId(folderId);
+		if (retrievedClient !== null) {
+			return retrievedClient;
+		}
+		return null;
+	}
 }

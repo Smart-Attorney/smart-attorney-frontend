@@ -1,5 +1,4 @@
 import { CaseFileService } from "../service/case-file-service";
-import { CaseFolderService } from "../service/case-folder-service";
 
 export class CaseFileController {
 	static async createCaseFiles(request: Request) {
@@ -19,6 +18,19 @@ export class CaseFileController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with uploading the file(s).");
+		}
+	}
+
+	static async getCaseFilesByFolderId(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId = urlArray[urlArray.length - 1];
+		const retrievedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+		if (retrievedCaseFiles !== null) {
+			const body = JSON.stringify(retrievedCaseFiles);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with retrieving the case files.");
 		}
 	}
 
@@ -54,8 +66,8 @@ export class CaseFileController {
 		const fileId = urlArray[urlArray.length - 1];
 		const deletedFile = await CaseFileService.deleteCaseFileById(userId, folderId, fileId);
 		if (deletedFile) {
-			const updatedCaseFolder = await CaseFolderService.getCaseFolderById(folderId);
-			const body = JSON.stringify(updatedCaseFolder);
+			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+			const body = JSON.stringify(updatedCaseFiles);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

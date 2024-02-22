@@ -10,11 +10,11 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { DASHBOARD } from "../utils/constants/sort-options";
-import { CaseFolderObj } from "../utils/types";
+import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
-	const [caseFolders, setCaseFolders] = useState<CaseFolderObj[] | null>(null);
+	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
 
 	useEffect(() => {
 		handleGetUserCaseFolders();
@@ -25,7 +25,7 @@ function Dashboard() {
 			const response = await getUserCaseFolders();
 			switch (response.status) {
 				case 200:
-					const data: CaseFolderObj[] = await response.json();
+					const data: DashboardFolderCardObj[] = await response.json();
 					setCaseFolders(data);
 					break;
 				case 204:
@@ -36,8 +36,8 @@ function Dashboard() {
 					break;
 			}
 		} catch (error) {
-			alert(error);
 			navigate("/signin");
+			alert(error);
 		}
 	};
 

@@ -13,7 +13,7 @@ export interface FileForUploadObj {
 	data: File;
 }
 
-export interface CaseFolderObj {
+export interface DashboardFolderCardObj {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -22,7 +22,15 @@ export interface CaseFolderObj {
 	deadline: number;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
-	client: ClientObj | null;
+}
+
+export interface CaseFolderObj {
+	id: string;
+	name: string;
+	createdDate: number;
+	lastOpenedDate: number;
+	status: string;
+	deadline: number;
 }
 
 export interface CaseFolderLabelObj {
@@ -44,7 +52,7 @@ export interface ClientObj {
 	firstName: string;
 	lastName: string;
 	dateOfBirth: number;
-	sex: "Male" | "Female" | "Other";
+	sex: SexOptions;
 	countryOfCitizenship: string;
 	primaryLanguage: string;
 }

@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-	LightBulbPurple,
-	PenPurple,
-	SavePurple,
-	SphereLatticePurple,
-	UploadPurple,
-} from "../assets/smart-attorney-figma/buttons";
+import * as BtnIcon from "../assets/smart-attorney-figma/buttons";
 import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
@@ -15,8 +9,10 @@ import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
-import { getCaseFileByIdFromDB } from "../features/case-folder/api/get-case-file";
+import { getCaseFileByIdFromDB } from "../features/case-folder/api/get-case-file-by-id";
+import { getCaseFiles } from "../features/case-folder/api/get-case-files";
 import { getCaseFolder } from "../features/case-folder/api/get-case-folder";
+import { getCaseClient } from "../features/case-folder/api/get-client";
 import { updateLastOpenedDate } from "../features/case-folder/api/update-last-opened-date";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
@@ -24,15 +20,14 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
-import { formatUnixDateToInputField } from "../utils/format";
-import { CaseFileObj, CaseFolderObj } from "../utils/types";
+import { formatForInputDisplay } from "../utils/format";
+import { CaseFileObj, CaseFolderObj, ClientObj } from "../utils/types";
 
 function CaseFolder() {
 	const navigate = useNavigate();
 
 	const { id: idFromParams } = useParams();
 	const folderId = useRef(idFromParams);
-
 	const fileId = useRef<string>("");
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
@@ -40,24 +35,24 @@ function CaseFolder() {
 	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
 		id: "",
 		name: "",
-		createdDate: NaN,
-		lastOpenedDate: NaN,
+		createdDate: 0,
+		lastOpenedDate: 0,
 		status: "",
 		deadline: 0,
-		labels: [],
-		files: [],
-		client: {
-			id: "",
-			firstName: "",
-			lastName: "",
-			sex: "Other",
-			primaryLanguage: "",
-			countryOfCitizenship: "",
-			dateOfBirth: NaN,
-		},
+	});
+
+	const [client, setClient] = useState<ClientObj>({
+		id: "",
+		firstName: "",
+		lastName: "",
+		sex: "Other",
+		primaryLanguage: "",
+		countryOfCitizenship: "",
+		dateOfBirth: 0,
 	});
 
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
+
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(false);
 	const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 	const [fileModalOpen, setFileModalOpen] = useState<boolean>(false);
@@ -78,7 +73,16 @@ function CaseFolder() {
 			if (response.ok) {
 				const data: CaseFolderObj = await response.json();
 				setCaseFolder(data);
-				setCaseFiles(data.files);
+			}
+			const caseFilesResponse = await getCaseFiles(folderId.current!);
+			if (caseFilesResponse.ok) {
+				const data: CaseFileObj[] = await caseFilesResponse.json();
+				setCaseFiles(data);
+			}
+			const clientResponse = await getCaseClient(folderId.current!);
+			if (clientResponse.ok) {
+				const data: ClientObj = await clientResponse.json();
+				setClient(data);
 			}
 		} catch (error) {
 			alert(error);
@@ -133,19 +137,8 @@ function CaseFolder() {
 		setCaseFiles((prev) => [...prev, uploadedFile]);
 	};
 
-	// TODO
-	// test if this is necessary
-	const updateCaseFolderAfterNewUpload = (): void => {
-		const updatedCaseFolder = {
-			...caseFolder,
-			files: caseFiles,
-		};
-		setCaseFolder(updatedCaseFolder);
-	};
-
-	const updateCaseFolderAndFiles = (newCaseFolder: CaseFolderObj) => {
-		setCaseFolder(newCaseFolder);
-		setCaseFiles(newCaseFolder.files);
+	const updateCaseFiles = (newCaseFileArray: CaseFileObj[]) => {
+		setCaseFiles(newCaseFileArray);
 	};
 
 	const handleUpdateLastOpenedDate = async (): Promise<void> => {
@@ -183,18 +176,23 @@ function CaseFolder() {
 				<SortBar options={CASE_FOLDER} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
-					<PillButton name="Create" type="button" img={PenPurple} />
-					<PillButton name="Upload" type="button" img={UploadPurple} onClick={toggleUploadModal} />
-					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} onClick={toggleGenerateModal} />
-					<PillButton name="Save" type="button" img={SavePurple} onClick={handleSaveChanges} />
+					<PillButton name="Create" type="button" img={BtnIcon.PenPurple} />
+					<PillButton name="Upload" type="button" img={BtnIcon.UploadPurple} onClick={toggleUploadModal} />
+					<PillButton name="Translate" type="button" img={BtnIcon.SphereLatticePurple} />
+					<PillSpecialButton
+						name="Generate"
+						type="button"
+						img={BtnIcon.LightBulbPurple}
+						onClick={toggleGenerateModal}
+					/>
+					<PillButton name="Save" type="button" img={BtnIcon.SavePurple} onClick={handleSaveChanges} />
 				</div>
 			</SortBarWithButtons>
 
 			<CaseFileCards
 				files={caseFiles}
 				onClick={(event) => handleViewFileModal(event)}
-				updateCaseFolderAndFiles={updateCaseFolderAndFiles}
+				updateCaseFiles={updateCaseFiles}
 			/>
 
 			{uploadModalOpen && (
@@ -202,7 +200,6 @@ function CaseFolder() {
 					caseFolderId={idFromParams!}
 					closeUploadModal={closeUploadModal}
 					addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
-					updateCaseFolderAfterNewUpload={updateCaseFolderAfterNewUpload}
 				/>
 			)}
 
@@ -220,12 +217,12 @@ function CaseFolder() {
 			{clientModalOpen && (
 				<ClientModal
 					client={{
-						firstName: caseFolder.client?.firstName!,
-						lastName: caseFolder.client?.lastName!,
-						dateOfBirth: formatUnixDateToInputField(caseFolder.client?.dateOfBirth!),
-						sex: caseFolder.client?.sex!,
-						countryOfCitizenship: caseFolder.client?.countryOfCitizenship!,
-						primaryLanguage: caseFolder.client?.lastName!,
+						firstName: client.firstName!,
+						lastName: client.lastName!,
+						dateOfBirth: formatForInputDisplay(client.dateOfBirth!),
+						sex: client.sex!,
+						countryOfCitizenship: client.countryOfCitizenship!,
+						primaryLanguage: client.lastName!,
 					}}
 					closeModal={handleCloseClientModal}
 				/>

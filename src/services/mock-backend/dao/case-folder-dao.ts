@@ -1,8 +1,7 @@
-import { CaseFolderObj } from "../../../utils/types";
+import { CaseFolderObj, DashboardFolderCardObj } from "../../../utils/types";
 import { CaseFolders } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
 import { CaseFileDAO } from "./case-file-dao";
-import { ClientDAO } from "./client-dao";
 import { DAO } from "./dao";
 import { FolderLabelDAO } from "./folder-label-dao";
 
@@ -10,14 +9,13 @@ export class CaseFolderDAO extends DAO {
 	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.CASE_FOLDERS;
 
 	static async getAllCaseFoldersByUserId(userId: string) {
-		const userCaseFolders: CaseFolderObj[] = [];
+		const userCaseFolders: DashboardFolderCardObj[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0; i < caseFolderArray.length; i++) {
 			if (caseFolderArray[i].user_id_fk === userId) {
 				const caseFolderId = caseFolderArray[i].folder_id;
 				const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(caseFolderId);
 				const files = await CaseFileDAO.getAllFilesByCaseFolderId(caseFolderId);
-				const client = await ClientDAO.getClientByCaseFolderId(caseFolderId);
 				userCaseFolders.push({
 					id: caseFolderArray[i].folder_id,
 					name: caseFolderArray[i].folder_name,
@@ -27,7 +25,6 @@ export class CaseFolderDAO extends DAO {
 					deadline: caseFolderArray[i].deadline,
 					labels: labels,
 					files: files,
-					client: client,
 				});
 			}
 		}
@@ -38,9 +35,6 @@ export class CaseFolderDAO extends DAO {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0; i < caseFolderArray.length; i++) {
 			if (caseFolderArray[i].folder_id === folderId) {
-				const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
-				const files = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
-				const client = await ClientDAO.getClientByCaseFolderId(folderId);
 				const caseFolder: CaseFolderObj = {
 					id: caseFolderArray[i].folder_id,
 					name: caseFolderArray[i].folder_name,
@@ -48,9 +42,6 @@ export class CaseFolderDAO extends DAO {
 					lastOpenedDate: caseFolderArray[i].last_opened_date,
 					status: caseFolderArray[i].status,
 					deadline: caseFolderArray[i].deadline,
-					labels: labels,
-					files: files,
-					client: client,
 				};
 				return caseFolder;
 			}
@@ -66,6 +57,12 @@ export class CaseFolderDAO extends DAO {
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
 			status: "#53EF0A",
+			/* 
+        It's okay for a new case folder deadline to be 0 because unix time of 0 converted
+        to a new Date corresponds to the date of Jan 1, 1970.
+        No one is going to have a deadline set in the past so its okay, plus you can check
+        if the deadline is 0 on the client-side and format the date accordingly.
+      */
 			deadline: 0,
 			user_id_fk: userId,
 		};

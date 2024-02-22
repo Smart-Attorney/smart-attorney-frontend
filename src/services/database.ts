@@ -1,4 +1,4 @@
-import { CaseFolderObj } from "../utils/types";
+import { DashboardFolderCardObj } from "../utils/types";
 import CaseDeadline from "./local-storage/case-deadline";
 import CaseFile from "./local-storage/case-files";
 import CaseFolder from "./local-storage/case-folder";
@@ -12,51 +12,51 @@ class Database {
 		LSArray.initArray();
 	}
 
-	public getCaseArray(): CaseFolderObj[] {
+	public getCaseArray(): DashboardFolderCardObj[] {
 		return LSArray.getArray();
 	}
 
-	public updateCaseArray(updatedArray: CaseFolderObj[]): void {
+	public updateCaseArray(updatedArray: DashboardFolderCardObj[]): void {
 		LSArray.updateArray(updatedArray);
 	}
 
 	/**************************************************/
 	/* Case Folder Methods */
-	public getCaseFolderById(folderId: string): CaseFolderObj | null {
+	public getCaseFolderById(folderId: string): DashboardFolderCardObj | null {
 		return CaseFolder.getById(folderId);
 	}
 
-	public addNewCaseFolder(newFolder: CaseFolderObj): CaseFolderObj[] {
+	public addNewCaseFolder(newFolder: DashboardFolderCardObj): DashboardFolderCardObj[] {
 		return CaseFolder.add(newFolder);
 	}
 
-	public deleteCaseFolderById(folderId: string): CaseFolderObj[] {
+	public deleteCaseFolderById(folderId: string): DashboardFolderCardObj[] {
 		return CaseFolder.delete(folderId);
 	}
 
-	public updateCaseFolder(folderId: string, caseFolder: CaseFolderObj): CaseFolderObj {
+	public updateCaseFolder(folderId: string, caseFolder: DashboardFolderCardObj): DashboardFolderCardObj {
 		return CaseFolder.update(folderId, caseFolder);
 	}
 
 	/**************************************************/
 	/* Case Folder Deadline Methods */
-	public addCaseFolderDeadline(folderId: string, newDeadline: number): CaseFolderObj[] {
+	public addCaseFolderDeadline(folderId: string, newDeadline: number): DashboardFolderCardObj[] {
 		return CaseDeadline.add(folderId, newDeadline);
 	}
 
 	/**************************************************/
 	/* Case Folder Label Methods */
-	public addCaseFolderLabel(folderId: string, newLabel: string): CaseFolderObj[] {
+	public addCaseFolderLabel(folderId: string, newLabel: string): DashboardFolderCardObj[] {
 		return CaseLabel.add(folderId, newLabel);
 	}
 
-	public deleteCaseFolderLabelById(folderId: string, labelId: string): CaseFolderObj[] {
+	public deleteCaseFolderLabelById(folderId: string, labelId: string): DashboardFolderCardObj[] {
 		return CaseLabel.delete(folderId, labelId);
 	}
 
 	/**************************************************/
 	/* Case Folder Label Methods */
-	public deleteCaseFileById(folderId: string, fileId: string): CaseFolderObj[] {
+	public deleteCaseFileById(folderId: string, fileId: string): DashboardFolderCardObj[] {
 		return CaseFile.delete(folderId, fileId);
 	}
 }

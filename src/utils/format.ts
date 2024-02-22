@@ -4,24 +4,33 @@
  * This function formats the date to be displayed in the
  * desired format of (month/day/year).
  */
-export const formatUnixDateToStringDate = (unixDate: number): string => {
+const formatUnixDateToStringDate = (unixDate: number): string[] => {
+	if (unixDate === 0 || unixDate === null) {
+		return ["", "", ""];
+	}
 	const date = new Date(unixDate);
 	let year = date.getUTCFullYear().toString();
 	let month = (date.getUTCMonth() + 1).toString();
 	let day = date.getUTCDate().toString();
 	month = month.length === 1 ? "0" + month : month;
 	day = day.length === 1 ? "0" + day : day;
+	return [year, month, day];
+};
+
+export const formatForCardDisplay = (unixDate: number): string => {
+	const [year, month, day] = formatUnixDateToStringDate(unixDate);
+	if (year === "" || month === "" || day === "") {
+		return "";
+	}
 	const formattedDate = `${month}/${day}/${year}`;
 	return formattedDate;
 };
 
-export const formatUnixDateToInputField = (unixDate: number): string => {
-	const date = new Date(unixDate);
-	let year = date.getUTCFullYear().toString();
-	let month = (date.getUTCMonth() + 1).toString();
-	let day = date.getUTCDate().toString();
-	month = month.length === 1 ? "0" + month : month;
-	day = day.length === 1 ? "0" + day : day;
+export const formatForInputDisplay = (unixDate: number): string => {
+	const [year, month, day] = formatUnixDateToStringDate(unixDate);
+	if (year === "" || month === "" || day === "") {
+		return "";
+	}
 	const formattedDate = `${year}-${month}-${day}`;
 	return formattedDate;
 };

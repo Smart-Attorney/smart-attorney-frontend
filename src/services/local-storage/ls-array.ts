@@ -1,4 +1,4 @@
-import type { CaseFolderObj } from "../../utils/types";
+import type { DashboardFolderCardObj } from "../../utils/types";
 
 /* Local Storage Array*/
 class LSArray {
@@ -6,18 +6,18 @@ class LSArray {
 	 *
 	 */
 	private static STORAGE_KEY: string = "cases";
-	private static EMPTY_ARRAY: CaseFolderObj[] = [];
+	private static EMPTY_ARRAY: DashboardFolderCardObj[] = [];
 
 	public static initArray(): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.EMPTY_ARRAY));
 	}
 
-	public static updateArray(updatedArray: CaseFolderObj[]): void {
+	public static updateArray(updatedArray: DashboardFolderCardObj[]): void {
 		localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedArray));
 	}
 
-	public static getArray(): CaseFolderObj[] {
-		const storedArray: CaseFolderObj[] = JSON.parse(localStorage.getItem(this.STORAGE_KEY) as string);
+	public static getArray(): DashboardFolderCardObj[] {
+		const storedArray: DashboardFolderCardObj[] = JSON.parse(localStorage.getItem(this.STORAGE_KEY) as string);
 		return storedArray;
 	}
 

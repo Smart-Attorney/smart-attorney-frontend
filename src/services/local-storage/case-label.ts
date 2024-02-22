@@ -1,4 +1,4 @@
-import { CaseFolderLabelObj, CaseFolderObj } from "../../utils/types";
+import { CaseFolderLabelObj, DashboardFolderCardObj } from "../../utils/types";
 import nanoid from "../nanoid";
 import LSArray from "./ls-array";
 
@@ -6,7 +6,7 @@ class CaseLabel extends LSArray {
 	/**
 	 *
 	 */
-	public static add(folderId: string, newLabel: string): CaseFolderObj[] {
+	public static add(folderId: string, newLabel: string): DashboardFolderCardObj[] {
 		const newLabelObj: CaseFolderLabelObj = {
 			id: nanoid(),
 			name: newLabel,
@@ -21,7 +21,7 @@ class CaseLabel extends LSArray {
 		return updatedArray;
 	}
 
-	public static delete(folderId: string, labelId: string): CaseFolderObj[] {
+	public static delete(folderId: string, labelId: string): DashboardFolderCardObj[] {
 		const storedArray = super.getArray();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId

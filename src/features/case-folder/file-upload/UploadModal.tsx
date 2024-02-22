@@ -13,15 +13,9 @@ interface UploadModalProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
 	addUploadedFileToCaseFileArray: (uploadedFile: CaseFileObj) => void;
-	updateCaseFolderAfterNewUpload: () => void;
 }
 
-function UploadModal({
-	caseFolderId,
-	closeUploadModal,
-	addUploadedFileToCaseFileArray,
-	updateCaseFolderAfterNewUpload,
-}: UploadModalProps) {
+function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFileArray }: UploadModalProps) {
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 	const [uploadDone, setUploadDone] = useState(false);
 
@@ -47,7 +41,6 @@ function UploadModal({
 		} catch (error) {
 			alert(error);
 		} finally {
-			updateCaseFolderAfterNewUpload();
 			setUploadDone(false);
 			closeUploadModal();
 		}

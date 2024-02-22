@@ -1,7 +1,7 @@
-import { CaseFileObj, CaseFolderObj } from "./types";
+import { CaseFileObj, DashboardFolderCardObj } from "./types";
 
-type UnsortedArray = CaseFolderObj[] | CaseFileObj[];
-type SortedArray = CaseFolderObj[] | CaseFileObj[];
+type UnsortedArray = DashboardFolderCardObj[] | CaseFileObj[];
+type SortedArray = DashboardFolderCardObj[] | CaseFileObj[];
 
 class SortArrayBy {
 	/**
@@ -64,7 +64,7 @@ class SortArrayBy {
 	// }
 
 	/* Sorts from closest to furthest deadline. */
-	public static deadline(array: CaseFolderObj[]): CaseFolderObj[] {
+	public static deadline(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = new Date(a.deadline).getTime();
 			const lb = new Date(b.deadline).getTime();
@@ -102,7 +102,7 @@ export const sortArrayByOption = (array: UnsortedArray, option: string): SortedA
 			return array;
 
 		case "Deadline":
-			return SortArrayBy.deadline(array as CaseFolderObj[]);
+			return SortArrayBy.deadline(array as DashboardFolderCardObj[]);
 
 		case "Status":
 			return array;

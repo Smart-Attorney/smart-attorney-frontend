@@ -1,4 +1,4 @@
-import { CaseFolderObj } from "../../utils/types";
+import { DashboardFolderCardObj } from "../../utils/types";
 import LSArray from "./ls-array";
 // import { nanoid } from "nanoid";
 
@@ -20,7 +20,7 @@ class CaseFile extends LSArray {
 	//   return updatedArray;
 	//  };
 
-	public static delete(folderId: string, fileId: string): CaseFolderObj[] {
+	public static delete(folderId: string, fileId: string): DashboardFolderCardObj[] {
 		const storedArray = super.getArray();
 		const updatedArray = storedArray.map((storedFolder) =>
 			storedFolder.id === folderId

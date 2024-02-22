@@ -30,6 +30,17 @@ export class CaseFileService {
 		return fileArray;
 	}
 
+	static async getCaseFilesByFolderId(folderId: string) {
+		if (!folderId) {
+			return null;
+		}
+		const retrievedCaseFiles = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+		if (retrievedCaseFiles !== null) {
+			return retrievedCaseFiles;
+		}
+		return null;
+	}
+
 	static async getCaseFileByIdFromDB(userId: string, folderId: string, fileId: string) {
 		if (!userId || !folderId || !fileId) {
 			return null;
