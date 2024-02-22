@@ -13,6 +13,7 @@ import { getCaseFileByIdFromDB } from "../features/case-folder/api/get-case-file
 import { getCaseFiles } from "../features/case-folder/api/get-case-files";
 import { getCaseFolder } from "../features/case-folder/api/get-case-folder";
 import { getCaseClient } from "../features/case-folder/api/get-client";
+import { updateCaseFolderName } from "../features/case-folder/api/update-case-folder-name";
 import { updateLastOpenedDate } from "../features/case-folder/api/update-last-opened-date";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
@@ -28,6 +29,7 @@ function CaseFolder() {
 
 	const { id: idFromParams } = useParams();
 	const folderId = useRef(idFromParams);
+
 	const fileId = useRef<string>("");
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
@@ -53,10 +55,20 @@ function CaseFolder() {
 
 	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
 
+	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
+	const newCaseFolderName = useRef<string>("");
+	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
+
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(false);
 	const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
 	const [fileModalOpen, setFileModalOpen] = useState<boolean>(false);
 	const [generateModalOpen, setGenerateModalOpen] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (caseFolderNameEditable) {
+			caseFolderNameRef.current?.focus();
+		}
+	}, [caseFolderNameEditable]);
 
 	useEffect(() => {
 		if (folderId.current === undefined) {
@@ -65,6 +77,8 @@ function CaseFolder() {
 		}
 
 		handleGetCaseFolder();
+		handleGetCaseFiles();
+		handleGetCaseClient();
 	}, []);
 
 	const handleGetCaseFolder = async () => {
@@ -73,15 +87,30 @@ function CaseFolder() {
 			if (response.ok) {
 				const data: CaseFolderObj = await response.json();
 				setCaseFolder(data);
+				newCaseFolderName.current = data.name;
 			}
-			const caseFilesResponse = await getCaseFiles(folderId.current!);
-			if (caseFilesResponse.ok) {
-				const data: CaseFileObj[] = await caseFilesResponse.json();
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	const handleGetCaseFiles = async () => {
+		try {
+			const response = await getCaseFiles(folderId.current!);
+			if (response.ok) {
+				const data: CaseFileObj[] = await response.json();
 				setCaseFiles(data);
 			}
-			const clientResponse = await getCaseClient(folderId.current!);
-			if (clientResponse.ok) {
-				const data: ClientObj = await clientResponse.json();
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	const handleGetCaseClient = async () => {
+		try {
+			const response = await getCaseClient(folderId.current!);
+			if (response.ok) {
+				const data: ClientObj = await response.json();
 				setClient(data);
 			}
 		} catch (error) {
@@ -99,6 +128,18 @@ function CaseFolder() {
 				fileId.current = file.id;
 				fileUrl.current = file.url;
 				setFileModalOpen(true);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	const handleUpdateCaseFolderName = async (folderId: string, newFolderName: string) => {
+		try {
+			const response = await updateCaseFolderName(folderId, newFolderName);
+			if (response.ok) {
+				const data: CaseFolderObj = await response.json();
+				setCaseFolder(data);
 			}
 		} catch (error) {
 			alert(error);
@@ -156,6 +197,28 @@ function CaseFolder() {
 		handleUpdateLastOpenedDate();
 	};
 
+	// TODO
+	// organize and group related functions together
+	// copy this implementation over to create case file
+	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
+		if (event.key !== "Enter") return;
+		const { innerHTML } = event.target as HTMLHeadingElement;
+		if (innerHTML.trim().length === 0) {
+			document.getElementById("case-name")!.innerHTML = caseFolder.name;
+		}
+		caseFolderNameRef.current?.blur();
+	};
+
+	const handleCaseFolderNameBlur = (event: React.FocusEvent<HTMLHeadingElement>) => {
+		const { innerHTML: newFolderName } = event.target;
+		setCaseFolderNameEditable(false);
+		handleUpdateCaseFolderName(folderId.current!, newFolderName);
+	};
+
+	const handleCaseFolderNameClick = () => {
+		setCaseFolderNameEditable(true);
+	};
+
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-4">
@@ -165,8 +228,18 @@ function CaseFolder() {
 					src={UserIcon}
 					onClick={toggleClientModal}
 				/>
-				<h1 id="case-name" className="text-3xl font-bold text-white">
-					{caseFolder?.name}
+				<h1
+					id="case-name"
+					className="text-3xl font-bold text-white cursor-pointer"
+					title="Click to edit folder name"
+					contentEditable={caseFolderNameEditable}
+					suppressContentEditableWarning={true}
+					ref={caseFolderNameRef}
+					onClick={handleCaseFolderNameClick}
+					onBlur={handleCaseFolderNameBlur}
+					onKeyDown={handleEnterKeyPress}
+				>
+					{newCaseFolderName.current}
 				</h1>
 			</PageHeader>
 

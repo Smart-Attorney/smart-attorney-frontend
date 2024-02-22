@@ -74,7 +74,7 @@ export class CaseFolderDAO extends DAO {
 		return null;
 	}
 
-	static async updateCaseFolderDeadline(userId: string, folderId: string, newDeadline: number) {
+	static async updateDeadline(userId: string, folderId: string, newDeadline: number) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0; i < caseFolderArray.length; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
@@ -100,6 +100,21 @@ export class CaseFolderDAO extends DAO {
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
 		if (success) {
 			return newDate;
+		}
+		return null;
+	}
+
+	static async updateName(userId: string, folderId: string, newName: string) {
+		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		for (let i = 0; i < caseFolderArray.length; i++) {
+			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
+				caseFolderArray[i].folder_name = newName;
+				break;
+			}
+		}
+		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
+		if (success) {
+			return newName;
 		}
 		return null;
 	}
