@@ -52,5 +52,8 @@ export class MockSqlTables {
 		this.createCaseFiles();
 		this.createFolderLabels();
 		this.createClients();
-	}
+  }
+  
+  // TODO
+  // filter out previous/deprecated local storage keys
 }

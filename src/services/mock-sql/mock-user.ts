@@ -17,29 +17,22 @@ export class MockUser {
 		localStorage.setItem("users", JSON.stringify(updatedArray));
 	};
 
-	static removeOldMockUser = (): void => {
+	static filterOldMockUsers = (): void => {
 		const uniqueUsersArray = [];
 		const mockUserArray = [];
-		const trueJaneDoe = [];
 		const userArray = JSON.parse(localStorage.getItem("users") as string);
 		for (let i = 0; i < userArray.length; i++) {
-			const firstNameMatch = userArray[i].first_name === this.mockUser.first_name;
-			const lastNameMatch = userArray[i].last_name === this.mockUser.last_name;
-			const companyEmailMatch = userArray[i].company_email === this.mockUser.company_email;
-			const passwordMatch = userArray[i].password === this.mockUser.password;
-			if (firstNameMatch && lastNameMatch && companyEmailMatch && passwordMatch) {
+			const fNameMatch = userArray[i].first_name === this.mockUser.first_name;
+			const lNameMatch = userArray[i].last_name === this.mockUser.last_name;
+			const cEmailMatch = userArray[i].company_email === this.mockUser.company_email;
+			const passMatch = userArray[i].password === this.mockUser.password;
+			if (fNameMatch && lNameMatch && cEmailMatch && passMatch) {
 				mockUserArray.push(userArray[i]);
 			} else {
 				uniqueUsersArray.push(userArray[i]);
 			}
 		}
-		for (let i = 0; i < mockUserArray.length; i++) {
-			const idMatch = userArray[i].user_id === this.mockUser.user_id;
-			if (idMatch) {
-				trueJaneDoe.push(mockUserArray[i]);
-			}
-		}
-		const updatedArray = [...trueJaneDoe, ...uniqueUsersArray];
+		const updatedArray = [...uniqueUsersArray];
 		localStorage.setItem("users", JSON.stringify(updatedArray));
 	};
 
@@ -47,12 +40,12 @@ export class MockUser {
 		const userArray: Users[] = JSON.parse(localStorage.getItem("users") as string);
 		for (let i = 0; i < userArray.length; i++) {
 			const idMatch = userArray[i].user_id === this.mockUser.user_id;
-			const firstNameMatch = userArray[i].first_name === this.mockUser.first_name;
-			const lastNameMatch = userArray[i].last_name === this.mockUser.last_name;
-			const firmNameMatch = userArray[i].firm_name === this.mockUser.firm_name;
-			const companyEmailMatch = userArray[i].company_email === this.mockUser.company_email;
-			const passwordMatch = userArray[i].password === this.mockUser.password;
-			if (idMatch && firstNameMatch && lastNameMatch && firmNameMatch && companyEmailMatch && passwordMatch) {
+			const fNameMatch = userArray[i].first_name === this.mockUser.first_name;
+			const lNameMatch = userArray[i].last_name === this.mockUser.last_name;
+			const firmMatch = userArray[i].firm_name === this.mockUser.firm_name;
+			const cEmailMatch = userArray[i].company_email === this.mockUser.company_email;
+			const passMatch = userArray[i].password === this.mockUser.password;
+			if (idMatch && fNameMatch && lNameMatch && firmMatch && cEmailMatch && passMatch) {
 				return true;
 			}
 		}
@@ -61,9 +54,22 @@ export class MockUser {
 
 	static createMockUser = () => {
 		if (this.mockUserExists()) {
-			this.removeOldMockUser();
 			return;
 		}
-		this.setMockUser();
+		try {
+			this.filterOldMockUsers();
+		} catch (error) {
+			console.log(error);
+		} finally {
+			this.setMockUser();
+		}
+	};
+
+	// removing deprecated local storage data
+	static removeCurrentUserFromLocalStorage = () => {
+		localStorage.removeItem("current_user");
+	};
+	static removeClientInfoWithBlankSpaceFromLocalStorage = () => {
+		localStorage.removeItem(" client_info");
 	};
 }

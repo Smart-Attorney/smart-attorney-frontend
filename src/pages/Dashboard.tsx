@@ -5,7 +5,7 @@ import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import CaseFolderCards from "../features/dashboard/CaseFolderCards";
-import { getUserCaseFolders as getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
+import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
@@ -37,6 +37,7 @@ function Dashboard() {
 			}
 		} catch (error) {
 			alert(error);
+			navigate("/signin");
 		}
 	};
 

@@ -51,5 +51,5 @@ export type sex_options = "Male" | "Female" | "Other";
   ref:         case_folders.user_id_fk > users.id
   ref: folder_labels.case_folder_id_fk > case_folders.id
   ref:    case_files.case_folder_id_fk > case_folders.id
-  ref:   client_info.case_folder_id_fk > case_folders.id
+  ref:       clients.case_folder_id_fk > case_folders.id
 */
