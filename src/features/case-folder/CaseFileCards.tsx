@@ -4,6 +4,7 @@ import CardGrid from "../../layouts/CardGrid";
 import { CaseFileObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
+import { updateCaseFileName } from "./api/update-case-file-name";
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
@@ -15,9 +16,22 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	// const db = new Database();
 	const { id: folderId } = useParams();
 
-	const handleFileDelete = async (file: CaseFileObj) => {
+	// curried function
+	const handleUpdateFileName = (fileId: string) => async (newFileName: string) => {
 		try {
-			const response = await deleteCaseFileById(folderId!, file.id);
+			const response = await updateCaseFileName(folderId!, fileId, newFileName);
+			if (response.ok) {
+				const data: CaseFileObj[] = await response.json();
+				updateCaseFiles(data);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	const handleDeleteFile = async (fileId: string) => {
+		try {
+			const response = await deleteCaseFileById(folderId!, fileId);
 			if (response.ok) {
 				const data: CaseFileObj[] = await response.json();
 				updateCaseFiles(data);
@@ -29,26 +43,32 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 
 	return (
 		<CardGrid>
-			{files?.map((file) => (
-				<div className="w-64 h-64 py-4 pl-12 bg-white rounded-3xl " key={file.id}>
-					{/* Kebab Menu */}
-					<div className="relative left-[175px] max-w-min">
-						<KebabMenu deleteFile={() => handleFileDelete(file)} />
+			{files?.map((file) => {
+				return (
+					<div className="w-64 h-64 py-4 pl-12 bg-white rounded-3xl " key={file.id}>
+						{/* Kebab Menu */}
+						<div className="relative left-[175px] max-w-min">
+							<KebabMenu
+								fileName={file.name}
+								updateFileName={handleUpdateFileName(file.id)}
+								deleteFile={() => handleDeleteFile(file.id)}
+							/>
+						</div>
+
+						{/* File Status */}
+						<h1 className="relative bottom-[26px] right-[10px] w-fit">{file.status}</h1>
+
+						{/* File Name */}
+						<p
+							className="mb-8 font-semibold w-fit cursor-pointer hover:text-blue-500 relative top-[140px] right-[10px]"
+							id={file.id}
+							onClick={onClick}
+						>
+							{file.name}
+						</p>
 					</div>
-
-					{/* File Status */}
-					<h1 className="relative bottom-[26px] right-[10px] w-fit">{file.status}</h1>
-
-					{/* File Name */}
-					<p
-						className="mb-8 font-semibold w-fit cursor-pointer hover:text-blue-500 relative top-[140px] right-[10px]"
-						id={file.id}
-						onClick={onClick}
-					>
-						{file.name}
-					</p>
-				</div>
-			))}
+				);
+			})}
 		</CardGrid>
 	);
 }

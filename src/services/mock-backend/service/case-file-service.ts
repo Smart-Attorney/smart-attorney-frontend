@@ -52,6 +52,17 @@ export class CaseFileService {
 		return null;
 	}
 
+	static async updateFileName(folderId: string, fileId: string, newName: string) {
+		if (!folderId || !fileId || !newName) {
+			return null;
+		}
+		const updatedFileName = await CaseFileDAO.updateFileName(folderId, fileId, newName);
+		if (updatedFileName !== null) {
+			return newName;
+		}
+		return null;
+	}
+
 	static async deleteCaseFileById(userId: string, folderId: string, fileId: string) {
 		if (!userId || !folderId || !fileId) {
 			return false;

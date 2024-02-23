@@ -61,6 +61,22 @@ export class CaseFileDAO extends DAO {
 		return null;
 	}
 
+  static async updateFileName(folderId: string, fileId: string, newName: string) {
+    
+    
+		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0; i < caseFileArray.length; i++) {
+      if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+				caseFileArray[i].file_name = newName;
+			}
+		}
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		if (success) {
+			return newName;
+		}
+		return null;
+	}
+
 	static async deleteAllFilesByFolderId(folderId: string) {
 		const updatedArray: CaseFiles[] = [];
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);

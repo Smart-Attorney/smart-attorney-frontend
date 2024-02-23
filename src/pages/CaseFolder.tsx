@@ -212,6 +212,9 @@ function CaseFolder() {
 	const handleCaseFolderNameBlur = (event: React.FocusEvent<HTMLHeadingElement>) => {
 		const { innerHTML: newFolderName } = event.target;
 		setCaseFolderNameEditable(false);
+		if (newFolderName === caseFolder.name) {
+			return;
+		}
 		handleUpdateCaseFolderName(folderId.current!, newFolderName);
 	};
 

@@ -1,3 +1,4 @@
+import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
 import { CaseFileService } from "../service/case-file-service";
 
 export class CaseFileController {
@@ -51,6 +52,22 @@ export class CaseFileController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with retrieving the case file.");
+		}
+	}
+
+	static async updateFileName(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId = urlArray[urlArray.length - 2];
+		const fileId = urlArray[urlArray.length - 1];
+		const newName: UpdateCaseFileNameDTO = await request.json();
+		const updatedFileName = await CaseFileService.updateFileName(folderId, fileId, newName);
+		if (updatedFileName !== null) {
+			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+			const body = JSON.stringify(updatedCaseFiles);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case file name.");
 		}
 	}
 
