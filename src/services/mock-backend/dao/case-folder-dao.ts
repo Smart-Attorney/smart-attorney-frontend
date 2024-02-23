@@ -6,7 +6,7 @@ import { DAO } from "./dao";
 import { FolderLabelDAO } from "./folder-label-dao";
 
 export class CaseFolderDAO extends DAO {
-	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.CASE_FOLDERS;
+	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.table.CASE_FOLDERS;
 
 	static async getAllCaseFoldersByUserId(userId: string) {
 		const userCaseFolders: DashboardFolderCardObj[] = [];

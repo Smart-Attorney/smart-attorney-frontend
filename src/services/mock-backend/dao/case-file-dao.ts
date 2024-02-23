@@ -4,7 +4,7 @@ import { MockSqlTables } from "../../mock-sql/tables";
 import { DAO } from "./dao";
 
 export class CaseFileDAO extends DAO {
-	private static CASE_FILE_STORAGE_KEY = MockSqlTables.CASE_FILES;
+	private static CASE_FILE_STORAGE_KEY = MockSqlTables.table.CASE_FILES;
 
 	static async getAllFilesByCaseFolderId(caseFolderId: string) {
 		const caseFolderFiles: CaseFileObj[] = [];

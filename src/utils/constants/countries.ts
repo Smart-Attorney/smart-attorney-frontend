@@ -1,4 +1,4 @@
-export const COUNTRIES = [
+export const COUNTRIES = Object.freeze([
 	"Afghanistan",
 	"Albania",
 	"Algeria",
@@ -248,4 +248,4 @@ export const COUNTRIES = [
 	"Zambia",
 	"Zimbabwe",
 	"Åland Islands",
-];
+]);

@@ -14,11 +14,14 @@ import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
+
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
 
 	useEffect(() => {
 		handleGetUserCaseFolders();
 	}, []);
+
+	/************************************************************/
 
 	const handleGetUserCaseFolders = async () => {
 		try {
@@ -40,6 +43,8 @@ function Dashboard() {
 			alert(error);
 		}
 	};
+
+	/************************************************************/
 
 	const newCaseBtnGradient = {
 		background:

@@ -1,7 +1,7 @@
 import { Users } from "./schemas";
 
 export class MockUser {
-	static mockUser: Users = {
+	static mockUser: Users = Object.freeze({
 		user_id: "12345abcdeABCDE0",
 		first_name: "Jane",
 		last_name: "Doe",
@@ -9,7 +9,7 @@ export class MockUser {
 		company_email: "lawyer@email.com",
 		email: "lawyer@email.com",
 		password: "password123",
-	};
+	});
 
 	static setMockUser = (): void => {
 		const userArray: Users[] = JSON.parse(localStorage.getItem("users") as string);
