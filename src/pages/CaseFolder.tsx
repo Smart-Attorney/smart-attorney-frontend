@@ -85,36 +85,6 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const closeClientModal = (): void => {
-		setClientModalOpen(false);
-	};
-
-	const toggleClientModal = (): void => {
-		setClientModalOpen((prev) => !prev);
-	};
-
-	const closeGenerateModal = (): void => {
-		setGenerateModalOpen(false);
-	};
-
-	const toggleGenerateModal = (): void => {
-		setGenerateModalOpen((prev) => !prev);
-	};
-
-	const closeUploadModal = (): void => {
-		setUploadModalOpen(false);
-	};
-
-	const toggleUploadModal = (): void => {
-		setUploadModalOpen((prev) => !prev);
-	};
-
-	const closeViewFileModal = (): void => {
-		setFileModalOpen(false);
-	};
-
-	/************************************************************/
-
 	const handleGetCaseFolder = async () => {
 		try {
 			const response = await getCaseFolder(folderId.current!);
@@ -168,6 +138,38 @@ function CaseFolder() {
 		}
 	};
 
+	/************************************************************/
+
+	const closeClientModal = (): void => {
+		setClientModalOpen(false);
+	};
+
+	const toggleClientModal = (): void => {
+		setClientModalOpen((prev) => !prev);
+	};
+
+	const closeGenerateModal = (): void => {
+		setGenerateModalOpen(false);
+	};
+
+	const toggleGenerateModal = (): void => {
+		setGenerateModalOpen((prev) => !prev);
+	};
+
+	const closeUploadModal = (): void => {
+		setUploadModalOpen(false);
+	};
+
+	const toggleUploadModal = (): void => {
+		setUploadModalOpen((prev) => !prev);
+	};
+
+	const closeViewFileModal = (): void => {
+		setFileModalOpen(false);
+	};
+
+	/************************************************************/
+
 	const handleUpdateCaseFolderName = async (folderId: string, newFolderName: string) => {
 		try {
 			const response = await updateCaseFolderName(folderId, newFolderName);
@@ -180,29 +182,10 @@ function CaseFolder() {
 		}
 	};
 
-	const handleUpdateLastOpenedDate = async (): Promise<void> => {
-		try {
-			const response = await updateLastOpenedDate(folderId.current!, Date.now());
-			if (response.ok) {
-				// do nothing here since this function is fired after the component unmounts
-			}
-		} catch (error) {
-			alert(error);
-		}
+	const handleCaseFolderNameClick = () => {
+		setCaseFolderNameEditable(true);
 	};
 
-	/************************************************************/
-
-	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
-		setCaseFiles((prev) => [...prev, uploadedFile]);
-	};
-
-	const updateCaseFiles = (newCaseFileArray: CaseFileObj[]) => {
-		setCaseFiles(newCaseFileArray);
-	};
-
-	// TODO
-	// copy this implementation over to create case file
 	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
 		if (event.key !== "Enter") return;
 		const { innerHTML } = event.target as HTMLHeadingElement;
@@ -221,13 +204,34 @@ function CaseFolder() {
 		handleUpdateCaseFolderName(folderId.current!, newFolderName);
 	};
 
-	const handleCaseFolderNameClick = () => {
-		setCaseFolderNameEditable(true);
+	/************************************************************/
+
+	const handleUpdateLastOpenedDate = async (): Promise<void> => {
+		try {
+			const response = await updateLastOpenedDate(folderId.current!, Date.now());
+			if (response.ok) {
+				// do nothing here since this function is fired after the component unmounts
+			}
+		} catch (error) {
+			alert(error);
+		}
 	};
 
 	// const handleSaveChanges = () => {
 	// 	handleUpdateLastOpenedDate();
 	// };
+
+	/************************************************************/
+
+	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
+		setCaseFiles((prev) => [...prev, uploadedFile]);
+	};
+
+	const updateCaseFiles = (newCaseFileArray: CaseFileObj[]) => {
+		setCaseFiles(newCaseFileArray);
+	};
+
+	/************************************************************/
 
 	return (
 		<SidebarLayout>
