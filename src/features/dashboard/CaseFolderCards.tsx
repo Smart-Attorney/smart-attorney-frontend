@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
-// import Database from "../../services/database";
 import { formatForCardDisplay } from "../../utils/format";
 import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
@@ -15,7 +14,6 @@ interface CaseFolderCardProps {
 }
 
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
-	// const db = new Database();
 	const navigate = useNavigate();
 
 	const handleUpdateFolderDeadline = async (

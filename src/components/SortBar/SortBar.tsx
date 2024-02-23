@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
-import Database from "../../services/database";
 import { SortOptionsObj } from "../../utils/constants/sort-options";
 import { sortArrayByOption } from "../../utils/sort";
 import { DashboardFolderCardObj } from "../../utils/types";
@@ -20,8 +19,6 @@ interface SortBarProps {
 }
 
 function SortBar(props: SortBarProps) {
-	const db = new Database();
-
 	const { options, unsortedArray, setSortedArray } = props;
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
 
@@ -42,7 +39,7 @@ function SortBar(props: SortBarProps) {
 			const newArray = [...unsortedArray];
 
 			const sortedArray = sortArrayByOption(newArray, id) as DashboardFolderCardObj[];
-			db.updateCaseArray(sortedArray);
+
 			setSortedArray(sortedArray);
 		}
 	};

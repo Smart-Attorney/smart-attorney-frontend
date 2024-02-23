@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
-// import Database from "../../services/database";
 import { CaseFileObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
@@ -13,7 +12,6 @@ interface CaseFileCardsProps {
 }
 
 function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
-	// const db = new Database();
 	const { id: folderId } = useParams();
 
 	// curried function
