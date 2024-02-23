@@ -36,4 +36,15 @@ export class UserService {
 		}
 		return null;
 	}
+
+	static async getUser(userId: string) {
+		if (!userId) {
+			return null;
+		}
+		const retrievedUser = await UserDAO.getUserById(userId);
+		if (retrievedUser !== null) {
+			return retrievedUser;
+		}
+		return null;
+	}
 }

@@ -26,4 +26,21 @@ export class UserController {
 			throw new Error("There was an issue trying to register the user.");
 		}
 	}
+
+	static async getUser(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const retrievedUser = await UserService.getUser(userId);
+		if (retrievedUser !== null) {
+			const body = JSON.stringify(retrievedUser);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an error with loading the user profile.");
+		}
+	}
 }
