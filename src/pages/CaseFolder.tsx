@@ -75,11 +75,45 @@ function CaseFolder() {
 			navigate("/404");
 			return;
 		}
-
 		handleGetCaseFolder();
 		handleGetCaseFiles();
 		handleGetCaseClient();
+		return () => {
+			handleUpdateLastOpenedDate();
+		};
 	}, []);
+
+	/************************************************************/
+
+	const closeClientModal = (): void => {
+		setClientModalOpen(false);
+	};
+
+	const toggleClientModal = (): void => {
+		setClientModalOpen((prev) => !prev);
+	};
+
+	const closeGenerateModal = (): void => {
+		setGenerateModalOpen(false);
+	};
+
+	const toggleGenerateModal = (): void => {
+		setGenerateModalOpen((prev) => !prev);
+	};
+
+	const closeUploadModal = (): void => {
+		setUploadModalOpen(false);
+	};
+
+	const toggleUploadModal = (): void => {
+		setUploadModalOpen((prev) => !prev);
+	};
+
+	const closeViewFileModal = (): void => {
+		setFileModalOpen(false);
+	};
+
+	/************************************************************/
 
 	const handleGetCaseFolder = async () => {
 		try {
@@ -118,7 +152,7 @@ function CaseFolder() {
 		}
 	};
 
-	const handleViewFileModal = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
+	const handleGetFileToView = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id } = event.target as HTMLParagraphElement;
 		try {
 			const response = await getCaseFileByIdFromDB(folderId.current!, id);
@@ -146,33 +180,18 @@ function CaseFolder() {
 		}
 	};
 
-	const handleCloseClientModal = (): void => {
-		setClientModalOpen(false);
+	const handleUpdateLastOpenedDate = async (): Promise<void> => {
+		try {
+			const response = await updateLastOpenedDate(folderId.current!, Date.now());
+			if (response.ok) {
+				// do nothing here since this function is fired after the component unmounts
+			}
+		} catch (error) {
+			alert(error);
+		}
 	};
 
-	const toggleClientModal = (): void => {
-		setClientModalOpen((prev) => !prev);
-	};
-
-	const handleCloseGenerateModal = (): void => {
-		setGenerateModalOpen(false);
-	};
-
-	const toggleGenerateModal = (): void => {
-		setGenerateModalOpen((prev) => !prev);
-	};
-
-	const handleCloseViewFileModal = (): void => {
-		setFileModalOpen(false);
-	};
-
-	const toggleUploadModal = (): void => {
-		setUploadModalOpen((prev) => !prev);
-	};
-
-	const closeUploadModal = (): void => {
-		setUploadModalOpen(false);
-	};
+	/************************************************************/
 
 	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
 		setCaseFiles((prev) => [...prev, uploadedFile]);
@@ -182,23 +201,7 @@ function CaseFolder() {
 		setCaseFiles(newCaseFileArray);
 	};
 
-	const handleUpdateLastOpenedDate = async (): Promise<void> => {
-		try {
-			const response = await updateLastOpenedDate(folderId.current!, Date.now());
-			if (response.ok) {
-				navigate("/dashboard");
-			}
-		} catch (error) {
-			alert(error);
-		}
-	};
-
-	const handleSaveChanges = () => {
-		handleUpdateLastOpenedDate();
-	};
-
 	// TODO
-	// organize and group related functions together
 	// copy this implementation over to create case file
 	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
 		if (event.key !== "Enter") return;
@@ -221,6 +224,10 @@ function CaseFolder() {
 	const handleCaseFolderNameClick = () => {
 		setCaseFolderNameEditable(true);
 	};
+
+	// const handleSaveChanges = () => {
+	// 	handleUpdateLastOpenedDate();
+	// };
 
 	return (
 		<SidebarLayout>
@@ -261,13 +268,13 @@ function CaseFolder() {
 						img={BtnIcon.LightBulbPurple}
 						onClick={toggleGenerateModal}
 					/>
-					<PillButton name="Save" type="button" img={BtnIcon.SavePurple} onClick={handleSaveChanges} />
+					{/* <PillButton name="Save" type="button" img={BtnIcon.SavePurple} onClick={handleSaveChanges} /> */}
 				</div>
 			</SortBarWithButtons>
 
 			<CaseFileCards
 				files={caseFiles}
-				onClick={(event) => handleViewFileModal(event)}
+				onClick={(event) => handleGetFileToView(event)}
 				updateCaseFiles={updateCaseFiles}
 			/>
 
@@ -284,11 +291,11 @@ function CaseFolder() {
 					fileName={fileName.current}
 					fileID={fileId.current}
 					fileURL={fileUrl.current}
-					closeModal={handleCloseViewFileModal}
+					closeModal={closeViewFileModal}
 				/>
 			)}
 
-			{generateModalOpen && <GenerateModal closeModal={handleCloseGenerateModal} files={caseFiles} />}
+			{generateModalOpen && <GenerateModal closeModal={closeGenerateModal} files={caseFiles} />}
 
 			{clientModalOpen && (
 				<ClientModal
@@ -300,7 +307,7 @@ function CaseFolder() {
 						countryOfCitizenship: client.countryOfCitizenship!,
 						primaryLanguage: client.lastName!,
 					}}
-					closeModal={handleCloseClientModal}
+					closeModal={closeClientModal}
 				/>
 			)}
 		</SidebarLayout>
