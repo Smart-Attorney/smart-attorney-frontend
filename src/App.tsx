@@ -6,6 +6,8 @@ import { MockSqlTables } from "./services/mock-sql/tables";
 function App() {
 	MockSqlTables.createMockTables();
 	MockUser.createMockUser();
+	MockUser.removeCurrentUserFromLocalStorage();
+	MockUser.removeClientInfoWithBlankSpaceFromLocalStorage();
 
 	return (
 		<AppProvider>

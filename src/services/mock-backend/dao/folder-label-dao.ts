@@ -5,7 +5,7 @@ import { MockSqlTables } from "../../mock-sql/tables";
 import { DAO } from "./dao";
 
 export class FolderLabelDAO extends DAO {
-	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.FOLDER_LABELS;
+	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.table.FOLDER_LABELS;
 
 	static async getAllLabelsByCaseFolderId(caseFolderId: string) {
 		const caseFolderLabels: CaseFolderLabelObj[] = [];

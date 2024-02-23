@@ -1,7 +1,7 @@
 interface SelectFieldProps {
 	id: string;
 	name: string;
-	options: string[];
+	options: readonly string[];
 	value: string;
 	onChange: (event: React.FormEvent<HTMLSelectElement>) => void;
 }

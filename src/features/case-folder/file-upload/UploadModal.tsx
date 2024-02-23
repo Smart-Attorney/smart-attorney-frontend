@@ -2,7 +2,7 @@ import { useState } from "react";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import nanoid from "../../../services/nanoid";
+import { nanoid } from "../../../lib/nanoid";
 import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
 import { createCaseFiles } from "../api/create-case-files";
 import DropZone from "./modal-components/DropZone";
@@ -13,15 +13,9 @@ interface UploadModalProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
 	addUploadedFileToCaseFileArray: (uploadedFile: CaseFileObj) => void;
-	updateCaseFolderAfterNewUpload: () => void;
 }
 
-function UploadModal({
-	caseFolderId,
-	closeUploadModal,
-	addUploadedFileToCaseFileArray,
-	updateCaseFolderAfterNewUpload,
-}: UploadModalProps) {
+function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFileArray }: UploadModalProps) {
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 	const [uploadDone, setUploadDone] = useState(false);
 
@@ -47,7 +41,6 @@ function UploadModal({
 		} catch (error) {
 			alert(error);
 		} finally {
-			updateCaseFolderAfterNewUpload();
 			setUploadDone(false);
 			closeUploadModal();
 		}
@@ -58,7 +51,7 @@ function UploadModal({
 			setFilesForUpload((prev) => [
 				...prev,
 				{
-					id: nanoid(),
+					id: nanoid(8),
 					data: files[i],
 				},
 			]);

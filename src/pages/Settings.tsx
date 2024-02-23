@@ -23,7 +23,14 @@ function Settings() {
 					<p className="px-2 py-1 text-black bg-gray-300 rounded-sm">a@b.c</p>
 					{/*  */}
 				</div>
-				<button className="w-40 h-12 bg-teal-500 rounded-xl" type="button" onClick={() => navigate("/signin")}>
+				<button
+					className="w-40 h-12 bg-teal-500 rounded-xl"
+					type="button"
+					onClick={() => {
+						sessionStorage.clear();
+						navigate("/signin");
+					}}
+				>
 					<span className="text-lg font-bold text-white">Sign Out</span>
 				</button>
 			</div>

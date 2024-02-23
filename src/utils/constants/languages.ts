@@ -1,4 +1,4 @@
-export const LANGUAGES = [
+export const LANGUAGES = Object.freeze([
 	"Abkhazian",
 	"Afar",
 	"Afrikaans",
@@ -183,4 +183,4 @@ export const LANGUAGES = [
 	"Yoruba",
 	"Zhuang, Chuang",
 	"Zulu",
-];
+]);

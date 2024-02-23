@@ -1,9 +1,11 @@
 export class MockSqlTables {
-	static USERS = "users";
-	static CASE_FOLDERS = "case_folders";
-	static CASE_FILES = "case_files";
-	static FOLDER_LABELS = "folder_labels";
-	static CLIENTS = "clients";
+	static table = Object.freeze({
+		USERS: "users",
+		CASE_FOLDERS: "case_folders",
+		CASE_FILES: "case_files",
+		FOLDER_LABELS: "folder_labels",
+		CLIENTS: "clients",
+	});
 
 	constructor() {}
 
@@ -17,33 +19,33 @@ export class MockSqlTables {
 	}
 
 	static createUsers() {
-		const usersTable = this.getArray(this.USERS);
+		const usersTable = this.getArray(this.table.USERS);
 		if (usersTable) return;
-		this.initArray(this.USERS);
+		this.initArray(this.table.USERS);
 	}
 
 	static createCaseFolders() {
-		const caseFoldersTable = this.getArray(this.CASE_FOLDERS);
+		const caseFoldersTable = this.getArray(this.table.CASE_FOLDERS);
 		if (caseFoldersTable) return;
-		this.initArray(this.CASE_FOLDERS);
+		this.initArray(this.table.CASE_FOLDERS);
 	}
 
 	static createCaseFiles() {
-		const caseFilesTable = this.getArray(this.CASE_FILES);
+		const caseFilesTable = this.getArray(this.table.CASE_FILES);
 		if (caseFilesTable) return;
-		this.initArray(this.CASE_FILES);
+		this.initArray(this.table.CASE_FILES);
 	}
 
 	static createFolderLabels() {
-		const folderLabelsTable = this.getArray(this.FOLDER_LABELS);
+		const folderLabelsTable = this.getArray(this.table.FOLDER_LABELS);
 		if (folderLabelsTable) return;
-		this.initArray(this.FOLDER_LABELS);
+		this.initArray(this.table.FOLDER_LABELS);
 	}
 
 	static createClients() {
-		const clientsTable = this.getArray(this.CLIENTS);
+		const clientsTable = this.getArray(this.table.CLIENTS);
 		if (clientsTable) return;
-		this.initArray(this.CLIENTS);
+		this.initArray(this.table.CLIENTS);
 	}
 
 	static createMockTables() {
@@ -53,4 +55,7 @@ export class MockSqlTables {
 		this.createFolderLabels();
 		this.createClients();
 	}
+
+	// TODO
+	// filter out previous/deprecated local storage keys
 }

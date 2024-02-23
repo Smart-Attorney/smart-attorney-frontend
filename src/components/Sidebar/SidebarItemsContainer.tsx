@@ -27,8 +27,13 @@ function SidebarItemsContainer() {
 		// This outer div keeps the buttons in place, even when scrolling past view height.
 		<div className="fixed">
 			{/* The Smart Attorney icon links to the landing page. */}
-			<a href="https://www.smartattorney.co/" target="_blank" rel="noopener noreferrer">
-				<img className="w-20 h-20 mb-3 cursor-pointer" src={SmartAttorneyIcon} />
+			<a
+				href="https://www.smartattorney.co/"
+				target="_blank"
+				rel="noopener noreferrer"
+				className="flex justify-center mb-3"
+			>
+				<img className="w-[4.5rem] h-[4.5rem] cursor-pointer" src={SmartAttorneyIcon} />
 			</a>
 
 			<div className="flex flex-col items-center">

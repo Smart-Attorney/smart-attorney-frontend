@@ -6,18 +6,18 @@ import TermsOfService from "../features/register/TermsOfService";
 import { RegisterCredentialsDTO, registerNewUser } from "../features/register/api/register";
 import StyledBackground from "../layouts/StyledBackground";
 
+// keep these consistent with credentials object property names
+const INPUT = Object.freeze({
+	FIRST_NAME: "firstName",
+	LAST_NAME: "lastName",
+	FIRM_NAME: "firmName",
+	COMPANY_EMAIL: "companyEmail",
+	PASSWORD: "password",
+	CONFIRM_PASSWORD: "confirmPassword",
+});
+
 function Register() {
 	const navigate = useNavigate();
-
-	// keep these consistent with credentials object property names
-	const INPUT = {
-		FIRST_NAME: "firstName",
-		LAST_NAME: "lastName",
-		FIRM_NAME: "firmName",
-		COMPANY_EMAIL: "companyEmail",
-		PASSWORD: "password",
-		CONFIRM_PASSWORD: "confirmPassword",
-	};
 
 	const [user, setUser] = useState<RegisterCredentialsDTO>({
 		firstName: "",
@@ -26,30 +26,15 @@ function Register() {
 		companyEmail: "",
 		password: "",
 	});
+
 	const [confirmPassword, setConfirmPassword] = useState({ confirmPassword: "" });
+
 	const [tos, setTos] = useState({
 		termsOfService: false,
 		privacyPolicy: false,
 	});
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { id, value } = event.target;
-		if (id === INPUT.CONFIRM_PASSWORD) {
-			setConfirmPassword((prev) => ({ ...prev, [id]: value }));
-		}
-		setUser((prev) => ({
-			...prev,
-			[id]: value,
-		}));
-	};
-
-	const handleToggleCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, checked } = event.target;
-		setTos((prev) => ({
-			...prev,
-			[name]: checked,
-		}));
-	};
+	/************************************************************/
 
 	const handleRegistration = async () => {
 		// temp: checks whether password and confirm-password match
@@ -83,6 +68,27 @@ function Register() {
 			alert(error);
 		}
 	};
+
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { id, value } = event.target;
+		if (id === INPUT.CONFIRM_PASSWORD) {
+			setConfirmPassword((prev) => ({ ...prev, [id]: value }));
+		}
+		setUser((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+	};
+
+	const handleToggleCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = event.target;
+		setTos((prev) => ({
+			...prev,
+			[name]: checked,
+		}));
+	};
+
+	/************************************************************/
 
 	return (
 		<StyledBackground>

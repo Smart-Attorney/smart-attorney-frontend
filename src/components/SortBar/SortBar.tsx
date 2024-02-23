@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
-import Database from "../../services/database";
 import { SortOptionsObj } from "../../utils/constants/sort-options";
 import { sortArrayByOption } from "../../utils/sort";
-import { CaseFolderObj } from "../../utils/types";
+import { DashboardFolderCardObj } from "../../utils/types";
 import SortOption from "./SortOption";
 
 /* 
@@ -15,13 +14,11 @@ import SortOption from "./SortOption";
 
 interface SortBarProps {
 	options: SortOptionsObj[];
-	unsortedArray?: CaseFolderObj[] | null;
-	setSortedArray?: React.Dispatch<React.SetStateAction<CaseFolderObj[] | null>>;
+	unsortedArray?: DashboardFolderCardObj[] | null;
+	setSortedArray?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 }
 
 function SortBar(props: SortBarProps) {
-	const db = new Database();
-
 	const { options, unsortedArray, setSortedArray } = props;
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
 
@@ -41,8 +38,8 @@ function SortBar(props: SortBarProps) {
       */
 			const newArray = [...unsortedArray];
 
-			const sortedArray = sortArrayByOption(newArray, id) as CaseFolderObj[];
-			db.updateCaseArray(sortedArray);
+			const sortedArray = sortArrayByOption(newArray, id) as DashboardFolderCardObj[];
+
 			setSortedArray(sortedArray);
 		}
 	};

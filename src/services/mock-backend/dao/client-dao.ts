@@ -5,7 +5,7 @@ import { MockSqlTables } from "../../mock-sql/tables";
 import { DAO } from "./dao";
 
 export class ClientDAO extends DAO {
-	private static CLIENT_STORAGE_KEY = MockSqlTables.CLIENTS;
+	private static CLIENT_STORAGE_KEY = MockSqlTables.table.CLIENTS;
 
 	static async getClientByCaseFolderId(caseFolderId: string) {
 		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);

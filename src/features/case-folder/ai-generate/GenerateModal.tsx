@@ -56,8 +56,8 @@ function GenerateModal({ closeModal }: GenerateModalProps) {
 
 					{/* Contains the document grid. */}
 					<div id="file-grid" className="grid grid-cols-3 gap-x-5 gap-y-6">
-						{mockArray.map((item) => (
-							<div className="h-20 w-[204px] px-2.5 py-1.5 bg-white rounded-[10px] cursor-pointer">
+						{mockArray.map((item, index) => (
+							<div key={index} className="h-20 w-[204px] px-2.5 py-1.5 bg-white rounded-[10px] cursor-pointer">
 								<div className="flex flex-row w-full gap-2 cursor-pointer">
 									<input type="checkbox" className="cursor-pointer" />
 									<label className="text-sm cursor-pointer">{item}</label>

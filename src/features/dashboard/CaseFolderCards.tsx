@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CardGrid from "../../layouts/CardGrid";
-// import Database from "../../services/database";
-import { formatUnixDateToStringDate } from "../../utils/format";
-import type { CaseFolderObj } from "../../utils/types";
+import { formatForCardDisplay } from "../../utils/format";
+import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
@@ -10,12 +9,11 @@ import { deleteFolderLabel } from "./api/delete-folder-label";
 import { updateDeadline } from "./api/update-deadline";
 
 interface CaseFolderCardProps {
-	caseFolders: CaseFolderObj[] | null;
-	setCaseFolders: React.Dispatch<React.SetStateAction<CaseFolderObj[] | null>>;
+	caseFolders: DashboardFolderCardObj[] | null;
+	setCaseFolders: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 }
 
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
-	// const db = new Database();
 	const navigate = useNavigate();
 
 	const handleUpdateFolderDeadline = async (
@@ -27,7 +25,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await updateDeadline(folderId, deadlineInUnixTime);
 			if (response.ok) {
-				const data: CaseFolderObj[] = await response.json();
+				const data: DashboardFolderCardObj[] = await response.json();
 				setCaseFolders(data);
 			}
 		} catch (error) {
@@ -47,7 +45,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await createFolderLabel(folderId, newLabel);
 			if (response.ok) {
-				const data: CaseFolderObj[] = await response.json();
+				const data: DashboardFolderCardObj[] = await response.json();
 				setCaseFolders(data);
 			}
 		} catch (error) {
@@ -64,7 +62,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
-				const data: CaseFolderObj[] = await response.json();
+				const data: DashboardFolderCardObj[] = await response.json();
 				setCaseFolders(data);
 			}
 		} catch (error) {
@@ -76,7 +74,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteCaseFolder(folderId);
 			if (response.ok) {
-				const data: CaseFolderObj[] = await response.json();
+				const data: DashboardFolderCardObj[] = await response.json();
 				setCaseFolders(data);
 			}
 		} catch (error) {
@@ -100,7 +98,6 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	return (
 		<CardGrid>
 			{caseFolders?.map((caseFolder) => {
-				const deadline = caseFolder.deadline === 0 ? "" : formatUnixDateToStringDate(caseFolder.deadline);
 				return (
 					<div
 						className="flex flex-col w-64 h-64 py-4 pl-5 bg-white cursor-pointer rounded-3xl"
@@ -124,7 +121,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 							id="case-folder-deadline"
 							className="relative flex flex-row items-center w-[200px] bottom-[26px] justify-between pr-2"
 						>
-							<p id="deadline-text">Deadline: {deadline}</p>
+							<p id="deadline-text">Deadline: {formatForCardDisplay(caseFolder.deadline)}</p>
 							<div
 								id="deadline-status"
 								className="w-4 h-4 rounded-full"

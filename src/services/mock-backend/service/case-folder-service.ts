@@ -1,4 +1,4 @@
-import { UpdateDeadlineDTO } from "../../../features/dashboard/api/update-deadline";
+import { UpdateCaseFolderDeadlineDTO } from "../../../features/dashboard/api/update-deadline";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseFileDAO } from "../dao/case-file-dao";
 import { CaseFolderDAO } from "../dao/case-folder-dao";
@@ -33,11 +33,11 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async updateCaseFolderDeadline(userId: string, folderId: string, deadline: UpdateDeadlineDTO) {
+	static async updateDeadline(userId: string, folderId: string, deadline: UpdateCaseFolderDeadlineDTO) {
 		if (!folderId || !deadline) {
 			return null;
 		}
-		const updatedDeadline = await CaseFolderDAO.updateCaseFolderDeadline(userId, folderId, deadline);
+		const updatedDeadline = await CaseFolderDAO.updateDeadline(userId, folderId, deadline);
 		if (updatedDeadline !== null) {
 			return updatedDeadline;
 		}
@@ -51,6 +51,17 @@ export class CaseFolderService {
 		const updatedDate = await CaseFolderDAO.updateLastOpenedDate(userId, folderId, newDate);
 		if (updatedDate !== null) {
 			return updatedDate;
+		}
+		return null;
+	}
+
+	static async updateName(userId: string, folderId: string, newName: string) {
+		if (!userId || !folderId || !newName) {
+			return null;
+		}
+		const updatedName = await CaseFolderDAO.updateName(userId, folderId, newName);
+		if (updatedName !== null) {
+			return updatedName;
 		}
 		return null;
 	}

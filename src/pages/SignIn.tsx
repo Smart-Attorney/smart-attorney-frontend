@@ -6,18 +6,12 @@ import StyledBackground from "../layouts/StyledBackground";
 import { CurrenUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
 
 function SignIn() {
-	const { setCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
 	const navigate = useNavigate();
+
+	const { setCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
 	const [credentials, setCredentials] = useState<SignInCredentialsDTO>({ companyEmail: "", password: "" });
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target;
-
-		setCredentials((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
+	/************************************************************/
 
 	const handleSignIn = async () => {
 		try {
@@ -32,7 +26,20 @@ function SignIn() {
 		}
 	};
 
-	const handleRedirectToRegister = () => navigate("/register");
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
+
+		setCredentials((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	const handleRedirectToRegister = () => {
+		return navigate("/register");
+	};
+
+	/************************************************************/
 
 	/* TODO
      Figma wireframe does not give accurate linear gradient.

@@ -1,1 +1,1 @@
-export const SEX = ["Male", "Female", "Other"];
+export const SEX = Object.freeze(["Male", "Female", "Other"]);

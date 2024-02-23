@@ -1,34 +1,24 @@
-import {
-	DocFile,
-	DocxFile,
-	JpgFile,
-	Mp3File,
-	Mp4File,
-	PdfFile,
-	PngFile,
-	TxtFile,
-	UnknownFile,
-} from "../assets/file-type";
+import * as img from "../assets/file-type";
 
 export const getFileTypeImg = (fileType: string) => {
 	switch (fileType) {
 		case "doc":
-			return DocFile;
+			return img.DocFile;
 		case "docx":
-			return DocxFile;
+			return img.DocxFile;
 		case "jpg":
-			return JpgFile;
+			return img.JpgFile;
 		case "mp3":
-			return Mp3File;
+			return img.Mp3File;
 		case "mp4":
-			return Mp4File;
+			return img.Mp4File;
 		case "pdf":
-			return PdfFile;
+			return img.PdfFile;
 		case "png":
-			return PngFile;
+			return img.PngFile;
 		case "txt":
-			return TxtFile;
+			return img.TxtFile;
 		default:
-			return UnknownFile;
+			return img.UnknownFile;
 	}
 };
