@@ -1,3 +1,5 @@
+import SignedInUser from "../components/User/SignedInUser";
+
 interface PageHeaderProps {
 	children: React.ReactNode;
 	className?: string;
@@ -5,9 +7,12 @@ interface PageHeaderProps {
 
 function PageHeader({ children, className }: PageHeaderProps) {
 	return (
-		<div className="flex justify-start w-full pl-20 h-[152px]">
-			<div className={`${className} flex flex-row items-center w-fit`}>{children}</div>
-		</div>
+		<>
+			<SignedInUser />
+			<div className="flex justify-start w-full pl-20 h-[152px]">
+				<div className={`${className} flex flex-row items-center w-fit`}>{children}</div>
+			</div>
+		</>
 	);
 }
 

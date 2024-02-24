@@ -1,3 +1,4 @@
+import AvatarIcon from "./avatar.png";
 import CheckIcon from "./check-green-icon.png";
 import CloseIcon from "./close-red-icon.png";
 import DashboardIcon from "./dashboard-icon.png";
@@ -9,6 +10,7 @@ import UploadIcon from "./upload-white-icon.png";
 import UserIcon from "./user-icon.png";
 
 export {
+	AvatarIcon,
 	CheckIcon,
 	CloseIcon,
 	DashboardIcon,

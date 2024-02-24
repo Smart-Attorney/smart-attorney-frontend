@@ -29,13 +29,15 @@ body {
 
 /* For the buttons that utilize AI features. */
 .modal-special-btn-border {
-	background: linear-gradient(0deg, #0a0a1e, #0a0a1e) padding-box,
+	background:
+		linear-gradient(0deg, #0a0a1e, #0a0a1e) padding-box,
 		linear-gradient(90deg, #9747ff 0%, rgba(251, 62, 62, 0.5) 50%, rgba(50, 68, 242, 0.42) 100%) border-box;
 }
 
 /* For the buttons that utilize AI features. */
 .pill-special-btn-border {
-	background: linear-gradient(0deg, #ffffff, #ffffff) padding-box,
+	background:
+		linear-gradient(0deg, #ffffff, #ffffff) padding-box,
 		linear-gradient(90deg, #e844e1 5.98%, #ff487c 32.14%, #ffe457 61%, #5f39f9 92.58%) border-box;
 }
 
@@ -58,4 +60,12 @@ body {
 	border: 2px solid rgb(251, 251, 251);
 	border-radius: 50%;
 	background: linear-gradient(to right, #ff69b4, #1e90ff);
+}
+
+.arrow-down {
+	width: 0px;
+	height: 0px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid #ffffff;
 }
