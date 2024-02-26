@@ -27,10 +27,11 @@ function CreateCaseFolder() {
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
 
-	const caseNum = CaseFolderCount.get();
+	const currentFolderCount = CaseFolderCount.get();
+	const defaultCaseName = `Case Folder ${currentFolderCount + 1}`;
 
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
-	const [caseFolderName, setCaseFolderName] = useState<string>(`Case Folder ${caseNum + 1}`);
+	const [caseFolderName, setCaseFolderName] = useState<string>(defaultCaseName);
 	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
@@ -60,7 +61,7 @@ function CreateCaseFolder() {
 	/************************************************************/
 
 	const createNewCase = async (): Promise<void> => {
-		if (caseFolderName.trim() === `Case Folder ${caseNum + 1}` || caseFolderName.trim().length === 0) {
+		if (caseFolderName.trim() === defaultCaseName || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
 			return;
 		}
@@ -148,7 +149,7 @@ function CreateCaseFolder() {
 
 	/* Clears the input field on initial click focus to save user the hassle of backspacing. */
 	const handeClickOnCaseName = (): void => {
-		if (caseFolderName === `Case Folder ${caseNum + 1}`) {
+		if (caseFolderName === defaultCaseName) {
 			setCaseFolderName("");
 		}
 		setCaseFolderNameEditable(true);
@@ -163,7 +164,7 @@ function CreateCaseFolder() {
 	const handleCaseNameBlur = (event: React.FocusEvent<HTMLHeadingElement>): void => {
 		const { innerText } = event.target;
 		if (innerText.trim() === "") {
-			setCaseFolderName(`Case Folder ${caseNum + 1}`);
+			setCaseFolderName(defaultCaseName);
 		} else {
 			setCaseFolderName(innerText);
 		}

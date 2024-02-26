@@ -11,10 +11,6 @@
 - [ ] user can create sub-folders within case folders
 
 
-### bugs to fix
-- [ ] fix uploading new files feature by updating the database before updating the client state
-
-
 ### nitpicks
 - [x] add delete confirmation box
 - [x] modals
@@ -38,14 +34,14 @@
 - [x] add reusable grid layout for cards (tailwind custom class)
 - [x] add reusable modal layout
 - [x] add reusuable page header layout
-- [ ] ensure updated state flows in direction of: updates -> storage -> database -> client
-- [ ] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
-- [ ] refactor database methods as a mock backend api
-- [ ] when user deletes folder, remove all files associated with folder from cloud
-- [ ] refactor: parent holds state, while business logic of child stays in child (ex: dashboard & cardfoldercards)
-- [ ] when user leaves create page without creating, delete all uploaded files
-- [ ] when user deletes folder, delete all files within
-- [ ] include folder name when saving case folders
+- [x] ensure updated state flows in direction of: updates -> storage -> database -> client
+- [x] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
+- [x] refactor database methods as a mock backend api
+- [x] when user deletes folder, remove all files associated with folder from cloud
+- [x] refactor: parent holds state, while business logic of child stays in child (ex: dashboard & cardfoldercards)
+- [x] when user leaves create page without creating, delete all uploaded files
+- [x] when user deletes folder, delete all files within
+- [x] include folder name when saving case folders
 - [ ] re-organize functions for dependency injection pattern for reusability
 - [ ] add dynamic deadline status color
 - [ ] add upload confirmation under each uploaded file
