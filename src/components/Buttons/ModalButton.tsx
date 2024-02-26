@@ -1,10 +1,11 @@
 import { ButtonProps } from "../../utils/types";
 
 function ModalButton(props: ButtonProps) {
-	const { name, type, disabled, style, className, onClick } = props;
+	const { title, name, type, disabled, style, className, onClick } = props;
 
 	return (
 		<button
+			title={title}
 			name={name}
 			type={type}
 			disabled={disabled}

@@ -1,4 +1,5 @@
 export interface ButtonProps {
+	title?: string;
 	name: string;
 	type: "button" | "submit" | "reset";
 	img?: string;

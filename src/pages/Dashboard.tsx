@@ -9,6 +9,7 @@ import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
+import { CaseFolderCount } from "../utils/case-folder-count";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { DashboardFolderCardObj } from "../utils/types";
 
@@ -19,7 +20,7 @@ function Dashboard() {
 
 	useEffect(() => {
 		handleGetUserCaseFolders();
-	}, []);
+	}, [caseFolders]);
 
 	/************************************************************/
 
@@ -30,10 +31,12 @@ function Dashboard() {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
 					setCaseFolders(data);
+					CaseFolderCount.set(data.length);
 					break;
 				case 204:
 					console.log(response.statusText);
 					setCaseFolders([]);
+					CaseFolderCount.set(0);
 					break;
 				default:
 					break;

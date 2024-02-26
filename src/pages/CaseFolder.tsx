@@ -304,12 +304,12 @@ function CaseFolder() {
 			{clientModalOpen && (
 				<ClientModal
 					client={{
-						firstName: client.firstName!,
-						lastName: client.lastName!,
-						dateOfBirth: formatForInputDisplay(client.dateOfBirth!),
+						firstName: client.firstName,
+						lastName: client.lastName,
+						dateOfBirth: formatForInputDisplay(client.dateOfBirth),
 						sex: client.sex!,
-						countryOfCitizenship: client.countryOfCitizenship!,
-						primaryLanguage: client.lastName!,
+						countryOfCitizenship: client.countryOfCitizenship,
+						primaryLanguage: client.primaryLanguage,
 					}}
 					closeModal={closeClientModal}
 				/>
