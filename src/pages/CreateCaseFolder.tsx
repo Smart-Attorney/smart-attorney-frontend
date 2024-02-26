@@ -16,6 +16,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
+import { CaseFolderCount } from "../utils/case-folder-count";
 import { NEW_CASE } from "../utils/constants/sort-options";
 import { FileForUploadObj, SexOptions } from "../utils/types";
 
@@ -26,8 +27,10 @@ function CreateCaseFolder() {
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
 
+	const caseNum = CaseFolderCount.get();
+
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
-	const [caseFolderName, setCaseFolderName] = useState<string>("New Case |");
+	const [caseFolderName, setCaseFolderName] = useState<string>(`Case Folder ${caseNum + 1}`);
 	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
@@ -57,7 +60,7 @@ function CreateCaseFolder() {
 	/************************************************************/
 
 	const createNewCase = async (): Promise<void> => {
-		if (caseFolderName.trim() === "New Case |" || caseFolderName.trim().length === 0) {
+		if (caseFolderName.trim() === `Case Folder ${caseNum + 1}` || caseFolderName.trim().length === 0) {
 			alert("Please change the case name before creating.");
 			return;
 		}
@@ -145,7 +148,7 @@ function CreateCaseFolder() {
 
 	/* Clears the input field on initial click focus to save user the hassle of backspacing. */
 	const handeClickOnCaseName = (): void => {
-		if (caseFolderName === "New Case |") {
+		if (caseFolderName === `Case Folder ${caseNum + 1}`) {
 			setCaseFolderName("");
 		}
 		setCaseFolderNameEditable(true);
@@ -160,7 +163,7 @@ function CreateCaseFolder() {
 	const handleCaseNameBlur = (event: React.FocusEvent<HTMLHeadingElement>): void => {
 		const { innerText } = event.target;
 		if (innerText.trim() === "") {
-			setCaseFolderName("New Case |");
+			setCaseFolderName(`Case Folder ${caseNum + 1}`);
 		} else {
 			setCaseFolderName(innerText);
 		}
