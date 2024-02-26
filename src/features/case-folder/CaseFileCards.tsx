@@ -43,9 +43,9 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		<CardGrid>
 			{files?.map((file) => {
 				return (
-					<div className="w-64 h-64 py-4 pl-12 bg-white rounded-3xl " key={file.id}>
+					<div className="w-[272px] h-[256px] p-4 bg-white rounded-2xl " key={file.id} id={file.id}>
 						{/* Kebab Menu */}
-						<div className="relative left-[175px] max-w-min">
+						<div className="relative left-[226px] bottom-1 max-w-fit z-10">
 							<KebabMenu
 								fileName={file.name}
 								updateFileName={handleUpdateFileName(file.id)}
@@ -53,17 +53,33 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 							/>
 						</div>
 
-						{/* File Status */}
-						<h1 className="relative bottom-[26px] right-[10px] w-fit">{file.status}</h1>
+						<div className="relative flex flex-col justify-between w-full h-full bottom-7">
+							{/* Status and Name */}
+							<div className="flex flex-col w-56 h-[72px] justify-between">
+								{/* File Status */}
+								<h1 className="w-fit text-black px-2.5 py-1 rounded-full bg-[#53EF0A80] text-xs">Submitted</h1>
+								{/* <h1 className="w-fit">{file.status}</h1> */}
 
-						{/* File Name */}
-						<p
-							className="mb-8 font-semibold w-fit cursor-pointer hover:text-blue-500 relative top-[140px] right-[10px]"
-							id={file.id}
-							onClick={onClick}
-						>
-							{file.name}
-						</p>
+								{/* File Name */}
+								<p
+									className="text-sm cursor-pointer w-fit line-clamp-2 hover:text-blue-500"
+									id={file.id}
+									onClick={onClick}
+								>
+									{file.name}
+								</p>
+							</div>
+
+							{/* Image */}
+							<div
+								className="w-60 h-[100px] rounded-lg border border-[#EBECF2] bg-slate-200 cursor-pointer"
+								id={file.id}
+								onClick={onClick}
+							></div>
+
+							{/* Blank Space for Formatting */}
+							<div className="h-6 w-60"></div>
+						</div>
 					</div>
 				);
 			})}

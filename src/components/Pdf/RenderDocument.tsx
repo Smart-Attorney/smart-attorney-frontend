@@ -12,17 +12,20 @@ const RenderDocument = (props: { file: FileForUploadObj; removeFileFromFilesForU
 	const { file } = props;
 
 	return file.data ? (
-		<Document file={file.data} noData="">
-			<div className="flex flex-col justify-between w-64 h-64 p-4 bg-white rounded-3xl" key={file.id}>
-				<div className="relative left-[175px] max-w-fit">
-					<KebabMenu deleteFile={() => props.removeFileFromFilesForUploadArray(file.id)} />
-				</div>
-
-				<Page className="mx-auto" pageNumber={1} height={150} />
-
-				<p className="mb-8 w-fit">{file.data.name}</p>
+		<div className="flex flex-col justify-between w-[272px] h-[256px] p-4 bg-white rounded-2xl" key={file.id}>
+			<div className="relative left-[226px] bottom-1 max-w-fit z-[1]">
+				<KebabMenu deleteFile={() => props.removeFileFromFilesForUploadArray(file.id)} />
 			</div>
-		</Document>
+
+			<div className="relative w-full h-full bottom-7">
+				<Document className="flex flex-col items-center justify-between gap-6" file={file.data} noData="">
+					<div className="self-start flex flex-col justify-end w-full h-[72px] ">
+						<p className="text-sm line-clamp-2">{file.data.name}</p>
+					</div>
+					<Page className="border border-black rounded-sm" pageNumber={1} height={125} />
+				</Document>
+			</div>
+		</div>
 	) : (
 		<></>
 	);

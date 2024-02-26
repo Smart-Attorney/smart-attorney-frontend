@@ -49,7 +49,7 @@ function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 
 			{/* Menu Options */}
 			<ul
-				className="absolute bg-[#eff1f3] p-1 rounded-md z-10 border border-black w-max"
+				className="absolute bg-[#eff1f3] p-1 rounded-md z-20 border border-black w-max"
 				style={{ display: isMenuOpen ? "block" : "none" }}
 				onMouseLeave={closeMenu}
 			>
@@ -66,13 +66,13 @@ function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 
 			{/* Date Picker */}
 			<div
-				className="absolute right-[25px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3]"
+				className="absolute right-[-6px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
 				style={{ display: isDatePickerOpen ? "block" : "none" }}
 			>
 				<label htmlFor="date-picker">Set Deadline:</label>
-				<div className="flex flex-row items-center w-40 gap-1">
+				<div className="flex flex-row items-center w-full gap-4">
 					<input
-						className="left-[5px] rounded-sm cursor-pointer px-2 border border-black"
+						className="left-[5px] rounded-sm cursor-pointer w-full px-2 border border-black"
 						id="date-picker"
 						type="date"
 						onChange={addDeadline}
@@ -87,21 +87,21 @@ function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 
 			{/* Label Assigner */}
 			<div
-				className="absolute right-[25px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3]"
+				className="absolute right-[-6px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
 				style={{ display: isLabelInputOpen ? "block" : "none" }}
 			>
 				<form className="flex flex-col gap-2" name="label-form" onSubmit={addLabel}>
 					<label htmlFor="label-input">New Label:</label>
-					<input className="w-40 px-2 pb-[2px] border border-black rounded-sm" id="label-input" type="text" />
+					<input className="w-full px-2 pb-[2px] border border-black rounded-sm" id="label-input" type="text" />
 					<div className="flex flex-row justify-between w-full">
 						<button
-							className="w-16 bg-[#77dd77] rounded-md py-1"
+							className="w-28 bg-[#77dd77] rounded-md py-1"
 							type="submit"
 							// onClick={props.addLabel}
 						>
 							Add
 						</button>
-						<button className="w-16 rounded-md bg-[#c1c1c1] py-1" type="button" onClick={closeLabelInput}>
+						<button className="w-28 rounded-md bg-[#c1c1c1] py-1" type="button" onClick={closeLabelInput}>
 							Close
 						</button>
 					</div>
@@ -110,17 +110,17 @@ function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 
 			{/* Delete Warning */}
 			<div
-				className="absolute right-[-17px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-max"
+				className="absolute right-[-6px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
 				style={{ display: isDeleteAlertOpen ? "block" : "none" }}
 			>
 				<div className="flex flex-col items-center gap-2">
 					<h3 className="text-lg font-semibold w-max">Delete Case Folder?</h3>
 					<p className="w-full">This process cannot be undone.</p>
-					<div className="flex flex-row w-full justify-evenly">
-						<button className="w-20 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
+					<div className="flex flex-row justify-between w-full">
+						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
 							Cancel
 						</button>
-						<button className="w-20 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={deleteFolder}>
+						<button className="w-28 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={deleteFolder}>
 							Delete
 						</button>
 					</div>

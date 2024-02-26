@@ -35,7 +35,7 @@ function ModalDialog({ children, className, closeModal, enableBackdropClose }: M
 	return (
 		<div
 			id="modal-backdrop"
-			className="bg-[#00000040] justify-center flex items-center backdrop-blur-[2px] fixed h-screen top-0 w-[calc(100%-80px)] overflow-hidden"
+			className="bg-[#00000040] justify-center flex items-center backdrop-blur-[2px] fixed h-screen top-0 w-[calc(100%-80px)] overflow-hidden z-10"
 			ref={modalRef}
 			onClick={(event) => handleModalBackdropClickToClose(event)}
 		>
