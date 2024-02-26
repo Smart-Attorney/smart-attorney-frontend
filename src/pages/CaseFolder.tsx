@@ -21,7 +21,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
-import { formatForInputDisplay } from "../utils/format";
+import { Format } from "../utils/format";
 import { CaseFileObj, CaseFolderObj, ClientObj } from "../utils/types";
 
 function CaseFolder() {
@@ -306,7 +306,7 @@ function CaseFolder() {
 					client={{
 						firstName: client.firstName,
 						lastName: client.lastName,
-						dateOfBirth: formatForInputDisplay(client.dateOfBirth),
+						dateOfBirth: Format.dateForInputDisplay(client.dateOfBirth),
 						sex: client.sex!,
 						countryOfCitizenship: client.countryOfCitizenship,
 						primaryLanguage: client.primaryLanguage,

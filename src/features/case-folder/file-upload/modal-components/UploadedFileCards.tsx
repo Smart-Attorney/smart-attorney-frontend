@@ -1,4 +1,4 @@
-import { formatBytes } from "../../../../utils/format";
+import { Format } from "../../../../utils/format";
 import { getFileTypeImg } from "../../../../utils/get-file-type-img";
 import { FileForUploadObj } from "../../../../utils/types";
 
@@ -26,7 +26,7 @@ function UploadedFileCards(props: UploadedFileCardsProps) {
 								<p className="w-[95%] overflow-hidden text-base font-semibold text-ellipsis whitespace-nowrap">
 									{name}
 								</p>
-								<p className="text-sm text-gray-500">{formatBytes(size)}</p>
+								<p className="text-sm text-gray-500">{Format.fileBytesForCardDisplay(size)}</p>
 								<p className="text-sm font-semibold">Ready to upload</p>
 							</div>
 							<span
@@ -34,9 +34,7 @@ function UploadedFileCards(props: UploadedFileCardsProps) {
 								className="relative text-2xl font-semibold rounded-full cursor-pointer h-fit hover:bg-gray-400"
 								onClick={() => props.handleRemoveFileFromStaging(file.id)}
 							>
-								<p className="relative w-8 text-center bottom-[1.25px]">
-									&#10005; {/* "&#10005;" makes an "x" */}
-								</p>
+								<p className="relative w-8 text-center bottom-[1.25px]">&#10005; {/* "&#10005;" makes an "x" */}</p>
 							</span>
 						</div>
 					</div>

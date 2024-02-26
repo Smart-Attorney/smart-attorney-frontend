@@ -7,7 +7,7 @@ import { getUserCaseFolders } from "../features/calendar/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import { CalendarDeadlines } from "../services/mock-sql/schemas";
-import { formatForInputDisplay } from "../utils/format";
+import { Format } from "../utils/format";
 
 function Calendar() {
 	const [events, setEvents] = useState<Event[]>();
@@ -23,7 +23,7 @@ function Calendar() {
 				const data: CalendarDeadlines[] = await response.json();
 				const deadlines: Event[] = [];
 				for (let i = 0; i < data.length; i++) {
-					const stringDate = formatForInputDisplay(data[i].deadline);
+					const stringDate = Format.dateForInputDisplay(data[i].deadline);
 					deadlines.push({
 						start: dayjs(stringDate).toDate(),
 						end: dayjs(stringDate).toDate(),
