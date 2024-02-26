@@ -84,15 +84,21 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
 		const { id } = event.target as HTMLElement;
-		const folderClicked = id === folderId;
-		const nameClicked = id === "case-folder-name";
-		const deadlineClicked = id === "case-folder-deadline";
-		const deadlineTextClicked = id === "deadline-text";
-		const deadlineStatusClicked = id === "deadline-status";
-		if (folderClicked || nameClicked || deadlineClicked || deadlineTextClicked || deadlineStatusClicked) {
-			navigate(`/case/${folderId}`);
+		const viewFile = () => navigate(`/case/${folderId}`);
+		switch (id) {
+			case folderId:
+				return viewFile();
+			case "case-folder-name":
+				return viewFile();
+			case "case-folder-deadline":
+				return viewFile();
+			case "deadline-text":
+				return viewFile();
+			case "deadline-status":
+				return viewFile();
+			default:
+				return;
 		}
-		return;
 	};
 
 	return (
