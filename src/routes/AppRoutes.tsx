@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import Calendar from "../pages/Calendar";
 import CaseFolder from "../pages/CaseFolder";
 import CreateCaseFolder from "../pages/CreateCaseFolder";
 import Dashboard from "../pages/Dashboard";
@@ -22,7 +23,7 @@ function AppRoutes() {
 				<Route path="/dashboard" element={<Dashboard />} />
 				<Route path="/case/:id" element={<CaseFolder />} />
 				<Route path="/create-case" element={<CreateCaseFolder />} />
-				<Route path="/calendar" element={<Error />} />
+				<Route path="/calendar" element={<Calendar />} />
 				<Route path="/team" element={<Error />} />
 				<Route path="/notifications" element={<Error />} />
 				<Route path="/settings" element={<Settings />} />

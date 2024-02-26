@@ -1,5 +1,5 @@
 import { CaseFolderObj, DashboardFolderCardObj } from "../../../utils/types";
-import { CaseFolders } from "../../mock-sql/schemas";
+import { CalendarDeadlines, CaseFolders } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
 import { CaseFileDAO } from "./case-file-dao";
 import { DAO } from "./dao";
@@ -47,6 +47,21 @@ export class CaseFolderDAO extends DAO {
 			}
 		}
 		return null;
+	}
+
+	static async getCaseFolderDeadlinesByUserId(userId: string) {
+		const deadlines: CalendarDeadlines[] = [];
+		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		for (let i = 0; i < caseFolderArray.length; i++) {
+			if (caseFolderArray[i].user_id_fk === userId) {
+				deadlines.push({
+					folder_id: caseFolderArray[i].folder_id,
+					folder_name: caseFolderArray[i].folder_name,
+					deadline: caseFolderArray[i].deadline,
+				});
+			}
+		}
+		return deadlines;
 	}
 
 	static async addNewCaseFolder(userId: string, folderId: string, folderName: string) {
