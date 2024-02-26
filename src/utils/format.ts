@@ -12,6 +12,7 @@ const formatUnixDateToStringDate = (unixDate: number): string[] => {
 	let year = date.getUTCFullYear().toString();
 	let month = (date.getUTCMonth() + 1).toString();
 	let day = date.getUTCDate().toString();
+	year = year.substring(2, 4);
 	month = month.length === 1 ? "0" + month : month;
 	day = day.length === 1 ? "0" + day : day;
 	return [year, month, day];

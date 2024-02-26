@@ -46,6 +46,12 @@
 - [ ] add dynamic deadline status color
 - [ ] add upload confirmation under each uploaded file
 - [ ] create edit modal so user can change name of case and files
+- [ ] use svgs instead of png/jpg
+
+look into:
+case folder status
+deadline of individdual files
+case folder deadline reflects files inside
 
 
 ### temporary workarounds

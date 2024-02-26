@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AvatarIcon } from "../../assets/smart-attorney-figma/global";
 import { NotificationWhite } from "../../assets/smart-attorney-figma/sidebar";
+import { UserHeadshot } from "../../assets/smart-attorney-figma/stock";
 import { CurrentUserContext, CurrenUserContextType } from "../../providers/CurrentUserProvider";
 
 function SignedInUser() {
@@ -18,7 +18,7 @@ function SignedInUser() {
 				<img className="w-5 h-5 cursor-pointer" src={NotificationWhite} onClick={() => navigate("/notifications")} />
 				{/* contains avatar and user's name */}
 				<div className="flex flex-row items-center justify-center gap-1.5">
-					<img className="w-[2.125rem] h-[2.125rem]" src={AvatarIcon} />
+					<img className="w-[2.125rem] h-[2.125rem]" src={UserHeadshot} />
 					<p className="text-xs font-thin text-white">{user}</p>
 				</div>
 				<span className="cursor-pointer arrow-down"></span>
