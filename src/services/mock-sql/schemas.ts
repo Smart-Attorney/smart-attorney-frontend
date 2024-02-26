@@ -45,6 +45,12 @@ export interface Clients {
 	case_folder_id_fk: string;
 }
 
+export interface CalendarDeadlines {
+	folder_id: string;
+	folder_name: string;
+	deadline: number;
+}
+
 export type sex_options = "Male" | "Female" | "Other";
 
 /* 

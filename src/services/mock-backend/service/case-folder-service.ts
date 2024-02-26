@@ -25,6 +25,17 @@ export class CaseFolderService {
 		return null;
 	}
 
+	static async getCaseFolderDeadlines(userId: string) {
+		if (!userId) {
+			return null;
+		}
+		const retrievedCaseDeadlines = await CaseFolderDAO.getCaseFolderDeadlinesByUserId(userId);
+		if (retrievedCaseDeadlines !== null) {
+			return retrievedCaseDeadlines;
+		}
+		return null;
+	}
+
 	static async createCaseFolder(userId: string, folderId: string, folderName: string) {
 		const newFolder = await CaseFolderDAO.addNewCaseFolder(userId, folderId, folderName);
 		if (newFolder !== null) {
