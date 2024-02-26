@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { FileSnapshot, MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stock";
 import CardGrid from "../../layouts/CardGrid";
-import { formatForCardDisplay } from "../../utils/format";
+import { Format } from "../../utils/format";
 import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
@@ -130,7 +130,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 									{caseFolder.deadline !== 0 && (
 										<div id="enable-nav" className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
 											<p id="enable-nav" className="text-xs">
-												Deadline: {formatForCardDisplay(caseFolder.deadline)}
+												Deadline: {Format.dateForCardDisplay(caseFolder.deadline)}
 											</p>
 											{/* TODO: what is the case folder status for */}
 										</div>
