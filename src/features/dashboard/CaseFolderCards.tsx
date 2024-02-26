@@ -104,7 +104,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 				return (
 					// Card Container
 					<div
-						className="w-[272px] h-[256px] py-4 px-4 bg-white cursor-pointer rounded-2xl"
+						className="w-[272px] h-[256px] p-4 bg-white cursor-pointer rounded-2xl"
 						key={caseFolder.id}
 						id={caseFolder.id}
 						onClick={(event) => handleViewCaseFolder(event, caseFolder.id)}

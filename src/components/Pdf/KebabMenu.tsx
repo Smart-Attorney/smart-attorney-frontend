@@ -39,17 +39,17 @@ function KebabMenu(props: KebabMenuProps) {
 
 			{/* Delete Warning */}
 			<div
-				className="absolute right-[-14px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-max"
+				className="absolute right-[-12px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-max"
 				style={{ display: isDeleteAlertOpen ? "block" : "none" }}
 			>
 				<div className="flex flex-col items-center gap-2">
 					<h3 className="text-lg font-semibold w-max">Delete Case File?</h3>
 					<p className="w-full">This process cannot be undone.</p>
-					<div className="flex flex-row w-full justify-evenly">
-						<button className="w-20 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
+					<div className="flex flex-row justify-between w-full">
+						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
 							Cancel
 						</button>
-						<button className="w-20 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={props.deleteFile}>
+						<button className="w-28 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={props.deleteFile}>
 							Delete
 						</button>
 					</div>
