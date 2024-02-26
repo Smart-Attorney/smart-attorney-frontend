@@ -23,10 +23,11 @@ interface ClientInfoModalProps {
 	client: ClientInfoForm;
 	setClient: React.Dispatch<React.SetStateAction<ClientInfoForm>>;
 	closeModal: () => void;
+	createCase: () => void;
 }
 
-function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps) {
-	const formSubmitRef = useRef<HTMLInputElement>(null);
+function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientInfoModalProps) {
+	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		setClientForm(client);
@@ -51,15 +52,20 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 		setClientForm((prev) => ({ ...prev, [id]: value }));
 	};
 
-	// prevents user from exiting out of the client modal before filling out all fields
+	// allows user to exit out of the client modal before filling it out
+	// saves any input that user has already provided
 	const handleCloseIconClick = () => {
-		formSubmitRef.current?.click();
-	};
-
-	const handleSave = (event: React.FormEvent) => {
-		event.preventDefault();
 		setClient(clientForm);
 		closeModal();
+	};
+
+	const handleCreateButtonClick = () => {
+		const clientInfoFilled = formRef.current?.checkValidity();
+		if (!clientInfoFilled) {
+			formRef.current?.reportValidity();
+			return;
+		}
+		createCase();
 	};
 
 	return (
@@ -92,8 +98,7 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 					</div>
 
 					{/* This div contains and formats the form input elements. */}
-					<form id="form" className="flex flex-col gap-8" onSubmit={handleSave}>
-						<input type="submit" className="hidden" ref={formSubmitRef} />
+					<form id="form" ref={formRef} className="flex flex-col gap-8">
 						<div className="grid grid-cols-2 gap-x-20 gap-y-4">
 							<InputField
 								id="firstName"
@@ -133,11 +138,18 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 							/>
 						</div>
 
-						{/* FOR FUTURE FEATURE: */}
-						{/* button/option to show additional input field */}
-						{/* user decides label of new input */}
+						{/* POTENTIAL FUTURE FEATURE
+						button/option to show additional input field
+					  user decides label of new input */}
+
 						{/* This is button. */}
-						<ModalButton name="Save" type="submit" className="h-[52px] border-[3px]" />
+						<ModalButton
+							title="Click Save to create the case folder"
+							name="Save"
+							type="button"
+							className="h-[52px] border-[3px]"
+							onClick={handleCreateButtonClick}
+						/>
 					</form>
 				</div>
 			</div>
@@ -146,26 +158,3 @@ function ClientInfoModal({ client, setClient, closeModal }: ClientInfoModalProps
 }
 
 export default ClientInfoModal;
-
-// <div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
-// 	<div className="topLeft">
-// 		<img
-// 			src={UserIcon}
-// 			style={{
-// 				top: "0",
-// 				left: "0",
-// 				width: "100px",
-// 				height: "100px",
-// 				zIndex: "1",
-// 			}}
-// 		/>
-// 	</div>
-// 	<div>
-// 		<h1 className="text-white">bob</h1>
-// 	</div>
-// 	<div>
-// 		<button onClick={handleSave}>
-// 			<span className="text-white">Save</span>
-// 		</button>
-// 	</div>
-// </div>;

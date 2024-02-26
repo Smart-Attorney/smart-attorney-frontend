@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-	FolderPurple,
-	LightBulbPurple,
-	PenPurple,
-	SphereLatticePurple,
-	UploadPurple,
-} from "../assets/smart-attorney-figma/buttons";
+import { LightBulbPurple, PenPurple, SphereLatticePurple, UploadPurple } from "../assets/smart-attorney-figma/buttons";
 import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
@@ -231,7 +225,7 @@ function CreateCaseFolder() {
 					<PillButton name="Upload" type="button" img={UploadPurple} onClick={handleOpenFileBrowser} />
 					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
 					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} />
-					<PillButton name="Create Case" type="button" img={FolderPurple} onClick={createNewCase} />
+					{/* <PillButton name="Create Case" type="button" img={FolderPurple} onClick={createNewCase} /> */}
 				</div>
 			</SortBarWithButtons>
 
@@ -252,7 +246,14 @@ function CreateCaseFolder() {
 				addToFilesForUploadArray={addToFilesForUploadArray}
 			/>
 
-			{clientModalOpen && <ClientInfoModal client={client} setClient={setClient} closeModal={closeClientModal} />}
+			{clientModalOpen && (
+				<ClientInfoModal
+					client={client}
+					setClient={setClient}
+					closeModal={closeClientModal}
+					createCase={createNewCase}
+				/>
+			)}
 		</SidebarLayout>
 	);
 }
