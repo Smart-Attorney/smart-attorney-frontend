@@ -72,21 +72,21 @@ function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
 
 			{/* Edit Modal */}
 			<div
-				className="absolute right-[-9px] top-[90px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-60"
+				className="absolute right-[-6px] top-[80px] z-[5] border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
 				style={{ display: editModalIsOpen ? "block" : "none" }}
 			>
-				<div className="flex flex-col items-center gap-2">
+				<div className="flex flex-col items-center gap-3">
 					<h3 className="text-lg font-semibold w-max">Edit Document Name</h3>
-					<input type="text" className="px-2 w-[85%]" defaultValue={name.current} />
-					<div className="flex flex-row w-full justify-evenly">
+					<input type="text" className="w-full px-2 py-1 border border-black rounded-md" defaultValue={name.current} />
+					<div className="flex flex-row justify-between w-full">
 						<button
-							className="w-20 bg-[#77DD77] text-white rounded-md py-1"
+							className="w-28 bg-[#77DD77] text-white rounded-md py-1"
 							type="button"
 							onClick={handleSaveButtonClick}
 						>
 							Save
 						</button>
-						<button className="w-20 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeEditModal}>
+						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeEditModal}>
 							Cancel
 						</button>
 					</div>
@@ -95,17 +95,17 @@ function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
 
 			{/* Delete Warning */}
 			<div
-				className="absolute right-[-9px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-60"
+				className="absolute right-[-6px] top-[80px] z-[5] border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
 				style={{ display: deleteAlertIsOpen ? "block" : "none" }}
 			>
 				<div className="flex flex-col items-center gap-2">
 					<h3 className="text-lg font-semibold w-max">Delete Case File?</h3>
 					<p className="w-[90%]">This process cannot be undone.</p>
-					<div className="flex flex-row w-full justify-evenly">
-						<button className="w-20 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
+					<div className="flex flex-row justify-between w-full">
+						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
 							Cancel
 						</button>
-						<button className="w-20 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={deleteFile}>
+						<button className="w-28 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={deleteFile}>
 							Delete
 						</button>
 					</div>
