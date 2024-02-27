@@ -61,6 +61,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 
 	const handleCreateButtonClick = () => {
 		const clientInfoFilled = formRef.current?.checkValidity();
+		setClient(clientForm);
 		if (!clientInfoFilled) {
 			formRef.current?.reportValidity();
 			return;

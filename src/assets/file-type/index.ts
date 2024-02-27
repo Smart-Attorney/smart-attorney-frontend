@@ -1,11 +1,11 @@
-import DocFile from "./doc.png";
-import DocxFile from "./docx.png";
-import JpgFile from "./jpg.png";
-import Mp3File from "./mp3.png";
-import Mp4File from "./mp4.png";
-import PdfFile from "./pdf.png";
-import PngFile from "./png.png";
-import TxtFile from "./txt.png";
-import UnknownFile from "./unknown.png";
+import DocFile from "./doc.svg";
+import DocxFile from "./docx.svg";
+import JpgFile from "./jpg.svg";
+import Mp3File from "./mp3.svg";
+import Mp4File from "./mp4.svg";
+import PdfFile from "./pdf.svg";
+import PngFile from "./png.svg";
+import TxtFile from "./txt.svg";
+import UnknownFile from "./unknown.svg";
 
 export { DocFile, DocxFile, JpgFile, Mp3File, Mp4File, PdfFile, PngFile, TxtFile, UnknownFile };

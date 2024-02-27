@@ -8,8 +8,8 @@ export interface CreateClientDTO {
 	dateOfBirth: number;
 	sex: SexOptions;
 	countryOfCitizenship: string;
-  primaryLanguage: string;
-  caseFolderId: string;
+	primaryLanguage: string;
+	caseFolderId: string;
 }
 
 const mockApi = async (data: CreateClientDTO) => {
