@@ -46,7 +46,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 				return (
 					<CardContainer key={file.id} id={file.id}>
 						{/* Kebab Menu */}
-						<div className="relative left-[226px] bottom-1 max-w-fit z-10">
+						<div className="relative left-[230px] bottom-1 max-w-fit z-10">
 							<KebabMenu
 								fileName={file.name}
 								updateFileName={handleUpdateFileName(file.id)}
@@ -54,11 +54,12 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 							/>
 						</div>
 
+						{/* Card Contents */}
 						<div className="relative flex flex-col justify-between w-full h-full bottom-7">
 							{/* Status and Name */}
-							<div className="flex flex-col w-56 h-[72px] justify-between">
+							<div className="flex flex-col w-[230px] h-[72px] justify-between">
 								{/* File Status */}
-								<h1 className="w-fit text-black px-2.5 py-1 rounded-full bg-[#53EF0A80] text-xs">Submitted</h1>
+								<p className="w-fit text-black px-2.5 py-1 rounded-full bg-[#53EF0A80] text-xs">Submitted</p>
 								{/* <h1 className="w-fit">{file.status}</h1> */}
 
 								{/* File Name */}

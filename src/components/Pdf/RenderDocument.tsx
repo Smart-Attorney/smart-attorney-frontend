@@ -17,13 +17,13 @@ interface RenderDocumentProps {
 const RenderDocument = ({ file, removeFileFromFilesForUploadArray }: RenderDocumentProps) => {
 	return file.data ? (
 		<CardContainer key={file.id} id={file.id}>
-			<div className="relative left-[226px] bottom-1 max-w-fit z-[1]">
+			<div className="relative left-[230px] bottom-1 max-w-fit z-[5]">
 				<KebabMenu deleteFile={() => removeFileFromFilesForUploadArray(file.id)} />
 			</div>
 
 			<div className="relative w-full h-full bottom-7">
 				<Document className="flex flex-col items-center gap-4" file={file.data} noData="">
-					<p className="self-start text-xs px-2.5 py-1 text-black rounded-full bg-[#DEEDFF] min-w-max">
+					<p className="self-start text-xs px-2.5 py-1 text-black rounded-full bg-[#DEEDFF] w-fit">
 						Ready for upload
 					</p>
 					<div className="w-full h-fit">
