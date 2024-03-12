@@ -2,7 +2,6 @@ import RenderDocument from "../../components/Pdf/RenderDocument";
 import CardGrid from "../../layouts/CardGrid";
 import { FileForUploadObj } from "../../utils/types";
 // @ts-ignore
-import KebabMenu from "./KebabMenu";
 
 interface CaseFileProps {
 	filesForUpload: FileForUploadObj[];

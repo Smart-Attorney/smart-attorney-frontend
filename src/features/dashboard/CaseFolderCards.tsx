@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FileSnapshot, MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stock";
+import CardContainer from "../../components/Card/CardContainer";
 import CardGrid from "../../layouts/CardGrid";
 import { Format } from "../../utils/format";
 import type { DashboardFolderCardObj } from "../../utils/types";
@@ -102,12 +103,11 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		<CardGrid>
 			{caseFolders?.map((caseFolder) => {
 				return (
-					// Card Container
-					<div
-						className="w-[272px] h-[256px] p-4 bg-white cursor-pointer rounded-2xl"
+					<CardContainer
+						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
-						onClick={(event) => handleViewCaseFolder(event, caseFolder.id)}
+						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
 						{/* Kebab Menu */}
 						<div id="kebab-menu" className="relative left-[226px] bottom-1 max-w-fit z-10">
@@ -183,7 +183,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 								</p>
 							</div>
 						</div>
-					</div>
+					</CardContainer>
 				);
 			})}
 		</CardGrid>

@@ -10,6 +10,7 @@
 - [ ] preview of most recently opened document on folder
 - [ ] user can create sub-folders within case folders
 
+<hr />
 
 ### nitpicks
 - [x] add delete confirmation box
@@ -48,21 +49,14 @@
 - [ ] create edit modal so user can change name of case and files
 - [ ] use svgs instead of png/jpg
 
-look into:
-case folder status
-deadline of individdual files
-case folder deadline reflects files inside
-
+<hr />
 
 ### temporary workarounds
 - using nanoID to create unique IDs for new case folders
 - using local storage as makeshift database
 - sorting is done faux-server-side (may change to client-side in the future once true backend is implemented)
 
-
-### inquiries
- - [ ] how to denote a open or closed case?
-
+<hr />
 
 ### references
 React Project Structure
@@ -80,9 +74,10 @@ Unicode Characters
 Check Production or Development at Runtime
  - https://stackoverflow.com/questions/35469836/detecting-production-vs-development-react-at-runtime
 
-
+<hr />
 
 ### notes
+```
 fetch('/user')
   .then(res => {
     if (!res.ok) {
@@ -99,3 +94,4 @@ fetch('/user')
   .catch(err => {
     // handle err
   })
+```

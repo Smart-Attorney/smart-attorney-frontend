@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import CardContainer from "../../components/Card/CardContainer";
 import CardGrid from "../../layouts/CardGrid";
 import { CaseFileObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
@@ -43,7 +44,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		<CardGrid>
 			{files?.map((file) => {
 				return (
-					<div className="w-[272px] h-[256px] p-4 bg-white rounded-2xl " key={file.id} id={file.id}>
+					<CardContainer key={file.id} id={file.id}>
 						{/* Kebab Menu */}
 						<div className="relative left-[226px] bottom-1 max-w-fit z-10">
 							<KebabMenu
@@ -80,7 +81,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 							{/* Blank Space for Formatting */}
 							<div className="h-6 w-60"></div>
 						</div>
-					</div>
+					</CardContainer>
 				);
 			})}
 		</CardGrid>
