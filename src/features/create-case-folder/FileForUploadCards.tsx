@@ -9,7 +9,7 @@ interface CaseFileProps {
 }
 
 function FileForUploadCards(props: CaseFileProps) {
-	const { filesForUpload, removeFromFilesForUploadArray: removeFileFromFilesForUploadArray } = props;
+	const { filesForUpload, removeFromFilesForUploadArray } = props;
 
 	return (
 		<CardGrid>
@@ -20,7 +20,7 @@ function FileForUploadCards(props: CaseFileProps) {
 				// 	</div>
 				// 	<p className="mb-8 w-fit">{file.data.name}</p>
 				// </div>
-				<RenderDocument file={file} removeFileFromFilesForUploadArray={removeFileFromFilesForUploadArray} />
+				<RenderDocument file={file} removeFromFilesForUploadArray={removeFromFilesForUploadArray} />
 			))}
 		</CardGrid>
 	);

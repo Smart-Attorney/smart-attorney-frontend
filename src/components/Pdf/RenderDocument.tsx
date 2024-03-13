@@ -11,21 +11,19 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/l
 
 interface RenderDocumentProps {
 	file: FileForUploadObj;
-	removeFileFromFilesForUploadArray: (id: string) => void;
+	removeFromFilesForUploadArray: (id: string) => void;
 }
 
-const RenderDocument = ({ file, removeFileFromFilesForUploadArray }: RenderDocumentProps) => {
+const RenderDocument = ({ file, removeFromFilesForUploadArray }: RenderDocumentProps) => {
 	return file.data ? (
 		<CardContainer key={file.id} id={file.id}>
 			<div className="relative left-[230px] bottom-1 max-w-fit z-[5]">
-				<KebabMenu deleteFile={() => removeFileFromFilesForUploadArray(file.id)} />
+				<KebabMenu deleteFile={() => removeFromFilesForUploadArray(file.id)} />
 			</div>
 
 			<div className="relative w-full h-full bottom-7">
 				<Document className="flex flex-col items-center gap-4" file={file.data} noData="">
-					<p className="self-start text-xs px-2.5 py-1 text-black rounded-full bg-[#DEEDFF] w-fit">
-						Ready for upload
-					</p>
+					<p className="self-start text-xs px-2.5 py-1 text-black rounded-full bg-[#DEEDFF] w-fit">Ready for upload</p>
 					<div className="w-full h-fit">
 						<p className="text-sm line-clamp-2">{file.data.name}</p>
 					</div>
