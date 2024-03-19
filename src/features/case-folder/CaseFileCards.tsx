@@ -28,6 +28,10 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		}
 	};
 
+	const handleSetFileDeadline = async (fileId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+		console.log(fileId, event.target.value);
+	};
+
 	const handleDeleteFile = async (fileId: string) => {
 		try {
 			const response = await deleteCaseFileById(folderId!, fileId);
@@ -50,6 +54,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 							<KebabMenu
 								fileName={file.name}
 								updateFileName={handleUpdateFileName(file.id)}
+								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
 								deleteFile={() => handleDeleteFile(file.id)}
 							/>
 						</div>
