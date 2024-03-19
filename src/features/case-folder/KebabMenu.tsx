@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
+import { CloseIcon } from "../../assets/misc";
 
 interface KebabMenuProps {
 	fileName: string;
 	updateFileName: (newFileName: string) => void;
+	setDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	deleteFile: () => void;
 }
 
-function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
+function KebabMenu({ fileName, updateFileName, setDeadline, deleteFile }: KebabMenuProps) {
 	const name = useRef<string>("");
 	const extension = useRef<string>("");
 
 	const [menuIsOpen, setMenuIsOpen] = useState(false);
-	const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+	const [deadlineModalOpen, setDeadlineModalOpen] = useState(false);
+	const [editNameModalIsOpen, setEditNameModalIsOpen] = useState(false);
 	const [deleteAlertIsOpen, setDeleteAlertIsOpen] = useState(false);
 
 	useEffect(() => {
@@ -22,8 +25,10 @@ function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
 
 	const toggleMenu = (): void => setMenuIsOpen((prev) => !prev);
 
+	const toggleDeadlineModal = (): void => setDeadlineModalOpen((prev) => !prev);
+
 	const toggleEditModal = (): void => {
-		setEditModalIsOpen((prev) => !prev);
+		setEditNameModalIsOpen((prev) => !prev);
 	};
 
 	const toggleDeleteAlert = (): void => {
@@ -31,7 +36,8 @@ function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
 	};
 
 	const closeMenu = (): void => setMenuIsOpen(false);
-	const closeEditModal = (): void => setEditModalIsOpen(false);
+	const closeDeadlineModal = (): void => setDeadlineModalOpen(false);
+	const closeEditModal = (): void => setEditNameModalIsOpen(false);
 	const closeDeleteAlert = (): void => setDeleteAlertIsOpen(false);
 
 	const handleSaveButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,17 +69,20 @@ function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
 				onMouseLeave={closeMenu}
 			>
 				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleEditModal}>
-					Edit
+					Edit Name
+				</li>
+				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDeadlineModal}>
+					Set Deadline
 				</li>
 				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDeleteAlert}>
 					Delete
 				</li>
 			</ul>
 
-			{/* Edit Modal */}
+			{/* Edit Name Modal */}
 			<div
 				className="absolute right-[-6px] top-[80px] z-[5] border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
-				style={{ display: editModalIsOpen ? "block" : "none" }}
+				style={{ display: editNameModalIsOpen ? "block" : "none" }}
 			>
 				<div className="flex flex-col items-center gap-3">
 					<h3 className="text-lg font-semibold w-max">Edit Document Name</h3>
@@ -90,6 +99,27 @@ function KebabMenu({ fileName, updateFileName, deleteFile }: KebabMenuProps) {
 							Cancel
 						</button>
 					</div>
+				</div>
+			</div>
+
+			{/* Date Picker */}
+			<div
+				className="absolute right-[-6px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
+				style={{ display: deadlineModalOpen ? "block" : "none" }}
+			>
+				<label htmlFor="date-picker">Set Deadline:</label>
+				<div className="flex flex-row items-center w-full gap-4">
+					<input
+						className="left-[5px] rounded-sm cursor-pointer w-full px-2 border border-black"
+						id="date-picker"
+						type="date"
+						onChange={setDeadline}
+					/>
+					<img
+						className="w-6 h-6 rounded-full cursor-pointer hover:bg-gray-400"
+						src={CloseIcon}
+						onClick={closeDeadlineModal}
+					/>
 				</div>
 			</div>
 

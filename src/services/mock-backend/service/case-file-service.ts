@@ -22,6 +22,7 @@ export class CaseFileService {
 						createdDate: newCaseFile.created_date,
 						lastOpenedDate: newCaseFile.last_opened_date,
 						status: newCaseFile.status,
+						deadline: newCaseFile.deadline,
 						url: newCaseFile.url,
 					});
 				}
@@ -59,6 +60,17 @@ export class CaseFileService {
 		const updatedFileName = await CaseFileDAO.updateFileName(folderId, fileId, newName);
 		if (updatedFileName !== null) {
 			return newName;
+		}
+		return null;
+	}
+
+	static async updateFileDeadline(folderId: string, fileId: string, newDeadline: number) {
+		if (!folderId || !fileId || !newDeadline) {
+			return null;
+		}
+		const updatedFileDeadline = await CaseFileDAO.updateFileDeadline(folderId, fileId, newDeadline);
+		if (updatedFileDeadline !== null) {
+			return newDeadline;
 		}
 		return null;
 	}

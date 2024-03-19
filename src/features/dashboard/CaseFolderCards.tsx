@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FileSnapshot, MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stock";
+import CardContainer from "../../components/Card/CardContainer";
 import CardGrid from "../../layouts/CardGrid";
 import { Format } from "../../utils/format";
 import type { DashboardFolderCardObj } from "../../utils/types";
@@ -102,18 +103,19 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		<CardGrid>
 			{caseFolders?.map((caseFolder) => {
 				return (
-					// Card Container
-					<div
-						className="w-[272px] h-[256px] p-4 bg-white cursor-pointer rounded-2xl"
+					<CardContainer
+						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
-						onClick={(event) => handleViewCaseFolder(event, caseFolder.id)}
+						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
 						{/* Kebab Menu */}
-						<div id="kebab-menu" className="relative left-[226px] bottom-1 max-w-fit z-10">
+						<div id="kebab-menu" className="relative left-[230px] bottom-1 max-w-fit z-10">
 							<KebabMenu
 								addDeadline={(event) => {
-									event.stopPropagation(), handleUpdateFolderDeadline(caseFolder.id, event);
+									// commenting this out to see if it breaks anything
+									// event.stopPropagation(),
+									handleUpdateFolderDeadline(caseFolder.id, event);
 								}}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
@@ -123,9 +125,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						{/* Card Contents */}
 						<div id="enable-nav" className="relative flex flex-col justify-between w-full h-full bottom-7">
 							{/* Contains the labels, deadline, name */}
-							<div id="enable-nav" className="flex flex-col w-56 h-[72px] justify-between">
+							<div id="enable-nav" className="flex flex-col w-[230px] h-[72px] justify-between">
 								{/* Contains the deadline, labels */}
-								<div id="enable-nav" className="flex flex-row flex-wrap gap-x-2 gap-y-1">
+								<div id="enable-nav" className="flex flex-row flex-wrap gap-x-3 gap-y-1">
 									{/* Case Deadline */}
 									{caseFolder.deadline !== 0 && (
 										<div id="enable-nav" className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
@@ -140,7 +142,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 									{caseFolder.labels.map((label) => (
 										<div key={label.id} id={label.id}>
 											<p
-												className="min-w-max text-xs px-2.5 py-1 text-black bg-[#FFCC67] rounded-full cursor-pointer"
+												className="w-fit text-xs px-2.5 py-1 text-black bg-[#FFCC67] rounded-full cursor-pointer"
 												id={caseFolder.id}
 												onClick={handleDeleteFolderLabel}
 											>
@@ -151,7 +153,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 								</div>
 
 								{/* Case Folder Name */}
-								<p id="enable-nav" className="text-sm cursor-pointer w-fit hover:text-blue-500">
+								<p id="enable-nav" className="text-sm cursor-pointer line-clamp-1 w-fit hover:text-blue-500">
 									{caseFolder.name}
 								</p>
 							</div>
@@ -183,7 +185,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 								</p>
 							</div>
 						</div>
-					</div>
+					</CardContainer>
 				);
 			})}
 		</CardGrid>

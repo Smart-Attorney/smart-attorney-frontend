@@ -23,7 +23,8 @@ export interface CaseFiles {
 	file_name: string;
 	created_date: number;
 	last_opened_date: number;
-	status: string;
+  status: string;
+  deadline: number; // as unix time
 	url: string;
 	case_folder_id_fk: string;
 }
