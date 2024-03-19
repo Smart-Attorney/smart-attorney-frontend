@@ -44,7 +44,8 @@ export interface CaseFileObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: string;
+  status: string;
+  deadline: number;
 	url: string;
 }
 

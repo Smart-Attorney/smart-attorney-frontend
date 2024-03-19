@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import CardContainer from "../../components/Card/CardContainer";
 import CardGrid from "../../layouts/CardGrid";
+import { Format } from "../../utils/format";
 import { CaseFileObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
+import { updateDeadline } from "./api/update-case-file-deadline";
 import { updateCaseFileName } from "./api/update-case-file-name";
 
 interface CaseFileCardsProps {
@@ -29,7 +31,17 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	};
 
 	const handleSetFileDeadline = async (fileId: string, event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(fileId, event.target.value);
+		const { value } = event.target;
+		const deadlineInUnixTime = Date.parse(value);
+		try {
+			const response = await updateDeadline(folderId!, fileId, deadlineInUnixTime);
+			if (response.ok) {
+				const data: CaseFileObj[] = await response.json();
+				updateCaseFiles(data);
+			}
+		} catch (error) {
+			alert(error);
+		}
 	};
 
 	const handleDeleteFile = async (fileId: string) => {
@@ -40,7 +52,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 				updateCaseFiles(data);
 			}
 		} catch (error) {
-			console.error("Error deleting file:", error);
+			alert(error);
 		}
 	};
 
@@ -63,9 +75,18 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 						<div className="relative flex flex-col justify-between w-full h-full bottom-7">
 							{/* Status and Name */}
 							<div className="flex flex-col w-[230px] h-[72px] justify-between">
-								{/* File Status */}
-								<p className="w-fit text-black px-2.5 py-1 rounded-full bg-[#53EF0A80] text-xs">Submitted</p>
-								{/* <h1 className="w-fit">{file.status}</h1> */}
+								{/* Contains Status and Deadline */}
+								<div className="flex flex-row flex-wrap gap-x-3 gap-y-1">
+									{/* File Status */}
+									<div className="min-w-max bg-[#53EF0A80] rounded-full px-2.5 py-1">
+										<p className="text-xs">Submitted</p>
+									</div>
+									{/* <h1 className="w-fit">{file.status}</h1> */}
+									{/* File Deadline */}
+									<div className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
+										<p className="text-xs">Deadline: {Format.dateForCardDisplay(file.deadline)}</p>
+									</div>
+								</div>
 
 								{/* File Name */}
 								<p

@@ -112,8 +112,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						{/* Kebab Menu */}
 						<div id="kebab-menu" className="relative left-[230px] bottom-1 max-w-fit z-10">
 							<KebabMenu
-                addDeadline={(event) => {
-                  // commenting this out to see if it breaks anything
+								addDeadline={(event) => {
+									// commenting this out to see if it breaks anything
 									// event.stopPropagation(),
 									handleUpdateFolderDeadline(caseFolder.id, event);
 								}}

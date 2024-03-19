@@ -17,6 +17,7 @@ export class CaseFileDAO extends DAO {
 					createdDate: caseFileArray[i].created_date,
 					lastOpenedDate: caseFileArray[i].last_opened_date,
 					status: caseFileArray[i].status,
+					deadline: caseFileArray[i].deadline,
 					url: caseFileArray[i].url,
 				});
 			}
@@ -34,6 +35,7 @@ export class CaseFileDAO extends DAO {
 					createdDate: caseFileArray[i].created_date,
 					lastOpenedDate: caseFileArray[i].last_opened_date,
 					status: caseFileArray[i].status,
+					deadline: caseFileArray[i].deadline,
 					url: caseFileArray[i].url,
 				};
 				return caseFile;
@@ -50,6 +52,7 @@ export class CaseFileDAO extends DAO {
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
 			status: "",
+			deadline: 0,
 			url: fileUrl,
 			case_folder_id_fk: caseFolderId,
 		};
@@ -61,18 +64,30 @@ export class CaseFileDAO extends DAO {
 		return null;
 	}
 
-  static async updateFileName(folderId: string, fileId: string, newName: string) {
-    
-    
+	static async updateFileName(folderId: string, fileId: string, newName: string) {
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0; i < caseFileArray.length; i++) {
-      if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
 				caseFileArray[i].file_name = newName;
 			}
 		}
 		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
 		if (success) {
 			return newName;
+		}
+		return null;
+	}
+
+	static async updateFileDeadline(folderId: string, fileId: string, newDeadline: number) {
+		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0; i < caseFileArray.length; i++) {
+			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+				caseFileArray[i].deadline = newDeadline;
+			}
+		}
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		if (success) {
+			return newDeadline;
 		}
 		return null;
 	}
