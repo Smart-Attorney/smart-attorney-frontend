@@ -2,12 +2,13 @@ import { useState } from "react";
 import { CloseIcon } from "../../assets/misc";
 
 interface KebabMenuProps {
+	id: string;
 	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	addLabel: (event: React.FormEvent<HTMLFormElement>) => void;
 	deleteFolder: () => void;
 }
 
-function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
+function KebabMenu({ id, addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
@@ -41,7 +42,7 @@ function KebabMenu({ addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 	return (
 		<>
 			{/* Kebab Menu Icon */}
-			<div id="kebab-menu" className="p-1 cursor-pointer w-fit " onClick={toggleMenu}>
+			<div id={id} className="p-1 cursor-pointer w-fit " onClick={toggleMenu}>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>
 				<span className="block w-1 h-1 bg-[#9C9DA4] m-[2px] rounded-full"></span>

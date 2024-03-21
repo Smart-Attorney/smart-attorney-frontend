@@ -1,6 +1,7 @@
 import { Document, Page } from "react-pdf";
 import { FileForUploadObj } from "../../utils/types";
 import CardContainer from "../Card/CardContainer";
+import KebabMenuContainer from "../Card/KebabMenuContainer";
 import KebabMenu from "./KebabMenu";
 
 import * as pdfjs from "pdfjs-dist";
@@ -17,9 +18,9 @@ interface RenderDocumentProps {
 const RenderDocument = ({ file, removeFromFilesForUploadArray }: RenderDocumentProps) => {
 	return file.data ? (
 		<CardContainer key={file.id} id={file.id}>
-			<div className="relative left-[230px] bottom-1 max-w-fit z-[5]">
+			<KebabMenuContainer>
 				<KebabMenu deleteFile={() => removeFromFilesForUploadArray(file.id)} />
-			</div>
+			</KebabMenuContainer>
 
 			<div className="relative w-full h-full bottom-7">
 				<Document className="flex flex-col items-center gap-4" file={file.data} noData="">

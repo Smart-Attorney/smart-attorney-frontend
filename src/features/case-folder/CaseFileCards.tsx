@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import CardContainer from "../../components/Card/CardContainer";
+import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import CardGrid from "../../layouts/CardGrid";
 import { Format } from "../../utils/format";
 import { CaseFileObj } from "../../utils/types";
@@ -62,14 +63,14 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 				return (
 					<CardContainer key={file.id} id={file.id}>
 						{/* Kebab Menu */}
-						<div className="relative left-[230px] bottom-1 max-w-fit z-10">
+						<KebabMenuContainer>
 							<KebabMenu
 								fileName={file.name}
 								updateFileName={handleUpdateFileName(file.id)}
 								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
 								deleteFile={() => handleDeleteFile(file.id)}
 							/>
-						</div>
+						</KebabMenuContainer>
 
 						{/* Card Contents */}
 						<div className="relative flex flex-col justify-between w-full h-full bottom-7">

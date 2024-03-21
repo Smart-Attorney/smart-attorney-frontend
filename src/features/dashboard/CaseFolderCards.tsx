@@ -1,8 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { FileSnapshot, MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stock";
+import { FileSnapshot } from "../../assets/smart-attorney-figma/stock";
+import CardBody from "../../components/Card/CardBody";
 import CardContainer from "../../components/Card/CardContainer";
+import CardFooter from "../../components/Card/CardFooter";
+import CardHeader from "../../components/Card/CardHeader";
+import CardImage from "../../components/Card/CardImage";
+import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { Format } from "../../utils/format";
 import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
@@ -87,6 +91,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
 		const { id } = event.target as HTMLElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
+
 		// once case edit modal is created, can scrap this awful switch case tree
 		// and remove all instances of "enable-nav"
 		switch (id) {
@@ -109,9 +114,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						id={caseFolder.id}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
-						{/* Kebab Menu */}
-						<div id="kebab-menu" className="relative left-[230px] bottom-1 max-w-fit z-10">
+						<KebabMenuContainer>
 							<KebabMenu
+								id="kebab-menu"
 								addDeadline={(event) => {
 									// commenting this out to see if it breaks anything
 									// event.stopPropagation(),
@@ -120,71 +125,16 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
-						</div>
+						</KebabMenuContainer>
 
-						{/* Card Contents */}
-						<div id="enable-nav" className="relative flex flex-col justify-between w-full h-full bottom-7">
-							{/* Contains the labels, deadline, name */}
-							<div id="enable-nav" className="flex flex-col w-[230px] h-[72px] justify-between">
-								{/* Contains the deadline, labels */}
-								<div id="enable-nav" className="flex flex-row flex-wrap gap-x-3 gap-y-1">
-									{/* Case Deadline */}
-									{caseFolder.deadline !== 0 && (
-										<div id="enable-nav" className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
-											<p id="enable-nav" className="text-xs">
-												Deadline: {Format.dateForCardDisplay(caseFolder.deadline)}
-											</p>
-											{/* TODO: what is the case folder status for */}
-										</div>
-									)}
+						<CardBody id="enable-nav">
+							<CardHeader id="enable-nav" caseFolder={caseFolder} deleteLabel={handleDeleteFolderLabel} />
 
-									{/* Case Folder Labels */}
-									{caseFolder.labels.map((label) => (
-										<div key={label.id} id={label.id}>
-											<p
-												className="w-fit text-xs px-2.5 py-1 text-black bg-[#FFCC67] rounded-full cursor-pointer"
-												id={caseFolder.id}
-												onClick={handleDeleteFolderLabel}
-											>
-												{label.name}
-											</p>
-										</div>
-									))}
-								</div>
+							<CardImage id="enable-nav" imgSrc={FileSnapshot} />
 
-								{/* Case Folder Name */}
-								<p id="enable-nav" className="text-sm cursor-pointer line-clamp-1 w-fit hover:text-blue-500">
-									{caseFolder.name}
-								</p>
-							</div>
-
-							{/* Document Image */}
-							<div id="enable-nav" className="w-60 h-[100px] rounded-lg">
-								<img id="enable-nav" src={FileSnapshot} />
-							</div>
-
-							{/* Comments, files, assigned to */}
-							<div id="enable-nav" className="flex flex-row items-center justify-between h-6 w-60">
-								<div id="enable-nav" className="flex flex-row gap-3">
-									<div id="enable-nav" className="flex flex-row items-center justify-center gap-1">
-										<img id="enable-nav" className="h-[14px] w-[14px]" src={MessageSquare} />
-										<p id="enable-nav" className="text-[#5A5A5A] text-xs">
-											12
-										</p>
-									</div>
-									<div id="enable-nav" className="flex flex-row items-center justify-center gap-0.5">
-										<img id="enable-nav" className="h-[14px] w-[14px]" src={Paperclip} />
-										<p id="enable-nav" className="text-[#5A5A5A] text-xs">
-											4
-										</p>
-									</div>
-								</div>
-
-								<p id="enable-nav" className="text-xs text-[#5A5A5A] mr-11">
-									Assigned to
-								</p>
-							</div>
-						</div>
+							{/* Comment count, File count, Assigned to whom*/}
+							<CardFooter id="enable-nav" hasFooter={true} />
+						</CardBody>
 					</CardContainer>
 				);
 			})}
