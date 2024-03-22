@@ -82,7 +82,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 						<CardBody>
 							<CardHeaderContainer>
 								<PillLabelContainer>
-									<FileStatus />
+									<FileStatus text="Submitted" />
 									<CardDeadline deadline={file.deadline} />
 								</PillLabelContainer>
 
