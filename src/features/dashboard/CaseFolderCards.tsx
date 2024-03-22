@@ -94,18 +94,17 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-  const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
-    console.log(event);
-    
-		const { id } = event.target as HTMLDivElement;
+	// to identify which parts of the card allows navigation when clicked
+	const allowNavigateString = "allow-nav";
+	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
+		const { ariaLabel } = event.target as HTMLElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
-
 		// once case edit modal is created, can scrap this awful switch case tree
-		// and remove all instances of "enable-nav"
-		switch (id) {
+		// and remove all instances of "allow-nav"
+		switch (ariaLabel) {
 			case folderId:
 				return viewFile();
-			case "enable-nav":
+			case allowNavigateString:
 				return viewFile();
 			default:
 				return;
@@ -120,6 +119,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
+						navLabel={allowNavigateString}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
 						<KebabMenuContainer>
@@ -135,23 +135,23 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 							/>
 						</KebabMenuContainer>
 
-						<CardBody id="enable-nav">
-							<CardHeaderContainer id="enable-nav">
-								<PillLabelContainer id="enable-nav">
-									<CardDeadline id="enable-nav" deadline={caseFolder.deadline} />
+						<CardBody navLabel={allowNavigateString}>
+							<CardHeaderContainer navLabel={allowNavigateString}>
+								<PillLabelContainer navLabel={allowNavigateString}>
+									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.deadline} />
 									<CardLabels
-										id="enable-nav"
+										navLabel={allowNavigateString}
 										labels={caseFolder.labels}
 										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
 									/>
 								</PillLabelContainer>
-								<CardName id="enable-nav" name={caseFolder.name} />
+								<CardName navLabel={allowNavigateString} name={caseFolder.name} />
 							</CardHeaderContainer>
 
-							<CardImage id="enable-nav" imgSrc={FileSnapshot} />
+							<CardImage navLabel={allowNavigateString} imgSrc={FileSnapshot} />
 
 							{/* Comment count, File count, Assigned to whom*/}
-							<CardFooter id="enable-nav" hasFooter={true} />
+							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
 						</CardBody>
 					</CardContainer>
 				);

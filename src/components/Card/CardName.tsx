@@ -1,12 +1,18 @@
 interface CardNameProps {
 	id?: string;
-	fileId?: string;
+	navLabel?: string;
+	viewFile?: (event: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => void;
 	name: string;
 }
 
-function CardName({ id, name }: CardNameProps) {
+function CardName({ id, navLabel, viewFile, name }: CardNameProps) {
 	return (
-		<p id={id} className="mb-4 text-sm cursor-pointer line-clamp-1 w-fit hover:text-blue-500">
+		<p
+			id={id}
+			aria-label={navLabel}
+			className="mb-4 text-sm cursor-pointer line-clamp-1 w-fit hover:text-blue-500"
+			onClick={viewFile}
+		>
 			{name}
 		</p>
 	);

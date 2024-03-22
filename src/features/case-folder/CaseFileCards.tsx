@@ -5,6 +5,8 @@ import CardDeadline from "../../components/Card/CardDeadline";
 import CardFooter from "../../components/Card/CardFooter";
 import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
 import CardImage from "../../components/Card/CardImage";
+import CardName from "../../components/Card/CardName";
+import FileStatus from "../../components/Card/FileStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
@@ -80,24 +82,14 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 						<CardBody>
 							<CardHeaderContainer>
 								<PillLabelContainer>
-									{/* File Status */}
-									<div className="min-w-max bg-[#53EF0A80] rounded-full px-2.5 py-1">
-										<p className="text-xs">Submitted</p>
-									</div>
+									<FileStatus />
 									<CardDeadline deadline={file.deadline} />
 								</PillLabelContainer>
 
-								{/* File Name */}
-								<p
-									className="mb-4 text-sm cursor-pointer w-fit line-clamp-2 hover:text-blue-500"
-									id={file.id}
-									onClick={onClick}
-								>
-									{file.name}
-								</p>
+								<CardName id={file.id} name={file.name} viewFile={onClick} />
 							</CardHeaderContainer>
 
-							<CardImage imgSrc={""} fileId={file.id} viewFile={onClick} />
+							<CardImage imgSrc={""} id={file.id} viewFile={onClick} />
 
 							<CardFooter hasFooter={false} />
 						</CardBody>

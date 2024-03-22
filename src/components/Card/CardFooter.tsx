@@ -2,29 +2,30 @@ import { MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stoc
 
 interface CardFooterProps {
 	id?: string;
+	navLabel?: string;
 	hasFooter: boolean;
 }
 
-function CardFooter({ id, hasFooter }: CardFooterProps) {
+function CardFooter({ id, navLabel, hasFooter }: CardFooterProps) {
 	return (
-		<div id={id} className="flex flex-row items-center justify-between h-6 w-60">
+		<div id={id} aria-label={navLabel} className="flex flex-row items-center justify-between h-6 w-60">
 			{hasFooter && (
 				<>
-					<div id="enable-nav" className="flex flex-row gap-3">
-						<div id="enable-nav" className="flex flex-row items-center justify-center gap-1">
-							<img id="enable-nav" className="h-[14px] w-[14px]" src={MessageSquare} />
-							<p id="enable-nav" className="text-[#5A5A5A] text-xs">
+					<div aria-label={navLabel} className="flex flex-row gap-3">
+						<div aria-label={navLabel} className="flex flex-row items-center justify-center gap-1">
+							<img aria-label={navLabel} className="h-[14px] w-[14px]" src={MessageSquare} />
+							<p aria-label={navLabel} className="text-[#5A5A5A] text-xs">
 								12
 							</p>
 						</div>
-						<div id="enable-nav" className="flex flex-row items-center justify-center gap-0.5">
-							<img id="enable-nav" className="h-[14px] w-[14px]" src={Paperclip} />
-							<p id="enable-nav" className="text-[#5A5A5A] text-xs">
+						<div aria-label={navLabel} className="flex flex-row items-center justify-center gap-0.5">
+							<img aria-label={navLabel} className="h-[14px] w-[14px]" src={Paperclip} />
+							<p aria-label={navLabel} className="text-[#5A5A5A] text-xs">
 								4
 							</p>
 						</div>
 					</div>
-					<p id="enable-nav" className="text-xs text-[#5A5A5A] mr-11">
+					<p aria-label={navLabel} className="text-xs text-[#5A5A5A] mr-11">
 						Assigned to
 					</p>
 				</>
