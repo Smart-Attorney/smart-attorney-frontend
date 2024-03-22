@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
 import CardBody from "../../components/Card/CardBody";
 import CardContainer from "../../components/Card/CardContainer";
+import CardDeadline from "../../components/Card/CardDeadline";
 import CardFooter from "../../components/Card/CardFooter";
+import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
+import CardImage from "../../components/Card/CardImage";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
+import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { Format } from "../../utils/format";
 import { CaseFileObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
@@ -75,37 +78,26 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 						</KebabMenuContainer>
 
 						<CardBody>
-							{/* Status and Name */}
-							<div className="flex flex-col w-[230px] h-[72px] justify-between">
-								{/* Contains Status and Deadline */}
-								<div className="flex flex-row flex-wrap gap-x-3 gap-y-1">
+							<CardHeaderContainer>
+								<PillLabelContainer>
 									{/* File Status */}
 									<div className="min-w-max bg-[#53EF0A80] rounded-full px-2.5 py-1">
 										<p className="text-xs">Submitted</p>
 									</div>
-									{/* <h1 className="w-fit">{file.status}</h1> */}
-									{/* File Deadline */}
-									<div className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
-										<p className="text-xs">Deadline: {Format.dateForCardDisplay(file.deadline)}</p>
-									</div>
-								</div>
+									<CardDeadline deadline={file.deadline} />
+								</PillLabelContainer>
 
 								{/* File Name */}
 								<p
-									className="text-sm cursor-pointer w-fit line-clamp-2 hover:text-blue-500"
+									className="mb-4 text-sm cursor-pointer w-fit line-clamp-2 hover:text-blue-500"
 									id={file.id}
 									onClick={onClick}
 								>
 									{file.name}
 								</p>
-							</div>
+							</CardHeaderContainer>
 
-							{/* Image */}
-							<div
-								className="w-60 h-[100px] rounded-lg border border-[#EBECF2] bg-slate-200 cursor-pointer"
-								id={file.id}
-								onClick={onClick}
-							></div>
+							<CardImage imgSrc={""} fileId={file.id} viewFile={onClick} />
 
 							<CardFooter hasFooter={false} />
 						</CardBody>

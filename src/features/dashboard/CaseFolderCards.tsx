@@ -94,8 +94,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
-		const { id } = event.target as HTMLElement;
+  const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
+    console.log(event);
+    
+		const { id } = event.target as HTMLDivElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
 
 		// once case edit modal is created, can scrap this awful switch case tree
