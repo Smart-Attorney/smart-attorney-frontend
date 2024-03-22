@@ -2,10 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { FileSnapshot } from "../../assets/smart-attorney-figma/stock";
 import CardBody from "../../components/Card/CardBody";
 import CardContainer from "../../components/Card/CardContainer";
+import CardDeadline from "../../components/Card/CardDeadline";
 import CardFooter from "../../components/Card/CardFooter";
-import CardHeader from "../../components/Card/CardHeader";
+import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
 import CardImage from "../../components/Card/CardImage";
+import CardLabels from "../../components/Card/CardLabels";
+import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
+import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
 import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
@@ -62,9 +66,11 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleDeleteFolderLabel = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
-		const { id: folderId } = event.target as HTMLParagraphElement;
-		const { id: labelId } = (event.target as HTMLDivElement).parentElement!;
+	const handleDeleteFolderLabel = async (
+		folderId: string,
+		event: React.MouseEvent<HTMLParagraphElement>
+	): Promise<void> => {
+		const { id: labelId } = event.target as HTMLParagraphElement;
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
@@ -128,7 +134,17 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						</KebabMenuContainer>
 
 						<CardBody id="enable-nav">
-							<CardHeader id="enable-nav" caseFolder={caseFolder} deleteLabel={handleDeleteFolderLabel} />
+							<CardHeaderContainer id="enable-nav">
+								<PillLabelContainer id="enable-nav">
+									<CardDeadline id="enable-nav" deadline={caseFolder.deadline} />
+									<CardLabels
+										id="enable-nav"
+										labels={caseFolder.labels}
+										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
+									/>
+								</PillLabelContainer>
+								<CardName id="enable-nav" name={caseFolder.name} />
+							</CardHeaderContainer>
 
 							<CardImage id="enable-nav" imgSrc={FileSnapshot} />
 

@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom";
+import CardBody from "../../components/Card/CardBody";
 import CardContainer from "../../components/Card/CardContainer";
+import CardFooter from "../../components/Card/CardFooter";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import CardGrid from "../../layouts/CardGrid";
 import { Format } from "../../utils/format";
@@ -72,8 +74,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 							/>
 						</KebabMenuContainer>
 
-						{/* Card Contents */}
-						<div className="relative flex flex-col justify-between w-full h-full bottom-7">
+						<CardBody>
 							{/* Status and Name */}
 							<div className="flex flex-col w-[230px] h-[72px] justify-between">
 								{/* Contains Status and Deadline */}
@@ -106,9 +107,8 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 								onClick={onClick}
 							></div>
 
-							{/* Blank Space for Formatting */}
-							<div className="h-6 w-60"></div>
-						</div>
+							<CardFooter hasFooter={false} />
+						</CardBody>
 					</CardContainer>
 				);
 			})}
