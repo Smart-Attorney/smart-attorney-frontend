@@ -15,12 +15,14 @@ import SortOption from "./SortOption";
 interface SortBarProps {
 	// value should be wide enough to fit all options on one line with no wrapping
 	initialWidth: number;
+	// value of window width before the sort bar resizes
+	minWidth: number;
 	options: SortOptionsObj[];
 	unsortedArray?: DashboardFolderCardObj[] | null;
 	setSortedArray?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 }
 
-function SortBar({ initialWidth, options, unsortedArray, setSortedArray }: SortBarProps) {
+function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArray }: SortBarProps) {
 	const optionsContainer = useRef<HTMLDivElement>(null);
 
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
@@ -42,10 +44,9 @@ function SortBar({ initialWidth, options, unsortedArray, setSortedArray }: SortB
 	/************************************************************/
 
 	const adjustSortOptionsContainerWidth = () => {
-		const minWindowWidth = 1280;
 		const currentWindowWidth = window.innerWidth;
-		if (currentWindowWidth < minWindowWidth) {
-			setContainerWidth(initialWidth - (minWindowWidth - currentWindowWidth));
+		if (currentWindowWidth < minWidth) {
+			setContainerWidth(initialWidth - (minWidth - currentWindowWidth));
 		} else {
 			setContainerWidth(initialWidth);
 		}

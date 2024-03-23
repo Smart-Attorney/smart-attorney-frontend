@@ -64,7 +64,13 @@ function Dashboard() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar initialWidth={700} options={DASHBOARD} unsortedArray={caseFolders} setSortedArray={setCaseFolders} />
+				<SortBar
+					initialWidth={700}
+					minWidth={1280}
+					options={DASHBOARD}
+					unsortedArray={caseFolders}
+					setSortedArray={setCaseFolders}
+				/>
 
 				{/* New Case Button */}
 				<button
