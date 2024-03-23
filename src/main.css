@@ -71,7 +71,7 @@ body {
 	border-top: 5px solid #ffffff;
 }
 
-/* Scrollbar style for pill labels. */
+/* Scrollbar style for horizontal scroll. */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 0px; /* width of vertical scrollbar */
 	height: 2px; /* width of horizontal scrollbar */

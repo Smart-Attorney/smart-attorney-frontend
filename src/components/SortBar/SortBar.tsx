@@ -54,13 +54,17 @@ function SortBar(props: SortBarProps) {
 		/>
 	));
 
+	// boolean check if sort options wrap
+	// calculate dynamic width of sort options container based on the width resolution of window
+
 	return (
-		<div className="flex flex-row items-start justify-start gap-10 w-fit">
+		<div className="flex flex-row items-start justify-start gap-8 w-fit">
 			<div className="flex flex-row items-center gap-2 mt-0.5 min-w-fit">
 				<img className="w-6 h-5" src={SortIcon} />
 				<p className="text-white">Sort by:</p>
 			</div>
-			<div className="flex flex-row flex-wrap gap-7">{optionElements}</div>
+			{/* w-[300px] overflow-y-hidden overflow-x-auto*/}
+			<div className="flex flex-row flex-wrap gap-x-7 ">{optionElements}</div>
 		</div>
 	);
 }
