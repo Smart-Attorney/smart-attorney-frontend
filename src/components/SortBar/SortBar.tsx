@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { SortOptionsObj } from "../../utils/constants/sort-options";
 import { sortArrayByOption } from "../../utils/sort";
@@ -13,14 +13,61 @@ import SortOption from "./SortOption";
 */
 
 interface SortBarProps {
+	// value should be wide enough to fit all options on one line with no wrapping
+	initialWidth: number;
 	options: SortOptionsObj[];
 	unsortedArray?: DashboardFolderCardObj[] | null;
 	setSortedArray?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 }
 
-function SortBar(props: SortBarProps) {
-	const { options, unsortedArray, setSortedArray } = props;
+function SortBar({ initialWidth, options, unsortedArray, setSortedArray }: SortBarProps) {
+	const optionsContainer = useRef<HTMLDivElement>(null);
+
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
+	const [containerWidth, setContainerWidth] = useState<number>(initialWidth);
+
+	// Stops background scroll when user mouse wheels while hovering sort options
+	useEffect(() => {
+		optionsContainer.current?.addEventListener("wheel", preventDefaultScroll, { passive: false });
+		return () => {
+			optionsContainer.current?.removeEventListener("wheel", preventDefaultScroll);
+		};
+	}, []);
+
+	// applies container width changes on initial load
+	useEffect(() => {
+		adjustSortOptionsContainerWidth();
+	}, []);
+
+	/************************************************************/
+
+	const adjustSortOptionsContainerWidth = () => {
+		const minWindowWidth = 1280;
+		const currentWindowWidth = window.innerWidth;
+		if (currentWindowWidth < minWindowWidth) {
+			setContainerWidth(initialWidth - (minWindowWidth - currentWindowWidth));
+		} else {
+			setContainerWidth(initialWidth);
+		}
+	};
+
+	window.onresize = adjustSortOptionsContainerWidth;
+
+	/************************************************************/
+
+	const preventDefaultScroll = (event: { preventDefault: () => void }) => {
+		event.preventDefault();
+	};
+
+	const handleMouseWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
+		const optionsContainerScrollPosition = optionsContainer.current ? optionsContainer.current?.scrollLeft : 0;
+		optionsContainer.current?.scrollTo({
+			top: 0,
+			left: optionsContainerScrollPosition + event.deltaY,
+		});
+	};
+
+	/************************************************************/
 
 	const handleSortCardsByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id } = event.target as HTMLParagraphElement;
@@ -29,7 +76,6 @@ function SortBar(props: SortBarProps) {
 				id === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 			)
 		);
-
 		if (unsortedArray && setSortedArray) {
 			/* 
         Reason for this shallow copy:
@@ -37,12 +83,12 @@ function SortBar(props: SortBarProps) {
         Source: https://stackoverflow.com/questions/71766944/react-setstate-not-triggering-re-render
       */
 			const newArray = [...unsortedArray];
-
 			const sortedArray = sortArrayByOption(newArray, id) as DashboardFolderCardObj[];
-
 			setSortedArray(sortedArray);
 		}
 	};
+
+	/************************************************************/
 
 	const optionElements = sortOptions.map((option) => (
 		<SortOption
@@ -54,17 +100,21 @@ function SortBar(props: SortBarProps) {
 		/>
 	));
 
-	// boolean check if sort options wrap
-	// calculate dynamic width of sort options container based on the width resolution of window
-
 	return (
 		<div className="flex flex-row items-start justify-start gap-8 w-fit">
 			<div className="flex flex-row items-center gap-2 mt-0.5 min-w-fit">
 				<img className="w-6 h-5" src={SortIcon} />
 				<p className="text-white">Sort by:</p>
 			</div>
-			{/* w-[300px] overflow-y-hidden overflow-x-auto*/}
-			<div className="flex flex-row flex-wrap gap-x-7 ">{optionElements}</div>
+
+			<div
+				style={{ width: `${containerWidth}px` }}
+				className="flex flex-row overflow-x-hidden overflow-y-hidden hover:overflow-x-auto custom-scrollbar gap-x-7"
+				ref={optionsContainer}
+				onWheel={handleMouseWheelScroll}
+			>
+				{optionElements}
+			</div>
 		</div>
 	);
 }

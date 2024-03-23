@@ -153,6 +153,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 							{/* Comment count, File count, Assigned to whom*/}
 							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
 						</CardBody>
+
+						{/* <div className="relative bottom-[268px] right-4 w-5 h-5 ring-inset ring-4 ring-green-500 rounded-full bg-green-500">
+							<p className="text-xs text-center"></p>
+						</div> */}
 					</CardContainer>
 				);
 			})}

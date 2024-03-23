@@ -9,8 +9,6 @@ interface PillLabelContainerProps {
 function PillLabelContainer({ id, navLabel, children }: PillLabelContainerProps) {
 	const pillContainer = useRef<HTMLDivElement>(null);
 
-	// TODO:
-	// extract this into reusable hook
 	// Stops background scroll when user mouse wheels while hovering pill labels
 	useEffect(() => {
 		pillContainer.current?.addEventListener("wheel", preventDefaultScroll, { passive: false });

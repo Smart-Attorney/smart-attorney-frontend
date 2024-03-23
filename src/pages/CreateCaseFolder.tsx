@@ -222,7 +222,7 @@ function CreateCaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={NEW_CASE} />
+				<SortBar initialWidth={450} options={NEW_CASE} />
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
 					<PillButton name="Create" type="button" img={PenPurple} />
