@@ -41,6 +41,13 @@ body {
 		linear-gradient(90deg, #e844e1 5.98%, #ff487c 32.14%, #ffe457 61%, #5f39f9 92.58%) border-box;
 }
 
+/* Highlights currently selected sidebar option. */
+.active-background {
+	border: 2px solid rgb(251, 251, 251);
+	border-radius: 50%;
+	background: linear-gradient(to right, #ff69b4, #1e90ff);
+}
+
 /* Toolip triangle thingy on the left side of the box. */
 .tooltip-arrow-left::before {
 	content: "";
@@ -55,17 +62,26 @@ body {
 	border-right: 6px solid #151515;
 }
 
-/* Sidebar currently selected option. */
-.active-background {
-	border: 2px solid rgb(251, 251, 251);
-	border-radius: 50%;
-	background: linear-gradient(to right, #ff69b4, #1e90ff);
-}
-
+/* Toolip triangle thingy on the bottom side of the box. */
 .arrow-down {
 	width: 0px;
 	height: 0px;
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
 	border-top: 5px solid #ffffff;
+}
+
+/* Scrollbar style for horizontal scroll. */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 0px; /* width of vertical scrollbar */
+	height: 2px; /* width of horizontal scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
 }

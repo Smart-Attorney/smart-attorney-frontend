@@ -1,9 +1,12 @@
-import { Document, Page } from "react-pdf";
 import { FileForUploadObj } from "../../utils/types";
+import CardBody from "../Card/CardBody";
 import CardContainer from "../Card/CardContainer";
+import CardName from "../Card/CardName";
+import KebabMenuContainer from "../Card/KebabMenuContainer";
 import KebabMenu from "./KebabMenu";
 
 import * as pdfjs from "pdfjs-dist";
+import { Document, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
@@ -17,19 +20,20 @@ interface RenderDocumentProps {
 const RenderDocument = ({ file, removeFromFilesForUploadArray }: RenderDocumentProps) => {
 	return file.data ? (
 		<CardContainer key={file.id} id={file.id}>
-			<div className="relative left-[230px] bottom-1 max-w-fit z-[5]">
+			<KebabMenuContainer>
 				<KebabMenu deleteFile={() => removeFromFilesForUploadArray(file.id)} />
-			</div>
+			</KebabMenuContainer>
 
-			<div className="relative w-full h-full bottom-7">
-				<Document className="flex flex-col items-center gap-4" file={file.data} noData="">
-					<p className="self-start text-xs px-2.5 py-1 text-black rounded-full bg-[#DEEDFF] w-fit">Ready for upload</p>
-					<div className="w-full h-fit">
-						<p className="text-sm line-clamp-2">{file.data.name}</p>
+			<CardBody>
+				<Document className="flex flex-col gap-4" file={file.data} noData="">
+					{/* File status pill display */}
+					<div className="w-fit bg-[#DEEDFF] rounded-full px-2.5 py-1">
+						<p className="text-xs">Ready for upload</p>
 					</div>
-					<Page className="border border-black rounded-sm" pageNumber={1} height={125} />
+					<CardName name={file.data.name} />
+					<Page className="self-center border border-black rounded-sm" pageNumber={1} height={125} />
 				</Document>
-			</div>
+			</CardBody>
 		</CardContainer>
 	) : (
 		<></>

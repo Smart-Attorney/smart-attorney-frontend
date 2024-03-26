@@ -260,9 +260,9 @@ function CaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={CASE_FOLDER} />
+				<SortBar initialWidth={450} minWidth={1111} options={CASE_FOLDER} />
 
-				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={BtnIcon.PenPurple} />
 					<PillButton name="Upload" type="button" img={BtnIcon.UploadPurple} onClick={toggleUploadModal} />
 					<PillButton name="Translate" type="button" img={BtnIcon.SphereLatticePurple} />
@@ -272,6 +272,7 @@ function CaseFolder() {
 						img={BtnIcon.LightBulbPurple}
 						onClick={toggleGenerateModal}
 					/>
+
 					{/* <PillButton name="Save" type="button" img={BtnIcon.SavePurple} onClick={handleSaveChanges} /> */}
 				</div>
 			</SortBarWithButtons>

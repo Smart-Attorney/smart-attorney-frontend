@@ -222,13 +222,14 @@ function CreateCaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={NEW_CASE} />
+				<SortBar initialWidth={450} minWidth={1111} options={NEW_CASE} />
 
-				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={PenPurple} />
 					<PillButton name="Upload" type="button" img={UploadPurple} onClick={handleOpenFileBrowser} />
 					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
 					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} />
+
 					{/* <PillButton name="Create Case" type="button" img={FolderPurple} onClick={createNewCase} /> */}
 				</div>
 			</SortBarWithButtons>

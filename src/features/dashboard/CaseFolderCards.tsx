@@ -1,8 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { FileSnapshot, MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stock";
+import { FileSnapshot } from "../../assets/smart-attorney-figma/stock";
+import CardBody from "../../components/Card/CardBody";
 import CardContainer from "../../components/Card/CardContainer";
+import CardDeadline from "../../components/Card/CardDeadline";
+import CardFooter from "../../components/Card/CardFooter";
+import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
+import CardImage from "../../components/Card/CardImage";
+import CardLabels from "../../components/Card/CardLabels";
+import CardName from "../../components/Card/CardName";
+import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
+import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { Format } from "../../utils/format";
 import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
@@ -58,9 +66,11 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleDeleteFolderLabel = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
-		const { id: folderId } = event.target as HTMLParagraphElement;
-		const { id: labelId } = (event.target as HTMLDivElement).parentElement!;
+	const handleDeleteFolderLabel = async (
+		folderId: string,
+		event: React.MouseEvent<HTMLParagraphElement>
+	): Promise<void> => {
+		const { id: labelId } = event.target as HTMLParagraphElement;
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
@@ -84,15 +94,17 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
+	// to identify which parts of the card allows navigation when clicked
+	const allowNavigateString = "allow-nav";
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
-		const { id } = event.target as HTMLElement;
+		const { ariaLabel } = event.target as HTMLElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
 		// once case edit modal is created, can scrap this awful switch case tree
-		// and remove all instances of "enable-nav"
-		switch (id) {
+		// and remove all instances of "allow-nav"
+		switch (ariaLabel) {
 			case folderId:
 				return viewFile();
-			case "enable-nav":
+			case allowNavigateString:
 				return viewFile();
 			default:
 				return;
@@ -107,11 +119,12 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
+						navLabel={allowNavigateString}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
-						{/* Kebab Menu */}
-						<div id="kebab-menu" className="relative left-[230px] bottom-1 max-w-fit z-10">
+						<KebabMenuContainer>
 							<KebabMenu
+								id="kebab-menu"
 								addDeadline={(event) => {
 									// commenting this out to see if it breaks anything
 									// event.stopPropagation(),
@@ -120,71 +133,30 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
-						</div>
+						</KebabMenuContainer>
 
-						{/* Card Contents */}
-						<div id="enable-nav" className="relative flex flex-col justify-between w-full h-full bottom-7">
-							{/* Contains the labels, deadline, name */}
-							<div id="enable-nav" className="flex flex-col w-[230px] h-[72px] justify-between">
-								{/* Contains the deadline, labels */}
-								<div id="enable-nav" className="flex flex-row flex-wrap gap-x-3 gap-y-1">
-									{/* Case Deadline */}
-									{caseFolder.deadline !== 0 && (
-										<div id="enable-nav" className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
-											<p id="enable-nav" className="text-xs">
-												Deadline: {Format.dateForCardDisplay(caseFolder.deadline)}
-											</p>
-											{/* TODO: what is the case folder status for */}
-										</div>
-									)}
+						<CardBody navLabel={allowNavigateString}>
+							<CardHeaderContainer navLabel={allowNavigateString}>
+								<PillLabelContainer navLabel={allowNavigateString}>
+									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.deadline} />
+									<CardLabels
+										navLabel={allowNavigateString}
+										labels={caseFolder.labels}
+										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
+									/>
+								</PillLabelContainer>
+								<CardName navLabel={allowNavigateString} name={caseFolder.name} />
+							</CardHeaderContainer>
 
-									{/* Case Folder Labels */}
-									{caseFolder.labels.map((label) => (
-										<div key={label.id} id={label.id}>
-											<p
-												className="w-fit text-xs px-2.5 py-1 text-black bg-[#FFCC67] rounded-full cursor-pointer"
-												id={caseFolder.id}
-												onClick={handleDeleteFolderLabel}
-											>
-												{label.name}
-											</p>
-										</div>
-									))}
-								</div>
+							<CardImage navLabel={allowNavigateString} imgSrc={FileSnapshot} />
 
-								{/* Case Folder Name */}
-								<p id="enable-nav" className="text-sm cursor-pointer line-clamp-1 w-fit hover:text-blue-500">
-									{caseFolder.name}
-								</p>
-							</div>
+							{/* Comment count, File count, Assigned to whom*/}
+							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
+						</CardBody>
 
-							{/* Document Image */}
-							<div id="enable-nav" className="w-60 h-[100px] rounded-lg">
-								<img id="enable-nav" src={FileSnapshot} />
-							</div>
-
-							{/* Comments, files, assigned to */}
-							<div id="enable-nav" className="flex flex-row items-center justify-between h-6 w-60">
-								<div id="enable-nav" className="flex flex-row gap-3">
-									<div id="enable-nav" className="flex flex-row items-center justify-center gap-1">
-										<img id="enable-nav" className="h-[14px] w-[14px]" src={MessageSquare} />
-										<p id="enable-nav" className="text-[#5A5A5A] text-xs">
-											12
-										</p>
-									</div>
-									<div id="enable-nav" className="flex flex-row items-center justify-center gap-0.5">
-										<img id="enable-nav" className="h-[14px] w-[14px]" src={Paperclip} />
-										<p id="enable-nav" className="text-[#5A5A5A] text-xs">
-											4
-										</p>
-									</div>
-								</div>
-
-								<p id="enable-nav" className="text-xs text-[#5A5A5A] mr-11">
-									Assigned to
-								</p>
-							</div>
-						</div>
+						{/* <div className="relative bottom-[268px] right-4 w-5 h-5 ring-inset ring-4 ring-green-500 rounded-full bg-green-500">
+							<p className="text-xs text-center"></p>
+						</div> */}
 					</CardContainer>
 				);
 			})}
