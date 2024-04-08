@@ -72,25 +72,27 @@ body {
 }
 
 /* Scrollbar style for horizontal scroll. */
-/* for Chrome and Safari browsers */
-.custom-scrollbar::-webkit-scrollbar {
-	width: 0px; /* width of vertical scrollbar */
-	height: 2px; /* width of horizontal scrollbar */
+/* checks for Chrome and Safari browsers */
+@supports (-webkit-column-count: 1) {
+	.custom-scrollbar::-webkit-scrollbar {
+		width: 0px; /* width of vertical scrollbar */
+		height: 2px; /* width of horizontal scrollbar */
+	}
+
+	.custom-scrollbar::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+
+	.custom-scrollbar::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 5px;
+	}
 }
 
-/* for Chrome and Safari browsers */
-.custom-scrollbar::-webkit-scrollbar-track {
-	background: #f1f1f1;
-}
-
-/* for Chrome and Safari browsers */
-.custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #888;
-	border-radius: 5px;
-}
-
-/* for Firefox browser */
-.custom-scrollbar {
-	scrollbar-color: #888 #f1f1f1;
-	scrollbar-width: thin;
+/* checks for Firefox browser */
+@supports not (-webkit-column-count: 1) {
+	.custom-scrollbar {
+		scrollbar-color: #888 #f1f1f1;
+		scrollbar-width: thin;
+	}
 }
