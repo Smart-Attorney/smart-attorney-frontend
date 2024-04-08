@@ -72,16 +72,25 @@ body {
 }
 
 /* Scrollbar style for horizontal scroll. */
+/* for Chrome and Safari browsers */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 0px; /* width of vertical scrollbar */
 	height: 2px; /* width of horizontal scrollbar */
 }
 
+/* for Chrome and Safari browsers */
 .custom-scrollbar::-webkit-scrollbar-track {
 	background: #f1f1f1;
 }
 
+/* for Chrome and Safari browsers */
 .custom-scrollbar::-webkit-scrollbar-thumb {
 	background: #888;
 	border-radius: 5px;
+}
+
+/* for Firefox browser */
+.custom-scrollbar {
+	scrollbar-color: #888 #f1f1f1;
+	scrollbar-width: thin;
 }
