@@ -13,36 +13,6 @@
 <hr />
 
 ### nitpicks
-- [x] add delete confirmation box
-- [x] modals
-- [x] group related functions into a class
-- [x] designate code that should be ran on the server
-- [x] find system to organize types/interfaces
-- [x] remove unnecessary explicit return statements
-- [x] specify return type for all functions
-- [x] rename terse functions for descriptive verbosity (verb/adjective/noun)
-- [x] separate files into features and layouts
-- [x] add adapter layer between client and file storage/database code
-- [x] save uploaded files under folder id not file extension
-- [x] save url of uploaded files so u dont have to make a call for each every time
-- [x] replace ref property from uploaded files object with url
-- [x] clean up rogue interface declarations
-- [x] remove null/undefined on props interface declarations by type narrowing
-- [x] fix UX of upload component
-- [x] extract folder/file card component to be reusable
-- [x] re-organize assets and components by exporting via index file; named exports
-- [x] separate routes into its own file
-- [x] add reusable grid layout for cards (tailwind custom class)
-- [x] add reusable modal layout
-- [x] add reusuable page header layout
-- [x] ensure updated state flows in direction of: updates -> storage -> database -> client
-- [x] refactor database methods to single responsibility (CaseFile.delete() should not be updating the array as well)
-- [x] refactor database methods as a mock backend api
-- [x] when user deletes folder, remove all files associated with folder from cloud
-- [x] refactor: parent holds state, while business logic of child stays in child (ex: dashboard & cardfoldercards)
-- [x] when user leaves create page without creating, delete all uploaded files
-- [x] when user deletes folder, delete all files within
-- [x] include folder name when saving case folders
 - [ ] re-organize functions for dependency injection pattern for reusability
 - [ ] add dynamic deadline status color
 - [ ] add upload confirmation under each uploaded file

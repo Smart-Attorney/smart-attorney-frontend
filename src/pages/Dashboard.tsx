@@ -18,9 +18,10 @@ function Dashboard() {
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
 
+	// retrieves all user case folders on initial page load
 	useEffect(() => {
 		handleGetUserCaseFolders();
-	}, [caseFolders]);
+	}, []);
 
 	/************************************************************/
 
