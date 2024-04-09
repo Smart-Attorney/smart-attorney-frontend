@@ -42,6 +42,8 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 		primaryLanguage: "",
 	});
 
+	const [disableCreateButton, setDisableCreateButton] = useState(false);
+
 	const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
 		const { id, value } = event.target as HTMLInputElement;
 		setClientForm((prev) => ({ ...prev, [id]: value }));
@@ -66,6 +68,8 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 			formRef.current?.reportValidity();
 			return;
 		}
+		// prevents repeated clicks of the create button which results in duplicate folders
+		setDisableCreateButton(true);
 		createCase();
 	};
 
@@ -148,6 +152,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 							title="Click Save to create the case folder"
 							name="Save"
 							type="button"
+							disabled={disableCreateButton}
 							className="h-[52px] border-[3px]"
 							onClick={handleCreateButtonClick}
 						/>
