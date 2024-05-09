@@ -1,3 +1,5 @@
+import { useMock } from "../../../config/use-mock";
+import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
 import { UserController } from "../../../services/mock-backend/controller/user-controller";
 
@@ -10,10 +12,15 @@ export interface RegisterCredentialsDTO {
 }
 
 const mockApi = async (data: RegisterCredentialsDTO) => {
-	const request = mockRequest.put("/register", data);
+	const request = mockRequest.put("/", data);
 	return await UserController.registerUser(request);
 };
 
+const fetchApi = async (data: RegisterCredentialsDTO) => {
+	const url = "http://localhost:8080/register";
+	return await fetchWrapper.post(url, data);
+};
+
 export const registerNewUser = async (data: RegisterCredentialsDTO) => {
-	return await mockApi(data);
+	return useMock ? await mockApi(data) : await fetchApi(data);
 };
