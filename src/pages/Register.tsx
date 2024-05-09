@@ -59,8 +59,18 @@ function Register() {
 			return;
 		}
 
+		// sending "user" state object also includes the "confirmPassword" field despite that field not being a property of "user"
+		// create newUser object to circumvent the bug described above
+		const newUser: RegisterCredentialsDTO = {
+			firstName: user.firstName,
+			lastName: user.lastName,
+			firmName: user.firmName,
+			companyEmail: user.companyEmail,
+			password: user.password,
+		};
+
 		try {
-			const response = await registerNewUser(user);
+			const response = await registerNewUser(newUser);
 			if (response.ok) {
 				navigate("/signin");
 			}
