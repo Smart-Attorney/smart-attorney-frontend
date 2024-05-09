@@ -19,15 +19,14 @@ const INPUT = Object.freeze({
 function Register() {
 	const navigate = useNavigate();
 
-	const [user, setUser] = useState<RegisterCredentialsDTO>({
+	const [user, setUser] = useState({
 		firstName: "",
 		lastName: "",
 		firmName: "",
 		companyEmail: "",
 		password: "",
+		confirmPassword: "",
 	});
-
-	const [confirmPassword, setConfirmPassword] = useState({ confirmPassword: "" });
 
 	const [tos, setTos] = useState({
 		termsOfService: false,
@@ -38,7 +37,7 @@ function Register() {
 
 	const handleRegistration = async () => {
 		// temp: checks whether password and confirm-password match
-		if (user.password !== confirmPassword.confirmPassword) {
+		if (user.password !== user.confirmPassword) {
 			alert("Passwords do not match.");
 			return;
 		}
@@ -59,8 +58,6 @@ function Register() {
 			return;
 		}
 
-		// sending "user" state object also includes the "confirmPassword" field despite that field not being a property of "user"
-		// create newUser object to circumvent the bug described above
 		const newUser: RegisterCredentialsDTO = {
 			firstName: user.firstName,
 			lastName: user.lastName,
@@ -81,9 +78,7 @@ function Register() {
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { id, value } = event.target;
-		if (id === INPUT.CONFIRM_PASSWORD) {
-			setConfirmPassword((prev) => ({ ...prev, [id]: value }));
-		}
+
 		setUser((prev) => ({
 			...prev,
 			[id]: value,
