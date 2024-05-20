@@ -44,14 +44,15 @@ export interface CaseFileObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-  status: string;
-  deadline: number;
+	status: string;
+	deadline: number;
 	url: string;
 }
 
 export interface ClientObj {
 	id: string;
 	firstName: string;
+	middleName: string;
 	lastName: string;
 	dateOfBirth: number;
 	sex: SexOptions;

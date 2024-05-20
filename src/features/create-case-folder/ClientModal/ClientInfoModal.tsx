@@ -12,6 +12,7 @@ import SelectField from "./SelectField";
 
 export interface ClientInfoForm {
 	firstName: string;
+	middleName: string;
 	lastName: string;
 	dateOfBirth: string;
 	sex: string;
@@ -30,11 +31,12 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
-		setClientForm(client);
+		setClientFormInput(client);
 	}, []);
 
-	const [clientForm, setClientForm] = useState<ClientInfoForm>({
+	const [clientFormInput, setClientFormInput] = useState<ClientInfoForm>({
 		firstName: "",
+		middleName: "",
 		lastName: "",
 		dateOfBirth: "",
 		sex: "",
@@ -46,24 +48,24 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 
 	const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
 		const { id, value } = event.target as HTMLInputElement;
-		setClientForm((prev) => ({ ...prev, [id]: value }));
+		setClientFormInput((prev) => ({ ...prev, [id]: value }));
 	};
 
 	const handleSelectChange = (event: React.FormEvent<HTMLSelectElement>) => {
 		const { id, value } = event.target as HTMLSelectElement;
-		setClientForm((prev) => ({ ...prev, [id]: value }));
+		setClientFormInput((prev) => ({ ...prev, [id]: value }));
 	};
 
 	// allows user to exit out of the client modal before filling it out
 	// saves any input that user has already provided
 	const handleCloseIconClick = () => {
-		setClient(clientForm);
+		setClient(clientFormInput);
 		closeModal();
 	};
 
 	const handleCreateButtonClick = () => {
 		const clientInfoFilled = formRef.current?.checkValidity();
-		setClient(clientForm);
+		setClient(clientFormInput);
 		if (!clientInfoFilled) {
 			formRef.current?.reportValidity();
 			return;
@@ -109,37 +111,53 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								id="firstName"
 								name="First Name"
 								type="text"
-								value={clientForm.firstName}
+								value={clientFormInput.firstName}
 								onChange={handleInputChange}
+								required={true}
 							/>
+
+							<SelectField id="sex" name="Sex" options={SEX} value={clientFormInput.sex} onChange={handleSelectChange} />
+
 							<InputField
-								id="lastName"
-								name="Last Name"
+								id="middleName"
+								name="Middle Name"
 								type="text"
-								value={clientForm.lastName}
+								value={clientFormInput.middleName}
 								onChange={handleInputChange}
+								required={false}
 							/>
-							<InputField
-								id="dateOfBirth"
-								name="Date of Birth"
-								type="date"
-								value={clientForm.dateOfBirth}
-								onChange={handleInputChange}
-							/>
-							<SelectField id="sex" name="Sex" options={SEX} value={clientForm.sex} onChange={handleSelectChange} />
 							<SelectField
 								id="countryOfCitizenship"
 								name="Country of Citizenship"
 								options={COUNTRIES}
-								value={clientForm.countryOfCitizenship}
+								value={clientFormInput.countryOfCitizenship}
 								onChange={handleSelectChange}
 							/>
+
+							<InputField
+								id="lastName"
+								name="Last Name"
+								type="text"
+								value={clientFormInput.lastName}
+								onChange={handleInputChange}
+								required={true}
+							/>
+
 							<SelectField
 								id="primaryLanguage"
 								name="Primary Language"
 								options={LANGUAGES}
-								value={clientForm.primaryLanguage}
+								value={clientFormInput.primaryLanguage}
 								onChange={handleSelectChange}
+							/>
+
+							<InputField
+								id="dateOfBirth"
+								name="Date of Birth"
+								type="date"
+								value={clientFormInput.dateOfBirth}
+								onChange={handleInputChange}
+								required={true}
 							/>
 						</div>
 

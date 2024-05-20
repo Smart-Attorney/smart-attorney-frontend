@@ -4,12 +4,13 @@ import { SexOptions } from "../../../utils/types";
 
 export interface CreateClientDTO {
 	firstName: string;
+	middleName: string;
 	lastName: string;
 	dateOfBirth: number;
 	sex: SexOptions;
 	countryOfCitizenship: string;
-  primaryLanguage: string;
-  caseFolderId: string;
+	primaryLanguage: string;
+	caseFolderId: string;
 }
 
 const mockApi = async (data: CreateClientDTO) => {

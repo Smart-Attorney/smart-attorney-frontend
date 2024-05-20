@@ -14,6 +14,7 @@ export class ClientDAO extends DAO {
 				const caseFolderClient: ClientObj = {
 					id: clientArray[i].client_id,
 					firstName: clientArray[i].first_name,
+					middleName: clientArray[i].middle_name,
 					lastName: clientArray[i].last_name,
 					dateOfBirth: clientArray[i].date_of_birth,
 					sex: clientArray[i].sex,
@@ -27,8 +28,9 @@ export class ClientDAO extends DAO {
 	}
 
 	static async addNewClient(
-		fName: string,
-		lName: string,
+		firstName: string,
+		middleName: string,
+		lastName: string,
 		DOB: number,
 		sex: sex_options,
 		country: string,
@@ -38,8 +40,9 @@ export class ClientDAO extends DAO {
 		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
 		const newClient: Clients = {
 			client_id: nanoid(8),
-			first_name: fName,
-			last_name: lName,
+			first_name: firstName,
+			middle_name: middleName,
+			last_name: lastName,
 			date_of_birth: DOB,
 			sex: sex,
 			country_of_citizenship: country,
