@@ -1,5 +1,6 @@
 import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
 import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
+import { FileStatus } from "../../../utils/types";
 import { CaseFileService } from "../service/case-file-service";
 
 export class CaseFileController {
@@ -53,6 +54,22 @@ export class CaseFileController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with retrieving the case file.");
+		}
+	}
+
+	static async updateFileStatus(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId = urlArray[urlArray.length - 2];
+		const fileId = urlArray[urlArray.length - 1];
+		const newStatus: FileStatus = await request.json();
+		const updatedFileStatus = await CaseFileService.updateFileStatus(folderId, fileId, newStatus);
+		if (updatedFileStatus !== null) {
+			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+			const body = JSON.stringify(updatedCaseFiles);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case file status.");
 		}
 	}
 

@@ -6,15 +6,16 @@ import CardFooter from "../../components/Card/CardFooter";
 import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
 import CardImage from "../../components/Card/CardImage";
 import CardName from "../../components/Card/CardName";
-import FileStatus from "../../components/Card/FileStatus";
+import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { CaseFileObj } from "../../utils/types";
+import { CaseFileObj, FileStatus } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
 import { updateDeadline } from "./api/update-case-file-deadline";
 import { updateCaseFileName } from "./api/update-case-file-name";
+import { updateCaseFileStatus } from "./api/update-case-file-status";
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
@@ -24,6 +25,19 @@ interface CaseFileCardsProps {
 
 function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
 	const { id: folderId } = useParams();
+
+	// curried function
+	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: FileStatus) => {
+		try {
+			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
+			if (response.ok) {
+				const data: CaseFileObj[] = await response.json();
+				updateCaseFiles(data);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	// curried function
 	const handleUpdateFileName = (fileId: string) => async (newFileName: string) => {
@@ -73,6 +87,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 						<KebabMenuContainer>
 							<KebabMenu
 								fileName={file.name}
+								updateFileStatus={handleUpdateFileStatus(file.id)}
 								updateFileName={handleUpdateFileName(file.id)}
 								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
 								deleteFile={() => handleDeleteFile(file.id)}
@@ -82,7 +97,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 						<CardBody>
 							<CardHeaderContainer>
 								<PillLabelContainer>
-									<FileStatus text="Submitted" />
+									<DocumentStatus text={file.status} />
 									<CardDeadline deadline={file.deadline} />
 								</PillLabelContainer>
 

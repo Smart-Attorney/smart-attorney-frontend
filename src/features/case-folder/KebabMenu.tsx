@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { CloseIcon } from "../../assets/misc";
+import { FileStatus } from "../../utils/types";
 
 interface KebabMenuProps {
 	fileName: string;
+	updateFileStatus: (newFileStatus: FileStatus) => void;
 	updateFileName: (newFileName: string) => void;
 	setDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	deleteFile: () => void;
 }
 
-function KebabMenu({ fileName, updateFileName, setDeadline, deleteFile }: KebabMenuProps) {
+function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, deleteFile }: KebabMenuProps) {
 	const name = useRef<string>("");
 	const extension = useRef<string>("");
 
 	const [menuIsOpen, setMenuIsOpen] = useState(false);
+	const [statusModalOpen, setStatusModalOpen] = useState(false);
 	const [deadlineModalOpen, setDeadlineModalOpen] = useState(false);
 	const [editNameModalIsOpen, setEditNameModalIsOpen] = useState(false);
 	const [deleteAlertIsOpen, setDeleteAlertIsOpen] = useState(false);
@@ -24,21 +27,23 @@ function KebabMenu({ fileName, updateFileName, setDeadline, deleteFile }: KebabM
 	}, []);
 
 	const toggleMenu = (): void => setMenuIsOpen((prev) => !prev);
-
+	const toggleStatusModal = (): void => setStatusModalOpen((prev) => !prev);
 	const toggleDeadlineModal = (): void => setDeadlineModalOpen((prev) => !prev);
-
-	const toggleEditModal = (): void => {
-		setEditNameModalIsOpen((prev) => !prev);
-	};
-
-	const toggleDeleteAlert = (): void => {
-		setDeleteAlertIsOpen((prev) => !prev);
-	};
+	const toggleEditModal = (): void => setEditNameModalIsOpen((prev) => !prev);
+	const toggleDeleteAlert = (): void => setDeleteAlertIsOpen((prev) => !prev);
 
 	const closeMenu = (): void => setMenuIsOpen(false);
+	const closeStatusModal = (): void => setStatusModalOpen(false);
 	const closeDeadlineModal = (): void => setDeadlineModalOpen(false);
 	const closeEditModal = (): void => setEditNameModalIsOpen(false);
 	const closeDeleteAlert = (): void => setDeleteAlertIsOpen(false);
+
+	const handleStatusClick = (event: React.MouseEvent<HTMLLIElement>) => {
+		const selectedStatus = event.target as HTMLLIElement;
+		const newStatus = selectedStatus.id as FileStatus;
+		updateFileStatus(newStatus);
+		closeStatusModal();
+	};
 
 	const handleSaveButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		const buttonElement = event.target as HTMLButtonElement;
@@ -68,6 +73,9 @@ function KebabMenu({ fileName, updateFileName, setDeadline, deleteFile }: KebabM
 				style={{ display: menuIsOpen ? "block" : "none" }}
 				onMouseLeave={closeMenu}
 			>
+				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleStatusModal}>
+					Update Status
+				</li>
 				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleEditModal}>
 					Edit Name
 				</li>
@@ -78,6 +86,39 @@ function KebabMenu({ fileName, updateFileName, setDeadline, deleteFile }: KebabM
 					Delete
 				</li>
 			</ul>
+
+			{/* Update Status Modal*/}
+			<div
+				className="absolute right-[15px] top-[30px] z-[5] border border-black p-2 rounded-lg bg-[#eff1f3] w-32"
+				style={{ display: statusModalOpen ? "block" : "none" }}
+				onMouseLeave={closeStatusModal}
+			>
+				<div>
+					<ul>
+						<li
+							id="In Progress"
+							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
+							onClick={(event) => handleStatusClick(event)}
+						>
+							In Progress
+						</li>
+						<li
+							id="In Review"
+							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
+							onClick={(event) => handleStatusClick(event)}
+						>
+							In Review
+						</li>
+						<li
+							id="Submitted"
+							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
+							onClick={(event) => handleStatusClick(event)}
+						>
+							Submitted
+						</li>
+					</ul>
+				</div>
+			</div>
 
 			{/* Edit Name Modal */}
 			<div
