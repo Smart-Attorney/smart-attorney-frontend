@@ -71,7 +71,7 @@ export class CaseFolderDAO extends DAO {
 			folder_name: folderName,
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
-			status: "#53EF0A",
+			status: true,
 			/* 
         It's okay for a new case folder deadline to be 0 because unix time of 0 converted
         to a new Date corresponds to the date of Jan 1, 1970.
@@ -130,6 +130,21 @@ export class CaseFolderDAO extends DAO {
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
 		if (success) {
 			return newName;
+		}
+		return null;
+	}
+
+	static async updateStatus(userId: string, folderId: string, currentStatus: boolean) {
+		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		for (let i = 0; i < caseFolderArray.length; i++) {
+			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
+				caseFolderArray[i].status = !currentStatus;
+				break;
+			}
+		}
+		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
+		if (success) {
+			return (!currentStatus).toString();
 		}
 		return null;
 	}

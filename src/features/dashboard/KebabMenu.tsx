@@ -3,12 +3,13 @@ import { CloseIcon } from "../../assets/misc";
 
 interface KebabMenuProps {
 	id: string;
+	updateStatus: () => void;
 	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	addLabel: (event: React.FormEvent<HTMLFormElement>) => void;
 	deleteFolder: () => void;
 }
 
-function KebabMenu({ id, addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
+function KebabMenu({ id, updateStatus, addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
@@ -54,6 +55,15 @@ function KebabMenu({ id, addDeadline, addLabel, deleteFolder }: KebabMenuProps) 
 				style={{ display: isMenuOpen ? "block" : "none" }}
 				onMouseLeave={closeMenu}
 			>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={() => {
+						updateStatus();
+						closeMenu();
+					}}
+				>
+					Update Status
+				</li>
 				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDatePicker}>
 					Add Deadline
 				</li>

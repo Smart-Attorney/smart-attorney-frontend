@@ -17,6 +17,7 @@ import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
 import { updateDeadline } from "./api/update-deadline";
+import { UpdateCaseFolderStatusDTO, updateStatus } from "./api/update-status";
 
 interface CaseFolderCardProps {
 	caseFolders: DashboardFolderCardObj[] | null;
@@ -25,6 +26,25 @@ interface CaseFolderCardProps {
 
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	const navigate = useNavigate();
+
+	const handleUpdateFolderStatus = async (folderId: string, currentStatus: boolean): Promise<void> => {
+		// changes previously stored string or number values into correct boolean type
+		let newStatus: UpdateCaseFolderStatusDTO;
+		if (typeof currentStatus != "boolean") {
+			newStatus = true;
+		} else {
+			newStatus = currentStatus;
+		}
+		try {
+			const response = await updateStatus(folderId, newStatus);
+			if (response.ok) {
+				const data: DashboardFolderCardObj[] = await response.json();
+				setCaseFolders(data);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	const handleUpdateFolderDeadline = async (
 		folderId: string,
@@ -121,10 +141,12 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						id={caseFolder.id}
 						navLabel={allowNavigateString}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
+						status={caseFolder.status}
 					>
 						<KebabMenuContainer>
 							<KebabMenu
 								id="kebab-menu"
+								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.status)}
 								addDeadline={(event) => {
 									// commenting this out to see if it breaks anything
 									// event.stopPropagation(),
@@ -154,7 +176,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
 						</CardBody>
 
-						{/* <div className="relative bottom-[268px] right-4 w-5 h-5 ring-inset ring-4 ring-green-500 rounded-full bg-green-500">
+						{/* WIP: Folder Status Dot Indicator */}
+						{/* <div className="relative left-[230px] bottom-[216px] right-4 w-5 h-5 ring-inset ring-4 ring-green-500 rounded-full bg-green-500">
 							<p className="text-xs text-center"></p>
 						</div> */}
 					</CardContainer>

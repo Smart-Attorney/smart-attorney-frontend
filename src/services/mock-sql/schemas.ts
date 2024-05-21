@@ -13,7 +13,7 @@ export interface CaseFolders {
 	folder_name: string;
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
-	status: string;
+	status: boolean;
 	deadline: number; // as unix time
 	user_id_fk: string; // from nanoid
 }
