@@ -37,6 +37,7 @@ function CreateCaseFolder() {
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
 	const [client, setClient] = useState<ClientInfoForm>({
 		firstName: "",
+		middleName: "",
 		lastName: "",
 		dateOfBirth: "",
 		sex: "",
@@ -100,6 +101,7 @@ function CreateCaseFolder() {
 	const handleCreateNewClient = async () => {
 		const newClient: CreateClientDTO = {
 			firstName: client.firstName,
+			middleName: client.middleName,
 			lastName: client.lastName,
 			dateOfBirth: client.dateOfBirth === "" ? Date.parse("12/10/1815") : Date.parse(client.dateOfBirth),
 			sex: client.sex === "" ? "Other" : (client.sex as SexOptions),

@@ -136,6 +136,27 @@ export class CaseFolderController {
 		}
 	}
 
+	static async updateStatus(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const currentStatus: boolean = await request.json();
+		const updatedStatus = await CaseFolderService.updateStatus(userId, folderId, currentStatus);
+		if (updatedStatus !== null) {
+			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+			const body = JSON.stringify(updatedCaseFolders);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case folder status.");
+		}
+	}
+
 	static async deleteCaseFolder(request: Request) {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {

@@ -13,7 +13,7 @@ export interface CaseFolders {
 	folder_name: string;
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
-	status: string;
+	status: boolean;
 	deadline: number; // as unix time
 	user_id_fk: string; // from nanoid
 }
@@ -23,8 +23,8 @@ export interface CaseFiles {
 	file_name: string;
 	created_date: number;
 	last_opened_date: number;
-  status: string;
-  deadline: number; // as unix time
+	status: file_status;
+	deadline: number; // as unix time
 	url: string;
 	case_folder_id_fk: string;
 }
@@ -38,6 +38,7 @@ export interface FolderLabels {
 export interface Clients {
 	client_id: string;
 	first_name: string;
+	middle_name: string;
 	last_name: string;
 	date_of_birth: number;
 	sex: sex_options;
@@ -54,6 +55,9 @@ export interface CalendarDeadlines {
 
 export type sex_options = "Male" | "Female" | "Other";
 
+export type file_status = "In Progress" | "In Review" | "Submitted";
+
+// update these refs
 /* 
   ref:         case_folders.user_id_fk > users.id
   ref: folder_labels.case_folder_id_fk > case_folders.id

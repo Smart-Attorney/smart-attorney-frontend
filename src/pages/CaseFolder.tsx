@@ -39,13 +39,14 @@ function CaseFolder() {
 		name: "",
 		createdDate: 0,
 		lastOpenedDate: 0,
-		status: "",
+		status: true,
 		deadline: 0,
 	});
 
 	const [client, setClient] = useState<ClientObj>({
 		id: "",
 		firstName: "",
+		middleName: "",
 		lastName: "",
 		sex: "Other",
 		primaryLanguage: "",
@@ -306,6 +307,7 @@ function CaseFolder() {
 				<ClientModal
 					client={{
 						firstName: client.firstName,
+						middleName: client.middleName,
 						lastName: client.lastName,
 						dateOfBirth: Format.dateForInputDisplay(client.dateOfBirth),
 						sex: client.sex!,

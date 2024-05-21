@@ -77,6 +77,17 @@ export class CaseFolderService {
 		return null;
 	}
 
+	static async updateStatus(userId: string, folderId: string, currentStatus: boolean) {
+		if (!userId || !folderId || typeof currentStatus !== "boolean") {
+			return null;
+		}
+		const updatedStatus = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
+		if (updatedStatus !== null) {
+			return updatedStatus;
+		}
+		return null;
+	}
+
 	static async deleteCaseFolder(userId: string, folderId: string) {
 		if (!userId || !folderId) {
 			return null;

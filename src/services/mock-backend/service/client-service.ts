@@ -6,9 +6,11 @@ export class ClientService {
 		if (!client) {
 			return null;
 		}
-		const { firstName, lastName, dateOfBirth, sex, countryOfCitizenship, primaryLanguage, caseFolderId } = client;
+		const { firstName, middleName, lastName, dateOfBirth, sex, countryOfCitizenship, primaryLanguage, caseFolderId } =
+			client;
 		const newClient = await ClientDAO.addNewClient(
 			firstName,
+			middleName,
 			lastName,
 			dateOfBirth,
 			sex,

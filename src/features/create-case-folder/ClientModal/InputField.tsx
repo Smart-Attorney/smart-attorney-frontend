@@ -4,9 +4,10 @@ interface InputFieldProps {
 	type: string;
 	value: string;
 	onChange: (event: React.FormEvent<HTMLInputElement>) => void;
+	required: boolean;
 }
 
-function InputField({ id, name, type, value, onChange }: InputFieldProps) {
+function InputField({ id, name, type, value, onChange, required }: InputFieldProps) {
 	return (
 		<div className="flex flex-col gap-1 w-60">
 			<label htmlFor={name} className="text-white">
@@ -19,7 +20,7 @@ function InputField({ id, name, type, value, onChange }: InputFieldProps) {
 				type={type}
 				value={value}
 				onChange={onChange}
-				required
+				required={required}
 			/>
 		</div>
 	);
