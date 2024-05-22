@@ -141,7 +141,6 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						id={caseFolder.id}
 						navLabel={allowNavigateString}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
-						status={caseFolder.status}
 					>
 						<KebabMenuContainer>
 							<KebabMenu
@@ -159,7 +158,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 						<CardBody navLabel={allowNavigateString}>
 							<CardHeaderContainer navLabel={allowNavigateString}>
-								<PillLabelContainer navLabel={allowNavigateString}>
+								<PillLabelContainer navLabel={allowNavigateString} className="ml-5">
 									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.deadline} />
 									<CardLabels
 										navLabel={allowNavigateString}
@@ -176,10 +175,13 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
 						</CardBody>
 
-						{/* WIP: Folder Status Dot Indicator */}
-						{/* <div className="relative left-[230px] bottom-[216px] right-4 w-5 h-5 ring-inset ring-4 ring-green-500 rounded-full bg-green-500">
+						{/* Folder Status Dot Indicator */}
+						<div
+							className="relative right-1.5 bottom-[250px] w-5 h-5 rounded-full"
+							style={{ background: caseFolder.status ? "#53EF0A" : "#989c9c" }}
+						>
 							<p className="text-xs text-center"></p>
-						</div> */}
+						</div>
 					</CardContainer>
 				);
 			})}
