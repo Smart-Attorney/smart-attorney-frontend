@@ -62,8 +62,13 @@ function CreateCaseFolder() {
 	/************************************************************/
 
 	const createNewCase = async (): Promise<void> => {
-		if (caseFolderName.trim() === defaultCaseName || caseFolderName.trim().length === 0) {
-			alert("Please change the case name before creating.");
+		/* Allows the user to create a case folder without changing the default case name. */
+		// if (caseFolderName.trim() === defaultCaseName) {
+		// 	alert("Please change the default case name before creating.");
+		// 	return;
+		// }
+		if (caseFolderName.trim().length === 0) {
+			alert("Case name cannot be blank. Please change case name before creating.");
 			return;
 		}
 		if (filesForUpload.length > 0) {
