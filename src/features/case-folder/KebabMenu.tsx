@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { CloseIcon } from "../../assets/misc";
-import { FileStatus } from "../../utils/types";
+import { DOC_STATUS } from "../../utils/constants/document-status";
+import { DocumentStatus } from "../../utils/types";
 
 interface KebabMenuProps {
 	fileName: string;
-	updateFileStatus: (newFileStatus: FileStatus) => void;
+	updateFileStatus: (newFileStatus: DocumentStatus) => void;
 	updateFileName: (newFileName: string) => void;
 	setDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	deleteFile: () => void;
@@ -40,7 +41,7 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 
 	const handleStatusClick = (event: React.MouseEvent<HTMLLIElement>) => {
 		const selectedStatus = event.target as HTMLLIElement;
-		const newStatus = selectedStatus.id as FileStatus;
+		const newStatus = selectedStatus.id as DocumentStatus;
 		updateFileStatus(newStatus);
 		closeStatusModal();
 	};
@@ -96,21 +97,21 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 				<div>
 					<ul>
 						<li
-							id="In Progress"
+							id={DOC_STATUS.inProgress}
 							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
 							onClick={(event) => handleStatusClick(event)}
 						>
 							In Progress
 						</li>
 						<li
-							id="In Review"
+							id={DOC_STATUS.inReview}
 							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
 							onClick={(event) => handleStatusClick(event)}
 						>
 							In Review
 						</li>
 						<li
-							id="Submitted"
+							id={DOC_STATUS.submitted}
 							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
 							onClick={(event) => handleStatusClick(event)}
 						>

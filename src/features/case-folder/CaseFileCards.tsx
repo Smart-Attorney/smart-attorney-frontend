@@ -10,7 +10,7 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { CaseFileObj, FileStatus } from "../../utils/types";
+import { CaseFileObj, DocumentStatus as DocStatus } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
 import { updateDeadline } from "./api/update-case-file-deadline";
@@ -27,7 +27,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	const { id: folderId } = useParams();
 
 	// curried function
-	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: FileStatus) => {
+	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: DocStatus) => {
 		try {
 			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
 			if (response.ok) {

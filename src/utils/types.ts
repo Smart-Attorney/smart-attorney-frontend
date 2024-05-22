@@ -44,7 +44,7 @@ export interface CaseFileObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: FileStatus;
+	status: DocumentStatus;
 	deadline: number;
 	url: string;
 }
@@ -62,4 +62,4 @@ export interface ClientObj {
 
 export type SexOptions = "Male" | "Female" | "Other";
 
-export type FileStatus = "In Progress" | "In Review" | "Submitted";
+export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
