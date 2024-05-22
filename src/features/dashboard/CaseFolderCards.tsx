@@ -158,7 +158,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 						<CardBody navLabel={allowNavigateString}>
 							<CardHeaderContainer navLabel={allowNavigateString}>
-								<PillLabelContainer navLabel={allowNavigateString} className="ml-5">
+								<PillLabelContainer navLabel={allowNavigateString} className="ml-6">
 									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.deadline} />
 									<CardLabels
 										navLabel={allowNavigateString}
@@ -177,8 +177,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 						{/* Folder Status Dot Indicator */}
 						<div
-							className="relative right-1.5 bottom-[250px] w-5 h-5 rounded-full"
-							style={{ background: caseFolder.status ? "#53EF0A" : "#989c9c" }}
+							className="relative left-0 bottom-[246px] w-3 h-3 rounded-full"
+							style={{ background: caseFolder.status ? "#53EF0A" : "#9C9DA4" }}
 						>
 							<p className="text-xs text-center"></p>
 						</div>
