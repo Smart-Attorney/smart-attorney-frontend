@@ -62,10 +62,20 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 
 	const handleMouseWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
 		const optionsContainerScrollPosition = optionsContainer.current ? optionsContainer.current?.scrollLeft : 0;
-		optionsContainer.current?.scrollTo({
-			top: 0,
-			left: optionsContainerScrollPosition + event.deltaY,
-		});
+		// translates vertical mouse wheel motion to horizontal scroll motion
+		if (event.deltaX === 0) {
+			optionsContainer.current?.scrollTo({
+				top: 0,
+				left: optionsContainerScrollPosition + event.deltaY,
+			});
+		}
+		// translates horizontal mouse wheel motion to horizontal scroll motion
+		if (event.deltaY === 0) {
+			optionsContainer.current?.scrollTo({
+				top: 0,
+				left: optionsContainerScrollPosition + event.deltaX,
+			});
+		}
 	};
 
 	/************************************************************/
@@ -121,10 +131,3 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 }
 
 export default SortBar;
-
-/**
- * Detect which type of scrolling device is used: mouse/trackpad 
- * Disable/enable horizonal mouse scrolling behavior based on device
- * https://codepen.io/smvilar/pen/JNgZqy?editors=0010
- * https://stackoverflow.com/questions/10744645/detect-touchpad-vs-mouse-in-javascript
- */

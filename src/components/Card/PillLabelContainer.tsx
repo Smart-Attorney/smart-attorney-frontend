@@ -28,10 +28,20 @@ function PillLabelContainer({ id, navLabel, className, children }: PillLabelCont
 	 */
 	const handleMouseWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
 		const pillContainerScrollPosition = pillContainer.current ? pillContainer.current?.scrollLeft : 0;
-		pillContainer.current?.scrollTo({
-			top: 0,
-			left: pillContainerScrollPosition + event.deltaY,
-		});
+		// translates vertical mouse wheel motion to horizontal scroll motion
+		if (event.deltaX === 0) {
+			pillContainer.current?.scrollTo({
+				top: 0,
+				left: pillContainerScrollPosition + event.deltaY,
+			});
+		}
+		// translates horizontal mouse wheel motion to horizontal scroll motion
+		if (event.deltaY === 0) {
+			pillContainer.current?.scrollTo({
+				top: 0,
+				left: pillContainerScrollPosition + event.deltaX,
+			});
+		}
 	};
 
 	return (
