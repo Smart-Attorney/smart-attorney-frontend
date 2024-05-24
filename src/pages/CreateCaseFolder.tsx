@@ -1,17 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LightBulbPurple, PenPurple, SphereLatticePurple, UploadPurple } from "../assets/smart-attorney-figma/buttons";
+import {
+	LightBulbPurple,
+	PenPurple,
+	SphereLatticePurple,
+	UploadPurple,
+} from "../assets/smart-attorney-figma/buttons";
 import { UserIcon } from "../assets/smart-attorney-figma/global";
 import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
+import ClientInfoModal, {
+	ClientInfoForm,
+} from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
 import { createCaseFiles } from "../features/create-case-folder/api/create-case-files";
-import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
-import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
+import {
+	CreateCaseFolderDTO,
+	createCaseFolder,
+} from "../features/create-case-folder/api/create-case-folder";
+import {
+	CreateClientDTO,
+	createClient,
+} from "../features/create-case-folder/api/create-client";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
@@ -19,6 +32,7 @@ import { nanoid } from "../lib/nanoid";
 import { CaseFolderCount } from "../utils/case-folder-count";
 import { NEW_CASE } from "../utils/constants/sort-options";
 import { FileForUploadObj, SexOptions } from "../utils/types";
+import uploadDocuments from "../features/uploadDocument/uploadDocuments";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -32,7 +46,8 @@ function CreateCaseFolder() {
 
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const [caseFolderName, setCaseFolderName] = useState<string>(defaultCaseName);
-	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
+	const [caseFolderNameEditable, setCaseFolderNameEditable] =
+		useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
 	const [client, setClient] = useState<ClientInfoForm>({
@@ -62,7 +77,10 @@ function CreateCaseFolder() {
 	/************************************************************/
 
 	const createNewCase = async (): Promise<void> => {
-		if (caseFolderName.trim() === defaultCaseName || caseFolderName.trim().length === 0) {
+		if (
+			caseFolderName.trim() === defaultCaseName ||
+			caseFolderName.trim().length === 0
+		) {
 			alert("Please change the case name before creating.");
 			return;
 		}
@@ -103,7 +121,10 @@ function CreateCaseFolder() {
 			firstName: client.firstName,
 			middleName: client.middleName,
 			lastName: client.lastName,
-			dateOfBirth: client.dateOfBirth === "" ? Date.parse("12/10/1815") : Date.parse(client.dateOfBirth),
+			dateOfBirth:
+				client.dateOfBirth === ""
+					? Date.parse("12/10/1815")
+					: Date.parse(client.dateOfBirth),
 			sex: client.sex === "" ? "Other" : (client.sex as SexOptions),
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
@@ -124,7 +145,11 @@ function CreateCaseFolder() {
 		const filesFormData = new FormData();
 		filesFormData.append("caseFolderId", caseFolderId.current);
 		for (let i = 0; i < filesForUpload.length; i++) {
-			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
+			filesFormData.append(
+				"files[]",
+				filesForUpload[i].data,
+				`${filesForUpload[i].id}/${filesForUpload[i].data.name}`
+			);
 		}
 		try {
 			const response = await createCaseFiles(filesFormData);
@@ -157,13 +182,17 @@ function CreateCaseFolder() {
 		setCaseFolderNameEditable(true);
 	};
 
-	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
+	const handleEnterKeyPress = (
+		event: React.KeyboardEvent<HTMLHeadingElement>
+	): void => {
 		if (event.key !== "Enter") return;
 		caseFolderNameRef.current?.blur();
 		setCaseFolderNameEditable(false);
 	};
 
-	const handleCaseNameBlur = (event: React.FocusEvent<HTMLHeadingElement>): void => {
+	const handleCaseNameBlur = (
+		event: React.FocusEvent<HTMLHeadingElement>
+	): void => {
 		const { innerText } = event.target;
 		if (innerText.trim() === "") {
 			setCaseFolderName(defaultCaseName);
@@ -193,6 +222,26 @@ function CreateCaseFolder() {
 
 	const removeFromFilesForUploadArray = (fileId: string): void => {
 		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
+	};
+
+	const handleUpload = (fileList: FileList) => {
+		const fileArr = Array.from(fileList);
+		uploadDocuments(fileArr)
+			.then((res) => {
+				if (Array.isArray(res)) {
+					setFilesForUpload((prev) => [
+						...prev,
+						...fileArr.map((file, i) => ({
+							id: nanoid(8),
+							data: fileList[i],
+						})),
+					]);
+				}
+			})
+			.catch((err) => {
+				window.alert("Failed to Upload Files");
+				console.log(err);
+			});
 	};
 
 	/************************************************************/
@@ -228,9 +277,22 @@ function CreateCaseFolder() {
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={PenPurple} />
-					<PillButton name="Upload" type="button" img={UploadPurple} onClick={handleOpenFileBrowser} />
-					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
-					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} />
+					<PillButton
+						name="Upload"
+						type="button"
+						img={UploadPurple}
+						onClick={handleOpenFileBrowser}
+					/>
+					<PillButton
+						name="Translate"
+						type="button"
+						img={SphereLatticePurple}
+					/>
+					<PillSpecialButton
+						name="Generate"
+						type="button"
+						img={LightBulbPurple}
+					/>
 
 					{/* <PillButton name="Create Case" type="button" img={FolderPurple} onClick={createNewCase} /> */}
 				</div>
@@ -250,7 +312,8 @@ function CreateCaseFolder() {
 					display: filesForUpload.length > 0 ? "none" : "flex",
 				}}
 				handleOpenFileBrowser={handleOpenFileBrowser}
-				addToFilesForUploadArray={addToFilesForUploadArray}
+				// addToFilesForUploadArray={addToFilesForUploadArray}
+				addToFilesForUploadArray={handleUpload}
 			/>
 
 			{clientModalOpen && (

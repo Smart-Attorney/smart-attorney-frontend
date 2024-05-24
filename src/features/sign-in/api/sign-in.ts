@@ -18,6 +18,8 @@ const fetchApi = async (data: SignInCredentialsDTO) => {
 	return await fetchWrapper.post(url, data);
 };
 
-export const signInWithEmailAndPassword = async (data: SignInCredentialsDTO) => {
+export const signInWithEmailAndPassword = async (
+	data: SignInCredentialsDTO
+) => {
 	return useMock ? await mockApi(data) : await fetchApi(data);
 };

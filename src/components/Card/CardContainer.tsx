@@ -7,7 +7,14 @@ interface CardContainerProps {
 	className?: string;
 }
 
-function CardContainer({ children, id, navLabel, onClick, status, className }: CardContainerProps) {
+function CardContainer({
+	children,
+	id,
+	navLabel,
+	onClick,
+	status,
+	className,
+}: CardContainerProps) {
 	let borderStatusIndicator: string;
 	switch (status) {
 		case true:
@@ -23,7 +30,7 @@ function CardContainer({ children, id, navLabel, onClick, status, className }: C
 
 	return (
 		<div
-			className={`${className} ${borderStatusIndicator} w-[272px] h-[256px] p-4 bg-white rounded-2xl`}
+			className={`${className} ${borderStatusIndicator} w-[272px] min-h-[256px] p-4 bg-white rounded-2xl`}
 			id={id}
 			aria-label={navLabel}
 			onClick={onClick}
