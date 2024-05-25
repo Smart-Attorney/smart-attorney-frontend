@@ -1,3 +1,5 @@
+import { useState } from "react";
+import translateDoc from "../../features/translateDocuments/translateDocuments";
 import { FileForUploadObj } from "../../utils/types";
 import CardBody from "../Card/CardBody";
 import CardContainer from "../Card/CardContainer";
@@ -17,11 +19,35 @@ interface RenderDocumentProps {
 	removeFromFilesForUploadArray: (id: string) => void;
 }
 
-const RenderDocument = ({ file, removeFromFilesForUploadArray }: RenderDocumentProps) => {
+const RenderDocument = ({
+	file,
+	removeFromFilesForUploadArray,
+}: RenderDocumentProps) => {
+	const [translatedDocUrl, setTranslatedDocUrl] = useState<null | string>(null);
+
+	const handleTranslate = (fileName: string) => {
+		translateDoc(fileName)
+			.then((res) => {
+				setTranslatedDocUrl(res);
+			})
+			.catch((err) => {
+				window.alert("Failed to Translate Files");
+				console.log(err);
+			});
+	};
+
+	const downloadTranslatedFile = (url: string) => {
+		window.location.href = url ;
+    window.open(url);
+	};
+
 	return file.data ? (
 		<CardContainer key={file.id} id={file.id}>
 			<KebabMenuContainer>
-				<KebabMenu deleteFile={() => removeFromFilesForUploadArray(file.id)} />
+				<KebabMenu
+					deleteFile={() => removeFromFilesForUploadArray(file.id)}
+					onClickTranslate={() => handleTranslate(file.data.name)}
+				/>
 			</KebabMenuContainer>
 
 			<CardBody>
@@ -31,7 +57,18 @@ const RenderDocument = ({ file, removeFromFilesForUploadArray }: RenderDocumentP
 						<p className="text-xs">Ready for upload</p>
 					</div>
 					<CardName name={file.data.name} />
-					<Page className="self-center border border-black rounded-sm" pageNumber={1} height={125} />
+					{translatedDocUrl && (
+						<CardName
+							name="Download English Version"
+							viewFile={() => downloadTranslatedFile(translatedDocUrl)}
+						/>
+					)}
+
+					<Page
+						className="self-center border border-black rounded-sm"
+						pageNumber={1}
+						height={125}
+					/>
 				</Document>
 			</CardBody>
 		</CardContainer>

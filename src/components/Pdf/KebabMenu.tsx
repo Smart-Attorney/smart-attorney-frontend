@@ -2,6 +2,7 @@ import { useState } from "react";
 
 interface KebabMenuProps {
 	deleteFile: () => void;
+	onClickTranslate(): void;
 }
 
 function KebabMenu(props: KebabMenuProps) {
@@ -32,8 +33,17 @@ function KebabMenu(props: KebabMenuProps) {
 				style={{ display: isMenuOpen ? "block" : "none" }}
 				onMouseLeave={closeMenu}
 			>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDeleteAlert}>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={toggleDeleteAlert}
+				>
 					Delete
+				</li>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={props.onClickTranslate}
+				>
+					Translate
 				</li>
 			</ul>
 
@@ -46,10 +56,18 @@ function KebabMenu(props: KebabMenuProps) {
 					<h3 className="text-lg font-semibold w-max">Delete Case File?</h3>
 					<p className="w-full">This process cannot be undone.</p>
 					<div className="flex flex-row justify-between w-full">
-						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
+						<button
+							className="w-28 bg-[#c1c1c1] text-white rounded-md py-1"
+							type="button"
+							onClick={closeDeleteAlert}
+						>
 							Cancel
 						</button>
-						<button className="w-28 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={props.deleteFile}>
+						<button
+							className="w-28 bg-[#f15e5e] text-white rounded-md py-1"
+							type="button"
+							onClick={props.deleteFile}
+						>
 							Delete
 						</button>
 					</div>
