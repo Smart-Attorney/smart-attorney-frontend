@@ -274,7 +274,13 @@ function CaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar initialWidth={450} minWidth={1111} options={CASE_FOLDER} />
+				<SortBar
+					initialWidth={450}
+					minWidth={1111}
+					options={CASE_FOLDER}
+					unsortedArray={caseFiles}
+					setSortedArray={setCaseFiles}
+				/>
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={BtnIcon.PenPurple} />

@@ -3,10 +3,11 @@ import { useEffect, useRef } from "react";
 interface PillLabelContainerProps {
 	id?: string;
 	navLabel?: string;
+	className?: string;
 	children: React.ReactNode;
 }
 
-function PillLabelContainer({ id, navLabel, children }: PillLabelContainerProps) {
+function PillLabelContainer({ id, navLabel, className, children }: PillLabelContainerProps) {
 	const pillContainer = useRef<HTMLDivElement>(null);
 
 	// Stops background scroll when user mouse wheels while hovering pill labels
@@ -27,17 +28,27 @@ function PillLabelContainer({ id, navLabel, children }: PillLabelContainerProps)
 	 */
 	const handleMouseWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
 		const pillContainerScrollPosition = pillContainer.current ? pillContainer.current?.scrollLeft : 0;
-		pillContainer.current?.scrollTo({
-			top: 0,
-			left: pillContainerScrollPosition + event.deltaY,
-		});
+		// translates vertical mouse wheel motion to horizontal scroll motion
+		if (event.deltaX === 0) {
+			pillContainer.current?.scrollTo({
+				top: 0,
+				left: pillContainerScrollPosition + event.deltaY,
+			});
+		}
+		// translates horizontal mouse wheel motion to horizontal scroll motion
+		if (event.deltaY === 0) {
+			pillContainer.current?.scrollTo({
+				top: 0,
+				left: pillContainerScrollPosition + event.deltaX,
+			});
+		}
 	};
 
 	return (
 		<div
 			id={id}
 			aria-label={navLabel}
-			className="flex flex-row overflow-x-hidden overflow-y-hidden custom-scrollbar hover:overflow-x-auto gap-x-3 gap-y-1"
+			className={`${className} flex flex-row overflow-x-hidden overflow-y-hidden custom-scrollbar hover:overflow-x-auto gap-x-3 gap-y-1`}
 			ref={pillContainer}
 			onWheel={(event) => handleMouseWheelScroll(event)}
 		>

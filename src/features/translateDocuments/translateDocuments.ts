@@ -21,7 +21,7 @@ const translateDoc = async (fileName: string): Promise<string> => {
 	const res = await response.json();
 
 	if (response.status === 200) {
-		const noExtensionFileName = fileName.replaceAll(".pdf", "");
+		const noExtensionFileName: string = fileName.replaceAll(".pdf", "");
 		const translatedDoc = `${translatedDocPath}/${bucketName}_${noExtensionFileName}_${language}_translations.pdf`;
 
 		return Promise.resolve(translatedDoc);

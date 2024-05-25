@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { SortOptionsObj } from "../../utils/constants/sort-options";
-import { sortArrayByOption } from "../../utils/sort";
-import { DashboardFolderCardObj } from "../../utils/types";
+import { sortArrayByOption, UnsortedArray } from "../../utils/sort";
+import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
 import SortOption from "./SortOption";
 
 /* 
@@ -18,8 +18,10 @@ interface SortBarProps {
 	// value of window width before the sort bar resizes
 	minWidth: number;
 	options: SortOptionsObj[];
-	unsortedArray?: DashboardFolderCardObj[] | null;
-	setSortedArray?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
+	unsortedArray?: UnsortedArray | null;
+	setSortedArray?:
+		| React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>
+		| React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
 }
 
 function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArray }: SortBarProps) {
@@ -62,29 +64,46 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 
 	const handleMouseWheelScroll = (event: React.WheelEvent<HTMLDivElement>) => {
 		const optionsContainerScrollPosition = optionsContainer.current ? optionsContainer.current?.scrollLeft : 0;
-		optionsContainer.current?.scrollTo({
-			top: 0,
-			left: optionsContainerScrollPosition + event.deltaY,
-		});
+		// translates vertical mouse wheel motion to horizontal scroll motion
+		if (event.deltaX === 0) {
+			optionsContainer.current?.scrollTo({
+				top: 0,
+				left: optionsContainerScrollPosition + event.deltaY,
+			});
+		}
+		// translates horizontal mouse wheel motion to horizontal scroll motion
+		if (event.deltaY === 0) {
+			optionsContainer.current?.scrollTo({
+				top: 0,
+				left: optionsContainerScrollPosition + event.deltaX,
+			});
+		}
 	};
 
 	/************************************************************/
 
 	const handleSortCardsByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
-		const { id } = event.target as HTMLParagraphElement;
+		const { id: selectedOption } = event.target as HTMLParagraphElement;
 		setSortOptions((prev) =>
 			prev.map((option) =>
-				id === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
+				selectedOption === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 			)
 		);
 		if (unsortedArray && setSortedArray) {
-			/* 
-        Reason for this shallow copy:
-        "React components automatically re-render whenever there is a change in their state or props. In your example, sortedPlans.sort is sorting the array in place and returning that very same array, and thus you never actually update the state. The easiest way is to just copy the state, modify the copy, then setting the state equal to the copy and then the state gets updated and the component re-renders."
-        Source: https://stackoverflow.com/questions/71766944/react-setstate-not-triggering-re-render
-      */
+			/** Reason for this shallow copy:
+			 * "React components automatically re-render whenever there is a change in
+			 *  their state or props. In your example, sortedPlans.sort is sorting the
+			 *  array in place and returning that very same array, and thus you never
+			 *  actually update the state. The easiest way is to just copy the state,
+			 *  modify the copy, then setting the state equal to the copy and then
+			 *  the state gets updated and the component re-renders."
+			 *Source: https://stackoverflow.com/questions/71766944/react-setstate-not-triggering-re-render
+			 */
 			const newArray = [...unsortedArray];
-			const sortedArray = sortArrayByOption(newArray, id) as DashboardFolderCardObj[];
+
+			// @ts-ignore: cannot resolve type narrowing on newArray
+			const sortedArray = sortArrayByOption(newArray, selectedOption);
+			// @ts-ignore: cannot resolve type narrowing on sortedArray
 			setSortedArray(sortedArray);
 		}
 	};
@@ -121,10 +140,3 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 }
 
 export default SortBar;
-
-/**
- * Detect which type of scrolling device is used: mouse/trackpad 
- * Disable/enable horizonal mouse scrolling behavior based on device
- * https://codepen.io/smvilar/pen/JNgZqy?editors=0010
- * https://stackoverflow.com/questions/10744645/detect-touchpad-vs-mouse-in-javascript
- */

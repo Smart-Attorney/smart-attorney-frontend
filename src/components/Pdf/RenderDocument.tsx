@@ -37,8 +37,8 @@ const RenderDocument = ({
 	};
 
 	const downloadTranslatedFile = (url: string) => {
-		window.location = url;
-		window.open(url);
+		window.location.href = url ;
+    window.open(url);
 	};
 
 	return file.data ? (

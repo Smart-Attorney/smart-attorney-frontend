@@ -1,4 +1,4 @@
-import { CaseFileObj, FileStatus } from "../../../utils/types";
+import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseFileDAO } from "../dao/case-file-dao";
 
@@ -53,7 +53,7 @@ export class CaseFileService {
 		return null;
 	}
 
-	static async updateFileStatus(folderId: string, fileId: string, newStatus: FileStatus) {
+	static async updateFileStatus(folderId: string, fileId: string, newStatus: DocumentStatus) {
 		if (!folderId || !fileId || !newStatus) {
 			return null;
 		}

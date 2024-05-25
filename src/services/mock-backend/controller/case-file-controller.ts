@@ -1,6 +1,6 @@
 import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
 import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
-import { FileStatus } from "../../../utils/types";
+import { DocumentStatus } from "../../../utils/types";
 import { CaseFileService } from "../service/case-file-service";
 
 export class CaseFileController {
@@ -61,7 +61,7 @@ export class CaseFileController {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
 		const fileId = urlArray[urlArray.length - 1];
-		const newStatus: FileStatus = await request.json();
+		const newStatus: DocumentStatus = await request.json();
 		const updatedFileStatus = await CaseFileService.updateFileStatus(folderId, fileId, newStatus);
 		if (updatedFileStatus !== null) {
 			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);

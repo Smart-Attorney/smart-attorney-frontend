@@ -77,11 +77,13 @@ function CreateCaseFolder() {
 	/************************************************************/
 
 	const createNewCase = async (): Promise<void> => {
-		if (
-			caseFolderName.trim() === defaultCaseName ||
-			caseFolderName.trim().length === 0
-		) {
-			alert("Please change the case name before creating.");
+		/* Allows the user to create a case folder without changing the default case name. */
+		// if (caseFolderName.trim() === defaultCaseName) {
+		// 	alert("Please change the default case name before creating.");
+		// 	return;
+		// }
+		if (caseFolderName.trim().length === 0) {
+			alert("Case name cannot be blank. Please change case name before creating.");
 			return;
 		}
 		if (filesForUpload.length > 0) {
@@ -208,17 +210,17 @@ function CreateCaseFolder() {
 		dropAreaRef.current?.click();
 	};
 
-	const addToFilesForUploadArray = (filesFromUser: FileList): void => {
-		for (let i = 0; i < filesFromUser.length; i++) {
-			setFilesForUpload((prev) => [
-				...prev,
-				{
-					id: nanoid(8),
-					data: filesFromUser[i],
-				},
-			]);
-		}
-	};
+	// const addToFilesForUploadArray = (filesFromUser: FileList): void => {
+	// 	for (let i = 0; i < filesFromUser.length; i++) {
+	// 		setFilesForUpload((prev) => [
+	// 			...prev,
+	// 			{
+	// 				id: nanoid(8),
+	// 				data: filesFromUser[i],
+	// 			},
+	// 		]);
+	// 	}
+	// };
 
 	const removeFromFilesForUploadArray = (fileId: string): void => {
 		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
@@ -231,7 +233,7 @@ function CreateCaseFolder() {
 				if (Array.isArray(res)) {
 					setFilesForUpload((prev) => [
 						...prev,
-						...fileArr.map((file, i) => ({
+						...fileArr.map((_file, i) => ({
 							id: nanoid(8),
 							data: fileList[i],
 						})),
