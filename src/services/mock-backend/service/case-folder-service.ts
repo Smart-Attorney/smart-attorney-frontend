@@ -95,7 +95,7 @@ export class CaseFolderService {
 		// delete files from cloud storage
 		const caseFiles = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
 		const promiseArray = [];
-		for (let i = 0; i < caseFiles.length; i++) {
+		for (let i = 0, n = caseFiles.length; i < n; i++) {
 			promiseArray.push(await Firebase.deleteFileById(userId, folderId, caseFiles[i].id));
 		}
 		const cloudFilesDeleted = await Promise.all(promiseArray);

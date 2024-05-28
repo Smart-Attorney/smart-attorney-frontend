@@ -9,7 +9,7 @@ export class UserDAO extends DAO {
 
 	static async getUserIdByCompanyEmail(companyEmail: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
-		for (let i = 0; i < userArray.length; i++) {
+		for (let i = 0, n = userArray.length; i < n; i++) {
 			if (userArray[i].company_email === companyEmail) {
 				return userArray[i].user_id;
 			}
@@ -19,7 +19,7 @@ export class UserDAO extends DAO {
 
 	static async getUserIdByPassword(password: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
-		for (let i = 0; i < userArray.length; i++) {
+		for (let i = 0, n = userArray.length; i < n; i++) {
 			if (userArray[i].password === password) {
 				return userArray[i].user_id;
 			}
@@ -29,7 +29,7 @@ export class UserDAO extends DAO {
 
 	static async getUserById(userId: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
-		for (let i = 0; i < userArray.length; i++) {
+		for (let i = 0, n = userArray.length; i < n; i++) {
 			if (userArray[i].user_id === userId) {
 				return userArray[i];
 			}

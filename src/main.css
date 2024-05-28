@@ -96,3 +96,7 @@ body {
 		scrollbar-width: thin;
 	}
 }
+
+.hide {
+	display: none;
+}

@@ -12,7 +12,7 @@ function GenerateModal({ closeModal }: GenerateModalProps) {
 	// @ts-ignore
 	const parseSelectedFiles = (files: FileList): string => {
 		let chatGptInput = "";
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0, n = files.length; i < n; i++) {
 			const fileString = fileExtractor(files[i]);
 
 			fileString.then((res) => chatGptInput + res);
