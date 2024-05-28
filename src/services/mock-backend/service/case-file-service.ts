@@ -8,7 +8,7 @@ export class CaseFileService {
 			return null;
 		}
 		const fileArray: CaseFileObj[] = [];
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0, n = files.length; i < n; i++) {
 			const { name } = files[i];
 			const fileId = name.split("/")[0];
 			const fileName = name.split("/")[1];

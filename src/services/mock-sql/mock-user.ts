@@ -21,7 +21,7 @@ export class MockUser {
 		const uniqueUsersArray = [];
 		const mockUserArray = [];
 		const userArray = JSON.parse(localStorage.getItem("users") as string);
-		for (let i = 0; i < userArray.length; i++) {
+		for (let i = 0, n = userArray.length; i < n; i++) {
 			const fNameMatch = userArray[i].first_name === this.mockUser.first_name;
 			const lNameMatch = userArray[i].last_name === this.mockUser.last_name;
 			const cEmailMatch = userArray[i].company_email === this.mockUser.company_email;
@@ -38,7 +38,7 @@ export class MockUser {
 
 	static mockUserExists = (): boolean => {
 		const userArray: Users[] = JSON.parse(localStorage.getItem("users") as string);
-		for (let i = 0; i < userArray.length; i++) {
+		for (let i = 0, n = userArray.length; i < n; i++) {
 			const idMatch = userArray[i].user_id === this.mockUser.user_id;
 			const fNameMatch = userArray[i].first_name === this.mockUser.first_name;
 			const lNameMatch = userArray[i].last_name === this.mockUser.last_name;

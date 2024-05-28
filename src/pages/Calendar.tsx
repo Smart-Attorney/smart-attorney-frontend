@@ -22,7 +22,7 @@ function Calendar() {
 			if (response.ok) {
 				const data: CalendarDeadlines[] = await response.json();
 				const deadlines: Event[] = [];
-				for (let i = 0; i < data.length; i++) {
+				for (let i = 0, n = data.length; i < n; i++) {
 					const stringDate = Format.dateForInputDisplay(data[i].deadline);
 					deadlines.push({
 						start: dayjs(stringDate).toDate(),

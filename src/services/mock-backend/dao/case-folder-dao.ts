@@ -11,7 +11,7 @@ export class CaseFolderDAO extends DAO {
 	static async getAllCaseFoldersByUserId(userId: string) {
 		const userCaseFolders: DashboardFolderCardObj[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId) {
 				const caseFolderId = caseFolderArray[i].folder_id;
 				const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(caseFolderId);
@@ -33,7 +33,7 @@ export class CaseFolderDAO extends DAO {
 
 	static async getCaseFolderById(folderId: string) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].folder_id === folderId) {
 				const caseFolder: CaseFolderObj = {
 					id: caseFolderArray[i].folder_id,
@@ -52,7 +52,7 @@ export class CaseFolderDAO extends DAO {
 	static async getCaseFolderDeadlinesByUserId(userId: string) {
 		const deadlines: CalendarDeadlines[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId) {
 				deadlines.push({
 					folder_id: caseFolderArray[i].folder_id,
@@ -91,7 +91,7 @@ export class CaseFolderDAO extends DAO {
 
 	static async updateDeadline(userId: string, folderId: string, newDeadline: number) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
 				caseFolderArray[i].deadline = newDeadline;
 				break;
@@ -106,7 +106,7 @@ export class CaseFolderDAO extends DAO {
 
 	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
 				caseFolderArray[i].last_opened_date = newDate;
 				break;
@@ -121,7 +121,7 @@ export class CaseFolderDAO extends DAO {
 
 	static async updateName(userId: string, folderId: string, newName: string) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
 				caseFolderArray[i].folder_name = newName;
 				break;
@@ -136,7 +136,7 @@ export class CaseFolderDAO extends DAO {
 
 	static async updateStatus(userId: string, folderId: string, currentStatus: boolean) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
 				caseFolderArray[i].status = !currentStatus;
 				break;
@@ -152,7 +152,7 @@ export class CaseFolderDAO extends DAO {
 	static async deleteCaseFolderById(userId: string, folderId: string) {
 		const updatedArray: CaseFolders[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		for (let i = 0; i < caseFolderArray.length; i++) {
+		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
 				continue;
 			}
