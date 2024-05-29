@@ -3,31 +3,31 @@ import { useEffect, useState } from "react";
 import { Event } from "react-big-calendar";
 import { CalendarWhite } from "../assets/smart-attorney-figma/sidebar";
 import EventCalendar from "../features/calendar/EventCalendar";
-import { getUserCaseFolders } from "../features/calendar/api/get-case-folders";
+import { getUserDocumentDeadlines } from "../features/calendar/api/get-document-deadlines";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
-import { CalendarDeadlines } from "../services/mock-sql/schemas";
 import { Format } from "../utils/format";
+import { CaseFileObj } from "../utils/types";
 
 function Calendar() {
 	const [events, setEvents] = useState<Event[]>();
 
 	useEffect(() => {
-		handleGetCaseDeadlines();
+		handleGetDocumentDeadlines();
 	}, []);
 
-	const handleGetCaseDeadlines = async () => {
+	const handleGetDocumentDeadlines = async () => {
 		try {
-			const response = await getUserCaseFolders();
+			const response = await getUserDocumentDeadlines();
 			if (response.ok) {
-				const data: CalendarDeadlines[] = await response.json();
+				const data: CaseFileObj[] = await response.json();
 				const deadlines: Event[] = [];
 				for (let i = 0, n = data.length; i < n; i++) {
 					const stringDate = Format.dateForInputDisplay(data[i].deadline);
 					deadlines.push({
 						start: dayjs(stringDate).toDate(),
 						end: dayjs(stringDate).toDate(),
-						title: data[i].folder_name,
+						title: data[i].name,
 					});
 				}
 				setEvents(deadlines);

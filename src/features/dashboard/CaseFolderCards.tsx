@@ -11,12 +11,11 @@ import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import type { DashboardFolderCardObj } from "../../utils/types";
+import type { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
-import { updateDeadline } from "./api/update-deadline";
 import { UpdateCaseFolderStatusDTO, updateStatus } from "./api/update-status";
 
 interface CaseFolderCardProps {
@@ -46,22 +45,22 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleUpdateFolderDeadline = async (
-		folderId: string,
-		event: React.ChangeEvent<HTMLInputElement>
-	): Promise<void> => {
-		const { value } = event.target;
-		const deadlineInUnixTime = Date.parse(value);
-		try {
-			const response = await updateDeadline(folderId, deadlineInUnixTime);
-			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
-			}
-		} catch (error) {
-			alert(error);
-		}
-	};
+	// const handleUpdateFolderDeadline = async (
+	// 	folderId: string,
+	// 	event: React.ChangeEvent<HTMLInputElement>
+	// ): Promise<void> => {
+	// 	const { value } = event.target;
+	// 	const deadlineInUnixTime = Date.parse(value);
+	// 	try {
+	// 		const response = await updateDeadline(folderId, deadlineInUnixTime);
+	// 		if (response.ok) {
+	// 			const data: DashboardFolderCardObj[] = await response.json();
+	// 			setCaseFolders(data);
+	// 		}
+	// 	} catch (error) {
+	// 		alert(error);
+	// 	}
+	// };
 
 	const handleAddFolderLabel = async (folderId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
@@ -114,6 +113,24 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
+	const getMostUrgentDocumentDeadline = (documents: CaseFileObj[]) => {
+		if (!documents) return 0;
+		const placeholderDate = 3250368000000; // (milliseconds) Wed Jan 01 3000 00:00:00 GMT+0000
+		const currentDate = Date.now();
+		let mostUrgentDeadline = placeholderDate;
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].deadline === 0) continue;
+			if (documents[i].deadline < currentDate) continue;
+			if (documents[i].deadline < mostUrgentDeadline) {
+				mostUrgentDeadline = documents[i].deadline;
+			}
+		}
+		if (mostUrgentDeadline === placeholderDate) {
+			return 0;
+		}
+		return mostUrgentDeadline;
+	};
+
 	// to identify which parts of the card allows navigation when clicked
 	const allowNavigateString = "allow-nav";
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
@@ -146,11 +163,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 							<KebabMenu
 								id="kebab-menu"
 								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.status)}
-								addDeadline={(event) => {
-									// commenting this out to see if it breaks anything
-									// event.stopPropagation(),
-									handleUpdateFolderDeadline(caseFolder.id, event);
-								}}
+								// addDeadline={(event) => {
+								// 	handleUpdateFolderDeadline(caseFolder.id, event);
+								// }}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
@@ -159,7 +174,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						<CardBody navLabel={allowNavigateString}>
 							<CardHeaderContainer navLabel={allowNavigateString}>
 								<PillLabelContainer navLabel={allowNavigateString} className="ml-6">
-									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.deadline} />
+									<CardDeadline
+										navLabel={allowNavigateString}
+										deadline={getMostUrgentDocumentDeadline(caseFolder.files)}
+									/>
 									<CardLabels
 										navLabel={allowNavigateString}
 										labels={caseFolder.labels}
