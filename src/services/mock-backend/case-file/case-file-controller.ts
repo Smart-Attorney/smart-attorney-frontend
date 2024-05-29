@@ -1,7 +1,7 @@
 import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
 import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
 import { DocumentStatus } from "../../../utils/types";
-import { CaseFileService } from "../service/case-file-service";
+import { CaseFileService } from "./case-file-service";
 
 export class CaseFileController {
 	static async createCaseFiles(request: Request) {

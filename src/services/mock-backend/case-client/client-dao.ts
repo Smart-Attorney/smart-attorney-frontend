@@ -2,7 +2,7 @@ import { nanoid } from "../../../lib/nanoid";
 import { ClientObj } from "../../../utils/types";
 import { Clients, sex_options } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { DAO } from "./dao";
+import { DAO } from "../dao";
 
 export class ClientDAO extends DAO {
 	private static CLIENT_STORAGE_KEY = MockSqlTables.table.CLIENTS;

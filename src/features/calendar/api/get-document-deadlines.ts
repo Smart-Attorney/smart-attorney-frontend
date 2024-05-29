@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFileController } from "../../../services/mock-backend/controller/case-file-controller";
+import { CaseFileController } from "../../../services/mock-backend/case-file/case-file-controller";
 
 const mockApi = async () => {
 	const request = mockRequest.get(`/calendar`);

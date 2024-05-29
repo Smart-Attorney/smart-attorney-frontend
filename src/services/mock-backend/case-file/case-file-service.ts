@@ -1,7 +1,7 @@
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
-import { CaseFileDAO } from "../dao/case-file-dao";
-import { CaseFolderDAO } from "../dao/case-folder-dao";
+import { CaseFileDAO } from "../case-file/case-file-dao";
+import { CaseFolderDAO } from "../case-folder/case-folder-dao";
 
 export class CaseFileService {
 	static async createCaseFiles(userId: string, folderId: string, files: File[]) {

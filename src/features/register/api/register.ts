@@ -1,7 +1,7 @@
 import { useMock } from "../../../config/use-mock";
 import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
-import { UserController } from "../../../services/mock-backend/controller/user-controller";
+import { UserController } from "../../../services/mock-backend/user/user-controller";
 
 export interface RegisterCredentialsDTO {
 	firstName: string;

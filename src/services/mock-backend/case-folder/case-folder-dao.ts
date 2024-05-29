@@ -1,9 +1,9 @@
 import { CaseFolderObj, DashboardFolderCardObj } from "../../../utils/types";
 import { CalendarDeadlines, CaseFolders } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { CaseFileDAO } from "./case-file-dao";
-import { DAO } from "./dao";
-import { FolderLabelDAO } from "./folder-label-dao";
+import { CaseFileDAO } from "../case-file/case-file-dao";
+import { FolderLabelDAO } from "../case-folder-label/folder-label-dao";
+import { DAO } from "../dao";
 
 export class CaseFolderDAO extends DAO {
 	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.table.CASE_FOLDERS;
