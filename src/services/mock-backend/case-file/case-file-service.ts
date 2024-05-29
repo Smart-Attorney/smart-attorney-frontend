@@ -1,7 +1,7 @@
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseFileDAO } from "../case-file/case-file-dao";
-import { CaseFolderDAO } from "../case-folder/case-folder-dao";
+import { CaseFolderService } from "../case-folder/case-folder-service";
 
 export class CaseFileService {
 	static async createCaseFiles(userId: string, folderId: string, files: File[]) {
@@ -57,7 +57,7 @@ export class CaseFileService {
 	static async getDocumentDeadlines(userId: string) {
 		if (!userId) return null;
 		let documents: CaseFileObj[] = [];
-		const userCaseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
+		const userCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
 		for (let i = 0, n = userCaseFolders.length; i < n; i++) {
 			if (userCaseFolders[i].files.length === 0) continue;
 			userCaseFolders[i].files.forEach((document) => {

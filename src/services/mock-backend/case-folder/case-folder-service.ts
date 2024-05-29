@@ -1,4 +1,5 @@
 import { UpdateCaseFolderDeadlineDTO } from "../../../features/dashboard/api/update-deadline";
+import { DashboardFolderCardObj } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { ClientDAO } from "../case-client/client-dao";
 import { CaseFileDAO } from "../case-file/case-file-dao";
@@ -7,9 +8,22 @@ import { CaseFolderDAO } from "./case-folder-dao";
 
 export class CaseFolderService {
 	static async getAllCaseFoldersByUserId(userId: string) {
-		const userCaseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
-		if (userCaseFolders.length === 0) {
-			return null;
+		let userCaseFolders: DashboardFolderCardObj[] = [];
+		const caseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
+		for (let i = 0, n = caseFolders.length; i < n; i++) {
+			const folderId = caseFolders[i].folder_id;
+			const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
+			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+			userCaseFolders.push({
+				id: caseFolders[i].folder_id,
+				name: caseFolders[i].folder_name,
+				createdDate: caseFolders[i].created_date,
+				lastOpenedDate: caseFolders[i].last_opened_date,
+				status: caseFolders[i].status,
+				deadline: caseFolders[i].deadline,
+				labels: labels,
+				files: documents,
+			});
 		}
 		return userCaseFolders;
 	}

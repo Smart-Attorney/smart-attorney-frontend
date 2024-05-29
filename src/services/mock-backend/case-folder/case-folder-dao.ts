@@ -1,34 +1,20 @@
-import { CaseFolderObj, DashboardFolderCardObj } from "../../../utils/types";
+import { CaseFolderObj } from "../../../utils/types";
 import { CalendarDeadlines, CaseFolders } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { CaseFileDAO } from "../case-file/case-file-dao";
-import { FolderLabelDAO } from "../case-folder-label/folder-label-dao";
 import { DAO } from "../dao";
 
 export class CaseFolderDAO extends DAO {
 	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.table.CASE_FOLDERS;
 
 	static async getAllCaseFoldersByUserId(userId: string) {
-		const userCaseFolders: DashboardFolderCardObj[] = [];
+		const caseFolders: CaseFolders[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId) {
-				const caseFolderId = caseFolderArray[i].folder_id;
-				const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(caseFolderId);
-				const files = await CaseFileDAO.getAllFilesByCaseFolderId(caseFolderId);
-				userCaseFolders.push({
-					id: caseFolderArray[i].folder_id,
-					name: caseFolderArray[i].folder_name,
-					createdDate: caseFolderArray[i].created_date,
-					lastOpenedDate: caseFolderArray[i].last_opened_date,
-					status: caseFolderArray[i].status,
-					deadline: caseFolderArray[i].deadline,
-					labels: labels,
-					files: files,
-				});
+				caseFolders.push(caseFolderArray[i]);
 			}
 		}
-		return userCaseFolders;
+		return caseFolders;
 	}
 
 	static async getCaseFolderById(folderId: string) {
