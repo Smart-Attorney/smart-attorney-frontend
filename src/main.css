@@ -5,11 +5,11 @@
 @layer components {
 	/* The 'r' stands for responsive; would've been
   too long of a class name if I typed it all out. */
-	.grid-card-layout-r {
+	/* .grid-card-layout-r {
 		@apply grid gap-8 min-[2300px]:grid-cols-6 
            min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4 
            min-[1100px]:grid-cols-3 min-[650px]:grid-cols-2;
-	}
+	} */
 }
 
 /* Font family specified by Figma wireframe. */
