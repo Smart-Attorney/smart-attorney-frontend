@@ -1,4 +1,4 @@
-import { CaseFileObj, FileStatus } from "../../../utils/types";
+import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseFileDAO } from "../dao/case-file-dao";
 
@@ -8,7 +8,7 @@ export class CaseFileService {
 			return null;
 		}
 		const fileArray: CaseFileObj[] = [];
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0, n = files.length; i < n; i++) {
 			const { name } = files[i];
 			const fileId = name.split("/")[0];
 			const fileName = name.split("/")[1];
@@ -53,7 +53,7 @@ export class CaseFileService {
 		return null;
 	}
 
-	static async updateFileStatus(folderId: string, fileId: string, newStatus: FileStatus) {
+	static async updateFileStatus(folderId: string, fileId: string, newStatus: DocumentStatus) {
 		if (!folderId || !fileId || !newStatus) {
 			return null;
 		}

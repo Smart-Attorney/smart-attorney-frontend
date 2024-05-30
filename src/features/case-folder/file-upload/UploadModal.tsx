@@ -25,7 +25,7 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 
 		const filesFormData = new FormData();
 		filesFormData.append("caseFolderId", caseFolderId);
-		for (let i = 0; i < filesForUpload.length; i++) {
+		for (let i = 0, n = filesForUpload.length; i < n; i++) {
 			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
 
@@ -33,7 +33,7 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 			const response = await createCaseFiles(caseFolderId, filesFormData);
 			if (response.ok) {
 				const createdCaseFiles: CaseFileObj[] = await response.json();
-				for (let i = 0; i < createdCaseFiles.length; i++) {
+				for (let i = 0, n = createdCaseFiles.length; i < n; i++) {
 					addUploadedFileToCaseFileArray(createdCaseFiles[i]);
 				}
 				setUploadDone(true);
@@ -47,7 +47,7 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 	};
 
 	const addFilesToUploadArray = (files: FileList): void => {
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0, n = files.length; i < n; i++) {
 			setFilesForUpload((prev) => [
 				...prev,
 				{

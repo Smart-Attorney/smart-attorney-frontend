@@ -62,7 +62,7 @@ function Dashboard() {
 				<h1 className="text-3xl font-bold text-white">Case Dashboard</h1>
 			</PageHeader>
 
-			<SearchBar />
+			<SearchBar cards={caseFolders} />
 
 			<SortBarWithButtons>
 				<SortBar

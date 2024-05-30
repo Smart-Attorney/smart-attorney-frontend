@@ -58,8 +58,7 @@ function CaseFolder() {
 
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const newCaseFolderName = useRef<string>("");
-	const [caseFolderNameEditable, setCaseFolderNameEditable] =
-		useState<boolean>(false);
+	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(false);
 	const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
@@ -124,9 +123,7 @@ function CaseFolder() {
 		}
 	};
 
-	const handleGetFileToView = async (
-		event: React.MouseEvent<HTMLParagraphElement>
-	): Promise<void> => {
+	const handleGetFileToView = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id } = event.target as HTMLParagraphElement;
 		try {
 			const response = await getCaseFileByIdFromDB(folderId.current!, id);
@@ -174,10 +171,7 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const handleUpdateCaseFolderName = async (
-		folderId: string,
-		newFolderName: string
-	) => {
+	const handleUpdateCaseFolderName = async (folderId: string, newFolderName: string) => {
 		try {
 			const response = await updateCaseFolderName(folderId, newFolderName);
 			if (response.ok) {
@@ -193,9 +187,7 @@ function CaseFolder() {
 		setCaseFolderNameEditable(true);
 	};
 
-	const handleEnterKeyPress = (
-		event: React.KeyboardEvent<HTMLHeadingElement>
-	): void => {
+	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
 		if (event.key !== "Enter") return;
 		const { innerHTML } = event.target as HTMLHeadingElement;
 		if (innerHTML.trim().length === 0) {
@@ -204,9 +196,7 @@ function CaseFolder() {
 		caseFolderNameRef.current?.blur();
 	};
 
-	const handleCaseFolderNameBlur = (
-		event: React.FocusEvent<HTMLHeadingElement>
-	) => {
+	const handleCaseFolderNameBlur = (event: React.FocusEvent<HTMLHeadingElement>) => {
 		const { innerHTML: newFolderName } = event.target;
 		setCaseFolderNameEditable(false);
 		if (newFolderName === caseFolder.name) {
@@ -219,10 +209,7 @@ function CaseFolder() {
 
 	const handleUpdateLastOpenedDate = async (): Promise<void> => {
 		try {
-			const response = await updateLastOpenedDate(
-				folderId.current!,
-				Date.now()
-			);
+			const response = await updateLastOpenedDate(folderId.current!, Date.now());
 			if (response.ok) {
 				// do nothing here since this function is fired after the component unmounts
 			}
@@ -271,24 +258,21 @@ function CaseFolder() {
 				</h1>
 			</PageHeader>
 
-			<SearchBar />
+			<SearchBar cards={caseFiles} />
 
 			<SortBarWithButtons>
-				<SortBar initialWidth={450} minWidth={1111} options={CASE_FOLDER} />
+				<SortBar
+					initialWidth={450}
+					minWidth={1111}
+					options={CASE_FOLDER}
+					unsortedArray={caseFiles}
+					setSortedArray={setCaseFiles}
+				/>
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={BtnIcon.PenPurple} />
-					<PillButton
-						name="Upload"
-						type="button"
-						img={BtnIcon.UploadPurple}
-						onClick={toggleUploadModal}
-					/>
-					<PillButton
-						name="Translate"
-						type="button"
-						img={BtnIcon.SphereLatticePurple}
-					/>
+					<PillButton name="Upload" type="button" img={BtnIcon.UploadPurple} onClick={toggleUploadModal} />
+					<PillButton name="Translate" type="button" img={BtnIcon.SphereLatticePurple} />
 					<PillSpecialButton
 						name="Generate"
 						type="button"
@@ -323,9 +307,7 @@ function CaseFolder() {
 				/>
 			)}
 
-			{generateModalOpen && (
-				<GenerateModal closeModal={closeGenerateModal} files={caseFiles} />
-			)}
+			{generateModalOpen && <GenerateModal closeModal={closeGenerateModal} files={caseFiles} />}
 
 			{clientModalOpen && (
 				<ClientModal

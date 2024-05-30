@@ -23,7 +23,7 @@ export interface CaseFiles {
 	file_name: string;
 	created_date: number;
 	last_opened_date: number;
-	status: file_status;
+	status: document_status;
 	deadline: number; // as unix time
 	url: string;
 	case_folder_id_fk: string;
@@ -55,7 +55,7 @@ export interface CalendarDeadlines {
 
 export type sex_options = "Male" | "Female" | "Other";
 
-export type file_status = "In Progress" | "In Review" | "Submitted";
+export type document_status = "In Progress" | "In Review" | "Submitted";
 
 // update these refs
 /* 

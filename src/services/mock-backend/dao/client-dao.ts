@@ -9,7 +9,7 @@ export class ClientDAO extends DAO {
 
 	static async getClientByCaseFolderId(caseFolderId: string) {
 		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
-		for (let i = 0; i < clientArray.length; i++) {
+		for (let i = 0, n = clientArray.length; i < n; i++) {
 			if (clientArray[i].case_folder_id_fk === caseFolderId) {
 				const caseFolderClient: ClientObj = {
 					id: clientArray[i].client_id,
@@ -60,7 +60,7 @@ export class ClientDAO extends DAO {
 	static async deleteClientByFolderId(folderId: string) {
 		const updatedArray: Clients[] = [];
 		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
-		for (let i = 0; i < clientArray.length; i++) {
+		for (let i = 0, n = clientArray.length; i < n; i++) {
 			if (clientArray[i].case_folder_id_fk === folderId) {
 				continue;
 			}
