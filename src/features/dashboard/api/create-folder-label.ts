@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { FolderLabelController } from "../../../services/mock-backend/controller/folder-label-controller";
+import { FolderLabelController } from "../../../services/mock-backend/case-folder-label/folder-label-controller";
 
 export type CreateFolderLabelDTO = string;
 

@@ -2,7 +2,7 @@ import { RegisterCredentialsDTO } from "../../../features/register/api/register"
 import { nanoid } from "../../../lib/nanoid";
 import { Users } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { DAO } from "./dao";
+import { DAO } from "../dao";
 
 export class UserDAO extends DAO {
 	private static USER_STORAGE_KEY = MockSqlTables.table.USERS;

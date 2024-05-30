@@ -2,7 +2,7 @@ import { nanoid } from "../../../lib/nanoid";
 import { CaseFolderLabelObj } from "../../../utils/types";
 import { FolderLabels } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { DAO } from "./dao";
+import { DAO } from "../dao";
 
 export class FolderLabelDAO extends DAO {
 	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.table.FOLDER_LABELS;

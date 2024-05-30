@@ -2,7 +2,7 @@ import { UpdateCaseFolderNameDTO } from "../../../features/case-folder/api/updat
 import { UpdateCaseFolderLastOpenedDateDTO } from "../../../features/case-folder/api/update-last-opened-date";
 import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
 import { UpdateCaseFolderDeadlineDTO } from "../../../features/dashboard/api/update-deadline";
-import { CaseFolderService } from "../service/case-folder-service";
+import { CaseFolderService } from "./case-folder-service";
 
 export class CaseFolderController {
 	static async getUserCaseFolders(request: Request) {

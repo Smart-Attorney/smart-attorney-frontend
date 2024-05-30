@@ -1,5 +1,5 @@
 import { CreateFolderLabelDTO } from "../../../features/dashboard/api/create-folder-label";
-import { FolderLabelDAO } from "../dao/folder-label-dao";
+import { FolderLabelDAO } from "./folder-label-dao";
 
 export class FolderLabelService {
 	static async createFolderLabel(folderId: string, label: CreateFolderLabelDTO) {

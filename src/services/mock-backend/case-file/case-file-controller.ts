@@ -1,7 +1,7 @@
 import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
 import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
 import { DocumentStatus } from "../../../utils/types";
-import { CaseFileService } from "../service/case-file-service";
+import { CaseFileService } from "./case-file-service";
 
 export class CaseFileController {
 	static async createCaseFiles(request: Request) {
@@ -54,6 +54,23 @@ export class CaseFileController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with retrieving the case file.");
+		}
+	}
+
+	static async getDocumentDeadlines(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const retrievedDocumentDeadlines = await CaseFileService.getDocumentDeadlines(userId);
+		if (retrievedDocumentDeadlines != null) {
+			const body = JSON.stringify(retrievedDocumentDeadlines);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with retrieving the document deadlines.");
 		}
 	}
 

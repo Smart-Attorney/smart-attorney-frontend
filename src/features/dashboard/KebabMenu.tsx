@@ -1,42 +1,41 @@
 import { useState } from "react";
-import { CloseIcon } from "../../assets/misc";
 
 interface KebabMenuProps {
 	id: string;
 	updateStatus: () => void;
-	addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	// addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	addLabel: (event: React.FormEvent<HTMLFormElement>) => void;
 	deleteFolder: () => void;
 }
 
-function KebabMenu({ id, updateStatus, addDeadline, addLabel, deleteFolder }: KebabMenuProps) {
+function KebabMenu({ id, updateStatus, addLabel, deleteFolder }: KebabMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+	// const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
 	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
 	const toggleMenu = (): void => setIsMenuOpen((prev) => !prev);
 
-	const toggleDatePicker = (): void => {
-		closeLabelInput();
-		closeDeleteAlert();
-		setIsDatePickerOpen((prev) => !prev);
-	};
+	// const toggleDatePicker = (): void => {
+	// 	closeLabelInput();
+	// 	closeDeleteAlert();
+	// 	setIsDatePickerOpen((prev) => !prev);
+	// };
 
 	const toggleLabelInput = (): void => {
-		closeDatePicker();
+		// closeDatePicker();
 		closeDeleteAlert();
 		setIsLabelInputOpen((prev) => !prev);
 	};
 
 	const toggleDeleteAlert = (): void => {
-		closeDatePicker();
+		// closeDatePicker();
 		closeLabelInput();
 		setIsDeleteAlertOpen((prev) => !prev);
 	};
 
 	const closeMenu = (): void => setIsMenuOpen(false);
-	const closeDatePicker = (): void => setIsDatePickerOpen(false);
+	// const closeDatePicker = (): void => setIsDatePickerOpen(false);
 	const closeLabelInput = (): void => setIsLabelInputOpen(false);
 	const closeDeleteAlert = (): void => setIsDeleteAlertOpen(false);
 
@@ -64,9 +63,9 @@ function KebabMenu({ id, updateStatus, addDeadline, addLabel, deleteFolder }: Ke
 				>
 					Update Status
 				</li>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDatePicker}>
+				{/* <li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDatePicker}>
 					Add Deadline
-				</li>
+				</li> */}
 				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleLabelInput}>
 					Add Labels
 				</li>
@@ -76,7 +75,7 @@ function KebabMenu({ id, updateStatus, addDeadline, addLabel, deleteFolder }: Ke
 			</ul>
 
 			{/* Date Picker */}
-			<div
+			{/* <div
 				className="absolute right-[-6px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
 				style={{ display: isDatePickerOpen ? "block" : "none" }}
 			>
@@ -94,7 +93,7 @@ function KebabMenu({ id, updateStatus, addDeadline, addLabel, deleteFolder }: Ke
 						onClick={closeDatePicker}
 					/>
 				</div>
-			</div>
+			</div> */}
 
 			{/* Label Assigner */}
 			<div
