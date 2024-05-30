@@ -6,15 +6,21 @@ interface CardDeadlineProps {
 	deadline: number;
 }
 
-function CardDeadline({ id, navLabel, deadline }: CardDeadlineProps) {
+function CardDeadline({ id, deadline }: CardDeadlineProps) {
 	return (
 		<div
 			id={id}
-			aria-label={navLabel}
+			// if uncommented, will allow navigation into folder when clicking on deadline pill container
+			// aria-label={navLabel}
 			className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1"
 			style={{ display: deadline === 0 ? "none" : "block" }}
 		>
-			<p id={id} aria-label={navLabel} className="text-xs">
+			<p
+				id={id}
+				// if uncommented, will allow navigation into folder when clicking on deadline text
+				// aria-label={navLabel}
+				className="text-xs"
+			>
 				Deadline: {Format.dateForCardDisplay(deadline)}
 			</p>
 		</div>
