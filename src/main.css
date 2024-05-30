@@ -100,3 +100,7 @@ body {
 .hide {
 	display: none;
 }
+
+.search-cancel-button::-webkit-search-cancel-button {
+	visibility: hidden;
+}

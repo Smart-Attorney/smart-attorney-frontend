@@ -6,11 +6,6 @@ interface SearchBarProps {
 }
 
 function SearchBar({ cards }: SearchBarProps) {
-	const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { value: inputQuery } = event.target;
-		filterCardsByQuery(inputQuery);
-	};
-
 	const filterCardsByQuery = (query: string) => {
 		if (!cards) return;
 
@@ -30,6 +25,18 @@ function SearchBar({ cards }: SearchBarProps) {
 		}
 	};
 
+	const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { value: inputQuery } = event.target;
+		filterCardsByQuery(inputQuery);
+	};
+
+	const handleClearSearchInput = () => {
+		const emptyString = "";
+		const searchInput = document.getElementById("search-input") as HTMLInputElement;
+		searchInput.value = emptyString;
+		filterCardsByQuery(emptyString);
+	};
+
 	return (
 		<div className="flex flex-row justify-between w-full gap-8 pb-8 pl-20 pr-28">
 			<div className="flex flex-row w-full rounded-lg ">
@@ -37,9 +44,10 @@ function SearchBar({ cards }: SearchBarProps) {
 					<img className="w-6" src={SearchIcon} />
 				</span>
 				<input
-					className="w-full pr-3 text-xl font-medium placeholder-black bg-white rounded-r-lg h-11 focus:outline-none"
+					id="search-input"
+					className="w-full pr-3 text-xl font-medium placeholder-[#686868] bg-white rounded-r-lg h-11 focus:outline-none search-cancel-button"
 					type="search"
-					placeholder="Search..."
+					placeholder="Search Cases"
 					onChange={handleQueryChange}
 				/>
 			</div>
@@ -47,8 +55,9 @@ function SearchBar({ cards }: SearchBarProps) {
 			<button
 				className="bg-transparent h-11 rounded-lg min-w-[100px] flex justify-center items-center border-[3px]"
 				type="button"
+				onClick={handleClearSearchInput}
 			>
-				<span className="text-xl font-normal text-white">Search</span>
+				<span className="text-xl font-normal text-white">Cancel</span>
 			</button>
 		</div>
 	);
