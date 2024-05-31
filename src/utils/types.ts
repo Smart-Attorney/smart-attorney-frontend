@@ -20,7 +20,7 @@ export interface DashboardFolderCardObj {
 	createdDate: number;
 	lastOpenedDate: number;
 	status: boolean;
-	deadline: number;
+	urgentDocumentDeadline: number;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
 }

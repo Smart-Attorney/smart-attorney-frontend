@@ -20,7 +20,7 @@ export class CaseFolderService {
 				createdDate: caseFolders[i].created_date,
 				lastOpenedDate: caseFolders[i].last_opened_date,
 				status: caseFolders[i].status,
-				deadline: caseFolders[i].deadline,
+				urgentDocumentDeadline: caseFolders[i].deadline,
 				labels: labels,
 				files: documents,
 			});

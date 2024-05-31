@@ -11,6 +11,7 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CaseFolderCount } from "../utils/case-folder-count";
 import { DASHBOARD } from "../utils/constants/sort-options";
+import { getMostUrgentDocumentDeadline } from "../utils/get-urgent-document-deadline";
 import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
@@ -31,6 +32,10 @@ function Dashboard() {
 			switch (response.status) {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
+					for (let i = 0, n = data.length; i < n; i++) {
+						const urgentDocumentDeadline = getMostUrgentDocumentDeadline(data[i].files);
+						data[i].urgentDocumentDeadline = urgentDocumentDeadline;
+					}
 					setCaseFolders(data);
 					CaseFolderCount.set(data.length);
 					break;
@@ -69,8 +74,8 @@ function Dashboard() {
 					initialWidth={700}
 					minWidth={1280}
 					options={DASHBOARD}
-					unsortedArray={caseFolders}
-					setSortedArray={setCaseFolders}
+					caseFolderCards={caseFolders}
+					setCaseFolderCards={setCaseFolders}
 				/>
 
 				{/* New Case Button */}

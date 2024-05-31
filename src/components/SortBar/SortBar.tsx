@@ -1,30 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { SortOptionsObj } from "../../utils/constants/sort-options";
-import { sortArrayByOption, UnsortedArray } from "../../utils/sort";
+import { sortArrayByOption } from "../../utils/sort";
 import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
 import SortOption from "./SortOption";
 
-/* 
-  pass state setter to sortBar
-  pass copy of folder array to sortBar
-  when option is selected, run sort function on folder array
-  update state with newly sorta array
-*/
-
 interface SortBarProps {
-	// value should be wide enough to fit all options on one line with no wrapping
-	initialWidth: number;
-	// value of window width before the sort bar resizes
-	minWidth: number;
+	initialWidth: number; // value should be wide enough to fit all options on one line with no wrapping
+	minWidth: number; // value of window width before the sort bar resizes
 	options: SortOptionsObj[];
-	unsortedArray?: UnsortedArray | null;
-	setSortedArray?:
-		| React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>
-		| React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
+	caseFolderCards?: DashboardFolderCardObj[] | null;
+	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
+	documentCards?: CaseFileObj[];
+	setDocumentCards?: React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
 }
 
-function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArray }: SortBarProps) {
+function SortBar({
+	initialWidth,
+	minWidth,
+	options,
+	caseFolderCards,
+	setCaseFolderCards,
+	documentCards,
+	setDocumentCards,
+}: SortBarProps) {
 	const optionsContainer = useRef<HTMLDivElement>(null);
 
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
@@ -82,6 +81,20 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 
 	/************************************************************/
 
+	const sortDashboardCards = (sortOption: string) => {
+		if (!caseFolderCards || !setCaseFolderCards) return;
+		const sortedCards = sortArrayByOption(caseFolderCards, sortOption);
+		const shallowCopy = [...sortedCards]; // [1] See references below
+		setCaseFolderCards(shallowCopy as DashboardFolderCardObj[]);
+	};
+
+	const sortFolderCards = (sortOption: string) => {
+		if (!documentCards || !setDocumentCards) return;
+		const sortedCards = sortArrayByOption(documentCards, sortOption);
+		const shallowCopy = [...sortedCards]; // [1] See references below
+		setDocumentCards(shallowCopy as CaseFileObj[]);
+	};
+
 	const handleSortCardsByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id: selectedOption } = event.target as HTMLParagraphElement;
 		setSortOptions((prev) =>
@@ -89,28 +102,13 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 				selectedOption === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 			)
 		);
-		if (unsortedArray && setSortedArray) {
-			/** Reason for this shallow copy:
-			 * "React components automatically re-render whenever there is a change in
-			 *  their state or props. In your example, sortedPlans.sort is sorting the
-			 *  array in place and returning that very same array, and thus you never
-			 *  actually update the state. The easiest way is to just copy the state,
-			 *  modify the copy, then setting the state equal to the copy and then
-			 *  the state gets updated and the component re-renders."
-			 *Source: https://stackoverflow.com/questions/71766944/react-setstate-not-triggering-re-render
-			 */
-			const newArray = [...unsortedArray];
-
-			// @ts-ignore: cannot resolve type narrowing on newArray
-			const sortedArray = sortArrayByOption(newArray, selectedOption);
-			// @ts-ignore: cannot resolve type narrowing on sortedArray
-			setSortedArray(sortedArray);
-		}
+		sortDashboardCards(selectedOption);
+		sortFolderCards(selectedOption);
 	};
 
 	/************************************************************/
 
-	const optionElements = sortOptions.map((option) => (
+	const sortOptionElements = sortOptions.map((option) => (
 		<SortOption
 			key={option.name}
 			id={option.name}
@@ -133,10 +131,23 @@ function SortBar({ initialWidth, minWidth, options, unsortedArray, setSortedArra
 				ref={optionsContainer}
 				onWheel={handleMouseWheelScroll}
 			>
-				{optionElements}
+				{sortOptionElements}
 			</div>
 		</div>
 	);
 }
 
 export default SortBar;
+
+/*  [1] Reason for the "shallowCopy":
+ *
+ *  "React components automatically re-render whenever there is a change in
+ *  their state or props. In your example, sortedPlans.sort is sorting the
+ *  array in place and returning that very same array, and thus you never
+ *  actually update the state. The easiest way is to just copy the state,
+ *  modify the copy, then setting the state equal to the copy and then
+ *  the state gets updated and the component re-renders."
+ *
+ *  Source:
+ *  https://stackoverflow.com/questions/71766944/react-setstate-not-triggering-re-render
+ */

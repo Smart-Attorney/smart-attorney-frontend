@@ -1,4 +1,5 @@
 import { DOC_STATUS } from "./constants/document-status";
+import { SortByLabel } from "./constants/sort-options";
 import { CaseFileObj, DashboardFolderCardObj } from "./types";
 
 export type UnsortedArray = DashboardFolderCardObj[] | CaseFileObj[];
@@ -6,9 +7,8 @@ export type SortedArray = DashboardFolderCardObj[] | CaseFileObj[];
 
 class SortArrayBy {
 	/**
-	 *
+	 * Sorts alphabetically from A to Z.
 	 */
-	/* Sorts alphabetically from A to Z. */
 	public static name(array: UnsortedArray): SortedArray {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.name.toLowerCase();
@@ -24,7 +24,9 @@ class SortArrayBy {
 		return sortedArray;
 	}
 
-	/* Sorts from youngest to oldest. */
+	/**
+	 * Sorts from youngest to oldest.
+	 */
 	public static dateCreated(array: UnsortedArray): SortedArray {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.createdDate;
@@ -40,7 +42,9 @@ class SortArrayBy {
 		return sortedArray;
 	}
 
-	/* Sorts from most recent to least recent date. */
+	/**
+	 * Sorts from most recent to least recent date.
+	 */
 	public static lastOpended(array: UnsortedArray): SortedArray {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.lastOpenedDate;
@@ -56,7 +60,9 @@ class SortArrayBy {
 		return sortedArray;
 	}
 
-	/* Sorts from open cases to closed cases. */
+	/**
+	 * Sorts from open cases to closed cases.
+	 */
 	public static openCases(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.status;
@@ -72,20 +78,22 @@ class SortArrayBy {
 		return sortedArray;
 	}
 
-	/* Sorts from closest to furthest deadline. */
-	/* Places folders without a deadline at the end. */
+	/**
+	 * Sorts from closest to furthest deadline.
+	 * Places folders without a deadline at the end.
+	 */
 	public static deadline(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
 		const foldersWithoutDeadlines = array.filter((folder) => {
-			const deadline = new Date(folder.deadline).getTime();
+			const deadline = new Date(folder.urgentDocumentDeadline).getTime();
 			return deadline === 0;
 		});
 		const foldersWithDeadlines = array.filter((folder) => {
-			const deadline = new Date(folder.deadline).getTime();
+			const deadline = new Date(folder.urgentDocumentDeadline).getTime();
 			return deadline !== 0;
 		});
 		const sortedArray = foldersWithDeadlines.sort((a, b) => {
-			const la = new Date(a.deadline).getTime();
-			const lb = new Date(b.deadline).getTime();
+			const la = new Date(a.urgentDocumentDeadline).getTime();
+			const lb = new Date(b.urgentDocumentDeadline).getTime();
 			if (la < lb) {
 				return -1;
 			}
@@ -97,7 +105,9 @@ class SortArrayBy {
 		return [...sortedArray, ...foldersWithoutDeadlines];
 	}
 
-	/* Sorts by status. */
+	/**
+	 * Sorts by status.
+	 */
 	public static status(array: CaseFileObj[]): CaseFileObj[] {
 		const sortedArray = array.sort((a, b) => {
 			let la: number;
@@ -144,22 +154,22 @@ class SortArrayBy {
 
 export const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray => {
 	switch (option) {
-		case "Name":
+		case SortByLabel.NAME:
 			return SortArrayBy.name(array);
 
-		case "Date Created":
+		case SortByLabel.DATE_CREATED:
 			return SortArrayBy.dateCreated(array);
 
-		case "Last Opened":
+		case SortByLabel.LAST_OPENED:
 			return SortArrayBy.lastOpended(array);
 
-		case "Open Cases":
+		case SortByLabel.OPEN_CASES:
 			return SortArrayBy.openCases(array as DashboardFolderCardObj[]);
 
-		case "Deadline":
+		case SortByLabel.DEADLINE:
 			return SortArrayBy.deadline(array as DashboardFolderCardObj[]);
 
-		case "Status":
+		case SortByLabel.STATUS:
 			return SortArrayBy.status(array as CaseFileObj[]);
 
 		default:

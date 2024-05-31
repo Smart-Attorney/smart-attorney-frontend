@@ -11,7 +11,7 @@ import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import type { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
+import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
@@ -113,24 +113,6 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const getMostUrgentDocumentDeadline = (documents: CaseFileObj[]) => {
-		if (!documents) return 0;
-		const placeholderDate = 3250368000000; // (milliseconds) Wed Jan 01 3000 00:00:00 GMT+0000
-		const currentDate = Date.now();
-		let mostUrgentDeadline = placeholderDate;
-		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].deadline === 0) continue;
-			if (documents[i].deadline < currentDate) continue;
-			if (documents[i].deadline < mostUrgentDeadline) {
-				mostUrgentDeadline = documents[i].deadline;
-			}
-		}
-		if (mostUrgentDeadline === placeholderDate) {
-			return 0;
-		}
-		return mostUrgentDeadline;
-	};
-
 	// to identify which parts of the card allows navigation when clicked
 	const allowNavigateString = "allow-nav";
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
@@ -174,10 +156,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						<CardBody navLabel={allowNavigateString}>
 							<CardHeaderContainer navLabel={allowNavigateString}>
 								<PillLabelContainer navLabel={allowNavigateString} className="ml-6">
-									<CardDeadline
-										navLabel={allowNavigateString}
-										deadline={getMostUrgentDocumentDeadline(caseFolder.files)}
-									/>
+									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.urgentDocumentDeadline} />
 									<CardLabels
 										navLabel={allowNavigateString}
 										labels={caseFolder.labels}
