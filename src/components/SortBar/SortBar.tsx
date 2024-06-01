@@ -114,7 +114,7 @@ function SortBar({
 			id={option.name}
 			name={option.name}
 			clicked={option.clicked}
-			onClick={(event) => handleSortCardsByOption(event)}
+			sortByOption={(event) => handleSortCardsByOption(event)}
 		/>
 	));
 
