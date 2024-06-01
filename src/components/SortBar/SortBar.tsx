@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
+import { CaseUtils } from "../../utils/case-utils";
 import { SortOptionsObj } from "../../utils/constants/sort-options";
-import { sortArrayByOption } from "../../utils/sort";
+import { DocumentUtils } from "../../utils/document-utils";
 import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
 import SortOption from "./SortOption";
 
@@ -83,14 +84,14 @@ function SortBar({
 
 	const sortDashboardCards = (sortOption: string) => {
 		if (!caseFolderCards || !setCaseFolderCards) return;
-		const sortedCards = sortArrayByOption(caseFolderCards, sortOption);
+		const sortedCards = CaseUtils.sortByOption(caseFolderCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
 		setCaseFolderCards(shallowCopy as DashboardFolderCardObj[]);
 	};
 
 	const sortFolderCards = (sortOption: string) => {
 		if (!documentCards || !setDocumentCards) return;
-		const sortedCards = sortArrayByOption(documentCards, sortOption);
+		const sortedCards = DocumentUtils.sortByOption(documentCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
 		setDocumentCards(shallowCopy as CaseFileObj[]);
 	};

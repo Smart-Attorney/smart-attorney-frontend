@@ -11,6 +11,7 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
+import { DocumentUtils } from "../utils/document-utils";
 import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
@@ -32,7 +33,7 @@ function Dashboard() {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
 					for (let i = 0, n = data.length; i < n; i++) {
-						const urgentDocumentDeadline = CaseUtils.getUrgentDocumentDeadline(data[i].files);
+						const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(data[i].files);
 						data[i].urgentDocumentDeadline = urgentDocumentDeadline;
 					}
 					setCaseFolders(data);
