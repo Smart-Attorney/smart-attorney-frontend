@@ -1,5 +1,5 @@
-import { DOC_STATUS } from "./constants/document-status";
-import { SortByLabel } from "./constants/sort-options";
+import { DOCUMENT_STATUS } from "./constants/document-status";
+import { SORT_OPTION } from "./constants/sort-options";
 import { CaseFileObj, DashboardFolderCardObj } from "./types";
 
 export type UnsortedArray = DashboardFolderCardObj[] | CaseFileObj[];
@@ -112,13 +112,13 @@ class SortArrayBy {
 		const sortedArray = array.sort((a, b) => {
 			let la: number;
 			switch (a.status) {
-				case DOC_STATUS.inProgress:
+				case DOCUMENT_STATUS.IN_PROGRESS:
 					la = 1;
 					break;
-				case DOC_STATUS.inReview:
+				case DOCUMENT_STATUS.IN_REVIEW:
 					la = 2;
 					break;
-				case DOC_STATUS.submitted:
+				case DOCUMENT_STATUS.SUBMITTED:
 					la = 3;
 					break;
 				default:
@@ -127,13 +127,13 @@ class SortArrayBy {
 			}
 			let lb: number;
 			switch (b.status) {
-				case DOC_STATUS.inProgress:
+				case DOCUMENT_STATUS.IN_PROGRESS:
 					lb = 1;
 					break;
-				case DOC_STATUS.inReview:
+				case DOCUMENT_STATUS.IN_REVIEW:
 					lb = 2;
 					break;
-				case DOC_STATUS.submitted:
+				case DOCUMENT_STATUS.SUBMITTED:
 					lb = 3;
 					break;
 				default:
@@ -154,22 +154,22 @@ class SortArrayBy {
 
 export const sortArrayByOption = (array: UnsortedArray, option: string): SortedArray => {
 	switch (option) {
-		case SortByLabel.NAME:
+		case SORT_OPTION.NAME:
 			return SortArrayBy.name(array);
 
-		case SortByLabel.DATE_CREATED:
+		case SORT_OPTION.DATE_CREATED:
 			return SortArrayBy.dateCreated(array);
 
-		case SortByLabel.LAST_OPENED:
+		case SORT_OPTION.LAST_OPENED:
 			return SortArrayBy.lastOpended(array);
 
-		case SortByLabel.OPEN_CASES:
+		case SORT_OPTION.OPEN_CASES:
 			return SortArrayBy.openCases(array as DashboardFolderCardObj[]);
 
-		case SortByLabel.DEADLINE:
+		case SORT_OPTION.DEADLINE:
 			return SortArrayBy.deadline(array as DashboardFolderCardObj[]);
 
-		case SortByLabel.STATUS:
+		case SORT_OPTION.STATUS:
 			return SortArrayBy.status(array as CaseFileObj[]);
 
 		default:

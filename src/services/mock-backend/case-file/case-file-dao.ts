@@ -1,4 +1,4 @@
-import { DOC_STATUS } from "../../../utils/constants/document-status";
+import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { CaseFiles } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
@@ -52,7 +52,7 @@ export class CaseFileDAO extends DAO {
 			file_name: fileName,
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
-			status: DOC_STATUS.inProgress,
+			status: DOCUMENT_STATUS.IN_PROGRESS,
 			deadline: 0,
 			url: fileUrl,
 			case_folder_id_fk: caseFolderId,

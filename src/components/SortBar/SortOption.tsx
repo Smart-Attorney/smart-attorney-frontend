@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SortByLabel } from "../../utils/constants/sort-options";
+import { SORT_OPTION } from "../../utils/constants/sort-options";
 
 interface SortOptionProps {
 	id: string;
@@ -58,7 +58,7 @@ function SortOption({ id, name, clicked, sortByOption }: SortOptionProps) {
 
 	return (
 		<>
-			{id === SortByLabel.LABELS ? (
+			{id === SORT_OPTION.LABELS ? (
 				/* For the "Labels" sort option */
 				<>
 					<div className="px-2 py-1 rounded-lg min-w-max" style={sortOptionStyle}>

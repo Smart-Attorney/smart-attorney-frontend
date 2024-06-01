@@ -17,7 +17,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { CaseFolderCount } from "../utils/case-folder-count";
+import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
 import { FileForUploadObj, SexOptions } from "../utils/types";
 
@@ -28,7 +28,7 @@ function CreateCaseFolder() {
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
 
-	const currentFolderCount = CaseFolderCount.get();
+	const currentFolderCount = CaseUtils.getCaseCount();
 	const defaultCaseName = `Case Folder ${currentFolderCount + 1}`;
 
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);

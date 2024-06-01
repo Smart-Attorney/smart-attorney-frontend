@@ -9,7 +9,7 @@ import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { CaseFolderCount } from "../utils/case-folder-count";
+import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { getMostUrgentDocumentDeadline } from "../utils/get-urgent-document-deadline";
 import { DashboardFolderCardObj } from "../utils/types";
@@ -37,12 +37,12 @@ function Dashboard() {
 						data[i].urgentDocumentDeadline = urgentDocumentDeadline;
 					}
 					setCaseFolders(data);
-					CaseFolderCount.set(data.length);
+					CaseUtils.setCaseCount(data.length);
 					break;
 				case 204:
 					console.log(response.statusText);
 					setCaseFolders([]);
-					CaseFolderCount.set(0);
+					CaseUtils.setCaseCount(0);
 					break;
 				default:
 					break;

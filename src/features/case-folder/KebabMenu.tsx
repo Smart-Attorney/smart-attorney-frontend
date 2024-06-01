@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CloseIcon } from "../../assets/misc";
-import { DOC_STATUS } from "../../utils/constants/document-status";
+import { DOCUMENT_STATUS } from "../../utils/constants/document-status";
 import { DocumentStatus } from "../../utils/types";
 
 interface KebabMenuProps {
@@ -97,25 +97,25 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 				<div>
 					<ul>
 						<li
-							id={DOC_STATUS.inProgress}
+							id={DOCUMENT_STATUS.IN_PROGRESS}
 							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
 							onClick={(event) => handleStatusClick(event)}
 						>
-							In Progress
+							{DOCUMENT_STATUS.IN_PROGRESS}
 						</li>
 						<li
-							id={DOC_STATUS.inReview}
+							id={DOCUMENT_STATUS.IN_REVIEW}
 							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
 							onClick={(event) => handleStatusClick(event)}
 						>
-							In Review
+							{DOCUMENT_STATUS.IN_REVIEW}
 						</li>
 						<li
-							id={DOC_STATUS.submitted}
+							id={DOCUMENT_STATUS.SUBMITTED}
 							className="cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm px-2"
 							onClick={(event) => handleStatusClick(event)}
 						>
-							Submitted
+							{DOCUMENT_STATUS.SUBMITTED}
 						</li>
 					</ul>
 				</div>

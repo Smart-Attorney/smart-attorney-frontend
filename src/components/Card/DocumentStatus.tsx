@@ -1,4 +1,4 @@
-import { DOC_STATUS } from "../../utils/constants/document-status";
+import { DOCUMENT_STATUS } from "../../utils/constants/document-status";
 import { DocumentStatus as DocStatus } from "../../utils/types";
 
 interface FileStatusProps {
@@ -9,13 +9,13 @@ interface FileStatusProps {
 function DocumentStatus({ id, text }: FileStatusProps) {
 	let statusColor: string;
 	switch (text) {
-		case DOC_STATUS.inReview:
+		case DOCUMENT_STATUS.IN_REVIEW:
 			statusColor = "bg-[#ff9c34]"; // orange
 			break;
-		case DOC_STATUS.inProgress:
+		case DOCUMENT_STATUS.IN_PROGRESS:
 			statusColor = "bg-[#ffd434]"; // yellow
 			break;
-		case DOC_STATUS.submitted:
+		case DOCUMENT_STATUS.SUBMITTED:
 			statusColor = "bg-[#60bc6c]"; // green
 			break;
 		default:

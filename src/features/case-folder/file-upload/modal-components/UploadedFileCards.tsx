@@ -1,4 +1,4 @@
-import { Format } from "../../../../utils/format";
+import { FileUtils } from "../../../../utils/file-utils";
 import { getFileTypeImg } from "../../../../utils/get-file-type-img";
 import { FileForUploadObj } from "../../../../utils/types";
 
@@ -26,7 +26,7 @@ function UploadedFileCards(props: UploadedFileCardsProps) {
 								<p className="w-[95%] overflow-hidden text-base font-semibold text-ellipsis whitespace-nowrap">
 									{name}
 								</p>
-								<p className="text-sm text-gray-500">{Format.fileBytesForCardDisplay(size)}</p>
+								<p className="text-sm text-gray-500">{FileUtils.formatBytes(size)}</p>
 								<p className="text-sm font-semibold">Ready to upload</p>
 							</div>
 							<span

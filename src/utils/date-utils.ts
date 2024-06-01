@@ -1,5 +1,5 @@
-export class Format {
-	private static unixDateToStringDate(unixDate: number): string[] {
+export class DateUtils {
+	private static convertUnixDateToStringDate(unixDate: number): string[] {
 		if (unixDate === 0 || unixDate === null) {
 			return ["", "", ""];
 		}
@@ -18,8 +18,8 @@ export class Format {
 	 * This function formats the date to be displayed in the
 	 * desired format of (month/day/year).
 	 */
-	static dateForCardDisplay(unixDate: number): string {
-		let [year, month, day] = this.unixDateToStringDate(unixDate);
+	static formatToMDY(unixDate: number): string {
+		let [year, month, day] = this.convertUnixDateToStringDate(unixDate);
 		if (year === "" || month === "" || day === "") {
 			return "";
 		}
@@ -28,25 +28,16 @@ export class Format {
 		return formattedDate;
 	}
 
-	static dateForInputDisplay(unixDate: number): string {
-		let [year, month, day] = this.unixDateToStringDate(unixDate);
+	/**
+	 * This function formats the date to be displayed in the
+	 * desired format of (year-month-day).
+	 */
+	static formatToYMD(unixDate: number): string {
+		let [year, month, day] = this.convertUnixDateToStringDate(unixDate);
 		if (year === "" || month === "" || day === "") {
 			return "";
 		}
 		const formattedDate = `${year}-${month}-${day}`;
 		return formattedDate;
-	}
-
-	/**
-	 * Byte conversion function source:
-	 * https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-	 */
-	static fileBytesForCardDisplay(bytes: number, decimals = 1): string {
-		if (!+bytes) return "0 Bytes";
-		const k = 1000;
-		const dm = decimals < 0 ? 0 : decimals;
-		const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-		const i = Math.floor(Math.log(bytes) / Math.log(k));
-		return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 	}
 }
