@@ -18,9 +18,10 @@ function Dashboard() {
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
 
+	// retrieves all user case folders on initial page load
 	useEffect(() => {
 		handleGetUserCaseFolders();
-	}, [caseFolders]);
+	}, []);
 
 	/************************************************************/
 
@@ -61,10 +62,16 @@ function Dashboard() {
 				<h1 className="text-3xl font-bold text-white">Case Dashboard</h1>
 			</PageHeader>
 
-			<SearchBar />
+			<SearchBar cards={caseFolders} />
 
 			<SortBarWithButtons>
-				<SortBar options={DASHBOARD} unsortedArray={caseFolders} setSortedArray={setCaseFolders} />
+				<SortBar
+					initialWidth={700}
+					minWidth={1280}
+					options={DASHBOARD}
+					unsortedArray={caseFolders}
+					setSortedArray={setCaseFolders}
+				/>
 
 				{/* New Case Button */}
 				<button

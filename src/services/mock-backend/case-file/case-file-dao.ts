@@ -1,7 +1,8 @@
-import { CaseFileObj } from "../../../utils/types";
+import { DOC_STATUS } from "../../../utils/constants/document-status";
+import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { CaseFiles } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { DAO } from "./dao";
+import { DAO } from "../dao";
 
 export class CaseFileDAO extends DAO {
 	private static CASE_FILE_STORAGE_KEY = MockSqlTables.table.CASE_FILES;
@@ -9,7 +10,7 @@ export class CaseFileDAO extends DAO {
 	static async getAllFilesByCaseFolderId(caseFolderId: string) {
 		const caseFolderFiles: CaseFileObj[] = [];
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0; i < caseFileArray.length; i++) {
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
 			if (caseFileArray[i].case_folder_id_fk === caseFolderId) {
 				caseFolderFiles.push({
 					id: caseFileArray[i].file_id,
@@ -17,6 +18,7 @@ export class CaseFileDAO extends DAO {
 					createdDate: caseFileArray[i].created_date,
 					lastOpenedDate: caseFileArray[i].last_opened_date,
 					status: caseFileArray[i].status,
+					deadline: caseFileArray[i].deadline,
 					url: caseFileArray[i].url,
 				});
 			}
@@ -26,7 +28,7 @@ export class CaseFileDAO extends DAO {
 
 	static async getCaseFileById(folderId: string, fileId: string) {
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0; i < caseFileArray.length; i++) {
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
 			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
 				const caseFile: CaseFileObj = {
 					id: caseFileArray[i].file_id,
@@ -34,6 +36,7 @@ export class CaseFileDAO extends DAO {
 					createdDate: caseFileArray[i].created_date,
 					lastOpenedDate: caseFileArray[i].last_opened_date,
 					status: caseFileArray[i].status,
+					deadline: caseFileArray[i].deadline,
 					url: caseFileArray[i].url,
 				};
 				return caseFile;
@@ -49,7 +52,8 @@ export class CaseFileDAO extends DAO {
 			file_name: fileName,
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
-			status: "",
+			status: DOC_STATUS.inProgress,
+			deadline: 0,
 			url: fileUrl,
 			case_folder_id_fk: caseFolderId,
 		};
@@ -61,12 +65,24 @@ export class CaseFileDAO extends DAO {
 		return null;
 	}
 
-  static async updateFileName(folderId: string, fileId: string, newName: string) {
-    
-    
+	static async updateFileStatus(folderId: string, fileId: string, newStatus: DocumentStatus) {
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0; i < caseFileArray.length; i++) {
-      if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
+			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+				caseFileArray[i].status = newStatus;
+			}
+		}
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		if (success) {
+			return newStatus;
+		}
+		return null;
+	}
+
+	static async updateFileName(folderId: string, fileId: string, newName: string) {
+		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
+			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
 				caseFileArray[i].file_name = newName;
 			}
 		}
@@ -77,10 +93,24 @@ export class CaseFileDAO extends DAO {
 		return null;
 	}
 
+	static async updateFileDeadline(folderId: string, fileId: string, newDeadline: number) {
+		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
+			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+				caseFileArray[i].deadline = newDeadline;
+			}
+		}
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		if (success) {
+			return newDeadline;
+		}
+		return null;
+	}
+
 	static async deleteAllFilesByFolderId(folderId: string) {
 		const updatedArray: CaseFiles[] = [];
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0; i < caseFileArray.length; i++) {
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
 			if (caseFileArray[i].case_folder_id_fk === folderId) {
 				continue;
 			}
@@ -96,7 +126,7 @@ export class CaseFileDAO extends DAO {
 	static async deleteFileById(folderId: string, fileId: string) {
 		const updatedArray: CaseFiles[] = [];
 		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0; i < caseFileArray.length; i++) {
+		for (let i = 0, n = caseFileArray.length; i < n; i++) {
 			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
 				continue;
 			}

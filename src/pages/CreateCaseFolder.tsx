@@ -12,6 +12,7 @@ import FileForUploadCards from "../features/create-case-folder/FileForUploadCard
 import { createCaseFiles } from "../features/create-case-folder/api/create-case-files";
 import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
 import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
+import uploadDocuments from "../features/uploadDocument/uploadDocuments";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
@@ -37,6 +38,7 @@ function CreateCaseFolder() {
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
 	const [client, setClient] = useState<ClientInfoForm>({
 		firstName: "",
+		middleName: "",
 		lastName: "",
 		dateOfBirth: "",
 		sex: "",
@@ -61,8 +63,13 @@ function CreateCaseFolder() {
 	/************************************************************/
 
 	const createNewCase = async (): Promise<void> => {
-		if (caseFolderName.trim() === defaultCaseName || caseFolderName.trim().length === 0) {
-			alert("Please change the case name before creating.");
+		/* Allows the user to create a case folder without changing the default case name. */
+		// if (caseFolderName.trim() === defaultCaseName) {
+		// 	alert("Please change the default case name before creating.");
+		// 	return;
+		// }
+		if (caseFolderName.trim().length === 0) {
+			alert("Case name cannot be blank. Please change case name before creating.");
 			return;
 		}
 		if (filesForUpload.length > 0) {
@@ -100,6 +107,7 @@ function CreateCaseFolder() {
 	const handleCreateNewClient = async () => {
 		const newClient: CreateClientDTO = {
 			firstName: client.firstName,
+			middleName: client.middleName,
 			lastName: client.lastName,
 			dateOfBirth: client.dateOfBirth === "" ? Date.parse("12/10/1815") : Date.parse(client.dateOfBirth),
 			sex: client.sex === "" ? "Other" : (client.sex as SexOptions),
@@ -121,7 +129,7 @@ function CreateCaseFolder() {
 	const handleCreateNewCaseFiles = async () => {
 		const filesFormData = new FormData();
 		filesFormData.append("caseFolderId", caseFolderId.current);
-		for (let i = 0; i < filesForUpload.length; i++) {
+		for (let i = 0, n = filesForUpload.length; i < n; i++) {
 			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
 		try {
@@ -177,20 +185,40 @@ function CreateCaseFolder() {
 		dropAreaRef.current?.click();
 	};
 
-	const addToFilesForUploadArray = (filesFromUser: FileList): void => {
-		for (let i = 0; i < filesFromUser.length; i++) {
-			setFilesForUpload((prev) => [
-				...prev,
-				{
-					id: nanoid(8),
-					data: filesFromUser[i],
-				},
-			]);
-		}
-	};
+	// const addToFilesForUploadArray = (filesFromUser: FileList): void => {
+	// 	for (let i = 0, n = filesFromUser.length; i < n; i++) {
+	// 		setFilesForUpload((prev) => [
+	// 			...prev,
+	// 			{
+	// 				id: nanoid(8),
+	// 				data: filesFromUser[i],
+	// 			},
+	// 		]);
+	// 	}
+	// };
 
 	const removeFromFilesForUploadArray = (fileId: string): void => {
 		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
+	};
+
+	const handleUpload = (fileList: FileList) => {
+		const fileArr = Array.from(fileList);
+		uploadDocuments(fileArr)
+			.then((res) => {
+				if (Array.isArray(res)) {
+					setFilesForUpload((prev) => [
+						...prev,
+						...fileArr.map((_file, i) => ({
+							id: nanoid(8),
+							data: fileList[i],
+						})),
+					]);
+				}
+			})
+			.catch((err) => {
+				window.alert("Failed to Upload Files");
+				console.log(err);
+			});
 	};
 
 	/************************************************************/
@@ -222,13 +250,14 @@ function CreateCaseFolder() {
 			<SearchBar />
 
 			<SortBarWithButtons>
-				<SortBar options={NEW_CASE} />
+				<SortBar initialWidth={450} minWidth={1111} options={NEW_CASE} />
 
-				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={PenPurple} />
 					<PillButton name="Upload" type="button" img={UploadPurple} onClick={handleOpenFileBrowser} />
 					<PillButton name="Translate" type="button" img={SphereLatticePurple} />
 					<PillSpecialButton name="Generate" type="button" img={LightBulbPurple} />
+
 					{/* <PillButton name="Create Case" type="button" img={FolderPurple} onClick={createNewCase} /> */}
 				</div>
 			</SortBarWithButtons>
@@ -247,7 +276,8 @@ function CreateCaseFolder() {
 					display: filesForUpload.length > 0 ? "none" : "flex",
 				}}
 				handleOpenFileBrowser={handleOpenFileBrowser}
-				addToFilesForUploadArray={addToFilesForUploadArray}
+				// addToFilesForUploadArray={addToFilesForUploadArray}
+				addToFilesForUploadArray={handleUpload}
 			/>
 
 			{clientModalOpen && (

@@ -1,9 +1,10 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { ClientController } from "../../../services/mock-backend/controller/client-controller";
+import { ClientController } from "../../../services/mock-backend/case-client/client-controller";
 import { SexOptions } from "../../../utils/types";
 
 export interface CreateClientDTO {
 	firstName: string;
+	middleName: string;
 	lastName: string;
 	dateOfBirth: number;
 	sex: SexOptions;

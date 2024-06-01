@@ -1,31 +1,77 @@
-import { Document, Page } from "react-pdf";
+import { useState } from "react";
+import translateDoc from "../../features/translateDocuments/translateDocuments";
 import { FileForUploadObj } from "../../utils/types";
+import CardBody from "../Card/CardBody";
+import CardContainer from "../Card/CardContainer";
+import CardName from "../Card/CardName";
+import KebabMenuContainer from "../Card/KebabMenuContainer";
 import KebabMenu from "./KebabMenu";
 
 import * as pdfjs from "pdfjs-dist";
+import { Document, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
-const RenderDocument = (props: { file: FileForUploadObj; removeFileFromFilesForUploadArray: (id: string) => void }) => {
-	const { file } = props;
+interface RenderDocumentProps {
+	file: FileForUploadObj;
+	removeFromFilesForUploadArray: (id: string) => void;
+}
+
+const RenderDocument = ({
+	file,
+	removeFromFilesForUploadArray,
+}: RenderDocumentProps) => {
+	const [translatedDocUrl, setTranslatedDocUrl] = useState<null | string>(null);
+
+	const handleTranslate = (fileName: string) => {
+		translateDoc(fileName)
+			.then((res) => {
+				setTranslatedDocUrl(res);
+			})
+			.catch((err) => {
+				window.alert("Failed to Translate Files");
+				console.log(err);
+			});
+	};
+
+	const downloadTranslatedFile = (url: string) => {
+		window.location.href = url ;
+    window.open(url);
+	};
 
 	return file.data ? (
-		<div className="flex flex-col justify-between w-[272px] h-[256px] p-4 bg-white rounded-2xl" key={file.id}>
-			<div className="relative left-[226px] bottom-1 max-w-fit z-[1]">
-				<KebabMenu deleteFile={() => props.removeFileFromFilesForUploadArray(file.id)} />
-			</div>
+		<CardContainer key={file.id} id={file.id}>
+			<KebabMenuContainer>
+				<KebabMenu
+					deleteFile={() => removeFromFilesForUploadArray(file.id)}
+					onClickTranslate={() => handleTranslate(file.data.name)}
+				/>
+			</KebabMenuContainer>
 
-			<div className="relative w-full h-full bottom-7">
-				<Document className="flex flex-col items-center justify-between gap-6" file={file.data} noData="">
-					<div className="self-start flex flex-col justify-end w-full h-[72px] ">
-						<p className="text-sm line-clamp-2">{file.data.name}</p>
+			<CardBody>
+				<Document className="flex flex-col gap-4" file={file.data} noData="">
+					{/* File status pill display */}
+					<div className="w-fit bg-[#DEEDFF] rounded-full px-2.5 py-1">
+						<p className="text-xs">Ready for upload</p>
 					</div>
-					<Page className="border border-black rounded-sm" pageNumber={1} height={125} />
+					<CardName name={file.data.name} />
+					{translatedDocUrl && (
+						<CardName
+							name="Download English Version"
+							viewFile={() => downloadTranslatedFile(translatedDocUrl)}
+						/>
+					)}
+
+					<Page
+						className="self-center border border-black rounded-sm"
+						pageNumber={1}
+						height={125}
+					/>
 				</Document>
-			</div>
-		</div>
+			</CardBody>
+		</CardContainer>
 	) : (
 		<></>
 	);

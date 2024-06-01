@@ -1,9 +1,21 @@
 import { useParams } from "react-router-dom";
+import CardBody from "../../components/Card/CardBody";
+import CardContainer from "../../components/Card/CardContainer";
+import CardDeadline from "../../components/Card/CardDeadline";
+import CardFooter from "../../components/Card/CardFooter";
+import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
+import CardImage from "../../components/Card/CardImage";
+import CardName from "../../components/Card/CardName";
+import DocumentStatus from "../../components/Card/DocumentStatus";
+import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
+import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { CaseFileObj } from "../../utils/types";
+import { CaseFileObj, DocumentStatus as DocStatus } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
+import { updateDeadline } from "./api/update-case-file-deadline";
 import { updateCaseFileName } from "./api/update-case-file-name";
+import { updateCaseFileStatus } from "./api/update-case-file-status";
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
@@ -15,9 +27,36 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	const { id: folderId } = useParams();
 
 	// curried function
+	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: DocStatus) => {
+		try {
+			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
+			if (response.ok) {
+				const data: CaseFileObj[] = await response.json();
+				updateCaseFiles(data);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	// curried function
 	const handleUpdateFileName = (fileId: string) => async (newFileName: string) => {
 		try {
 			const response = await updateCaseFileName(folderId!, fileId, newFileName);
+			if (response.ok) {
+				const data: CaseFileObj[] = await response.json();
+				updateCaseFiles(data);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	const handleSetFileDeadline = async (fileId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = event.target;
+		const deadlineInUnixTime = Date.parse(value);
+		try {
+			const response = await updateDeadline(folderId!, fileId, deadlineInUnixTime);
 			if (response.ok) {
 				const data: CaseFileObj[] = await response.json();
 				updateCaseFiles(data);
@@ -35,7 +74,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 				updateCaseFiles(data);
 			}
 		} catch (error) {
-			console.error("Error deleting file:", error);
+			alert(error);
 		}
 	};
 
@@ -43,44 +82,33 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		<CardGrid>
 			{files?.map((file) => {
 				return (
-					<div className="w-[272px] h-[256px] p-4 bg-white rounded-2xl " key={file.id} id={file.id}>
+					<CardContainer key={file.id} id={file.id}>
 						{/* Kebab Menu */}
-						<div className="relative left-[226px] bottom-1 max-w-fit z-10">
+						<KebabMenuContainer>
 							<KebabMenu
 								fileName={file.name}
+								updateFileStatus={handleUpdateFileStatus(file.id)}
 								updateFileName={handleUpdateFileName(file.id)}
+								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
 								deleteFile={() => handleDeleteFile(file.id)}
 							/>
-						</div>
+						</KebabMenuContainer>
 
-						<div className="relative flex flex-col justify-between w-full h-full bottom-7">
-							{/* Status and Name */}
-							<div className="flex flex-col w-56 h-[72px] justify-between">
-								{/* File Status */}
-								<h1 className="w-fit text-black px-2.5 py-1 rounded-full bg-[#53EF0A80] text-xs">Submitted</h1>
-								{/* <h1 className="w-fit">{file.status}</h1> */}
+						<CardBody>
+							<CardHeaderContainer>
+								<PillLabelContainer>
+									<DocumentStatus text={file.status} />
+									<CardDeadline deadline={file.deadline} />
+								</PillLabelContainer>
 
-								{/* File Name */}
-								<p
-									className="text-sm cursor-pointer w-fit line-clamp-2 hover:text-blue-500"
-									id={file.id}
-									onClick={onClick}
-								>
-									{file.name}
-								</p>
-							</div>
+								<CardName id={file.id} name={file.name} viewFile={onClick} />
+							</CardHeaderContainer>
 
-							{/* Image */}
-							<div
-								className="w-60 h-[100px] rounded-lg border border-[#EBECF2] bg-slate-200 cursor-pointer"
-								id={file.id}
-								onClick={onClick}
-							></div>
+							<CardImage imgSrc={""} id={file.id} viewFile={onClick} />
 
-							{/* Blank Space for Formatting */}
-							<div className="h-6 w-60"></div>
-						</div>
-					</div>
+							<CardFooter hasFooter={false} />
+						</CardBody>
+					</CardContainer>
 				);
 			})}
 		</CardGrid>

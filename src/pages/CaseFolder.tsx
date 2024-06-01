@@ -39,13 +39,14 @@ function CaseFolder() {
 		name: "",
 		createdDate: 0,
 		lastOpenedDate: 0,
-		status: "",
+		status: true,
 		deadline: 0,
 	});
 
 	const [client, setClient] = useState<ClientObj>({
 		id: "",
 		firstName: "",
+		middleName: "",
 		lastName: "",
 		sex: "Other",
 		primaryLanguage: "",
@@ -257,12 +258,18 @@ function CaseFolder() {
 				</h1>
 			</PageHeader>
 
-			<SearchBar />
+			<SearchBar cards={caseFiles} />
 
 			<SortBarWithButtons>
-				<SortBar options={CASE_FOLDER} />
+				<SortBar
+					initialWidth={450}
+					minWidth={1111}
+					options={CASE_FOLDER}
+					unsortedArray={caseFiles}
+					setSortedArray={setCaseFiles}
+				/>
 
-				<div className="flex flex-row flex-wrap justify-end gap-3 w-[516px]">
+				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={BtnIcon.PenPurple} />
 					<PillButton name="Upload" type="button" img={BtnIcon.UploadPurple} onClick={toggleUploadModal} />
 					<PillButton name="Translate" type="button" img={BtnIcon.SphereLatticePurple} />
@@ -272,6 +279,7 @@ function CaseFolder() {
 						img={BtnIcon.LightBulbPurple}
 						onClick={toggleGenerateModal}
 					/>
+
 					{/* <PillButton name="Save" type="button" img={BtnIcon.SavePurple} onClick={handleSaveChanges} /> */}
 				</div>
 			</SortBarWithButtons>
@@ -305,6 +313,7 @@ function CaseFolder() {
 				<ClientModal
 					client={{
 						firstName: client.firstName,
+						middleName: client.middleName,
 						lastName: client.lastName,
 						dateOfBirth: Format.dateForInputDisplay(client.dateOfBirth),
 						sex: client.sex!,

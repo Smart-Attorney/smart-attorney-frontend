@@ -10,17 +10,15 @@ interface ModalDialogProps {
 function ModalDialog({ children, className, closeModal, enableBackdropClose }: ModalDialogProps) {
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
-	// Adds an scroll listener to the mouse when modal mounts.
-	// Removes scroll listener when modal unmounts.
+	// Stops background scroll when user mouse wheels while modal is open
 	useEffect(() => {
-		modalRef.current?.addEventListener("wheel", handlePreventScroll, { passive: false });
+		modalRef.current?.addEventListener("wheel", preventDefaultScroll, { passive: false });
 		return () => {
-			modalRef.current?.removeEventListener("wheel", handlePreventScroll);
+			modalRef.current?.removeEventListener("wheel", preventDefaultScroll);
 		};
 	}, []);
 
-	// Stops the user from using the scroll wheel.
-	const handlePreventScroll = (event: { preventDefault: () => void }) => {
+	const preventDefaultScroll = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 	};
 

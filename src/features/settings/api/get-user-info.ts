@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { UserController } from "../../../services/mock-backend/controller/user-controller";
+import { UserController } from "../../../services/mock-backend/user/user-controller";
 
 const mockApi = async () => {
 	const request = mockRequest.get("/settings");

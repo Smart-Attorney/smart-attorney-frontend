@@ -19,7 +19,7 @@ export interface DashboardFolderCardObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: string;
+	status: boolean;
 	deadline: number;
 	labels: CaseFolderLabelObj[];
 	files: CaseFileObj[];
@@ -30,7 +30,7 @@ export interface CaseFolderObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: string;
+	status: boolean;
 	deadline: number;
 }
 
@@ -44,13 +44,15 @@ export interface CaseFileObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: string;
+	status: DocumentStatus;
+	deadline: number;
 	url: string;
 }
 
 export interface ClientObj {
 	id: string;
 	firstName: string;
+	middleName: string;
 	lastName: string;
 	dateOfBirth: number;
 	sex: SexOptions;
@@ -59,3 +61,5 @@ export interface ClientObj {
 }
 
 export type SexOptions = "Male" | "Female" | "Other";
+
+export type DocumentStatus = "In Progress" | "In Review" | "Submitted";

@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { FolderLabelController } from "../../../services/mock-backend/controller/folder-label-controller";
+import { FolderLabelController } from "../../../services/mock-backend/case-folder-label/folder-label-controller";
 
 const mockApi = async (folderId: string, labelId: string) => {
 	const request = mockRequest.delete(`/dashboard/${folderId}/${labelId}`);

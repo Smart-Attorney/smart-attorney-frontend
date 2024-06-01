@@ -2,7 +2,7 @@ import { nanoid } from "../../../lib/nanoid";
 import { CaseFolderLabelObj } from "../../../utils/types";
 import { FolderLabels } from "../../mock-sql/schemas";
 import { MockSqlTables } from "../../mock-sql/tables";
-import { DAO } from "./dao";
+import { DAO } from "../dao";
 
 export class FolderLabelDAO extends DAO {
 	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.table.FOLDER_LABELS;
@@ -10,7 +10,7 @@ export class FolderLabelDAO extends DAO {
 	static async getAllLabelsByCaseFolderId(caseFolderId: string) {
 		const caseFolderLabels: CaseFolderLabelObj[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
-		for (let i = 0; i < folderLabelArray.length; i++) {
+		for (let i = 0, n = folderLabelArray.length; i < n; i++) {
 			if (folderLabelArray[i].case_folder_id_fk === caseFolderId) {
 				caseFolderLabels.push({
 					id: folderLabelArray[i].label_id,
@@ -39,7 +39,7 @@ export class FolderLabelDAO extends DAO {
 	static async deleteLabelById(folderId: string, labelId: string) {
 		const updatedArray: FolderLabels[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
-		for (let i = 0; i < folderLabelArray.length; i++) {
+		for (let i = 0, n = folderLabelArray.length; i < n; i++) {
 			if (folderLabelArray[i].case_folder_id_fk === folderId && folderLabelArray[i].label_id === labelId) {
 				continue;
 			}
@@ -55,7 +55,7 @@ export class FolderLabelDAO extends DAO {
 	static async deleteAllLabelsByFolderId(folderId: string) {
 		const updatedArray: FolderLabels[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
-		for (let i = 0; i < folderLabelArray.length; i++) {
+		for (let i = 0, n = folderLabelArray.length; i < n; i++) {
 			if (folderLabelArray[i].case_folder_id_fk === folderId) {
 				continue;
 			}

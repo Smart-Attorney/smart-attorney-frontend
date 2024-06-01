@@ -1,6 +1,6 @@
 import { CreateFolderLabelDTO } from "../../../features/dashboard/api/create-folder-label";
-import { CaseFolderService } from "../service/case-folder-service";
-import { FolderLabelService } from "../service/folder-label-service";
+import { CaseFolderService } from "../case-folder/case-folder-service";
+import { FolderLabelService } from "./folder-label-service";
 
 export class FolderLabelController {
 	static async createFolderLabel(request: Request) {

@@ -1,13 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import { FileSnapshot, MessageSquare, Paperclip } from "../../assets/smart-attorney-figma/stock";
+import { FileSnapshot } from "../../assets/smart-attorney-figma/stock";
+import CardBody from "../../components/Card/CardBody";
+import CardContainer from "../../components/Card/CardContainer";
+import CardDeadline from "../../components/Card/CardDeadline";
+import CardFooter from "../../components/Card/CardFooter";
+import CardHeaderContainer from "../../components/Card/CardHeaderContainer";
+import CardImage from "../../components/Card/CardImage";
+import CardLabels from "../../components/Card/CardLabels";
+import CardName from "../../components/Card/CardName";
+import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
+import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { Format } from "../../utils/format";
-import type { DashboardFolderCardObj } from "../../utils/types";
+import type { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
-import { updateDeadline } from "./api/update-deadline";
+import { UpdateCaseFolderStatusDTO, updateStatus } from "./api/update-status";
 
 interface CaseFolderCardProps {
 	caseFolders: DashboardFolderCardObj[] | null;
@@ -17,14 +26,16 @@ interface CaseFolderCardProps {
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	const navigate = useNavigate();
 
-	const handleUpdateFolderDeadline = async (
-		folderId: string,
-		event: React.ChangeEvent<HTMLInputElement>
-	): Promise<void> => {
-		const { value } = event.target;
-		const deadlineInUnixTime = Date.parse(value);
+	const handleUpdateFolderStatus = async (folderId: string, currentStatus: boolean): Promise<void> => {
+		// changes previously stored string or number values into correct boolean type
+		let newStatus: UpdateCaseFolderStatusDTO;
+		if (typeof currentStatus != "boolean") {
+			newStatus = true;
+		} else {
+			newStatus = currentStatus;
+		}
 		try {
-			const response = await updateDeadline(folderId, deadlineInUnixTime);
+			const response = await updateStatus(folderId, newStatus);
 			if (response.ok) {
 				const data: DashboardFolderCardObj[] = await response.json();
 				setCaseFolders(data);
@@ -33,6 +44,23 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			alert(error);
 		}
 	};
+
+	// const handleUpdateFolderDeadline = async (
+	// 	folderId: string,
+	// 	event: React.ChangeEvent<HTMLInputElement>
+	// ): Promise<void> => {
+	// 	const { value } = event.target;
+	// 	const deadlineInUnixTime = Date.parse(value);
+	// 	try {
+	// 		const response = await updateDeadline(folderId, deadlineInUnixTime);
+	// 		if (response.ok) {
+	// 			const data: DashboardFolderCardObj[] = await response.json();
+	// 			setCaseFolders(data);
+	// 		}
+	// 	} catch (error) {
+	// 		alert(error);
+	// 	}
+	// };
 
 	const handleAddFolderLabel = async (folderId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
@@ -57,9 +85,11 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleDeleteFolderLabel = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
-		const { id: folderId } = event.target as HTMLParagraphElement;
-		const { id: labelId } = (event.target as HTMLDivElement).parentElement!;
+	const handleDeleteFolderLabel = async (
+		folderId: string,
+		event: React.MouseEvent<HTMLParagraphElement>
+	): Promise<void> => {
+		const { id: labelId } = event.target as HTMLParagraphElement;
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
@@ -83,15 +113,35 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
+	const getMostUrgentDocumentDeadline = (documents: CaseFileObj[]) => {
+		if (!documents) return 0;
+		const placeholderDate = 3250368000000; // (milliseconds) Wed Jan 01 3000 00:00:00 GMT+0000
+		const currentDate = Date.now();
+		let mostUrgentDeadline = placeholderDate;
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].deadline === 0) continue;
+			if (documents[i].deadline < currentDate) continue;
+			if (documents[i].deadline < mostUrgentDeadline) {
+				mostUrgentDeadline = documents[i].deadline;
+			}
+		}
+		if (mostUrgentDeadline === placeholderDate) {
+			return 0;
+		}
+		return mostUrgentDeadline;
+	};
+
+	// to identify which parts of the card allows navigation when clicked
+	const allowNavigateString = "allow-nav";
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
-		const { id } = event.target as HTMLElement;
+		const { ariaLabel } = event.target as HTMLElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
 		// once case edit modal is created, can scrap this awful switch case tree
-		// and remove all instances of "enable-nav"
-		switch (id) {
+		// and remove all instances of "allow-nav"
+		switch (ariaLabel) {
 			case folderId:
 				return viewFile();
-			case "enable-nav":
+			case allowNavigateString:
 				return viewFile();
 			default:
 				return;
@@ -102,88 +152,55 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		<CardGrid>
 			{caseFolders?.map((caseFolder) => {
 				return (
-					// Card Container
-					<div
-						className="w-[272px] h-[256px] p-4 bg-white cursor-pointer rounded-2xl"
+					<CardContainer
+						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
-						onClick={(event) => handleViewCaseFolder(event, caseFolder.id)}
+						navLabel={allowNavigateString}
+						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
-						{/* Kebab Menu */}
-						<div id="kebab-menu" className="relative left-[226px] bottom-1 max-w-fit z-10">
+						<KebabMenuContainer>
 							<KebabMenu
-								addDeadline={(event) => {
-									event.stopPropagation(), handleUpdateFolderDeadline(caseFolder.id, event);
-								}}
+								id="kebab-menu"
+								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.status)}
+								// addDeadline={(event) => {
+								// 	handleUpdateFolderDeadline(caseFolder.id, event);
+								// }}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
+						</KebabMenuContainer>
+
+						<CardBody navLabel={allowNavigateString}>
+							<CardHeaderContainer navLabel={allowNavigateString}>
+								<PillLabelContainer navLabel={allowNavigateString} className="ml-6">
+									<CardDeadline
+										navLabel={allowNavigateString}
+										deadline={getMostUrgentDocumentDeadline(caseFolder.files)}
+									/>
+									<CardLabels
+										navLabel={allowNavigateString}
+										labels={caseFolder.labels}
+										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
+									/>
+								</PillLabelContainer>
+								<CardName navLabel={allowNavigateString} name={caseFolder.name} />
+							</CardHeaderContainer>
+
+							<CardImage navLabel={allowNavigateString} imgSrc={FileSnapshot} />
+
+							{/* Comment count, File count, Assigned to whom*/}
+							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
+						</CardBody>
+
+						{/* Folder Status Dot Indicator */}
+						<div
+							className="relative left-0 bottom-[246px] w-3 h-3 rounded-full"
+							style={{ background: caseFolder.status ? "#53EF0A" : "#9C9DA4" }}
+						>
+							<p className="text-xs text-center"></p>
 						</div>
-
-						{/* Card Contents */}
-						<div id="enable-nav" className="relative flex flex-col justify-between w-full h-full bottom-7">
-							{/* Contains the labels, deadline, name */}
-							<div id="enable-nav" className="flex flex-col w-56 h-[72px] justify-between">
-								{/* Contains the deadline, labels */}
-								<div id="enable-nav" className="flex flex-row flex-wrap gap-x-2 gap-y-1">
-									{/* Case Deadline */}
-									{caseFolder.deadline !== 0 && (
-										<div id="enable-nav" className="min-w-max bg-[#FB3E3E80] rounded-full px-2.5 py-1">
-											<p id="enable-nav" className="text-xs">
-												Deadline: {Format.dateForCardDisplay(caseFolder.deadline)}
-											</p>
-											{/* TODO: what is the case folder status for */}
-										</div>
-									)}
-
-									{/* Case Folder Labels */}
-									{caseFolder.labels.map((label) => (
-										<div key={label.id} id={label.id}>
-											<p
-												className="min-w-max text-xs px-2.5 py-1 text-black bg-[#FFCC67] rounded-full cursor-pointer"
-												id={caseFolder.id}
-												onClick={handleDeleteFolderLabel}
-											>
-												{label.name}
-											</p>
-										</div>
-									))}
-								</div>
-
-								{/* Case Folder Name */}
-								<p id="enable-nav" className="text-sm cursor-pointer w-fit hover:text-blue-500">
-									{caseFolder.name}
-								</p>
-							</div>
-
-							{/* Document Image */}
-							<div id="enable-nav" className="w-60 h-[100px] rounded-lg">
-								<img id="enable-nav" src={FileSnapshot} />
-							</div>
-
-							{/* Comments, files, assigned to */}
-							<div id="enable-nav" className="flex flex-row items-center justify-between h-6 w-60">
-								<div id="enable-nav" className="flex flex-row gap-3">
-									<div id="enable-nav" className="flex flex-row items-center justify-center gap-1">
-										<img id="enable-nav" className="h-[14px] w-[14px]" src={MessageSquare} />
-										<p id="enable-nav" className="text-[#5A5A5A] text-xs">
-											12
-										</p>
-									</div>
-									<div id="enable-nav" className="flex flex-row items-center justify-center gap-0.5">
-										<img id="enable-nav" className="h-[14px] w-[14px]" src={Paperclip} />
-										<p id="enable-nav" className="text-[#5A5A5A] text-xs">
-											4
-										</p>
-									</div>
-								</div>
-
-								<p id="enable-nav" className="text-xs text-[#5A5A5A] mr-11">
-									Assigned to
-								</p>
-							</div>
-						</div>
-					</div>
+					</CardContainer>
 				);
 			})}
 		</CardGrid>

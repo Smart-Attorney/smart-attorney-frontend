@@ -1,5 +1,7 @@
+import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
 import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
-import { CaseFileService } from "../service/case-file-service";
+import { DocumentStatus } from "../../../utils/types";
+import { CaseFileService } from "./case-file-service";
 
 export class CaseFileController {
 	static async createCaseFiles(request: Request) {
@@ -55,6 +57,39 @@ export class CaseFileController {
 		}
 	}
 
+	static async getDocumentDeadlines(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const retrievedDocumentDeadlines = await CaseFileService.getDocumentDeadlines(userId);
+		if (retrievedDocumentDeadlines != null) {
+			const body = JSON.stringify(retrievedDocumentDeadlines);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with retrieving the document deadlines.");
+		}
+	}
+
+	static async updateFileStatus(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId = urlArray[urlArray.length - 2];
+		const fileId = urlArray[urlArray.length - 1];
+		const newStatus: DocumentStatus = await request.json();
+		const updatedFileStatus = await CaseFileService.updateFileStatus(folderId, fileId, newStatus);
+		if (updatedFileStatus !== null) {
+			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+			const body = JSON.stringify(updatedCaseFiles);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case file status.");
+		}
+	}
+
 	static async updateFileName(request: Request) {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
@@ -68,6 +103,22 @@ export class CaseFileController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with updating the case file name.");
+		}
+	}
+
+	static async updateFileDeadline(request: Request) {
+		const urlArray = request.url.split("/");
+		const folderId = urlArray[urlArray.length - 2];
+		const fileId = urlArray[urlArray.length - 1];
+		const newDeadline: UpdateCaseFileDeadlineDTO = await request.json();
+		const updatedDeadline = await CaseFileService.updateFileDeadline(folderId, fileId, newDeadline);
+		if (updatedDeadline !== null) {
+			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+			const body = JSON.stringify(updatedCaseFiles);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the case file deadline.");
 		}
 	}
 

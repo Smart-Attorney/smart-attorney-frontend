@@ -1,6 +1,6 @@
 import { RegisterCredentialsDTO } from "../../../features/register/api/register";
 import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
-import { UserDAO } from "../dao/user-dao";
+import { UserDAO } from "./user-dao";
 
 export class UserService {
 	static async verifyUser(data: SignInCredentialsDTO) {

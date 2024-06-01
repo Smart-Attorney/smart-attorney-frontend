@@ -1,5 +1,7 @@
+import { useMock } from "../../../config/use-mock";
+import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
-import { UserController } from "../../../services/mock-backend/controller/user-controller";
+import { UserController } from "../../../services/mock-backend/user/user-controller";
 
 export interface SignInCredentialsDTO {
 	companyEmail: string;
@@ -7,21 +9,17 @@ export interface SignInCredentialsDTO {
 }
 
 const mockApi = async (data: SignInCredentialsDTO) => {
-	const request = mockRequest.put("/signin", data);
+	const request = mockRequest.post("/signin", data);
 	return await UserController.verifyUser(request);
 };
 
-// @ts-ignore
-// for the future
-const signIn = async (credentials: SignInCredentialsDTO) => {
-	const options = {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(credentials),
-	};
-	return await fetch("http://localhost:4000/api/user/login", options);
+const fetchApi = async (data: SignInCredentialsDTO) => {
+	const url = "http://localhost:8080/signin";
+	return await fetchWrapper.post(url, data);
 };
 
-export const signInWithEmailAndPassword = async (data: SignInCredentialsDTO) => {
-	return await mockApi(data); // replace this when using dedicated backend
+export const signInWithEmailAndPassword = async (
+	data: SignInCredentialsDTO
+) => {
+	return useMock ? await mockApi(data) : await fetchApi(data);
 };

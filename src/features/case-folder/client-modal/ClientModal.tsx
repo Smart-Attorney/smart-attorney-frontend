@@ -10,6 +10,7 @@ import SelectField from "./SelectField";
 
 export interface ClientInfoForm {
 	firstName: string;
+	middleName: string;
 	lastName: string;
 	dateOfBirth: string;
 	sex: string;
@@ -30,6 +31,7 @@ function ClientModal({ client, closeModal }: ClientInfoModalProps) {
 
 	const [clientForm, setClientForm] = useState<ClientInfoForm>({
 		firstName: "",
+		middleName: "",
 		lastName: "",
 		dateOfBirth: "",
 		sex: "",
@@ -88,21 +90,17 @@ function ClientModal({ client, closeModal }: ClientInfoModalProps) {
 								value={clientForm.firstName}
 								onChange={handleInputChange}
 							/>
-							<InputField
-								id="lastName"
-								name="Last Name"
-								type="text"
-								value={clientForm.lastName}
-								onChange={handleInputChange}
-							/>
-							<InputField
-								id="dateOfBirth"
-								name="Date of Birth"
-								type="date"
-								value={clientForm.dateOfBirth}
-								onChange={handleInputChange}
-							/>
+
 							<SelectField id="sex" name="Sex" options={SEX} value={clientForm.sex} onChange={handleSelectChange} />
+
+							<InputField
+								id="middleName"
+								name="Middle Name"
+								type="text"
+								value={clientForm.middleName}
+								onChange={handleInputChange}
+							/>
+
 							<SelectField
 								id="countryOfCitizenship"
 								name="Country of Citizenship"
@@ -110,12 +108,29 @@ function ClientModal({ client, closeModal }: ClientInfoModalProps) {
 								value={clientForm.countryOfCitizenship}
 								onChange={handleSelectChange}
 							/>
+
+							<InputField
+								id="lastName"
+								name="Last Name"
+								type="text"
+								value={clientForm.lastName}
+								onChange={handleInputChange}
+							/>
+
 							<SelectField
 								id="primaryLanguage"
 								name="Primary Language"
 								options={LANGUAGES}
 								value={clientForm.primaryLanguage}
 								onChange={handleSelectChange}
+							/>
+
+							<InputField
+								id="dateOfBirth"
+								name="Date of Birth"
+								type="date"
+								value={clientForm.dateOfBirth}
+								onChange={handleInputChange}
 							/>
 						</div>
 						{/* This is button. */}

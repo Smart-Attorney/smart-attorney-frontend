@@ -1,6 +1,7 @@
-import { CaseFileObj } from "../../../utils/types";
+import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
-import { CaseFileDAO } from "../dao/case-file-dao";
+import { CaseFileDAO } from "../case-file/case-file-dao";
+import { CaseFolderService } from "../case-folder/case-folder-service";
 
 export class CaseFileService {
 	static async createCaseFiles(userId: string, folderId: string, files: File[]) {
@@ -8,7 +9,7 @@ export class CaseFileService {
 			return null;
 		}
 		const fileArray: CaseFileObj[] = [];
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0, n = files.length; i < n; i++) {
 			const { name } = files[i];
 			const fileId = name.split("/")[0];
 			const fileName = name.split("/")[1];
@@ -22,6 +23,7 @@ export class CaseFileService {
 						createdDate: newCaseFile.created_date,
 						lastOpenedDate: newCaseFile.last_opened_date,
 						status: newCaseFile.status,
+						deadline: newCaseFile.deadline,
 						url: newCaseFile.url,
 					});
 				}
@@ -52,6 +54,33 @@ export class CaseFileService {
 		return null;
 	}
 
+	static async getDocumentDeadlines(userId: string) {
+		if (!userId) return null;
+		let documents: CaseFileObj[] = [];
+		const userCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+		for (let i = 0, n = userCaseFolders.length; i < n; i++) {
+			if (userCaseFolders[i].files.length === 0) continue;
+			userCaseFolders[i].files.forEach((document) => {
+				documents.push(document);
+			});
+		}
+		if (documents.length === 0) {
+			return null;
+		}
+		return documents;
+	}
+
+	static async updateFileStatus(folderId: string, fileId: string, newStatus: DocumentStatus) {
+		if (!folderId || !fileId || !newStatus) {
+			return null;
+		}
+		const updatedFileStatus = await CaseFileDAO.updateFileStatus(folderId, fileId, newStatus);
+		if (updatedFileStatus !== null) {
+			return newStatus;
+		}
+		return null;
+	}
+
 	static async updateFileName(folderId: string, fileId: string, newName: string) {
 		if (!folderId || !fileId || !newName) {
 			return null;
@@ -59,6 +88,17 @@ export class CaseFileService {
 		const updatedFileName = await CaseFileDAO.updateFileName(folderId, fileId, newName);
 		if (updatedFileName !== null) {
 			return newName;
+		}
+		return null;
+	}
+
+	static async updateFileDeadline(folderId: string, fileId: string, newDeadline: number) {
+		if (!folderId || !fileId || !newDeadline) {
+			return null;
+		}
+		const updatedFileDeadline = await CaseFileDAO.updateFileDeadline(folderId, fileId, newDeadline);
+		if (updatedFileDeadline !== null) {
+			return newDeadline;
 		}
 		return null;
 	}

@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFolderController } from "../../../services/mock-backend/controller/case-folder-controller";
+import { CaseFolderController } from "../../../services/mock-backend/case-folder/case-folder-controller";
 
 export type UpdateCaseFolderLastOpenedDateDTO = number;
 
