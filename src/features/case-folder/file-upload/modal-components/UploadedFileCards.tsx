@@ -1,5 +1,4 @@
 import { FileUtils } from "../../../../utils/file-utils";
-import { getFileTypeImg } from "../../../../utils/get-file-type-img";
 import { FileForUploadObj } from "../../../../utils/types";
 
 interface UploadedFileCardsProps {
@@ -14,7 +13,7 @@ function UploadedFileCards(props: UploadedFileCardsProps) {
 				const { name, size } = file.data;
 				const fileNameArray = name.split(".");
 				const fileType = fileNameArray[1];
-				const fileTypeImg = getFileTypeImg(fileType);
+				const fileTypeImg = FileUtils.getFileTypeImage(fileType);
 
 				return (
 					<div id="card-container" className="w-full px-4 py-2 bg-white rounded-md" key={index}>
