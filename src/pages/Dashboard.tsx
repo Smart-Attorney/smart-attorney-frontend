@@ -9,15 +9,18 @@ import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
+import { CaseLabelUtils } from "../utils/case-label-utils";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { DocumentUtils } from "../utils/document-utils";
-import { DashboardFolderCardObj } from "../utils/types";
+import { CaseFolderLabelObj, DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
+
+	const [uniqueCaseLabels, setUniqueCaseLabels] = useState(new Map<string, string>());
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
@@ -32,10 +35,15 @@ function Dashboard() {
 			switch (response.status) {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
+					let labelsArray: CaseFolderLabelObj[] = [];
 					for (let i = 0, n = data.length; i < n; i++) {
 						const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(data[i].files);
 						data[i].urgentDocumentDeadline = urgentDocumentDeadline;
+						if (data[i].labels.length === 0) continue;
+						labelsArray = [...labelsArray, ...data[i].labels];
 					}
+					const uniqueLabels = CaseLabelUtils.filterUniqueLabels(labelsArray);
+					setUniqueCaseLabels(uniqueLabels);
 					setCaseFolders(data);
 					CaseUtils.setCaseCount(data.length);
 					break;
@@ -76,6 +84,7 @@ function Dashboard() {
 					options={DASHBOARD}
 					caseFolderCards={caseFolders}
 					setCaseFolderCards={setCaseFolders}
+					labels={uniqueCaseLabels}
 				/>
 
 				{/* New Case Button */}

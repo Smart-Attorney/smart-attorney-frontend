@@ -36,7 +36,7 @@ export interface CaseFolderObj {
 
 export interface CaseFolderLabelObj {
 	id: string;
-	name: string;
+	name: string | CaseLabel;
 }
 
 export interface CaseFileObj {
@@ -63,3 +63,5 @@ export interface ClientObj {
 export type SexOptions = "Male" | "Female" | "Other";
 
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
+
+export type CaseLabel = "Asylum" | "Employment" | "Family" | "Humanitarian";

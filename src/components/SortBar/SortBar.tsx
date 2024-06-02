@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { CaseUtils } from "../../utils/case-utils";
-import { SortOptionsObj } from "../../utils/constants/sort-options";
+import { SORT_OPTION, SortOptionsObj } from "../../utils/constants/sort-options";
 import { DocumentUtils } from "../../utils/document-utils";
 import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
-import SortOption from "./SortOption";
+import SortByLabelButton from "./SortByLabelButton";
+import SortByOptionButton from "./SortByOptionButton";
 
 interface SortBarProps {
 	initialWidth: number; // value should be wide enough to fit all options on one line with no wrapping
@@ -14,6 +15,7 @@ interface SortBarProps {
 	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 	documentCards?: CaseFileObj[];
 	setDocumentCards?: React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
+	labels?: Map<string, string>;
 }
 
 function SortBar({
@@ -24,6 +26,7 @@ function SortBar({
 	setCaseFolderCards,
 	documentCards,
 	setDocumentCards,
+	labels,
 }: SortBarProps) {
 	const optionsContainer = useRef<HTMLDivElement>(null);
 
@@ -109,15 +112,26 @@ function SortBar({
 
 	/************************************************************/
 
-	const sortOptionElements = sortOptions.map((option) => (
-		<SortOption
-			key={option.name}
-			id={option.name}
-			name={option.name}
-			clicked={option.clicked}
-			sortByOption={(event) => handleSortCardsByOption(event)}
-		/>
-	));
+	const sortByOptionButtonElements = sortOptions.map((option) =>
+		option.name === SORT_OPTION.LABELS ? (
+			<SortByLabelButton
+				key={option.name}
+				id={option.name}
+				name={option.name}
+				clicked={option.clicked}
+				sortByOption={(event) => handleSortCardsByOption(event)}
+				labels={labels}
+			/>
+		) : (
+			<SortByOptionButton
+				key={option.name}
+				id={option.name}
+				name={option.name}
+				clicked={option.clicked}
+				sortByOption={(event) => handleSortCardsByOption(event)}
+			/>
+		)
+	);
 
 	return (
 		<div className="flex flex-row items-start justify-start gap-8 w-fit">
@@ -132,7 +146,7 @@ function SortBar({
 				ref={optionsContainer}
 				onWheel={handleMouseWheelScroll}
 			>
-				{sortOptionElements}
+				{sortByOptionButtonElements}
 			</div>
 		</div>
 	);
