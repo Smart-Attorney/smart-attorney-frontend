@@ -19,13 +19,19 @@ function Dashboard() {
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
-
 	const [uniqueCaseLabels, setUniqueCaseLabels] = useState(new Map<string, string>());
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
 		handleGetUserCaseFolders();
 	}, []);
+
+	// updates the case labels that the user can sort by
+	useEffect(() => {
+		if (!caseFolders) return;
+		const uniqueLabels = getAllUniqueCaseLabels(caseFolders);
+		setUniqueCaseLabels(uniqueLabels);
+	}, [caseFolders]);
 
 	/************************************************************/
 
@@ -35,15 +41,7 @@ function Dashboard() {
 			switch (response.status) {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
-					let labelsArray: CaseFolderLabelObj[] = [];
-					for (let i = 0, n = data.length; i < n; i++) {
-						const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(data[i].files);
-						data[i].urgentDocumentDeadline = urgentDocumentDeadline;
-						if (data[i].labels.length === 0) continue;
-						labelsArray = [...labelsArray, ...data[i].labels];
-					}
-					const uniqueLabels = CaseLabelUtils.filterUniqueLabels(labelsArray);
-					setUniqueCaseLabels(uniqueLabels);
+					updateCaseUrgentDeadline(data);
 					setCaseFolders(data);
 					CaseUtils.setCaseCount(data.length);
 					break;
@@ -63,10 +61,23 @@ function Dashboard() {
 
 	/************************************************************/
 
-	const newCaseBtnGradient = {
-		background:
-			"linear-gradient(0deg, #FFFFFF, #FFFFFF) padding-box ,linear-gradient(94.94deg, rgba(50, 68, 242, 0.87) 0%, rgba(52, 129, 244, 0.84474) 50.52%, rgba(255, 37, 246, 0.82) 100%) border-box",
+	const updateCaseUrgentDeadline = (cases: DashboardFolderCardObj[]): void => {
+		for (let i = 0, n = cases.length; i < n; i++) {
+			const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(cases[i].files);
+			cases[i].urgentDocumentDeadline = urgentDocumentDeadline;
+		}
 	};
+
+	const getAllUniqueCaseLabels = (cases: DashboardFolderCardObj[]): Map<string, string> => {
+		let labelsArray: CaseFolderLabelObj[] = [];
+		for (let i = 0, n = cases.length; i < n; i++) {
+			if (cases[i].labels.length === 0) continue;
+			labelsArray = [...labelsArray, ...cases[i].labels];
+		}
+		return CaseLabelUtils.filterUniqueLabels(labelsArray);
+	};
+
+	/************************************************************/
 
 	return (
 		<SidebarLayout>
@@ -91,7 +102,10 @@ function Dashboard() {
 				<button
 					type="button"
 					className="flex items-center justify-center font-medium border-[3px] border-transparent rounded-[30px] h-11 min-w-fit"
-					style={newCaseBtnGradient}
+					style={{
+						background:
+							"linear-gradient(0deg, #FFFFFF, #FFFFFF) padding-box ,linear-gradient(94.94deg, rgba(50, 68, 242, 0.87) 0%, rgba(52, 129, 244, 0.84474) 50.52%, rgba(255, 37, 246, 0.82) 100%) border-box",
+					}}
 					onClick={() => navigate("/create-case")}
 				>
 					<div className="flex flex-row items-center w-full h-full gap-2 px-3">
