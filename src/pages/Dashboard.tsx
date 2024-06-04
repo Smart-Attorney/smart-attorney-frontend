@@ -13,13 +13,13 @@ import { CaseLabelUtils } from "../utils/case-label-utils";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { DocumentUtils } from "../utils/document-utils";
-import { CaseFolderLabelObj, DashboardFolderCardObj } from "../utils/types";
+import { CaseFolderLabelObj, DashboardFolderCardObj, LabelsDropdownMenuOptionObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
-	const [uniqueCaseLabels, setUniqueCaseLabels] = useState(new Map<string, string>());
+	const [labelsMenuOptions, setLabelsMenuOptions] = useState<LabelsDropdownMenuOptionObj[] | null>([]);
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
@@ -29,8 +29,9 @@ function Dashboard() {
 	// updates the case labels that the user can sort by
 	useEffect(() => {
 		if (!caseFolders) return;
-		const uniqueLabels = getAllUniqueCaseLabels(caseFolders);
-		setUniqueCaseLabels(uniqueLabels);
+		const uniqueCaseLabels = getAllUniqueCaseLabels(caseFolders);
+		const menuOptions = parseLabelOptions(uniqueCaseLabels);
+		setLabelsMenuOptions(menuOptions);
 	}, [caseFolders]);
 
 	/************************************************************/
@@ -74,7 +75,25 @@ function Dashboard() {
 			if (cases[i].labels.length === 0) continue;
 			labelsArray = [...labelsArray, ...cases[i].labels];
 		}
-		return CaseLabelUtils.filterUniqueLabels(labelsArray);
+		const sortedLabels = CaseLabelUtils.sortAlphabetically(labelsArray);
+		return CaseLabelUtils.filterUniqueLabels(sortedLabels);
+	};
+
+	const parseLabelOptions = (caseLabels: Map<string, string>): LabelsDropdownMenuOptionObj[] => {
+		let optionsArr: LabelsDropdownMenuOptionObj[] = [];
+		caseLabels.forEach((key) => {
+			const parsedLabelName = key.substring(0, 1).toUpperCase() + key.substring(1, key.length).toLowerCase();
+			optionsArr.push({
+				id: key,
+				name: parsedLabelName,
+				clicked: false,
+			});
+		});
+		return optionsArr;
+	};
+
+	const updateLabelsMenuOptions = (newMenuOptions: LabelsDropdownMenuOptionObj[]) => {
+		setLabelsMenuOptions(newMenuOptions);
 	};
 
 	/************************************************************/
@@ -95,7 +114,8 @@ function Dashboard() {
 					options={DASHBOARD}
 					caseFolderCards={caseFolders}
 					setCaseFolderCards={setCaseFolders}
-					labels={uniqueCaseLabels}
+					labelsMenuOptions={labelsMenuOptions}
+					updateLabelsMenuOptions={updateLabelsMenuOptions}
 				/>
 
 				{/* New Case Button */}

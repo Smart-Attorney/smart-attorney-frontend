@@ -120,7 +120,30 @@ export class CaseUtils {
 		return [...sortedArray, ...foldersWithoutDeadlines];
 	}
 
-	public static sortByOption = (array: DashboardFolderCardObj[], option: string): DashboardFolderCardObj[] => {
+	private static sortByCaseLabel(array: DashboardFolderCardObj[], caseLabel: string): DashboardFolderCardObj[] {
+		let casesWithLabel: DashboardFolderCardObj[] = [];
+		let casesWithoutLabel: DashboardFolderCardObj[] = [];
+		let casesWithNoLabels: DashboardFolderCardObj[] = [];
+		for (let i = 0, n = array.length; i < n; i++) {
+			if (array[i].labels.length === 0) {
+				casesWithNoLabels.push(array[i]);
+			}
+			for (let j = 0, o = array[i].labels.length; j < o; j++) {
+				if (array[i].labels[j].name.toLowerCase() === caseLabel.toLowerCase()) {
+					casesWithLabel.push(array[i]);
+				} else {
+					casesWithoutLabel.push(array[i]);
+				}
+			}
+		}
+		return [...casesWithLabel, ...casesWithoutLabel, ...casesWithNoLabels];
+	}
+
+	public static sortByOption = (
+		array: DashboardFolderCardObj[],
+		option: string,
+		label?: string
+	): DashboardFolderCardObj[] => {
 		switch (option) {
 			case SORT_OPTION.NAME:
 				return CaseUtils.sortByName(array);
@@ -136,6 +159,9 @@ export class CaseUtils {
 
 			case SORT_OPTION.DEADLINE:
 				return CaseUtils.sortByDeadline(array);
+
+			case SORT_OPTION.LABELS:
+				return CaseUtils.sortByCaseLabel(array, label!);
 
 			default:
 				return array;

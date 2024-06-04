@@ -1,31 +1,45 @@
 import { useState } from "react";
+import { LabelsDropdownMenuOptionObj } from "../../utils/types";
+import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
 
 interface SortByLabelButtonProps {
 	id: string;
 	name: string;
 	clicked: boolean;
-	sortByOption: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	labels: Map<string, string> | undefined;
-	sortByLabel?: () => void;
+	sortByLabelsOption: (labelOption: string) => void;
+	labelsMenuOptions: LabelsDropdownMenuOptionObj[] | null;
+	updateLabelsMenuOptions: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
+	toggleLabelsButtonClicked: (isClicked: boolean) => void;
 }
 
-function SortByLabelButton({ id, name, clicked, sortByOption, labels }: SortByLabelButtonProps) {
+function SortByLabelButton({
+  id,
+	name,
+	clicked,
+  //@ts-ignore
+	sortByLabelsOption,
+	labelsMenuOptions,
+	updateLabelsMenuOptions,
+	toggleLabelsButtonClicked,
+}: SortByLabelButtonProps) {
 	// collect all case folder labels
 	// pass them into sort
 	// add labels as select options in drop down
 	// when clicking on labels, invoke the function sort by label
 
 	const [isLabelsHovered, setIsLabelsHovered] = useState<boolean>(false);
-	const [selectBoxPosition, setSelectBoxPosition] = useState({
+	const [dropdownMenuPosition, setDropdownMenuPosition] = useState({
 		top: 0,
 		left: 0,
 	});
 
-	const openLabelSelectBox = () => {
+	/************************************************************/
+
+	const openDropdownMenu = () => {
 		setIsLabelsHovered(true);
 	};
 
-	const closeLabelSelectBox = () => {
+	const closeDropdownMenu = () => {
 		setIsLabelsHovered(false);
 	};
 
@@ -34,28 +48,37 @@ function SortByLabelButton({ id, name, clicked, sortByOption, labels }: SortByLa
 		if (sortOption != "Labels") return;
 		const labelButtonCoords = document.getElementById("Labels")?.getBoundingClientRect();
 		if (!labelButtonCoords) return;
-
-		const selectBoxTopPosition = labelButtonCoords.top + labelButtonCoords.height;
-		const selectBoxLeftPosition = labelButtonCoords.left;
-
-		setSelectBoxPosition({
-			top: selectBoxTopPosition,
-			left: selectBoxLeftPosition,
+		const dropdownMenuTopPosition = labelButtonCoords.top + labelButtonCoords.height;
+		const dropdownMenuLeftPosition = labelButtonCoords.left;
+		setDropdownMenuPosition({
+			top: dropdownMenuTopPosition,
+			left: dropdownMenuLeftPosition,
 		});
-
-		openLabelSelectBox();
+		openDropdownMenu();
 	};
 
-	const labelElements = Array.from(labels!).map(([key, value]) => {
-		return (
-			<div key={key} className="flex flex-row gap-x-2 hover:bg-[#dddddd] py-1 px-2.5">
-				<input type="checkbox" id={key} name={value} className="cursor-pointer" />
-				<label htmlFor={key} className="w-full overflow-x-hidden text-sm cursor-pointer overflow-ellipsis">
-					{value}
-				</label>
-			</div>
+	const toggleMenuOptionClicked = (menuOptionName: string) => {
+		const updatedOptions = labelsMenuOptions!.map((option) =>
+			menuOptionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 		);
-	});
+		updateLabelsMenuOptions(updatedOptions);
+	};
+
+	const handleMenuOptionClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = event.target;
+		// TODO: bug here
+		// if (checked === true) {
+		// 	sortByLabelsOption(name);
+		// }
+		toggleMenuOptionClicked(name);
+		toggleLabelsButtonClicked(checked);
+	};
+
+	/************************************************************/
+
+	const menuOptionElements = labelsMenuOptions?.map(({ id, name, clicked }) => (
+		<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={clicked} onChange={handleMenuOptionClick} />
+	));
 
 	return (
 		<>
@@ -69,36 +92,31 @@ function SortByLabelButton({ id, name, clicked, sortByOption, labels }: SortByLa
 				<p
 					id={id}
 					className="cursor-pointer"
-					onClick={
-						labelElements.length > 0
-							? sortByOption
-							: () => {
-									return;
-								}
-					}
 					onMouseEnter={(event) => handleMouseOnLabels(event)}
-					onMouseLeave={closeLabelSelectBox}
+					onMouseLeave={closeDropdownMenu}
 				>
 					{name}
 				</p>
 			</div>
+
+			{/* Labels Dropdown Menu */}
 			<div
-				id="label-select-box"
+				id="labels-dropdown-menu"
 				style={{
 					visibility: isLabelsHovered ? "visible" : "hidden",
-					top: `${selectBoxPosition.top}px`,
-					left: `${selectBoxPosition.left}px`,
+					top: `${dropdownMenuPosition.top}px`,
+					left: `${dropdownMenuPosition.left}px`,
 				}}
 				className="absolute w-[132px] min-h-max bg-white border border-[#9C9DA4] rounded z-20"
-				onMouseEnter={openLabelSelectBox}
-				onMouseLeave={closeLabelSelectBox}
+				onMouseEnter={openDropdownMenu}
+				onMouseLeave={closeDropdownMenu}
 			>
-				{labelElements.length > 0 ? (
-					labelElements
-				) : (
-					<div>
+				{labelsMenuOptions?.length === 0 ? (
+					<div className="py-1 px-2.5">
 						<p className="text-sm italic text-center">no labels</p>
 					</div>
+				) : (
+					menuOptionElements
 				)}
 			</div>
 		</>

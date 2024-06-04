@@ -10,4 +10,19 @@ export class CaseLabelUtils {
 		}
 		return labelsMap;
 	}
+
+	public static sortAlphabetically(labels: CaseFolderLabelObj[]): CaseFolderLabelObj[] {
+		const sortedLabels = labels.sort((a, b) => {
+			const la = a.name;
+			const lb = b.name;
+			if (la < lb) {
+				return -1;
+			}
+			if (la > lb) {
+				return 1;
+			}
+			return 0;
+		});
+		return sortedLabels;
+	}
 }

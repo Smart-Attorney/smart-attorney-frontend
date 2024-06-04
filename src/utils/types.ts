@@ -39,6 +39,12 @@ export interface CaseFolderLabelObj {
 	name: string | CaseLabel;
 }
 
+export interface LabelsDropdownMenuOptionObj {
+	id: string;
+	name: string;
+	clicked: boolean;
+}
+
 export interface CaseFileObj {
 	id: string;
 	name: string;

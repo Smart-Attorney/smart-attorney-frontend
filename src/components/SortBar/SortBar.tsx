@@ -3,7 +3,7 @@ import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { CaseUtils } from "../../utils/case-utils";
 import { SORT_OPTION, SortOptionsObj } from "../../utils/constants/sort-options";
 import { DocumentUtils } from "../../utils/document-utils";
-import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
+import { CaseFileObj, DashboardFolderCardObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
 import SortByLabelButton from "./SortByLabelButton";
 import SortByOptionButton from "./SortByOptionButton";
 
@@ -11,22 +11,24 @@ interface SortBarProps {
 	initialWidth: number; // value should be wide enough to fit all options on one line with no wrapping
 	minWidth: number; // value of window width before the sort bar resizes
 	options: SortOptionsObj[];
+	labelsMenuOptions?: LabelsDropdownMenuOptionObj[] | null;
+	updateLabelsMenuOptions?: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
 	caseFolderCards?: DashboardFolderCardObj[] | null;
 	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 	documentCards?: CaseFileObj[];
 	setDocumentCards?: React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
-	labels?: Map<string, string>;
 }
 
 function SortBar({
 	initialWidth,
 	minWidth,
 	options,
+	labelsMenuOptions,
+	updateLabelsMenuOptions,
 	caseFolderCards,
 	setCaseFolderCards,
 	documentCards,
 	setDocumentCards,
-	labels,
 }: SortBarProps) {
 	const optionsContainer = useRef<HTMLDivElement>(null);
 
@@ -85,6 +87,22 @@ function SortBar({
 
 	/************************************************************/
 
+	const toggleLabelsButtonClicked = (isClicked: boolean) => {
+		setSortOptions((prev) =>
+			prev.map((option) =>
+				option.name === SORT_OPTION.LABELS ? { ...option, clicked: isClicked } : { ...option, clicked: false }
+			)
+		);
+	};
+
+	const toggleOptionClicked = (optionName: string) => {
+		setSortOptions((prev) =>
+			prev.map((option) =>
+				optionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
+			)
+		);
+	};
+
 	const sortDashboardCards = (sortOption: string) => {
 		if (!caseFolderCards || !setCaseFolderCards) return;
 		const sortedCards = CaseUtils.sortByOption(caseFolderCards, sortOption);
@@ -101,13 +119,16 @@ function SortBar({
 
 	const handleSortCardsByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id: selectedOption } = event.target as HTMLParagraphElement;
-		setSortOptions((prev) =>
-			prev.map((option) =>
-				selectedOption === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
-			)
-		);
+		toggleOptionClicked(selectedOption);
 		sortDashboardCards(selectedOption);
 		sortFolderCards(selectedOption);
+	};
+
+	const handleSortCardsByLabelsOption = (labelOption: string) => {
+		if (!caseFolderCards || !setCaseFolderCards) return;
+		const sortedCards = CaseUtils.sortByOption(caseFolderCards, SORT_OPTION.LABELS, labelOption);
+		const shallowCopy = [...sortedCards]; // [1] See references below
+		setCaseFolderCards(shallowCopy as DashboardFolderCardObj[]);
 	};
 
 	/************************************************************/
@@ -119,8 +140,10 @@ function SortBar({
 				id={option.name}
 				name={option.name}
 				clicked={option.clicked}
-				sortByOption={(event) => handleSortCardsByOption(event)}
-				labels={labels}
+				sortByLabelsOption={handleSortCardsByLabelsOption}
+				labelsMenuOptions={labelsMenuOptions!}
+				updateLabelsMenuOptions={updateLabelsMenuOptions!}
+				toggleLabelsButtonClicked={toggleLabelsButtonClicked}
 			/>
 		) : (
 			<SortByOptionButton
