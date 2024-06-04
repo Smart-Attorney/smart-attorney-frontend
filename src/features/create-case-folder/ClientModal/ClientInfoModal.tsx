@@ -30,10 +30,6 @@ interface ClientInfoModalProps {
 function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientInfoModalProps) {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	useEffect(() => {
-		setClientFormInput(client);
-	}, []);
-
 	const [clientFormInput, setClientFormInput] = useState<ClientInfoForm>({
 		firstName: "",
 		middleName: "",
@@ -45,6 +41,14 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 	});
 
 	const [disableCreateButton, setDisableCreateButton] = useState(false);
+
+	useEffect(() => {
+		setClientFormInput(client);
+	}, []);
+
+	useEffect(() => {
+		setClient(clientFormInput);
+	}, [clientFormInput]);
 
 	const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
 		const { id, value } = event.target as HTMLInputElement;
@@ -65,7 +69,6 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 
 	const handleCreateButtonClick = () => {
 		const clientInfoFilled = formRef.current?.checkValidity();
-		setClient(clientFormInput);
 		if (!clientInfoFilled) {
 			formRef.current?.reportValidity();
 			return;
@@ -116,7 +119,13 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								required={true}
 							/>
 
-							<SelectField id="sex" name="Sex" options={SEX} value={clientFormInput.sex} onChange={handleSelectChange} />
+							<SelectField
+								id="sex"
+								name="Sex"
+								options={SEX}
+								value={clientFormInput.sex}
+								onChange={handleSelectChange}
+							/>
 
 							<InputField
 								id="middleName"
@@ -170,6 +179,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 							title="Click Save to create the case folder"
 							name="Save"
 							type="button"
+							style={{ cursor: disableCreateButton ? "not-allowed" : "pointer" }}
 							disabled={disableCreateButton}
 							className="h-[52px] border-[3px]"
 							onClick={handleCreateButtonClick}
