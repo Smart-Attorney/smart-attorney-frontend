@@ -40,7 +40,7 @@ function CaseFolder() {
 		createdDate: 0,
 		lastOpenedDate: 0,
 		status: true,
-		deadline: 0,
+		// deadline: 0,
 	});
 
 	const [client, setClient] = useState<ClientObj>({

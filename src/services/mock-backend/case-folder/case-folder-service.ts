@@ -1,4 +1,4 @@
-import { UpdateCaseFolderDeadlineDTO } from "../../../features/dashboard/api/update-deadline";
+import { DocumentUtils } from "../../../utils/document-utils";
 import { DashboardFolderCardObj } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { ClientDAO } from "../case-client/client-dao";
@@ -14,13 +14,14 @@ export class CaseFolderService {
 			const folderId = caseFolders[i].folder_id;
 			const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
 			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+			const urgentDeadline = await DocumentUtils.getUrgentDeadline(documents);
 			userCaseFolders.push({
 				id: caseFolders[i].folder_id,
 				name: caseFolders[i].folder_name,
 				createdDate: caseFolders[i].created_date,
 				lastOpenedDate: caseFolders[i].last_opened_date,
 				status: caseFolders[i].status,
-				urgentDocumentDeadline: caseFolders[i].deadline,
+				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
 				files: documents,
 			});
@@ -39,16 +40,16 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async getCaseFolderDeadlines(userId: string) {
-		if (!userId) {
-			return null;
-		}
-		const retrievedCaseDeadlines = await CaseFolderDAO.getCaseFolderDeadlinesByUserId(userId);
-		if (retrievedCaseDeadlines !== null) {
-			return retrievedCaseDeadlines;
-		}
-		return null;
-	}
+	// static async getCaseFolderDeadlines(userId: string) {
+	// 	if (!userId) {
+	// 		return null;
+	// 	}
+	// 	const retrievedCaseDeadlines = await CaseFolderDAO.getCaseFolderDeadlinesByUserId(userId);
+	// 	if (retrievedCaseDeadlines !== null) {
+	// 		return retrievedCaseDeadlines;
+	// 	}
+	// 	return null;
+	// }
 
 	static async createCaseFolder(userId: string, folderId: string, folderName: string) {
 		const newFolder = await CaseFolderDAO.addNewCaseFolder(userId, folderId, folderName);
@@ -58,16 +59,16 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async updateDeadline(userId: string, folderId: string, deadline: UpdateCaseFolderDeadlineDTO) {
-		if (!folderId || !deadline) {
-			return null;
-		}
-		const updatedDeadline = await CaseFolderDAO.updateDeadline(userId, folderId, deadline);
-		if (updatedDeadline !== null) {
-			return updatedDeadline;
-		}
-		return null;
-	}
+	// static async updateDeadline(userId: string, folderId: string, deadline: UpdateCaseFolderDeadlineDTO) {
+	// 	if (!folderId || !deadline) {
+	// 		return null;
+	// 	}
+	// 	const updatedDeadline = await CaseFolderDAO.updateDeadline(userId, folderId, deadline);
+	// 	if (updatedDeadline !== null) {
+	// 		return updatedDeadline;
+	// 	}
+	// 	return null;
+	// }
 
 	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
 		if (!userId || !folderId || !newDate) {

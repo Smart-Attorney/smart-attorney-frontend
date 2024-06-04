@@ -11,7 +11,6 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
-import { DocumentUtils } from "../utils/document-utils";
 import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
@@ -41,7 +40,8 @@ function Dashboard() {
 			switch (response.status) {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
-					updateCaseUrgentDeadline(data);
+					// const casesWithDeadlines = updateCaseUrgentDeadline(data);
+					// setCaseFolders(casesWithDeadlines);
 					setCaseFolders(data);
 					CaseUtils.setCaseCount(data.length);
 					break;
@@ -61,12 +61,13 @@ function Dashboard() {
 
 	/************************************************************/
 
-	const updateCaseUrgentDeadline = (cases: DashboardFolderCardObj[]): void => {
-		for (let i = 0, n = cases.length; i < n; i++) {
-			const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(cases[i].files);
-			cases[i].urgentDocumentDeadline = urgentDocumentDeadline;
-		}
-	};
+	// const updateCaseUrgentDeadline = (cases: DashboardFolderCardObj[]) => {
+	// 	for (let i = 0, n = cases.length; i < n; i++) {
+	// 		const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(cases[i].files);
+	// 		cases[i].urgentDocumentDeadline = urgentDocumentDeadline;
+	//   }
+	//   return cases;
+	// };
 
 	// const getAllUniqueCaseLabels = (cases: DashboardFolderCardObj[]): Map<string, string> => {
 	// 	let labelsArray: CaseFolderLabelObj[] = [];

@@ -14,7 +14,7 @@ export interface CaseFolders {
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
 	status: boolean;
-	deadline: number; // as unix time
+	// deadline: number; // as unix time
 	user_id_fk: string; // from nanoid
 }
 
