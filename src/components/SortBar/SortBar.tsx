@@ -3,7 +3,7 @@ import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { CaseUtils } from "../../utils/case-utils";
 import { SORT_OPTION, SortOptionsObj } from "../../utils/constants/sort-options";
 import { DocumentUtils } from "../../utils/document-utils";
-import { CaseFileObj, DashboardFolderCardObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
+import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
 import SortByLabelButton from "./SortByLabelButton";
 import SortByOptionButton from "./SortByOptionButton";
 
@@ -11,8 +11,8 @@ interface SortBarProps {
 	initialWidth: number; // value should be wide enough to fit all options on one line with no wrapping
 	minWidth: number; // value of window width before the sort bar resizes
 	options: SortOptionsObj[];
-	labelsMenuOptions?: LabelsDropdownMenuOptionObj[] | null;
-	updateLabelsMenuOptions?: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
+	// labelsMenuOptions?: LabelsDropdownMenuOptionObj[] | null;
+	// updateLabelsMenuOptions?: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
 	caseFolderCards?: DashboardFolderCardObj[] | null;
 	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 	documentCards?: CaseFileObj[];
@@ -23,8 +23,8 @@ function SortBar({
 	initialWidth,
 	minWidth,
 	options,
-	labelsMenuOptions,
-	updateLabelsMenuOptions,
+	// labelsMenuOptions,
+	// updateLabelsMenuOptions,
 	caseFolderCards,
 	setCaseFolderCards,
 	documentCards,
@@ -141,8 +141,8 @@ function SortBar({
 				name={option.name}
 				clicked={option.clicked}
 				sortByLabelsOption={handleSortCardsByLabelsOption}
-				labelsMenuOptions={labelsMenuOptions!}
-				updateLabelsMenuOptions={updateLabelsMenuOptions!}
+				// labelsMenuOptions={labelsMenuOptions!}
+				// updateLabelsMenuOptions={updateLabelsMenuOptions!}
 				toggleLabelsButtonClicked={toggleLabelsButtonClicked}
 			/>
 		) : (

@@ -1,37 +1,72 @@
-import { useState } from "react";
-import { LabelsDropdownMenuOptionObj } from "../../utils/types";
+import { useEffect, useState } from "react";
+import { CaseLabelUtils } from "../../utils/case-label-utils";
+import { CaseFolderLabelObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
 import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
+import { getCaseLabels } from "./api/get-case-labels";
 
 interface SortByLabelButtonProps {
 	id: string;
 	name: string;
 	clicked: boolean;
 	sortByLabelsOption: (labelOption: string) => void;
-	labelsMenuOptions: LabelsDropdownMenuOptionObj[] | null;
-	updateLabelsMenuOptions: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
 	toggleLabelsButtonClicked: (isClicked: boolean) => void;
+	// labelsMenuOptions: LabelsDropdownMenuOptionObj[] | null;
+	// updateLabelsMenuOptions: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
 }
 
 function SortByLabelButton({
-  id,
+	id,
 	name,
 	clicked,
-  //@ts-ignore
+	//@ts-ignore
 	sortByLabelsOption,
-	labelsMenuOptions,
-	updateLabelsMenuOptions,
 	toggleLabelsButtonClicked,
+	// labelsMenuOptions,
+	// updateLabelsMenuOptions,
 }: SortByLabelButtonProps) {
-	// collect all case folder labels
-	// pass them into sort
-	// add labels as select options in drop down
-	// when clicking on labels, invoke the function sort by label
-
 	const [isLabelsHovered, setIsLabelsHovered] = useState<boolean>(false);
 	const [dropdownMenuPosition, setDropdownMenuPosition] = useState({
 		top: 0,
 		left: 0,
 	});
+	const [menuOptions, setMenuOptions] = useState<LabelsDropdownMenuOptionObj[]>();
+
+	useEffect(() => {
+		handleGetUserCaseLabels();
+		// console.log(menuOptions);
+	}, []);
+
+	/************************************************************/
+
+	const handleGetUserCaseLabels = async () => {
+		try {
+			const response = await getCaseLabels();
+			if (response.ok) {
+				const data: CaseFolderLabelObj[] = await response.json();
+				const sortedLabels = CaseLabelUtils.sortAlphabetically(data);
+				const uniqueLabels = CaseLabelUtils.filterUniqueLabels(sortedLabels);
+				const labelOptions = parseLabelOptions(uniqueLabels);
+				setMenuOptions(labelOptions);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
+
+	/************************************************************/
+
+	const parseLabelOptions = (caseLabels: Map<string, string>): LabelsDropdownMenuOptionObj[] => {
+		let optionsArr: LabelsDropdownMenuOptionObj[] = [];
+		caseLabels.forEach((key) => {
+			const parsedLabelName = key.substring(0, 1).toUpperCase() + key.substring(1, key.length).toLowerCase();
+			optionsArr.push({
+				id: key,
+				name: parsedLabelName,
+				clicked: false,
+			});
+		});
+		return optionsArr;
+	};
 
 	/************************************************************/
 
@@ -42,6 +77,8 @@ function SortByLabelButton({
 	const closeDropdownMenu = () => {
 		setIsLabelsHovered(false);
 	};
+
+	/************************************************************/
 
 	const handleMouseOnLabels = (event: React.MouseEvent<HTMLParagraphElement>) => {
 		const sortOption = (event.target as HTMLParagraphElement).id;
@@ -58,27 +95,34 @@ function SortByLabelButton({
 	};
 
 	const toggleMenuOptionClicked = (menuOptionName: string) => {
-		const updatedOptions = labelsMenuOptions!.map((option) =>
+		const updatedOptions = menuOptions?.map((option) =>
 			menuOptionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 		);
-		updateLabelsMenuOptions(updatedOptions);
+    setMenuOptions(updatedOptions);
+		// const updatedOptions = labelsMenuOptions!.map((option) =>
+		// 	menuOptionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
+		// );
+		// updateLabelsMenuOptions(updatedOptions);
 	};
 
 	const handleMenuOptionClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target;
 		// TODO: bug here
-		// if (checked === true) {
-		// 	sortByLabelsOption(name);
-		// }
+		if (checked === true) {
+			sortByLabelsOption(name);
+		}
 		toggleMenuOptionClicked(name);
 		toggleLabelsButtonClicked(checked);
 	};
 
 	/************************************************************/
 
-	const menuOptionElements = labelsMenuOptions?.map(({ id, name, clicked }) => (
+	const menuOptionElements = menuOptions?.map(({ id, name, clicked }) => (
 		<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={clicked} onChange={handleMenuOptionClick} />
 	));
+	// const menuOptionElements = labelsMenuOptions?.map(({ id, name, clicked }) => (
+	// 	<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={clicked} onChange={handleMenuOptionClick} />
+	// ));
 
 	return (
 		<>
@@ -111,7 +155,7 @@ function SortByLabelButton({
 				onMouseEnter={openDropdownMenu}
 				onMouseLeave={closeDropdownMenu}
 			>
-				{labelsMenuOptions?.length === 0 ? (
+				{menuOptions?.length === 0 ? (
 					<div className="py-1 px-2.5">
 						<p className="text-sm italic text-center">no labels</p>
 					</div>

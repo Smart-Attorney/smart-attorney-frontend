@@ -9,17 +9,16 @@ import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { CaseLabelUtils } from "../utils/case-label-utils";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { DocumentUtils } from "../utils/document-utils";
-import { CaseFolderLabelObj, DashboardFolderCardObj, LabelsDropdownMenuOptionObj } from "../utils/types";
+import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
-	const [labelsMenuOptions, setLabelsMenuOptions] = useState<LabelsDropdownMenuOptionObj[] | null>([]);
+	// const [labelsMenuOptions, setLabelsMenuOptions] = useState<LabelsDropdownMenuOptionObj[] | null>([]);
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
@@ -27,12 +26,12 @@ function Dashboard() {
 	}, []);
 
 	// updates the case labels that the user can sort by
-	useEffect(() => {
-		if (!caseFolders) return;
-		const uniqueCaseLabels = getAllUniqueCaseLabels(caseFolders);
-		const menuOptions = parseLabelOptions(uniqueCaseLabels);
-		setLabelsMenuOptions(menuOptions);
-	}, [caseFolders]);
+	// useEffect(() => {
+	// 	if (!caseFolders) return;
+	// 	const uniqueCaseLabels = getAllUniqueCaseLabels(caseFolders);
+	// 	const menuOptions = parseLabelOptions(uniqueCaseLabels);
+	// 	setLabelsMenuOptions(menuOptions);
+	// }, [caseFolders]);
 
 	/************************************************************/
 
@@ -69,32 +68,32 @@ function Dashboard() {
 		}
 	};
 
-	const getAllUniqueCaseLabels = (cases: DashboardFolderCardObj[]): Map<string, string> => {
-		let labelsArray: CaseFolderLabelObj[] = [];
-		for (let i = 0, n = cases.length; i < n; i++) {
-			if (cases[i].labels.length === 0) continue;
-			labelsArray = [...labelsArray, ...cases[i].labels];
-		}
-		const sortedLabels = CaseLabelUtils.sortAlphabetically(labelsArray);
-		return CaseLabelUtils.filterUniqueLabels(sortedLabels);
-	};
+	// const getAllUniqueCaseLabels = (cases: DashboardFolderCardObj[]): Map<string, string> => {
+	// 	let labelsArray: CaseFolderLabelObj[] = [];
+	// 	for (let i = 0, n = cases.length; i < n; i++) {
+	// 		if (cases[i].labels.length === 0) continue;
+	// 		labelsArray = [...labelsArray, ...cases[i].labels];
+	// 	}
+	// 	const sortedLabels = CaseLabelUtils.sortAlphabetically(labelsArray);
+	// 	return CaseLabelUtils.filterUniqueLabels(sortedLabels);
+	// };
 
-	const parseLabelOptions = (caseLabels: Map<string, string>): LabelsDropdownMenuOptionObj[] => {
-		let optionsArr: LabelsDropdownMenuOptionObj[] = [];
-		caseLabels.forEach((key) => {
-			const parsedLabelName = key.substring(0, 1).toUpperCase() + key.substring(1, key.length).toLowerCase();
-			optionsArr.push({
-				id: key,
-				name: parsedLabelName,
-				clicked: false,
-			});
-		});
-		return optionsArr;
-	};
+	// const parseLabelOptions = (caseLabels: Map<string, string>): LabelsDropdownMenuOptionObj[] => {
+	// 	let optionsArr: LabelsDropdownMenuOptionObj[] = [];
+	// 	caseLabels.forEach((key) => {
+	// 		const parsedLabelName = key.substring(0, 1).toUpperCase() + key.substring(1, key.length).toLowerCase();
+	// 		optionsArr.push({
+	// 			id: key,
+	// 			name: parsedLabelName,
+	// 			clicked: false,
+	// 		});
+	// 	});
+	// 	return optionsArr;
+	// };
 
-	const updateLabelsMenuOptions = (newMenuOptions: LabelsDropdownMenuOptionObj[]) => {
-		setLabelsMenuOptions(newMenuOptions);
-	};
+	// const updateLabelsMenuOptions = (newMenuOptions: LabelsDropdownMenuOptionObj[]) => {
+	// 	setLabelsMenuOptions(newMenuOptions);
+	// };
 
 	/************************************************************/
 
@@ -114,8 +113,8 @@ function Dashboard() {
 					options={DASHBOARD}
 					caseFolderCards={caseFolders}
 					setCaseFolderCards={setCaseFolders}
-					labelsMenuOptions={labelsMenuOptions}
-					updateLabelsMenuOptions={updateLabelsMenuOptions}
+					// labelsMenuOptions={labelsMenuOptions}
+					// updateLabelsMenuOptions={updateLabelsMenuOptions}
 				/>
 
 				{/* New Case Button */}

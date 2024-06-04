@@ -29,7 +29,7 @@ function CardGrid({ children }: CardGridProps) {
 
 	// const layout_2: string = `flex flex-row flex-wrap justify-between gap-x-10 gap-y-14`;
 
-	const layout_3 = `grid grid-cols-customAuto gap-x-10 gap-y-14 justify-start`;
+	const layout_3: string = `grid grid-cols-customAuto gap-x-10 gap-y-14 justify-start`;
 
 	return (
 		<div className="w-full pl-[88px] pr-32">
