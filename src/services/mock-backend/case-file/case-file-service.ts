@@ -64,9 +64,6 @@ export class CaseFileService {
 				documents.push(document);
 			});
 		}
-		if (documents.length === 0) {
-			return null;
-		}
 		return documents;
 	}
 
