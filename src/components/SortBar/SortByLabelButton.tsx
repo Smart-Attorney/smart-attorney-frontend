@@ -10,8 +10,6 @@ interface SortByLabelButtonProps {
 	clicked: boolean;
 	sortByLabelsOption: (labelOption: string) => void;
 	toggleLabelsButtonClicked: (isClicked: boolean) => void;
-	// labelsMenuOptions: LabelsDropdownMenuOptionObj[] | null;
-	// updateLabelsMenuOptions: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
 }
 
 function SortByLabelButton({
@@ -21,8 +19,6 @@ function SortByLabelButton({
 	//@ts-ignore
 	sortByLabelsOption,
 	toggleLabelsButtonClicked,
-	// labelsMenuOptions,
-	// updateLabelsMenuOptions,
 }: SortByLabelButtonProps) {
 	const [isLabelsHovered, setIsLabelsHovered] = useState<boolean>(false);
 	const [dropdownMenuPosition, setDropdownMenuPosition] = useState({
@@ -33,7 +29,6 @@ function SortByLabelButton({
 
 	useEffect(() => {
 		handleGetUserCaseLabels();
-		// console.log(menuOptions);
 	}, []);
 
 	/************************************************************/
@@ -98,19 +93,15 @@ function SortByLabelButton({
 		const updatedOptions = menuOptions?.map((option) =>
 			menuOptionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 		);
-    setMenuOptions(updatedOptions);
-		// const updatedOptions = labelsMenuOptions!.map((option) =>
-		// 	menuOptionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
-		// );
-		// updateLabelsMenuOptions(updatedOptions);
+		setMenuOptions(updatedOptions);
 	};
 
 	const handleMenuOptionClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target;
 		// TODO: bug here
-		if (checked === true) {
-			sortByLabelsOption(name);
-		}
+		// if (checked === true) {
+		// 	sortByLabelsOption(name);
+		// }
 		toggleMenuOptionClicked(name);
 		toggleLabelsButtonClicked(checked);
 	};
@@ -120,9 +111,6 @@ function SortByLabelButton({
 	const menuOptionElements = menuOptions?.map(({ id, name, clicked }) => (
 		<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={clicked} onChange={handleMenuOptionClick} />
 	));
-	// const menuOptionElements = labelsMenuOptions?.map(({ id, name, clicked }) => (
-	// 	<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={clicked} onChange={handleMenuOptionClick} />
-	// ));
 
 	return (
 		<>

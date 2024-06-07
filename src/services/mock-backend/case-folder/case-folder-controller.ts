@@ -36,23 +36,6 @@ export class CaseFolderController {
 		}
 	}
 
-	// static async getCaseFolderDeadlines(request: Request) {
-	// 	const authHeader = request.headers.get("Authorization");
-	// 	if (!authHeader) {
-	// 		throw new Error("User is not authorized/signed in.");
-	// 	}
-	// 	const authToken = JSON.parse(authHeader);
-	// 	const userId: string = authToken.id;
-	// 	const retrievedCaseDeadlines = await CaseFolderService.getCaseFolderDeadlines(userId);
-	// 	if (retrievedCaseDeadlines !== null) {
-	// 		const body = JSON.stringify(retrievedCaseDeadlines);
-	// 		const options = { status: 200 };
-	// 		return new Response(body, options);
-	// 	} else {
-	// 		throw new Error("There was an issue with retrieving the calendar events.");
-	// 	}
-	// }
-
 	static async createCaseFolder(request: Request) {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
@@ -71,27 +54,6 @@ export class CaseFolderController {
 			throw new Error("There was an issue with creating the case folder.");
 		}
 	}
-
-	// static async updateDeadline(request: Request) {
-	// 	const authHeader = request.headers.get("Authorization");
-	// 	if (!authHeader) {
-	// 		throw new Error("User is not authorized/signed in.");
-	// 	}
-	// 	const authToken = JSON.parse(authHeader);
-	// 	const userId: string = authToken.id;
-	// 	const urlArray = request.url.split("/");
-	// 	const folderId: string = urlArray[urlArray.length - 1];
-	// 	const newDeadline: UpdateCaseFolderDeadlineDTO = await request.json();
-	// 	const updatedDeadline = await CaseFolderService.updateDeadline(userId, folderId, newDeadline);
-	// 	if (updatedDeadline !== null) {
-	// 		const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
-	// 		const body = JSON.stringify(updatedCaseFolders);
-	// 		const options = { status: 200 };
-	// 		return new Response(body, options);
-	// 	} else {
-	// 		throw new Error("There was an issue with updating the case folder deadline.");
-	// 	}
-	// }
 
 	static async updateLastOpenedDate(request: Request) {
 		const authHeader = request.headers.get("Authorization");

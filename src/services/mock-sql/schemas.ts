@@ -14,7 +14,6 @@ export interface CaseFolders {
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
 	status: boolean;
-	// deadline: number; // as unix time
 	user_id_fk: string; // from nanoid
 }
 
@@ -56,11 +55,3 @@ export interface CalendarDeadlines {
 export type sex_options = "Male" | "Female" | "Other";
 
 export type document_status = "In Progress" | "In Review" | "Submitted";
-
-// update these refs
-/* 
-  ref:         case_folders.user_id_fk > users.id
-  ref: folder_labels.case_folder_id_fk > case_folders.id
-  ref:    case_files.case_folder_id_fk > case_folders.id
-  ref:       clients.case_folder_id_fk > case_folders.id
-*/

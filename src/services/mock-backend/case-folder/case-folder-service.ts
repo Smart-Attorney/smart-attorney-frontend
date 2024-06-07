@@ -40,17 +40,6 @@ export class CaseFolderService {
 		return null;
 	}
 
-	// static async getCaseFolderDeadlines(userId: string) {
-	// 	if (!userId) {
-	// 		return null;
-	// 	}
-	// 	const retrievedCaseDeadlines = await CaseFolderDAO.getCaseFolderDeadlinesByUserId(userId);
-	// 	if (retrievedCaseDeadlines !== null) {
-	// 		return retrievedCaseDeadlines;
-	// 	}
-	// 	return null;
-	// }
-
 	static async createCaseFolder(userId: string, folderId: string, folderName: string) {
 		const newFolder = await CaseFolderDAO.addNewCaseFolder(userId, folderId, folderName);
 		if (newFolder !== null) {
@@ -58,17 +47,6 @@ export class CaseFolderService {
 		}
 		return null;
 	}
-
-	// static async updateDeadline(userId: string, folderId: string, deadline: UpdateCaseFolderDeadlineDTO) {
-	// 	if (!folderId || !deadline) {
-	// 		return null;
-	// 	}
-	// 	const updatedDeadline = await CaseFolderDAO.updateDeadline(userId, folderId, deadline);
-	// 	if (updatedDeadline !== null) {
-	// 		return updatedDeadline;
-	// 	}
-	// 	return null;
-	// }
 
 	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
 		if (!userId || !folderId || !newDate) {

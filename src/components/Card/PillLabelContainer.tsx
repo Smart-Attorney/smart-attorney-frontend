@@ -22,7 +22,7 @@ function PillLabelContainer({ id, navLabel, className, children }: PillLabelCont
 		event.preventDefault();
 	};
 
-	/**
+	/*
 	 * Allows vertical scroll wheel behavior to perform horizontal scroll
 	 * Source: https://stackoverflow.com/questions/61099088/how-to-horizontally-scroll-a-table-with-mouse-wheel-in-react?rq=3
 	 */

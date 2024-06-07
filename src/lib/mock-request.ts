@@ -5,7 +5,6 @@ export class mockRequest {
 	private static DELETE = "DELETE";
 
 	static getToken() {
-		// const currentUser = localStorage.getItem("current_user");
 		const currentUser = sessionStorage.getItem("current_user");
 		if (currentUser) {
 			const token = currentUser;

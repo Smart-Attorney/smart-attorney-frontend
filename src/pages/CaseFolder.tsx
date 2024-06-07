@@ -40,7 +40,6 @@ function CaseFolder() {
 		createdDate: 0,
 		lastOpenedDate: 0,
 		status: true,
-		// deadline: 0,
 	});
 
 	const [client, setClient] = useState<ClientObj>({
@@ -211,16 +210,12 @@ function CaseFolder() {
 		try {
 			const response = await updateLastOpenedDate(folderId.current!, Date.now());
 			if (response.ok) {
-				// do nothing here since this function is fired after the component unmounts
+				// for the future, maybe add a toast or something to confirm successful update
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
-
-	// const handleSaveChanges = () => {
-	// 	handleUpdateLastOpenedDate();
-	// };
 
 	/************************************************************/
 

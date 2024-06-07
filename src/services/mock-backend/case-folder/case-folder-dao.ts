@@ -27,28 +27,12 @@ export class CaseFolderDAO extends DAO {
 					createdDate: caseFolderArray[i].created_date,
 					lastOpenedDate: caseFolderArray[i].last_opened_date,
 					status: caseFolderArray[i].status,
-					// deadline: caseFolderArray[i].deadline,
 				};
 				return caseFolder;
 			}
 		}
 		return null;
 	}
-
-	// static async getCaseFolderDeadlinesByUserId(userId: string) {
-	// 	const deadlines: CalendarDeadlines[] = [];
-	// 	const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-	// 	for (let i = 0, n = caseFolderArray.length; i < n; i++) {
-	// 		if (caseFolderArray[i].user_id_fk === userId) {
-	// 			deadlines.push({
-	// 				folder_id: caseFolderArray[i].folder_id,
-	// 				folder_name: caseFolderArray[i].folder_name,
-	// 				deadline: caseFolderArray[i].deadline,
-	// 			});
-	// 		}
-	// 	}
-	// 	return deadlines;
-	// }
 
 	static async addNewCaseFolder(userId: string, folderId: string, folderName: string) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
@@ -58,14 +42,6 @@ export class CaseFolderDAO extends DAO {
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
 			status: true,
-			/* 
-        It's okay for a new case folder deadline to be 0 because unix time of 0 converted
-        to a new Date corresponds to the date of Jan 1, 1970.
-        No one is going to have a deadline set in the past so its okay, plus you can check
-        if the deadline is 0 on the client-side and format the date accordingly.
-      */
-			// DEPRECATED: case folders do not have a deadline property
-			// deadline: 0,
 			user_id_fk: userId,
 		};
 		const updatedArray = [...caseFolderArray, newCaseFolder];
@@ -75,21 +51,6 @@ export class CaseFolderDAO extends DAO {
 		}
 		return null;
 	}
-
-	// static async updateDeadline(userId: string, folderId: string, newDeadline: number) {
-	// 	const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-	// 	for (let i = 0, n = caseFolderArray.length; i < n; i++) {
-	// 		if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
-	// 			caseFolderArray[i].deadline = newDeadline;
-	// 			break;
-	// 		}
-	// 	}
-	// 	const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
-	// 	if (success) {
-	// 		return newDeadline;
-	// 	}
-	// 	return null;
-	// }
 
 	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);

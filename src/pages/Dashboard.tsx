@@ -17,20 +17,11 @@ function Dashboard() {
 	const navigate = useNavigate();
 
 	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
-	// const [labelsMenuOptions, setLabelsMenuOptions] = useState<LabelsDropdownMenuOptionObj[] | null>([]);
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
 		handleGetUserCaseFolders();
 	}, []);
-
-	// updates the case labels that the user can sort by
-	// useEffect(() => {
-	// 	if (!caseFolders) return;
-	// 	const uniqueCaseLabels = getAllUniqueCaseLabels(caseFolders);
-	// 	const menuOptions = parseLabelOptions(uniqueCaseLabels);
-	// 	setLabelsMenuOptions(menuOptions);
-	// }, [caseFolders]);
 
 	/************************************************************/
 
@@ -40,8 +31,7 @@ function Dashboard() {
 			switch (response.status) {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
-					// const casesWithDeadlines = updateCaseUrgentDeadline(data);
-					// setCaseFolders(casesWithDeadlines);
+
 					setCaseFolders(data);
 					CaseUtils.setCaseCount(data.length);
 					break;
@@ -61,43 +51,6 @@ function Dashboard() {
 
 	/************************************************************/
 
-	// const updateCaseUrgentDeadline = (cases: DashboardFolderCardObj[]) => {
-	// 	for (let i = 0, n = cases.length; i < n; i++) {
-	// 		const urgentDocumentDeadline = DocumentUtils.getUrgentDeadline(cases[i].files);
-	// 		cases[i].urgentDocumentDeadline = urgentDocumentDeadline;
-	//   }
-	//   return cases;
-	// };
-
-	// const getAllUniqueCaseLabels = (cases: DashboardFolderCardObj[]): Map<string, string> => {
-	// 	let labelsArray: CaseFolderLabelObj[] = [];
-	// 	for (let i = 0, n = cases.length; i < n; i++) {
-	// 		if (cases[i].labels.length === 0) continue;
-	// 		labelsArray = [...labelsArray, ...cases[i].labels];
-	// 	}
-	// 	const sortedLabels = CaseLabelUtils.sortAlphabetically(labelsArray);
-	// 	return CaseLabelUtils.filterUniqueLabels(sortedLabels);
-	// };
-
-	// const parseLabelOptions = (caseLabels: Map<string, string>): LabelsDropdownMenuOptionObj[] => {
-	// 	let optionsArr: LabelsDropdownMenuOptionObj[] = [];
-	// 	caseLabels.forEach((key) => {
-	// 		const parsedLabelName = key.substring(0, 1).toUpperCase() + key.substring(1, key.length).toLowerCase();
-	// 		optionsArr.push({
-	// 			id: key,
-	// 			name: parsedLabelName,
-	// 			clicked: false,
-	// 		});
-	// 	});
-	// 	return optionsArr;
-	// };
-
-	// const updateLabelsMenuOptions = (newMenuOptions: LabelsDropdownMenuOptionObj[]) => {
-	// 	setLabelsMenuOptions(newMenuOptions);
-	// };
-
-	/************************************************************/
-
 	return (
 		<SidebarLayout>
 			<PageHeader className="gap-2">
@@ -114,8 +67,6 @@ function Dashboard() {
 					options={DASHBOARD}
 					caseFolderCards={caseFolders}
 					setCaseFolderCards={setCaseFolders}
-					// labelsMenuOptions={labelsMenuOptions}
-					// updateLabelsMenuOptions={updateLabelsMenuOptions}
 				/>
 
 				{/* New Case Button */}

@@ -45,23 +45,6 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	// const handleUpdateFolderDeadline = async (
-	// 	folderId: string,
-	// 	event: React.ChangeEvent<HTMLInputElement>
-	// ): Promise<void> => {
-	// 	const { value } = event.target;
-	// 	const deadlineInUnixTime = Date.parse(value);
-	// 	try {
-	// 		const response = await updateDeadline(folderId, deadlineInUnixTime);
-	// 		if (response.ok) {
-	// 			const data: DashboardFolderCardObj[] = await response.json();
-	// 			setCaseFolders(data);
-	// 		}
-	// 	} catch (error) {
-	// 		alert(error);
-	// 	}
-	// };
-
 	const handleAddFolderLabel = async (folderId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		const { value: newLabel } = (event.target as HTMLFormElement)[0] as HTMLInputElement;
@@ -114,16 +97,14 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	};
 
 	// to identify which parts of the card allows navigation when clicked
-	const allowNavigateString = "allow-nav";
+	const navigationString = "allow-nav";
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
 		const { ariaLabel } = event.target as HTMLElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
-		// once case edit modal is created, can scrap this awful switch case tree
-		// and remove all instances of "allow-nav"
 		switch (ariaLabel) {
 			case folderId:
 				return viewFile();
-			case allowNavigateString:
+			case navigationString:
 				return viewFile();
 			default:
 				return;
@@ -138,38 +119,35 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
-						navLabel={allowNavigateString}
+						navLabel={navigationString}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
 						<KebabMenuContainer>
 							<KebabMenu
 								id="kebab-menu"
 								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.status)}
-								// addDeadline={(event) => {
-								// 	handleUpdateFolderDeadline(caseFolder.id, event);
-								// }}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
 						</KebabMenuContainer>
 
-						<CardBody navLabel={allowNavigateString}>
-							<CardHeaderContainer navLabel={allowNavigateString}>
-								<PillLabelContainer navLabel={allowNavigateString} className="ml-6">
-									<CardDeadline navLabel={allowNavigateString} deadline={caseFolder.urgentDocumentDeadline} />
+						<CardBody navLabel={navigationString}>
+							<CardHeaderContainer navLabel={navigationString}>
+								<PillLabelContainer navLabel={navigationString} className="ml-6">
+									<CardDeadline navLabel={navigationString} deadline={caseFolder.urgentDocumentDeadline} />
 									<CardLabels
-										navLabel={allowNavigateString}
+										navLabel={navigationString}
 										labels={caseFolder.labels}
 										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
 									/>
 								</PillLabelContainer>
-								<CardName navLabel={allowNavigateString} name={caseFolder.name} />
+								<CardName navLabel={navigationString} name={caseFolder.name} />
 							</CardHeaderContainer>
 
-							<CardImage navLabel={allowNavigateString} imgSrc={FileSnapshot} />
+							<CardImage navLabel={navigationString} imgSrc={FileSnapshot} />
 
 							{/* Comment count, File count, Assigned to whom*/}
-							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
+							<CardFooter navLabel={navigationString} hasFooter={true} />
 						</CardBody>
 
 						{/* Folder Status Dot Indicator */}

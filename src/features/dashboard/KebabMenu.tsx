@@ -3,39 +3,28 @@ import { useState } from "react";
 interface KebabMenuProps {
 	id: string;
 	updateStatus: () => void;
-	// addDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	addLabel: (event: React.FormEvent<HTMLFormElement>) => void;
 	deleteFolder: () => void;
 }
 
 function KebabMenu({ id, updateStatus, addLabel, deleteFolder }: KebabMenuProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	// const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isLabelInputOpen, setIsLabelInputOpen] = useState(false);
 	const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
 	const toggleMenu = (): void => setIsMenuOpen((prev) => !prev);
 
-	// const toggleDatePicker = (): void => {
-	// 	closeLabelInput();
-	// 	closeDeleteAlert();
-	// 	setIsDatePickerOpen((prev) => !prev);
-	// };
-
 	const toggleLabelInput = (): void => {
-		// closeDatePicker();
 		closeDeleteAlert();
 		setIsLabelInputOpen((prev) => !prev);
 	};
 
 	const toggleDeleteAlert = (): void => {
-		// closeDatePicker();
 		closeLabelInput();
 		setIsDeleteAlertOpen((prev) => !prev);
 	};
 
 	const closeMenu = (): void => setIsMenuOpen(false);
-	// const closeDatePicker = (): void => setIsDatePickerOpen(false);
 	const closeLabelInput = (): void => setIsLabelInputOpen(false);
 	const closeDeleteAlert = (): void => setIsDeleteAlertOpen(false);
 
@@ -63,9 +52,6 @@ function KebabMenu({ id, updateStatus, addLabel, deleteFolder }: KebabMenuProps)
 				>
 					Update Status
 				</li>
-				{/* <li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDatePicker}>
-					Add Deadline
-				</li> */}
 				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleLabelInput}>
 					Add Labels
 				</li>
@@ -73,27 +59,6 @@ function KebabMenu({ id, updateStatus, addLabel, deleteFolder }: KebabMenuProps)
 					Delete
 				</li>
 			</ul>
-
-			{/* Date Picker */}
-			{/* <div
-				className="absolute right-[-6px] top-[80px] z-10 border border-black p-3 rounded-lg bg-[#eff1f3] w-64"
-				style={{ display: isDatePickerOpen ? "block" : "none" }}
-			>
-				<label htmlFor="date-picker">Set Deadline:</label>
-				<div className="flex flex-row items-center w-full gap-4">
-					<input
-						className="left-[5px] rounded-sm cursor-pointer w-full px-2 border border-black"
-						id="date-picker"
-						type="date"
-						onChange={addDeadline}
-					/>
-					<img
-						className="w-6 h-6 rounded-full cursor-pointer hover:bg-gray-400"
-						src={CloseIcon}
-						onClick={closeDatePicker}
-					/>
-				</div>
-			</div> */}
 
 			{/* Label Assigner */}
 			<div
@@ -104,11 +69,7 @@ function KebabMenu({ id, updateStatus, addLabel, deleteFolder }: KebabMenuProps)
 					<label htmlFor="label-input">New Label:</label>
 					<input className="w-full px-2 pb-[2px] border border-black rounded-sm" id="label-input" type="text" />
 					<div className="flex flex-row justify-between w-full">
-						<button
-							className="w-28 bg-[#77dd77] rounded-md py-1"
-							type="submit"
-							// onClick={props.addLabel}
-						>
+						<button className="w-28 bg-[#77dd77] rounded-md py-1" type="submit">
 							Add
 						</button>
 						<button className="w-28 rounded-md bg-[#c1c1c1] py-1" type="button" onClick={closeLabelInput}>

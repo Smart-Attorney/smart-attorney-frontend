@@ -20,7 +20,6 @@ export interface ClientInfoForm {
 
 interface ClientInfoModalProps {
 	client: ClientInfoForm;
-	// setClient: React.Dispatch<React.SetStateAction<ClientInfoForm>>;
 	closeModal: () => void;
 }
 
@@ -51,7 +50,6 @@ function ClientModal({ client, closeModal }: ClientInfoModalProps) {
 
 	const handleSave = (event: React.FormEvent) => {
 		event.preventDefault();
-		// setClient(clientForm);
 		closeModal();
 	};
 

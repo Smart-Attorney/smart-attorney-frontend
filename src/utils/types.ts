@@ -31,7 +31,6 @@ export interface CaseFolderObj {
 	createdDate: number;
 	lastOpenedDate: number;
 	status: boolean;
-	// deadline: number;
 }
 
 export interface CaseFolderLabelObj {

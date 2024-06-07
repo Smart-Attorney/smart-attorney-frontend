@@ -167,4 +167,16 @@ export class CaseUtils {
 				return array;
 		}
 	};
+
+	/************************************************************/
+
+	// revisit later, might not need this method
+	public static getCaseOrder(caseFolders: DashboardFolderCardObj[]): Map<string, number> | null {
+		if (!caseFolders) return null;
+		let caseOrder = new Map<string, number>();
+		for (let i = 0, n = caseFolders.length; i < n; i++) {
+			caseOrder.set(caseFolders[i].id, i);
+		}
+		return caseOrder;
+	}
 }

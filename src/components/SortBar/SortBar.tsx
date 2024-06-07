@@ -11,8 +11,6 @@ interface SortBarProps {
 	initialWidth: number; // value should be wide enough to fit all options on one line with no wrapping
 	minWidth: number; // value of window width before the sort bar resizes
 	options: SortOptionsObj[];
-	// labelsMenuOptions?: LabelsDropdownMenuOptionObj[] | null;
-	// updateLabelsMenuOptions?: (newMenuOptions: LabelsDropdownMenuOptionObj[]) => void;
 	caseFolderCards?: DashboardFolderCardObj[] | null;
 	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
 	documentCards?: CaseFileObj[];
@@ -23,8 +21,6 @@ function SortBar({
 	initialWidth,
 	minWidth,
 	options,
-	// labelsMenuOptions,
-	// updateLabelsMenuOptions,
 	caseFolderCards,
 	setCaseFolderCards,
 	documentCards,
@@ -141,8 +137,6 @@ function SortBar({
 				name={option.name}
 				clicked={option.clicked}
 				sortByLabelsOption={handleSortCardsByLabelsOption}
-				// labelsMenuOptions={labelsMenuOptions!}
-				// updateLabelsMenuOptions={updateLabelsMenuOptions!}
 				toggleLabelsButtonClicked={toggleLabelsButtonClicked}
 			/>
 		) : (
