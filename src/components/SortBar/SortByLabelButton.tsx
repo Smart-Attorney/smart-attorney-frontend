@@ -38,10 +38,10 @@ function SortByLabelButton({
 			const response = await getCaseLabels();
 			if (response.ok) {
 				const data: CaseFolderLabelObj[] = await response.json();
-				const sortedLabels = CaseLabelUtils.sortAlphabetically(data);
-				const uniqueLabels = CaseLabelUtils.filterUniqueLabels(sortedLabels);
-				const labelOptions = parseLabelOptions(uniqueLabels);
-				setMenuOptions(labelOptions);
+				const sortedLabels = CaseLabelUtils.alphabetize(data);
+				const uniqueLabels = CaseLabelUtils.unique(sortedLabels);
+				const menuOptions = formatLabels(uniqueLabels);
+				setMenuOptions(menuOptions);
 			}
 		} catch (error) {
 			alert(error);
@@ -50,17 +50,17 @@ function SortByLabelButton({
 
 	/************************************************************/
 
-	const parseLabelOptions = (caseLabels: Map<string, string>): LabelsDropdownMenuOptionObj[] => {
-		let optionsArr: LabelsDropdownMenuOptionObj[] = [];
-		caseLabels.forEach((key) => {
-			const parsedLabelName = key.substring(0, 1).toUpperCase() + key.substring(1, key.length).toLowerCase();
-			optionsArr.push({
-				id: key,
-				name: parsedLabelName,
+	const formatLabels = (labels: Set<string>): LabelsDropdownMenuOptionObj[] => {
+		let formattedLabels: LabelsDropdownMenuOptionObj[] = [];
+		for (let label of labels) {
+			const labelName = label.substring(0, 1).toUpperCase() + label.substring(1, label.length).toLowerCase();
+			formattedLabels.push({
+				id: labelName,
+				name: labelName,
 				clicked: false,
 			});
-		});
-		return optionsArr;
+		}
+		return formattedLabels;
 	};
 
 	/************************************************************/
