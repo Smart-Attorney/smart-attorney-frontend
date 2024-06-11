@@ -16,7 +16,7 @@ export class DateUtils {
 	 * HTML Date Picker Input element stores selected date
 	 * value in the format of (year/month/day).
 	 * This function formats the date to be displayed in the
-	 * desired format of (month/day/year).
+	 * desired format of (mm/dd/yy).
 	 */
 	static formatToMDY(unixDate: number): string {
 		let [year, month, day] = this.convertUnixDateToStringDate(unixDate);
@@ -30,7 +30,7 @@ export class DateUtils {
 
 	/**
 	 * This function formats the date to be displayed in the
-	 * desired format of (year-month-day).
+	 * desired format of (yyyy-mm-dd).
 	 */
 	static formatToYMD(unixDate: number): string {
 		let [year, month, day] = this.convertUnixDateToStringDate(unixDate);
