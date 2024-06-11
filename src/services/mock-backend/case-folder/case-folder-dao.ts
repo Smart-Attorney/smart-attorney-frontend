@@ -92,9 +92,9 @@ export class CaseFolderDAO extends DAO {
 		}
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
 		if (success) {
-			return (!currentStatus).toString();
+			return true;
 		}
-		return null;
+		return false;
 	}
 
 	static async deleteCaseFolderById(userId: string, folderId: string) {

@@ -31,7 +31,6 @@ function Dashboard() {
 			switch (response.status) {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
-
 					setCaseFolders(data);
 					CaseUtils.setCaseCount(data.length);
 					break;

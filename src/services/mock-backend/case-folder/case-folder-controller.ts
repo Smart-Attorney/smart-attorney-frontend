@@ -107,10 +107,9 @@ export class CaseFolderController {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
 		const currentStatus: boolean = await request.json();
-		const updatedStatus = await CaseFolderService.updateStatus(userId, folderId, currentStatus);
-		if (updatedStatus !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
-			const body = JSON.stringify(updatedCaseFolders);
+		const updatedCase = await CaseFolderService.updateStatus(userId, folderId, currentStatus);
+		if (updatedCase !== null) {
+			const body = JSON.stringify(updatedCase);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

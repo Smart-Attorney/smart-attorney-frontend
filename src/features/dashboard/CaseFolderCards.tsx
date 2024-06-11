@@ -26,6 +26,36 @@ interface CaseFolderCardProps {
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	const navigate = useNavigate();
 
+	/************************************************************/
+
+	// const addCaseToArray = (newCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+	// 	const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr, newCase];
+	// 	return updatedCaseArr;
+	// };
+
+	const updateCaseInArray = (updatedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
+		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
+			if (updatedCase.id === updatedCaseArr[i].id) {
+				updatedCaseArr[i] = updatedCase;
+				break;
+			}
+		}
+		return updatedCaseArr;
+	};
+
+	// const deleteCaseFromArray = (deletedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+	// 	const updatedCaseArr: DashboardFolderCardObj[] = [];
+	// 	for (let i = 0, n = currentCaseArr.length; i < n; i++) {
+	// 		if (deletedCase.id !== currentCaseArr[i].id) {
+	// 			updatedCaseArr.push(currentCaseArr[i]);
+	// 		}
+	// 	}
+	// 	return updatedCaseArr;
+	// };
+
+	/************************************************************/
+
 	const handleUpdateFolderStatus = async (folderId: string, currentStatus: boolean): Promise<void> => {
 		// changes previously stored string or number values into correct boolean type
 		let newStatus: UpdateCaseFolderStatusDTO;
@@ -37,8 +67,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await updateStatus(folderId, newStatus);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = updateCaseInArray(updatedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -110,6 +141,8 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 				return;
 		}
 	};
+
+	/************************************************************/
 
 	return (
 		<CardGrid>
