@@ -36,7 +36,7 @@ export class FolderLabelDAO extends DAO {
 		return false;
 	}
 
-	static async deleteLabelById(folderId: string, labelId: string) {
+	static async deleteLabelById(folderId: string, labelId: string): Promise<boolean> {
 		const updatedArray: FolderLabels[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		for (let i = 0, n = folderLabelArray.length; i < n; i++) {
@@ -47,9 +47,9 @@ export class FolderLabelDAO extends DAO {
 		}
 		const success = await super.setArray(this.FOLDER_LABEL_STORAGE_KEY, updatedArray);
 		if (success) {
-			return labelId;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
 	static async deleteAllLabelsByFolderId(folderId: string) {

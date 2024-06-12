@@ -7,7 +7,7 @@ import { FolderLabelDAO } from "../case-folder-label/folder-label-dao";
 import { CaseFolderDAO } from "./case-folder-dao";
 
 export class CaseFolderService {
-	static async getAllCaseFoldersByUserId(userId: string) {
+	static async getAllCaseFoldersByUserId(userId: string): Promise<DashboardFolderCardObj[]> {
 		let userCaseFolders: DashboardFolderCardObj[] = [];
 		const caseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
 		for (let i = 0, n = caseFolders.length; i < n; i++) {
@@ -29,7 +29,7 @@ export class CaseFolderService {
 		return userCaseFolders;
 	}
 
-	static async getCaseFolderById(folderId: string) {
+	static async getCaseFolderById(folderId: string): Promise<DashboardFolderCardObj | null> {
 		if (!folderId) return null;
 		const caseFolder = await CaseFolderDAO.getCaseFolderById(folderId);
 		if (caseFolder !== null) {
@@ -48,6 +48,7 @@ export class CaseFolderService {
 	}
 
 	static async createCaseFolder(userId: string, folderId: string, folderName: string) {
+		if (!userId || !folderId || !folderName) return null;
 		const newFolder = await CaseFolderDAO.addNewCaseFolder(userId, folderId, folderName);
 		if (newFolder !== null) {
 			return newFolder;
@@ -64,10 +65,8 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
-		if (!userId || !folderId || !newDate) {
-			return null;
-		}
+	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number): Promise<number | null> {
+		if (!userId || !folderId || !newDate) return null;
 		const updatedDate = await CaseFolderDAO.updateLastOpenedDate(userId, folderId, newDate);
 		if (updatedDate !== null) {
 			return updatedDate;
@@ -92,6 +91,15 @@ export class CaseFolderService {
 		if (!userId || !folderId || typeof currentStatus !== "boolean") return null;
 		const isStatusUpdated = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
 		if (isStatusUpdated) {
+			return await CaseFolderService.getCaseFolderById(folderId);
+		}
+		return null;
+	}
+
+	static async deleteLabel(userId: string, folderId: string, labelId: string): Promise<DashboardFolderCardObj | null> {
+		if (!userId || !folderId || !labelId) return null;
+		const isLabelDeleted = await FolderLabelDAO.deleteLabelById(folderId, labelId);
+		if (isLabelDeleted) {
 			return await CaseFolderService.getCaseFolderById(folderId);
 		}
 		return null;

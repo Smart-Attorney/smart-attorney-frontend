@@ -13,11 +13,4 @@ export class FolderLabelService {
 		}
 		return userCaseLabels;
 	}
-
-	static async deleteFolderLabel(folderId: string, labelId: string) {
-		if (!folderId || !labelId) return null;
-		const deletedLabel = await FolderLabelDAO.deleteLabelById(folderId, labelId);
-		if (deletedLabel !== null) return deletedLabel;
-		return null;
-	}
 }

@@ -108,8 +108,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = updateCaseArray(updatedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);

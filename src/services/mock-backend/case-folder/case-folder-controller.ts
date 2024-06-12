@@ -4,7 +4,7 @@ import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/cr
 import { CaseFolderService } from "./case-folder-service";
 
 export class CaseFolderController {
-	static async getUserCaseFolders(request: Request) {
+	static async getUserCaseFolders(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -23,7 +23,7 @@ export class CaseFolderController {
 		}
 	}
 
-	static async getCaseFolder(request: Request) {
+	static async getCaseFolder(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
 		const retrievedCaseFolder = await CaseFolderService.getCaseFolderById(folderId);
@@ -36,7 +36,7 @@ export class CaseFolderController {
 		}
 	}
 
-	static async createCaseFolder(request: Request) {
+	static async createCaseFolder(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -55,7 +55,7 @@ export class CaseFolderController {
 		}
 	}
 
-	static async createLabel(request: Request) {
+	static async createLabel(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -75,7 +75,7 @@ export class CaseFolderController {
 		}
 	}
 
-	static async updateLastOpenedDate(request: Request) {
+	static async updateLastOpenedDate(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -96,7 +96,7 @@ export class CaseFolderController {
 		}
 	}
 
-	static async updateName(request: Request) {
+	static async updateName(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -116,7 +116,7 @@ export class CaseFolderController {
 		}
 	}
 
-	static async updateStatus(request: Request) {
+	static async updateStatus(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -136,7 +136,25 @@ export class CaseFolderController {
 		}
 	}
 
-	static async deleteCaseFolder(request: Request) {
+	static async deleteCaseLabel(request: Request): Promise<Response> {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) throw new Error("User is not authorized/signed in.");
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 2];
+		const labelId: string = urlArray[urlArray.length - 1];
+		const caseWithDeletedLabel = await CaseFolderService.deleteLabel(userId, folderId, labelId);
+		if (caseWithDeletedLabel !== null) {
+			const body = JSON.stringify(caseWithDeletedLabel);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with deleting the case folder label.");
+		}
+	}
+
+	static async deleteCaseFolder(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");

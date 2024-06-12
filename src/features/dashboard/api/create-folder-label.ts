@@ -5,7 +5,6 @@ export type CreateFolderLabelDTO = string;
 
 const mockApi = async (folderId: string, data: CreateFolderLabelDTO) => {
 	const request = mockRequest.post(`/dashboard/${folderId}`, data);
-	// return await FolderLabelController.createFolderLabel(request);
 	return await CaseFolderController.createLabel(request);
 };
 
