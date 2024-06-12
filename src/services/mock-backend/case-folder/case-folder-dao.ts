@@ -17,7 +17,7 @@ export class CaseFolderDAO extends DAO {
 		return caseFolders;
 	}
 
-	static async getCaseFolderById(folderId: string) {
+	static async getById(folderId: string) {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].folder_id === folderId) {
@@ -97,7 +97,7 @@ export class CaseFolderDAO extends DAO {
 		return false;
 	}
 
-	static async deleteCaseFolderById(userId: string, folderId: string) {
+	static async deleteById(userId: string, folderId: string): Promise<boolean> {
 		const updatedArray: CaseFolders[] = [];
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
@@ -108,8 +108,8 @@ export class CaseFolderDAO extends DAO {
 		}
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, updatedArray);
 		if (success) {
-			return folderId;
+			return true;
 		}
-		return null;
+		return false;
 	}
 }

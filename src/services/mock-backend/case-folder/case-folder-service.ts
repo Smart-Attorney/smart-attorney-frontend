@@ -1,6 +1,7 @@
 import { DocumentUtils } from "../../../utils/document-utils";
 import { DashboardFolderCardObj } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
+import { CaseFolders } from "../../mock-sql/schemas";
 import { ClientDAO } from "../case-client/client-dao";
 import { CaseFileDAO } from "../case-file/case-file-dao";
 import { FolderLabelDAO } from "../case-folder-label/folder-label-dao";
@@ -31,7 +32,7 @@ export class CaseFolderService {
 
 	static async getCaseFolderById(folderId: string): Promise<DashboardFolderCardObj | null> {
 		if (!folderId) return null;
-		const caseFolder = await CaseFolderDAO.getCaseFolderById(folderId);
+		const caseFolder = await CaseFolderDAO.getById(folderId);
 		if (caseFolder !== null) {
 			const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
 			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
@@ -47,7 +48,7 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async createCaseFolder(userId: string, folderId: string, folderName: string) {
+	static async createCaseFolder(userId: string, folderId: string, folderName: string): Promise<CaseFolders | null> {
 		if (!userId || !folderId || !folderName) return null;
 		const newFolder = await CaseFolderDAO.addNewCaseFolder(userId, folderId, folderName);
 		if (newFolder !== null) {
@@ -58,7 +59,7 @@ export class CaseFolderService {
 
 	static async createLabel(userId: string, folderId: string, newLabel: string): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId || !newLabel) return null;
-		const isLabelCreated = await FolderLabelDAO.addLabel(folderId, newLabel);
+		const isLabelCreated = await FolderLabelDAO.add(folderId, newLabel);
 		if (isLabelCreated) {
 			return await CaseFolderService.getCaseFolderById(folderId);
 		}
@@ -96,17 +97,23 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async deleteLabel(userId: string, folderId: string, labelId: string): Promise<DashboardFolderCardObj | null> {
+	static async deleteLabelById(
+		userId: string,
+		folderId: string,
+		labelId: string
+	): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId || !labelId) return null;
-		const isLabelDeleted = await FolderLabelDAO.deleteLabelById(folderId, labelId);
+		const isLabelDeleted = await FolderLabelDAO.deleteById(folderId, labelId);
 		if (isLabelDeleted) {
 			return await CaseFolderService.getCaseFolderById(folderId);
 		}
 		return null;
 	}
 
-	static async deleteCaseFolder(userId: string, folderId: string) {
+	static async deleteCaseById(userId: string, folderId: string): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId) return null;
+		const deletedCase = await CaseFolderService.getCaseFolderById(folderId);
+
 		// delete files from cloud storage
 		const caseFiles = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
 		const promiseArray = [];
@@ -115,18 +122,23 @@ export class CaseFolderService {
 		}
 		const cloudFilesDeleted = await Promise.all(promiseArray);
 		if (cloudFilesDeleted.includes(false)) return null;
+
 		// delete all files associated with folderid
 		const filesDeleted = await CaseFileDAO.deleteAllFilesByFolderId(folderId);
 		if (!filesDeleted) return null;
+
 		// delete all labels associated with folderid
 		const labelsDeleted = await FolderLabelDAO.deleteAllLabelsByFolderId(folderId);
 		if (!labelsDeleted) return null;
+
 		// delete all clients associated with folderid
 		const clientDeleted = await ClientDAO.deleteClientByFolderId(folderId);
 		if (!clientDeleted) return null;
-		const deletedCaseFolder = await CaseFolderDAO.deleteCaseFolderById(userId, folderId);
-		if (deletedCaseFolder !== null) {
-			return deletedCaseFolder;
+
+		// delete case after all associated entities have been deleted
+		const isCaseDeleted = await CaseFolderDAO.deleteById(userId, folderId);
+		if (isCaseDeleted) {
+			return deletedCase;
 		}
 		return null;
 	}

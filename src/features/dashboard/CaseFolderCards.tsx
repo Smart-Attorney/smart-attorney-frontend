@@ -28,12 +28,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 	/************************************************************/
 
-	// const addCaseToArray = (newCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
-	// 	const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr, newCase];
-	// 	return updatedCaseArr;
-	// };
-
-	const updateCaseArray = (updatedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+	const replaceCaseInArray = (updatedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
 		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
@@ -44,15 +39,15 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		return updatedCaseArr;
 	};
 
-	// const deleteCaseFromArray = (deletedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
-	// 	const updatedCaseArr: DashboardFolderCardObj[] = [];
-	// 	for (let i = 0, n = currentCaseArr.length; i < n; i++) {
-	// 		if (deletedCase.id !== currentCaseArr[i].id) {
-	// 			updatedCaseArr.push(currentCaseArr[i]);
-	// 		}
-	// 	}
-	// 	return updatedCaseArr;
-	// };
+	const removeCaseFromArray = (deletedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+		const updatedCaseArr: DashboardFolderCardObj[] = [];
+		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
+			if (deletedCase.id !== currentCaseArr[i].id) {
+				updatedCaseArr.push(currentCaseArr[i]);
+			}
+		}
+		return updatedCaseArr;
+	};
 
 	/************************************************************/
 
@@ -68,7 +63,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			const response = await updateStatus(folderId, newStatus);
 			if (response.ok) {
 				const updatedCase: DashboardFolderCardObj = await response.json();
-				const updatedCaseArray = updateCaseArray(updatedCase, caseFolders!);
+				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
@@ -89,7 +84,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			const response = await createFolderLabel(folderId, newLabel);
 			if (response.ok) {
 				const updatedCase: DashboardFolderCardObj = await response.json();
-				const updatedCaseArray = updateCaseArray(updatedCase, caseFolders!);
+				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
@@ -109,7 +104,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
 				const updatedCase: DashboardFolderCardObj = await response.json();
-				const updatedCaseArray = updateCaseArray(updatedCase, caseFolders!);
+				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
@@ -121,8 +116,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteCaseFolder(folderId);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const deletedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);

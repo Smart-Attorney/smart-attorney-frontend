@@ -21,7 +21,7 @@ export class FolderLabelDAO extends DAO {
 		return caseFolderLabels;
 	}
 
-	static async addLabel(folderId: string, newLabelName: string): Promise<boolean> {
+	static async add(folderId: string, newLabelName: string): Promise<boolean> {
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		const newLabel: FolderLabels = {
 			label_id: nanoid(8),
@@ -36,7 +36,7 @@ export class FolderLabelDAO extends DAO {
 		return false;
 	}
 
-	static async deleteLabelById(folderId: string, labelId: string): Promise<boolean> {
+	static async deleteById(folderId: string, labelId: string): Promise<boolean> {
 		const updatedArray: FolderLabels[] = [];
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		for (let i = 0, n = folderLabelArray.length; i < n; i++) {

@@ -144,7 +144,7 @@ export class CaseFolderController {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 2];
 		const labelId: string = urlArray[urlArray.length - 1];
-		const caseWithDeletedLabel = await CaseFolderService.deleteLabel(userId, folderId, labelId);
+		const caseWithDeletedLabel = await CaseFolderService.deleteLabelById(userId, folderId, labelId);
 		if (caseWithDeletedLabel !== null) {
 			const body = JSON.stringify(caseWithDeletedLabel);
 			const options = { status: 200 };
@@ -163,10 +163,9 @@ export class CaseFolderController {
 		const userId: string = authToken.id;
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
-		const deletedCaseFolder = await CaseFolderService.deleteCaseFolder(userId, folderId);
-		if (deletedCaseFolder !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
-			const body = JSON.stringify(updatedCaseFolders);
+		const deletedCase = await CaseFolderService.deleteCaseById(userId, folderId);
+		if (deletedCase !== null) {
+			const body = JSON.stringify(deletedCase);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
