@@ -21,19 +21,19 @@ export class FolderLabelDAO extends DAO {
 		return caseFolderLabels;
 	}
 
-	static async addNewLabel(folderId: string, label: string) {
+	static async addLabel(folderId: string, newLabelName: string): Promise<boolean> {
 		const folderLabelArray: FolderLabels[] = await super.getArray(this.FOLDER_LABEL_STORAGE_KEY);
 		const newLabel: FolderLabels = {
 			label_id: nanoid(8),
-			label_name: label,
+			label_name: newLabelName,
 			case_folder_id_fk: folderId,
 		};
 		const updatedArray = [...folderLabelArray, newLabel];
 		const success = await super.setArray(this.FOLDER_LABEL_STORAGE_KEY, updatedArray);
 		if (success) {
-			return label;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
 	static async deleteLabelById(folderId: string, labelId: string) {

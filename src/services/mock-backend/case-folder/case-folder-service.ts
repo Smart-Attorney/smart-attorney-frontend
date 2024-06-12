@@ -55,6 +55,15 @@ export class CaseFolderService {
 		return null;
 	}
 
+	static async createLabel(userId: string, folderId: string, newLabel: string): Promise<DashboardFolderCardObj | null> {
+		if (!userId || !folderId || !newLabel) return null;
+		const isLabelCreated = await FolderLabelDAO.addLabel(folderId, newLabel);
+		if (isLabelCreated) {
+			return await CaseFolderService.getCaseFolderById(folderId);
+		}
+		return null;
+	}
+
 	static async updateLastOpenedDate(userId: string, folderId: string, newDate: number) {
 		if (!userId || !folderId || !newDate) {
 			return null;
@@ -68,8 +77,8 @@ export class CaseFolderService {
 
 	static async updateName(userId: string, folderId: string, newName: string): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId || !newName) return null;
-		const hasNameUpdated = await CaseFolderDAO.updateName(userId, folderId, newName);
-		if (hasNameUpdated) {
+		const isNameUpdated = await CaseFolderDAO.updateName(userId, folderId, newName);
+		if (isNameUpdated) {
 			return await CaseFolderService.getCaseFolderById(folderId);
 		}
 		return null;
@@ -81,8 +90,8 @@ export class CaseFolderService {
 		currentStatus: boolean
 	): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId || typeof currentStatus !== "boolean") return null;
-		const hasStatusUpdated = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
-		if (hasStatusUpdated) {
+		const isStatusUpdated = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
+		if (isStatusUpdated) {
 			return await CaseFolderService.getCaseFolderById(folderId);
 		}
 		return null;

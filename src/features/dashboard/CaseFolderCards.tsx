@@ -33,7 +33,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	// 	return updatedCaseArr;
 	// };
 
-	const updateCaseInArray = (updatedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+	const updateCaseArray = (updatedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
 		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
@@ -68,7 +68,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			const response = await updateStatus(folderId, newStatus);
 			if (response.ok) {
 				const updatedCase: DashboardFolderCardObj = await response.json();
-				const updatedCaseArray = updateCaseInArray(updatedCase, caseFolders!);
+				const updatedCaseArray = updateCaseArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
@@ -88,8 +88,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await createFolderLabel(folderId, newLabel);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = updateCaseArray(updatedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);

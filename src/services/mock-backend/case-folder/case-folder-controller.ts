@@ -55,6 +55,26 @@ export class CaseFolderController {
 		}
 	}
 
+	static async createLabel(request: Request) {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId: string = authToken.id;
+		const urlArray = request.url.split("/");
+		const folderId: string = urlArray[urlArray.length - 1];
+		const newLabel: string = await request.json();
+		const caseWithNewLabel = await CaseFolderService.createLabel(userId, folderId, newLabel);
+		if (caseWithNewLabel !== null) {
+			const body = JSON.stringify(caseWithNewLabel);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with creating the case folder label.");
+		}
+	}
+
 	static async updateLastOpenedDate(request: Request) {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
@@ -86,9 +106,9 @@ export class CaseFolderController {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
 		const newName: UpdateCaseFolderNameDTO = await request.json();
-		const updatedCase = await CaseFolderService.updateName(userId, folderId, newName);
-		if (updatedCase !== null) {
-			const body = JSON.stringify(updatedCase);
+		const caseWithUpdatedName = await CaseFolderService.updateName(userId, folderId, newName);
+		if (caseWithUpdatedName !== null) {
+			const body = JSON.stringify(caseWithUpdatedName);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -106,9 +126,9 @@ export class CaseFolderController {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
 		const currentStatus: boolean = await request.json();
-		const updatedCase = await CaseFolderService.updateStatus(userId, folderId, currentStatus);
-		if (updatedCase !== null) {
-			const body = JSON.stringify(updatedCase);
+		const caseWithUpdatedStatus = await CaseFolderService.updateStatus(userId, folderId, currentStatus);
+		if (caseWithUpdatedStatus !== null) {
+			const body = JSON.stringify(caseWithUpdatedStatus);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

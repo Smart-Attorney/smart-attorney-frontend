@@ -1,4 +1,3 @@
-import { CreateFolderLabelDTO } from "../../../features/dashboard/api/create-folder-label";
 import { CaseFolderLabelObj } from "../../../utils/types";
 import { CaseFolderService } from "../case-folder/case-folder-service";
 import { FolderLabelDAO } from "./folder-label-dao";
@@ -13,13 +12,6 @@ export class FolderLabelService {
 			userCaseLabels = [...userCaseLabels, ...caseLabels];
 		}
 		return userCaseLabels;
-	}
-
-	static async createFolderLabel(folderId: string, label: CreateFolderLabelDTO) {
-		if (!folderId || !label) return null;
-		const createdLabel = await FolderLabelDAO.addNewLabel(folderId, label);
-		if (createdLabel !== null) return createdLabel;
-		return null;
 	}
 
 	static async deleteFolderLabel(folderId: string, labelId: string) {
