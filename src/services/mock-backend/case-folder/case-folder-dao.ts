@@ -67,7 +67,7 @@ export class CaseFolderDAO extends DAO {
 		return null;
 	}
 
-	static async updateName(userId: string, folderId: string, newName: string) {
+	static async updateName(userId: string, folderId: string, newName: string): Promise<boolean> {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {
@@ -77,12 +77,12 @@ export class CaseFolderDAO extends DAO {
 		}
 		const success = await super.setArray(this.CASE_FOLDER_STORAGE_KEY, caseFolderArray);
 		if (success) {
-			return newName;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
-	static async updateStatus(userId: string, folderId: string, currentStatus: boolean) {
+	static async updateStatus(userId: string, folderId: string, currentStatus: boolean): Promise<boolean> {
 		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === folderId) {

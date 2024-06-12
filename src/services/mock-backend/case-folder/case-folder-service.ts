@@ -66,21 +66,23 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async updateName(userId: string, folderId: string, newName: string) {
-		if (!userId || !folderId || !newName) {
-			return null;
-		}
-		const updatedName = await CaseFolderDAO.updateName(userId, folderId, newName);
-		if (updatedName !== null) {
-			return updatedName;
+	static async updateName(userId: string, folderId: string, newName: string): Promise<DashboardFolderCardObj | null> {
+		if (!userId || !folderId || !newName) return null;
+		const hasNameUpdated = await CaseFolderDAO.updateName(userId, folderId, newName);
+		if (hasNameUpdated) {
+			return await CaseFolderService.getCaseFolderById(folderId);
 		}
 		return null;
 	}
 
-	static async updateStatus(userId: string, folderId: string, currentStatus: boolean) {
+	static async updateStatus(
+		userId: string,
+		folderId: string,
+		currentStatus: boolean
+	): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId || typeof currentStatus !== "boolean") return null;
-		const updatedCase = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
-		if (updatedCase) {
+		const hasStatusUpdated = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
+		if (hasStatusUpdated) {
 			return await CaseFolderService.getCaseFolderById(folderId);
 		}
 		return null;

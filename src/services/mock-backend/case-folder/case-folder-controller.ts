@@ -86,10 +86,9 @@ export class CaseFolderController {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
 		const newName: UpdateCaseFolderNameDTO = await request.json();
-		const updatedName = await CaseFolderService.updateName(userId, folderId, newName);
-		if (updatedName !== null) {
-			const updatedCaseFolder = await CaseFolderService.getCaseFolderById(userId);
-			const body = JSON.stringify(updatedCaseFolder);
+		const updatedCase = await CaseFolderService.updateName(userId, folderId, newName);
+		if (updatedCase !== null) {
+			const body = JSON.stringify(updatedCase);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
