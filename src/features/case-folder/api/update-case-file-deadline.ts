@@ -5,7 +5,7 @@ export type UpdateCaseFileDeadlineDTO = number;
 
 const mockApi = async (folderId: string, fileId: string, newDeadline: number) => {
 	const request = mockRequest.put(`/case/${folderId}/${fileId}`, newDeadline);
-	return await CaseFileController.updateFileDeadline(request);
+	return await CaseFileController.updateDocumentDeadline(request);
 };
 
 export const updateDeadline = async (folderId: string, fileId: string, newDeadline: number) => {

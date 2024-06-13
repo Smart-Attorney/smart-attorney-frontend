@@ -4,7 +4,7 @@ import { DocumentStatus } from "../../../utils/types";
 import { CaseFileService } from "./case-file-service";
 
 export class CaseFileController {
-	static async createCaseFiles(request: Request) {
+	static async createCaseFiles(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -14,7 +14,7 @@ export class CaseFileController {
 		const formData = await request.formData();
 		const folderId = formData.get("caseFolderId") as string;
 		const files = formData.getAll("files[]") as File[];
-		const createdCaseFiles = await CaseFileService.createCaseFiles(userId, folderId, files);
+		const createdCaseFiles = await CaseFileService.create(userId, folderId, files);
 		if (createdCaseFiles !== null) {
 			const body = JSON.stringify(createdCaseFiles);
 			const options = { status: 200 };
@@ -24,10 +24,10 @@ export class CaseFileController {
 		}
 	}
 
-	static async getCaseFilesByFolderId(request: Request) {
+	static async getCaseFilesByFolderId(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 1];
-		const retrievedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
+		const retrievedCaseFiles = await CaseFileService.getAllByCaseId(folderId);
 		if (retrievedCaseFiles !== null) {
 			const body = JSON.stringify(retrievedCaseFiles);
 			const options = { status: 200 };
@@ -37,7 +37,7 @@ export class CaseFileController {
 		}
 	}
 
-	static async getCaseFileByIdFromDB(request: Request) {
+	static async getCaseFileByIdFromDB(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -47,7 +47,7 @@ export class CaseFileController {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
 		const fileId = urlArray[urlArray.length - 1];
-		const retrievedCaseFile = await CaseFileService.getCaseFileByIdFromDB(userId, folderId, fileId);
+		const retrievedCaseFile = await CaseFileService.getById(userId, folderId, fileId);
 		if (retrievedCaseFile !== null) {
 			const body = JSON.stringify(retrievedCaseFile);
 			const options = { status: 200 };
@@ -57,14 +57,14 @@ export class CaseFileController {
 		}
 	}
 
-	static async getDocumentDeadlines(request: Request) {
+	static async getDocumentDeadlines(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId: string = authToken.id;
-		const retrievedDocumentDeadlines = await CaseFileService.getDocumentDeadlines(userId);
+		const retrievedDocumentDeadlines = await CaseFileService.getAllByUserId(userId);
 		if (retrievedDocumentDeadlines != null) {
 			const body = JSON.stringify(retrievedDocumentDeadlines);
 			const options = { status: 200 };
@@ -74,15 +74,14 @@ export class CaseFileController {
 		}
 	}
 
-	static async updateFileStatus(request: Request) {
+	static async updateDocumentStatus(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
 		const fileId = urlArray[urlArray.length - 1];
 		const newStatus: DocumentStatus = await request.json();
-		const updatedFileStatus = await CaseFileService.updateFileStatus(folderId, fileId, newStatus);
-		if (updatedFileStatus !== null) {
-			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
-			const body = JSON.stringify(updatedCaseFiles);
+		const updatedDocument = await CaseFileService.updateStatus(folderId, fileId, newStatus);
+		if (updatedDocument !== null) {
+			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -90,15 +89,14 @@ export class CaseFileController {
 		}
 	}
 
-	static async updateFileName(request: Request) {
+	static async updateDocumentName(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
 		const fileId = urlArray[urlArray.length - 1];
 		const newName: UpdateCaseFileNameDTO = await request.json();
-		const updatedFileName = await CaseFileService.updateFileName(folderId, fileId, newName);
-		if (updatedFileName !== null) {
-			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
-			const body = JSON.stringify(updatedCaseFiles);
+		const updatedDocument = await CaseFileService.updateName(folderId, fileId, newName);
+		if (updatedDocument !== null) {
+			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -106,15 +104,14 @@ export class CaseFileController {
 		}
 	}
 
-	static async updateFileDeadline(request: Request) {
+	static async updateDocumentDeadline(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
 		const fileId = urlArray[urlArray.length - 1];
 		const newDeadline: UpdateCaseFileDeadlineDTO = await request.json();
-		const updatedDeadline = await CaseFileService.updateFileDeadline(folderId, fileId, newDeadline);
-		if (updatedDeadline !== null) {
-			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
-			const body = JSON.stringify(updatedCaseFiles);
+		const updatedDocument = await CaseFileService.updateDeadline(folderId, fileId, newDeadline);
+		if (updatedDocument !== null) {
+			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -122,7 +119,7 @@ export class CaseFileController {
 		}
 	}
 
-	static async deleteCaseFileById(request: Request) {
+	static async deleteDocumentById(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -132,10 +129,9 @@ export class CaseFileController {
 		const urlArray = request.url.split("/");
 		const folderId = urlArray[urlArray.length - 2];
 		const fileId = urlArray[urlArray.length - 1];
-		const deletedFile = await CaseFileService.deleteCaseFileById(userId, folderId, fileId);
-		if (deletedFile) {
-			const updatedCaseFiles = await CaseFileService.getCaseFilesByFolderId(folderId);
-			const body = JSON.stringify(updatedCaseFiles);
+		const deletedFile = await CaseFileService.deleteById(userId, folderId, fileId);
+		if (deletedFile !== null) {
+			const body = JSON.stringify(deletedFile);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

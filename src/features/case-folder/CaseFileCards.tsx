@@ -26,13 +26,39 @@ interface CaseFileCardsProps {
 function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
 	const { id: folderId } = useParams();
 
+	/************************************************************/
+
+	const replaceDocumentInArray = (updatedDocument: CaseFileObj, currentDocumentArr: CaseFileObj[]): CaseFileObj[] => {
+		const updatedDocumentArr: CaseFileObj[] = [...currentDocumentArr];
+		for (let i = 0, n = updatedDocumentArr.length; i < n; i++) {
+			if (updatedDocument.id === updatedDocumentArr[i].id) {
+				updatedDocumentArr[i] = updatedDocument;
+				break;
+			}
+		}
+		return updatedDocumentArr;
+	};
+
+	const removeDocumentFromArray = (deletedDocument: CaseFileObj, currentDocumentArr: CaseFileObj[]): CaseFileObj[] => {
+		const updatedDocumentArr: CaseFileObj[] = [];
+		for (let i = 0, n = currentDocumentArr.length; i < n; i++) {
+			if (deletedDocument.id !== currentDocumentArr[i].id) {
+				updatedDocumentArr.push(currentDocumentArr[i]);
+			}
+		}
+		return updatedDocumentArr;
+	};
+
+	/************************************************************/
+
 	// curried function
 	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: DocStatus) => {
 		try {
 			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
 			if (response.ok) {
-				const data: CaseFileObj[] = await response.json();
-				updateCaseFiles(data);
+				const updatedDocument: CaseFileObj = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
+				updateCaseFiles(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -44,8 +70,9 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await updateCaseFileName(folderId!, fileId, newFileName);
 			if (response.ok) {
-				const data: CaseFileObj[] = await response.json();
-				updateCaseFiles(data);
+				const updatedDocument: CaseFileObj = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
+				updateCaseFiles(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -58,8 +85,9 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await updateDeadline(folderId!, fileId, deadlineInUnixTime);
 			if (response.ok) {
-				const data: CaseFileObj[] = await response.json();
-				updateCaseFiles(data);
+				const updatedDocument: CaseFileObj = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
+				updateCaseFiles(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -70,13 +98,16 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await deleteCaseFileById(folderId!, fileId);
 			if (response.ok) {
-				const data: CaseFileObj[] = await response.json();
-				updateCaseFiles(data);
+				const deletedDocument: CaseFileObj = await response.json();
+				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, files!);
+				updateCaseFiles(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
+
+	/************************************************************/
 
 	return (
 		<CardGrid>

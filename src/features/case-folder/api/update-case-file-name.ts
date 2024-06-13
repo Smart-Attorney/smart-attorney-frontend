@@ -5,7 +5,7 @@ export type UpdateCaseFileNameDTO = string;
 
 const mockApi = async (folderId: string, fileId: string, newFileName: UpdateCaseFileNameDTO) => {
 	const request = mockRequest.put(`/case/${folderId}/${fileId}`, newFileName);
-	return await CaseFileController.updateFileName(request);
+	return await CaseFileController.updateDocumentName(request);
 };
 
 export const updateCaseFileName = async (folderId: string, fileId: string, newFileName: UpdateCaseFileNameDTO) => {

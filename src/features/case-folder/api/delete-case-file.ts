@@ -3,7 +3,7 @@ import { CaseFileController } from "../../../services/mock-backend/case-file/cas
 
 const mockApi = async (folderId: string, fileId: string) => {
 	const request = mockRequest.delete(`/case/${folderId}/${fileId}`);
-	return await CaseFileController.deleteCaseFileById(request);
+	return await CaseFileController.deleteDocumentById(request);
 };
 
 export const deleteCaseFileById = async (folderId: string, fileId: string) => {

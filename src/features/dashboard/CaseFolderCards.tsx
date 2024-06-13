@@ -28,7 +28,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 	/************************************************************/
 
-	const replaceCaseInArray = (updatedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+	const replaceCaseInArray = (
+		updatedCase: DashboardFolderCardObj,
+		currentCaseArr: DashboardFolderCardObj[]
+	): DashboardFolderCardObj[] => {
 		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
@@ -39,7 +42,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		return updatedCaseArr;
 	};
 
-	const removeCaseFromArray = (deletedCase: DashboardFolderCardObj, currentCaseArr: DashboardFolderCardObj[]) => {
+	const removeCaseFromArray = (
+		deletedCase: DashboardFolderCardObj,
+		currentCaseArr: DashboardFolderCardObj[]
+	): DashboardFolderCardObj[] => {
 		const updatedCaseArr: DashboardFolderCardObj[] = [];
 		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
 			if (deletedCase.id !== currentCaseArr[i].id) {

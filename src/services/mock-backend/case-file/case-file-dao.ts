@@ -7,37 +7,37 @@ import { DAO } from "../dao";
 export class CaseFileDAO extends DAO {
 	private static CASE_FILE_STORAGE_KEY = MockSqlTables.table.CASE_FILES;
 
-	static async getAllFilesByCaseFolderId(caseFolderId: string) {
-		const caseFolderFiles: CaseFileObj[] = [];
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === caseFolderId) {
-				caseFolderFiles.push({
-					id: caseFileArray[i].file_id,
-					name: caseFileArray[i].file_name,
-					createdDate: caseFileArray[i].created_date,
-					lastOpenedDate: caseFileArray[i].last_opened_date,
-					status: caseFileArray[i].status,
-					deadline: caseFileArray[i].deadline,
-					url: caseFileArray[i].url,
+	static async getAllByCaseId(caseId: string): Promise<CaseFileObj[]> {
+		const caseDocuments: CaseFileObj[] = [];
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === caseId) {
+				caseDocuments.push({
+					id: documents[i].file_id,
+					name: documents[i].file_name,
+					createdDate: documents[i].created_date,
+					lastOpenedDate: documents[i].last_opened_date,
+					status: documents[i].status,
+					deadline: documents[i].deadline,
+					url: documents[i].url,
 				});
 			}
 		}
-		return caseFolderFiles;
+		return caseDocuments;
 	}
 
-	static async getCaseFileById(folderId: string, fileId: string) {
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+	static async getById(folderId: string, fileId: string): Promise<CaseFileObj | null> {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
 				const caseFile: CaseFileObj = {
-					id: caseFileArray[i].file_id,
-					name: caseFileArray[i].file_name,
-					createdDate: caseFileArray[i].created_date,
-					lastOpenedDate: caseFileArray[i].last_opened_date,
-					status: caseFileArray[i].status,
-					deadline: caseFileArray[i].deadline,
-					url: caseFileArray[i].url,
+					id: documents[i].file_id,
+					name: documents[i].file_name,
+					createdDate: documents[i].created_date,
+					lastOpenedDate: documents[i].last_opened_date,
+					status: documents[i].status,
+					deadline: documents[i].deadline,
+					url: documents[i].url,
 				};
 				return caseFile;
 			}
@@ -45,9 +45,9 @@ export class CaseFileDAO extends DAO {
 		return null;
 	}
 
-	static async addNewCaseFile(fileId: string, fileName: string, fileUrl: string, caseFolderId: string) {
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		const newCaseFile: CaseFiles = {
+	static async add(fileId: string, fileName: string, fileUrl: string, caseId: string): Promise<CaseFiles | null> {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const newDocument: CaseFiles = {
 			file_id: fileId,
 			file_name: fileName,
 			created_date: Date.now(),
@@ -55,66 +55,66 @@ export class CaseFileDAO extends DAO {
 			status: DOCUMENT_STATUS.IN_PROGRESS,
 			deadline: 0,
 			url: fileUrl,
-			case_folder_id_fk: caseFolderId,
+			case_folder_id_fk: caseId,
 		};
-		const updatedArray = [...caseFileArray, newCaseFile];
+		const updatedArray = [...documents, newDocument];
 		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, updatedArray);
 		if (success) {
-			return newCaseFile;
+			return newDocument;
 		}
 		return null;
 	}
 
-	static async updateFileStatus(folderId: string, fileId: string, newStatus: DocumentStatus) {
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
-				caseFileArray[i].status = newStatus;
+	static async updateStatus(folderId: string, fileId: string, newStatus: DocumentStatus): Promise<boolean> {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
+				documents[i].status = newStatus;
 			}
 		}
-		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, documents);
 		if (success) {
-			return newStatus;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
-	static async updateFileName(folderId: string, fileId: string, newName: string) {
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
-				caseFileArray[i].file_name = newName;
+	static async updateName(folderId: string, fileId: string, newName: string): Promise<boolean> {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
+				documents[i].file_name = newName;
 			}
 		}
-		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, documents);
 		if (success) {
-			return newName;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
-	static async updateFileDeadline(folderId: string, fileId: string, newDeadline: number) {
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
-				caseFileArray[i].deadline = newDeadline;
+	static async updateDeadline(folderId: string, fileId: string, newDeadline: number): Promise<boolean> {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
+				documents[i].deadline = newDeadline;
 			}
 		}
-		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, caseFileArray);
+		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, documents);
 		if (success) {
-			return newDeadline;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
-	static async deleteAllFilesByFolderId(folderId: string) {
+	static async deleteAllByCaseId(caseId: string): Promise<boolean> {
 		const updatedArray: CaseFiles[] = [];
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === folderId) {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === caseId) {
 				continue;
 			}
-			updatedArray.push(caseFileArray[i]);
+			updatedArray.push(documents[i]);
 		}
 		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, updatedArray);
 		if (success) {
@@ -123,14 +123,14 @@ export class CaseFileDAO extends DAO {
 		return false;
 	}
 
-	static async deleteFileById(folderId: string, fileId: string) {
+	static async deleteById(caseId: string, fileId: string): Promise<boolean> {
 		const updatedArray: CaseFiles[] = [];
-		const caseFileArray: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		for (let i = 0, n = caseFileArray.length; i < n; i++) {
-			if (caseFileArray[i].case_folder_id_fk === folderId && caseFileArray[i].file_id === fileId) {
+		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].case_folder_id_fk === caseId && documents[i].file_id === fileId) {
 				continue;
 			}
-			updatedArray.push(caseFileArray[i]);
+			updatedArray.push(documents[i]);
 		}
 		const success = await super.setArray(this.CASE_FILE_STORAGE_KEY, updatedArray);
 		if (success) {

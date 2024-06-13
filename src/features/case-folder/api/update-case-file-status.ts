@@ -4,7 +4,7 @@ import { DocumentStatus } from "../../../utils/types";
 
 const mockApi = async (folderId: string, fileId: string, newFileStatus: DocumentStatus) => {
 	const request = mockRequest.put(`/case/${folderId}/${fileId}`, newFileStatus);
-	return await CaseFileController.updateFileStatus(request);
+	return await CaseFileController.updateDocumentStatus(request);
 };
 
 export const updateCaseFileStatus = async (folderId: string, fileId: string, newStatus: DocumentStatus) => {

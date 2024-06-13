@@ -14,7 +14,7 @@ export class CaseFolderService {
 		for (let i = 0, n = cases.length; i < n; i++) {
 			const folderId = cases[i].folder_id;
 			const labels = await FolderLabelDAO.getAllByCaseId(folderId);
-			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+			const documents = await CaseFileDAO.getAllByCaseId(folderId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
 			userCases.push({
 				id: cases[i].folder_id,
@@ -35,7 +35,7 @@ export class CaseFolderService {
 		const caseFolder = await CaseFolderDAO.getById(folderId);
 		if (caseFolder !== null) {
 			const labels = await FolderLabelDAO.getAllByCaseId(folderId);
-			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+			const documents = await CaseFileDAO.getAllByCaseId(folderId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
 			const retrievedCaseFolder: DashboardFolderCardObj = {
 				...caseFolder,
@@ -115,7 +115,7 @@ export class CaseFolderService {
 		const deletedCase = await CaseFolderService.getById(folderId);
 
 		// delete files from cloud storage
-		const caseFiles = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
+		const caseFiles = await CaseFileDAO.getAllByCaseId(folderId);
 		const promiseArray = [];
 		for (let i = 0, n = caseFiles.length; i < n; i++) {
 			promiseArray.push(await Firebase.deleteFileById(userId, folderId, caseFiles[i].id));
@@ -124,7 +124,7 @@ export class CaseFolderService {
 		if (cloudFilesDeleted.includes(false)) return null;
 
 		// delete all files associated with folderid
-		const filesDeleted = await CaseFileDAO.deleteAllFilesByFolderId(folderId);
+		const filesDeleted = await CaseFileDAO.deleteAllByCaseId(folderId);
 		if (!filesDeleted) return null;
 
 		// delete all labels associated with folderid
