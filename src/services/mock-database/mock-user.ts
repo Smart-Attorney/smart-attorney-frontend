@@ -19,15 +19,11 @@ export class MockUser {
 	}
 
 	private static exists(): boolean {
-		const userArray: Users[] = JSON.parse(localStorage.getItem(SqlTables.TABLE.USER) as string);
-		for (let i = 0, n = userArray.length; i < n; i++) {
-			const idMatch = userArray[i].user_id === this.mockUser.user_id;
-			const firstNameMatch = userArray[i].first_name === this.mockUser.first_name;
-			const lastNameMatch = userArray[i].last_name === this.mockUser.last_name;
-			const firmNameMatch = userArray[i].firm_name === this.mockUser.firm_name;
-			const companyEmailMatch = userArray[i].company_email === this.mockUser.company_email;
-			const passwordMatch = userArray[i].password === this.mockUser.password;
-			if (idMatch && firstNameMatch && lastNameMatch && firmNameMatch && companyEmailMatch && passwordMatch) {
+		const userTable: Users[] = JSON.parse(localStorage.getItem(SqlTables.TABLE.USER) as string);
+		const mockUser = JSON.stringify(this.mockUser);
+		for (let i = 0, n = userTable.length; i < n; i++) {
+			const userInTable = JSON.stringify(userTable[i]);
+			if (mockUser === userInTable) {
 				return true;
 			}
 		}
@@ -55,12 +51,7 @@ export class MockUser {
 
 	public static create() {
 		if (this.exists()) return;
-		try {
-			this.removeDeprecated();
-		} catch (error) {
-			console.log(error);
-		} finally {
-			this.set();
-		}
+		this.removeDeprecated();
+		this.set();
 	}
 }

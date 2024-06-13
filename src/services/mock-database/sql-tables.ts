@@ -62,15 +62,7 @@ export class SqlTables {
 
 	/************************************************************/
 
-	public static create() {
-		this.createUserTable();
-		this.createCasesTable();
-		this.createDocumentTable();
-		this.createCaseLabelTable();
-		this.createClientTable();
-	}
-
-	public static removeDeprecated() {
+	private static removeDeprecated() {
 		for (let i = 0, n = localStorage.length; i < n; i++) {
 			const key = localStorage.key(i);
 			if (key === null) continue;
@@ -81,5 +73,20 @@ export class SqlTables {
 			if (key === this.TABLE.CLIENT) continue;
 			localStorage.removeItem(key);
 		}
+	}
+
+	public static create() {
+		const user = this.exists(this.TABLE.USER);
+		const cases = this.exists(this.TABLE.CASES);
+		const document = this.exists(this.TABLE.DOCUMENT);
+		const case_label = this.exists(this.TABLE.CASE_LABEL);
+		const client = this.exists(this.TABLE.CLIENT);
+		if (user && cases && document && case_label && client) return;
+		this.removeDeprecated();
+		this.createUserTable();
+		this.createCasesTable();
+		this.createDocumentTable();
+		this.createCaseLabelTable();
+		this.createClientTable();
 	}
 }

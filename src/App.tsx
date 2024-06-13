@@ -10,7 +10,6 @@ function App() {
 	useEffect(() => {
 		if (isSetup) return;
 		SqlTables.create();
-		SqlTables.removeDeprecated();
 		MockUser.create();
 		setIsSetup(true);
 	});
