@@ -1,11 +1,11 @@
 import { nanoid } from "../../../lib/nanoid";
 import { ClientObj } from "../../../utils/types";
-import { Clients, sex_options } from "../../mock-sql/schemas";
-import { MockSqlTables } from "../../mock-sql/tables";
+import { Clients, sex_options } from "../../mock-database/table-schemas";
+import { SqlTables } from "../../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class ClientDAO extends DAO {
-	private static CLIENT_STORAGE_KEY = MockSqlTables.table.CLIENTS;
+	private static CLIENT_STORAGE_KEY = SqlTables.TABLE.CLIENT;
 
 	static async getClientByCaseFolderId(caseFolderId: string) {
 		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);

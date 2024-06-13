@@ -1,10 +1,10 @@
 import { CaseFolderObj } from "../../../utils/types";
-import { CaseFolders } from "../../mock-sql/schemas";
-import { MockSqlTables } from "../../mock-sql/tables";
+import { CaseFolders } from "../../mock-database/table-schemas";
+import { SqlTables } from "../../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class CaseFolderDAO extends DAO {
-	private static CASE_FOLDER_STORAGE_KEY = MockSqlTables.table.CASE_FOLDERS;
+	private static CASE_FOLDER_STORAGE_KEY = SqlTables.TABLE.CASES;
 
 	static async getAllByUserId(userId: string) {
 		const userCases: CaseFolders[] = [];

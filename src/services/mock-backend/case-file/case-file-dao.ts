@@ -1,11 +1,11 @@
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
-import { CaseFiles } from "../../mock-sql/schemas";
-import { MockSqlTables } from "../../mock-sql/tables";
+import { CaseFiles } from "../../mock-database/table-schemas";
+import { SqlTables } from "../../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class CaseFileDAO extends DAO {
-	private static CASE_FILE_STORAGE_KEY = MockSqlTables.table.CASE_FILES;
+	private static CASE_FILE_STORAGE_KEY = SqlTables.TABLE.DOCUMENT;
 
 	static async getAllByCaseId(caseId: string): Promise<CaseFileObj[]> {
 		const caseDocuments: CaseFileObj[] = [];

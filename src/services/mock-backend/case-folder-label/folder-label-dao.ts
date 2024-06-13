@@ -1,11 +1,11 @@
 import { nanoid } from "../../../lib/nanoid";
 import { CaseFolderLabelObj } from "../../../utils/types";
-import { FolderLabels } from "../../mock-sql/schemas";
-import { MockSqlTables } from "../../mock-sql/tables";
+import { FolderLabels } from "../../mock-database/table-schemas";
+import { SqlTables } from "../../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class FolderLabelDAO extends DAO {
-	private static FOLDER_LABEL_STORAGE_KEY = MockSqlTables.table.FOLDER_LABELS;
+	private static FOLDER_LABEL_STORAGE_KEY = SqlTables.TABLE.CASE_LABEL;
 
 	static async getAllByCaseId(caseId: string): Promise<CaseFolderLabelObj[]> {
 		const caseLabels: CaseFolderLabelObj[] = [];

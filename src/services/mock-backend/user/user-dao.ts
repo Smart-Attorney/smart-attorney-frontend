@@ -1,11 +1,11 @@
 import { RegisterCredentialsDTO } from "../../../features/register/api/register";
 import { nanoid } from "../../../lib/nanoid";
-import { Users } from "../../mock-sql/schemas";
-import { MockSqlTables } from "../../mock-sql/tables";
+import { Users } from "../../mock-database/table-schemas";
+import { SqlTables } from "../../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class UserDAO extends DAO {
-	private static USER_STORAGE_KEY = MockSqlTables.table.USERS;
+	private static USER_STORAGE_KEY = SqlTables.TABLE.USER;
 
 	static async getUserIdByCompanyEmail(companyEmail: string) {
 		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
