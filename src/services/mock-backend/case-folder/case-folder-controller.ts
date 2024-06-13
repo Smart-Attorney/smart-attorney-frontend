@@ -11,7 +11,7 @@ export class CaseFolderController {
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId: string = authToken.id;
-		const userCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+		const userCaseFolders = await CaseFolderService.getAllByUserId(userId);
 		if (userCaseFolders !== null) {
 			const body = JSON.stringify(userCaseFolders);
 			const options = { status: 200 };
@@ -26,7 +26,7 @@ export class CaseFolderController {
 	static async getCaseFolder(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
-		const retrievedCaseFolder = await CaseFolderService.getCaseFolderById(folderId);
+		const retrievedCaseFolder = await CaseFolderService.getById(folderId);
 		if (retrievedCaseFolder !== null) {
 			const body = JSON.stringify(retrievedCaseFolder);
 			const options = { status: 200 };
@@ -45,7 +45,7 @@ export class CaseFolderController {
 		const userId: string = authToken.id;
 		const newFolder: CreateCaseFolderDTO = await request.json();
 		const { folderId, folderName } = newFolder;
-		const createdCaseFolder = await CaseFolderService.createCaseFolder(userId, folderId, folderName);
+		const createdCaseFolder = await CaseFolderService.create(userId, folderId, folderName);
 		if (createdCaseFolder !== null) {
 			const body = JSON.stringify(createdCaseFolder);
 			const options = { status: 200 };
@@ -87,7 +87,7 @@ export class CaseFolderController {
 		const newDate: UpdateCaseFolderLastOpenedDateDTO = await request.json();
 		const updatedDate = await CaseFolderService.updateLastOpenedDate(userId, folderId, newDate);
 		if (updatedDate !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+			const updatedCaseFolders = await CaseFolderService.getAllByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
 			const options = { status: 200 };
 			return new Response(body, options);
@@ -163,7 +163,7 @@ export class CaseFolderController {
 		const userId: string = authToken.id;
 		const urlArray = request.url.split("/");
 		const folderId: string = urlArray[urlArray.length - 1];
-		const deletedCase = await CaseFolderService.deleteCaseById(userId, folderId);
+		const deletedCase = await CaseFolderService.deleteById(userId, folderId);
 		if (deletedCase !== null) {
 			const body = JSON.stringify(deletedCase);
 			const options = { status: 200 };

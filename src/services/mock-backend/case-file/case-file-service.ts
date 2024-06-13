@@ -57,7 +57,7 @@ export class CaseFileService {
 	static async getDocumentDeadlines(userId: string) {
 		if (!userId) return null;
 		let documents: CaseFileObj[] = [];
-		const userCaseFolders = await CaseFolderService.getAllCaseFoldersByUserId(userId);
+		const userCaseFolders = await CaseFolderService.getAllByUserId(userId);
 		for (let i = 0, n = userCaseFolders.length; i < n; i++) {
 			if (userCaseFolders[i].files.length === 0) continue;
 			userCaseFolders[i].files.forEach((document) => {

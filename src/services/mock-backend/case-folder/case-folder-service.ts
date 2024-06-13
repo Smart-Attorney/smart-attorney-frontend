@@ -8,33 +8,33 @@ import { FolderLabelDAO } from "../case-folder-label/folder-label-dao";
 import { CaseFolderDAO } from "./case-folder-dao";
 
 export class CaseFolderService {
-	static async getAllCaseFoldersByUserId(userId: string): Promise<DashboardFolderCardObj[]> {
-		let userCaseFolders: DashboardFolderCardObj[] = [];
-		const caseFolders = await CaseFolderDAO.getAllCaseFoldersByUserId(userId);
-		for (let i = 0, n = caseFolders.length; i < n; i++) {
-			const folderId = caseFolders[i].folder_id;
-			const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
+	static async getAllByUserId(userId: string): Promise<DashboardFolderCardObj[]> {
+		const userCases: DashboardFolderCardObj[] = [];
+		const cases = await CaseFolderDAO.getAllByUserId(userId);
+		for (let i = 0, n = cases.length; i < n; i++) {
+			const folderId = cases[i].folder_id;
+			const labels = await FolderLabelDAO.getAllByCaseId(folderId);
 			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
-			userCaseFolders.push({
-				id: caseFolders[i].folder_id,
-				name: caseFolders[i].folder_name,
-				createdDate: caseFolders[i].created_date,
-				lastOpenedDate: caseFolders[i].last_opened_date,
-				status: caseFolders[i].status,
+			userCases.push({
+				id: cases[i].folder_id,
+				name: cases[i].folder_name,
+				createdDate: cases[i].created_date,
+				lastOpenedDate: cases[i].last_opened_date,
+				status: cases[i].status,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
 				files: documents,
 			});
 		}
-		return userCaseFolders;
+		return userCases;
 	}
 
-	static async getCaseFolderById(folderId: string): Promise<DashboardFolderCardObj | null> {
+	static async getById(folderId: string): Promise<DashboardFolderCardObj | null> {
 		if (!folderId) return null;
 		const caseFolder = await CaseFolderDAO.getById(folderId);
 		if (caseFolder !== null) {
-			const labels = await FolderLabelDAO.getAllLabelsByCaseFolderId(folderId);
+			const labels = await FolderLabelDAO.getAllByCaseId(folderId);
 			const documents = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
 			const retrievedCaseFolder: DashboardFolderCardObj = {
@@ -48,9 +48,9 @@ export class CaseFolderService {
 		return null;
 	}
 
-	static async createCaseFolder(userId: string, folderId: string, folderName: string): Promise<CaseFolders | null> {
+	static async create(userId: string, folderId: string, folderName: string): Promise<CaseFolders | null> {
 		if (!userId || !folderId || !folderName) return null;
-		const newFolder = await CaseFolderDAO.addNewCaseFolder(userId, folderId, folderName);
+		const newFolder = await CaseFolderDAO.add(userId, folderId, folderName);
 		if (newFolder !== null) {
 			return newFolder;
 		}
@@ -61,7 +61,7 @@ export class CaseFolderService {
 		if (!userId || !folderId || !newLabel) return null;
 		const isLabelCreated = await FolderLabelDAO.add(folderId, newLabel);
 		if (isLabelCreated) {
-			return await CaseFolderService.getCaseFolderById(folderId);
+			return await CaseFolderService.getById(folderId);
 		}
 		return null;
 	}
@@ -79,7 +79,7 @@ export class CaseFolderService {
 		if (!userId || !folderId || !newName) return null;
 		const isNameUpdated = await CaseFolderDAO.updateName(userId, folderId, newName);
 		if (isNameUpdated) {
-			return await CaseFolderService.getCaseFolderById(folderId);
+			return await CaseFolderService.getById(folderId);
 		}
 		return null;
 	}
@@ -92,7 +92,7 @@ export class CaseFolderService {
 		if (!userId || !folderId || typeof currentStatus !== "boolean") return null;
 		const isStatusUpdated = await CaseFolderDAO.updateStatus(userId, folderId, currentStatus);
 		if (isStatusUpdated) {
-			return await CaseFolderService.getCaseFolderById(folderId);
+			return await CaseFolderService.getById(folderId);
 		}
 		return null;
 	}
@@ -105,14 +105,14 @@ export class CaseFolderService {
 		if (!userId || !folderId || !labelId) return null;
 		const isLabelDeleted = await FolderLabelDAO.deleteById(folderId, labelId);
 		if (isLabelDeleted) {
-			return await CaseFolderService.getCaseFolderById(folderId);
+			return await CaseFolderService.getById(folderId);
 		}
 		return null;
 	}
 
-	static async deleteCaseById(userId: string, folderId: string): Promise<DashboardFolderCardObj | null> {
+	static async deleteById(userId: string, folderId: string): Promise<DashboardFolderCardObj | null> {
 		if (!userId || !folderId) return null;
-		const deletedCase = await CaseFolderService.getCaseFolderById(folderId);
+		const deletedCase = await CaseFolderService.getById(folderId);
 
 		// delete files from cloud storage
 		const caseFiles = await CaseFileDAO.getAllFilesByCaseFolderId(folderId);
@@ -128,7 +128,7 @@ export class CaseFolderService {
 		if (!filesDeleted) return null;
 
 		// delete all labels associated with folderid
-		const labelsDeleted = await FolderLabelDAO.deleteAllLabelsByFolderId(folderId);
+		const labelsDeleted = await FolderLabelDAO.deleteAllByCaseId(folderId);
 		if (!labelsDeleted) return null;
 
 		// delete all clients associated with folderid
