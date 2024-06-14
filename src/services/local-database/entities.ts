@@ -36,7 +36,7 @@ export interface ClientEntity {
 	sex: sex_options;
 	country_of_citizenship: string;
 	primary_language: string;
-	case_folder_id_fk: string;
+	fk_case_id: string;
 }
 
 export interface DocumentEntity {

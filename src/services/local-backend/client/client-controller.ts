@@ -1,9 +1,15 @@
 import { ClientService } from "./client-service";
 
 export class ClientController {
-	static async createClient(request: Request) {
+	private clientService: ClientService;
+
+	constructor() {
+		this.clientService = new ClientService();
+	}
+
+	public async createClient(request: Request): Promise<Response> {
 		const newClient = await request.json();
-		const createdClient = await ClientService.createClient(newClient);
+		const createdClient = await this.clientService.create(newClient);
 		if (createdClient !== null) {
 			const body = JSON.stringify(createdClient);
 			const options = { status: 200 };
@@ -13,10 +19,10 @@ export class ClientController {
 		}
 	}
 
-	static async getClient(request: Request) {
+	public async getClient(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const folderId = urlArray[urlArray.length - 1];
-		const retrievedClient = await ClientService.getClient(folderId);
+		const caseId = urlArray[urlArray.length - 1];
+		const retrievedClient = await this.clientService.getByCaseId(caseId);
 		if (retrievedClient !== null) {
 			const body = JSON.stringify(retrievedClient);
 			const options = { status: 200 };

@@ -1,5 +1,5 @@
 /**
- * A class that models an object from the CaseLabel database table.
+ * A class that models an object from the "case_label" database table.
  */
 export class CaseLabel {
 	private label_id: string | null;

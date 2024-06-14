@@ -1,33 +1,38 @@
 import { nanoid } from "../../../lib/nanoid";
 import { ClientObj } from "../../../utils/types";
+import { DatabaseConnection } from "../../local-database/database-connection";
 import { ClientEntity, sex_options } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
-import { DatabaseConnection } from "../../local-database/database-connection";
 
-export class ClientDAO extends DatabaseConnection {
-	private static CLIENT_STORAGE_KEY = SqlTables.TABLE.CLIENT;
+export class ClientDAO {
+	private CLIENT_KEY = SqlTables.TABLE.CLIENT;
+	private dbConn: DatabaseConnection;
 
-	static async getClientByCaseFolderId(caseFolderId: string) {
-		const clientArray: ClientEntity[] = await super.getArray(this.CLIENT_STORAGE_KEY);
-		for (let i = 0, n = clientArray.length; i < n; i++) {
-			if (clientArray[i].case_folder_id_fk === caseFolderId) {
-				const caseFolderClient: ClientObj = {
-					id: clientArray[i].client_id,
-					firstName: clientArray[i].first_name,
-					middleName: clientArray[i].middle_name,
-					lastName: clientArray[i].last_name,
-					dateOfBirth: clientArray[i].date_of_birth,
-					sex: clientArray[i].sex,
-					countryOfCitizenship: clientArray[i].country_of_citizenship,
-					primaryLanguage: clientArray[i].primary_language,
+	constructor() {
+		this.dbConn = new DatabaseConnection();
+	}
+
+	public async getByCaseId(caseId: string): Promise<ClientObj | null> {
+		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
+		for (let i = 0, n = clients.length; i < n; i++) {
+			if (clients[i].fk_case_id === caseId) {
+				const caseClient: ClientObj = {
+					id: clients[i].client_id,
+					firstName: clients[i].first_name,
+					middleName: clients[i].middle_name,
+					lastName: clients[i].last_name,
+					dateOfBirth: clients[i].date_of_birth,
+					sex: clients[i].sex,
+					countryOfCitizenship: clients[i].country_of_citizenship,
+					primaryLanguage: clients[i].primary_language,
 				};
-				return caseFolderClient;
+				return caseClient;
 			}
 		}
 		return null;
 	}
 
-	static async addNewClient(
+	public async add(
 		firstName: string,
 		middleName: string,
 		lastName: string,
@@ -36,8 +41,8 @@ export class ClientDAO extends DatabaseConnection {
 		country: string,
 		language: string,
 		caseFolderId: string
-	) {
-		const clientArray: ClientEntity[] = await super.getArray(this.CLIENT_STORAGE_KEY);
+	): Promise<ClientEntity | null> {
+		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
 		const newClient: ClientEntity = {
 			client_id: nanoid(8),
 			first_name: firstName,
@@ -47,26 +52,26 @@ export class ClientDAO extends DatabaseConnection {
 			sex: sex,
 			country_of_citizenship: country,
 			primary_language: language,
-			case_folder_id_fk: caseFolderId,
+			fk_case_id: caseFolderId,
 		};
-		const updatedArray = [...clientArray, newClient];
-		const success = await super.setArray(this.CLIENT_STORAGE_KEY, updatedArray);
+		const newClientsArr = [...clients, newClient];
+		const success = await this.dbConn.setArray(this.CLIENT_KEY, newClientsArr);
 		if (success) {
 			return newClient;
 		}
 		return null;
 	}
 
-	static async deleteClientByFolderId(folderId: string) {
-		const updatedArray: ClientEntity[] = [];
-		const clientArray: ClientEntity[] = await super.getArray(this.CLIENT_STORAGE_KEY);
-		for (let i = 0, n = clientArray.length; i < n; i++) {
-			if (clientArray[i].case_folder_id_fk === folderId) {
+	public async deleteByCaseId(caseId: string): Promise<boolean> {
+		const newClientsArr: ClientEntity[] = [];
+		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
+		for (let i = 0, n = clients.length; i < n; i++) {
+			if (clients[i].fk_case_id === caseId) {
 				continue;
 			}
-			updatedArray.push(clientArray[i]);
+			newClientsArr.push(clients[i]);
 		}
-		const success = await super.setArray(this.CLIENT_STORAGE_KEY, updatedArray);
+		const success = await this.dbConn.setArray(this.CLIENT_KEY, newClientsArr);
 		if (success) {
 			return true;
 		}

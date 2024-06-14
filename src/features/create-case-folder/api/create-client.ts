@@ -15,7 +15,7 @@ export interface CreateClientDTO {
 
 const mockApi = async (data: CreateClientDTO) => {
 	const request = mockRequest.post("/create-case", data);
-	return await ClientController.createClient(request);
+	return await new ClientController().createClient(request);
 };
 
 export const createClient = async (data: CreateClientDTO) => {
