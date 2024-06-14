@@ -1,14 +1,14 @@
 import { nanoid } from "../../../lib/nanoid";
 import { ClientObj } from "../../../utils/types";
-import { Clients, sex_options } from "../mock-database/entities";
-import { SqlTables } from "../mock-database/sql-tables";
-import { DAO } from "../dao";
+import { ClientEntity, sex_options } from "../../local-database/entities";
+import { SqlTables } from "../../local-database/sql-tables";
+import { DatabaseConnection } from "../../local-database/database-connection";
 
-export class ClientDAO extends DAO {
+export class ClientDAO extends DatabaseConnection {
 	private static CLIENT_STORAGE_KEY = SqlTables.TABLE.CLIENT;
 
 	static async getClientByCaseFolderId(caseFolderId: string) {
-		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
+		const clientArray: ClientEntity[] = await super.getArray(this.CLIENT_STORAGE_KEY);
 		for (let i = 0, n = clientArray.length; i < n; i++) {
 			if (clientArray[i].case_folder_id_fk === caseFolderId) {
 				const caseFolderClient: ClientObj = {
@@ -37,8 +37,8 @@ export class ClientDAO extends DAO {
 		language: string,
 		caseFolderId: string
 	) {
-		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
-		const newClient: Clients = {
+		const clientArray: ClientEntity[] = await super.getArray(this.CLIENT_STORAGE_KEY);
+		const newClient: ClientEntity = {
 			client_id: nanoid(8),
 			first_name: firstName,
 			middle_name: middleName,
@@ -58,8 +58,8 @@ export class ClientDAO extends DAO {
 	}
 
 	static async deleteClientByFolderId(folderId: string) {
-		const updatedArray: Clients[] = [];
-		const clientArray: Clients[] = await super.getArray(this.CLIENT_STORAGE_KEY);
+		const updatedArray: ClientEntity[] = [];
+		const clientArray: ClientEntity[] = await super.getArray(this.CLIENT_STORAGE_KEY);
 		for (let i = 0, n = clientArray.length; i < n; i++) {
 			if (clientArray[i].case_folder_id_fk === folderId) {
 				continue;

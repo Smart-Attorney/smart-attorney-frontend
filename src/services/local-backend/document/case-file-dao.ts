@@ -1,15 +1,15 @@
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
-import { CaseFiles } from "../mock-database/entities";
-import { SqlTables } from "../mock-database/sql-tables";
-import { DAO } from "../dao";
+import { DocumentEntity } from "../../local-database/entities";
+import { SqlTables } from "../../local-database/sql-tables";
+import { DatabaseConnection } from "../../local-database/database-connection";
 
-export class CaseFileDAO extends DAO {
+export class CaseFileDAO extends DatabaseConnection {
 	private static CASE_FILE_STORAGE_KEY = SqlTables.TABLE.DOCUMENT;
 
 	static async getAllByCaseId(caseId: string): Promise<CaseFileObj[]> {
 		const caseDocuments: CaseFileObj[] = [];
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === caseId) {
 				caseDocuments.push({
@@ -27,7 +27,7 @@ export class CaseFileDAO extends DAO {
 	}
 
 	static async getById(folderId: string, fileId: string): Promise<CaseFileObj | null> {
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
 				const caseFile: CaseFileObj = {
@@ -45,9 +45,9 @@ export class CaseFileDAO extends DAO {
 		return null;
 	}
 
-	static async add(fileId: string, fileName: string, fileUrl: string, caseId: string): Promise<CaseFiles | null> {
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
-		const newDocument: CaseFiles = {
+	static async add(fileId: string, fileName: string, fileUrl: string, caseId: string): Promise<DocumentEntity | null> {
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const newDocument: DocumentEntity = {
 			file_id: fileId,
 			file_name: fileName,
 			created_date: Date.now(),
@@ -66,7 +66,7 @@ export class CaseFileDAO extends DAO {
 	}
 
 	static async updateStatus(folderId: string, fileId: string, newStatus: DocumentStatus): Promise<boolean> {
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
 				documents[i].status = newStatus;
@@ -80,7 +80,7 @@ export class CaseFileDAO extends DAO {
 	}
 
 	static async updateName(folderId: string, fileId: string, newName: string): Promise<boolean> {
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
 				documents[i].file_name = newName;
@@ -94,7 +94,7 @@ export class CaseFileDAO extends DAO {
 	}
 
 	static async updateDeadline(folderId: string, fileId: string, newDeadline: number): Promise<boolean> {
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === folderId && documents[i].file_id === fileId) {
 				documents[i].deadline = newDeadline;
@@ -108,8 +108,8 @@ export class CaseFileDAO extends DAO {
 	}
 
 	static async deleteAllByCaseId(caseId: string): Promise<boolean> {
-		const updatedArray: CaseFiles[] = [];
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const updatedArray: DocumentEntity[] = [];
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === caseId) {
 				continue;
@@ -124,8 +124,8 @@ export class CaseFileDAO extends DAO {
 	}
 
 	static async deleteById(caseId: string, fileId: string): Promise<boolean> {
-		const updatedArray: CaseFiles[] = [];
-		const documents: CaseFiles[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
+		const updatedArray: DocumentEntity[] = [];
+		const documents: DocumentEntity[] = await super.getArray(this.CASE_FILE_STORAGE_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].case_folder_id_fk === caseId && documents[i].file_id === fileId) {
 				continue;

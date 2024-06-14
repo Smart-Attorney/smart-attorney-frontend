@@ -1,14 +1,14 @@
 import { RegisterCredentialsDTO } from "../../../features/register/api/register";
 import { nanoid } from "../../../lib/nanoid";
-import { Users } from "../mock-database/entities";
-import { SqlTables } from "../mock-database/sql-tables";
-import { DAO } from "../dao";
+import { UserEntity } from "../../local-database/entities";
+import { SqlTables } from "../../local-database/sql-tables";
+import { DatabaseConnection } from "../../local-database/database-connection";
 
-export class UserDAO extends DAO {
+export class UserDAO extends DatabaseConnection {
 	private static USER_STORAGE_KEY = SqlTables.TABLE.USER;
 
 	static async getUserIdByCompanyEmail(companyEmail: string) {
-		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
+		const userArray: UserEntity[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0, n = userArray.length; i < n; i++) {
 			if (userArray[i].company_email === companyEmail) {
 				return userArray[i].user_id;
@@ -18,7 +18,7 @@ export class UserDAO extends DAO {
 	}
 
 	static async getUserIdByPassword(password: string) {
-		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
+		const userArray: UserEntity[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0, n = userArray.length; i < n; i++) {
 			if (userArray[i].password === password) {
 				return userArray[i].user_id;
@@ -28,7 +28,7 @@ export class UserDAO extends DAO {
 	}
 
 	static async getUserById(userId: string) {
-		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
+		const userArray: UserEntity[] = await super.getArray(this.USER_STORAGE_KEY);
 		for (let i = 0, n = userArray.length; i < n; i++) {
 			if (userArray[i].user_id === userId) {
 				return userArray[i];
@@ -38,8 +38,8 @@ export class UserDAO extends DAO {
 	}
 
 	static async createUser(data: RegisterCredentialsDTO) {
-		const userArray: Users[] = await super.getArray(this.USER_STORAGE_KEY);
-		const newUser: Users = {
+		const userArray: UserEntity[] = await super.getArray(this.USER_STORAGE_KEY);
+		const newUser: UserEntity = {
 			user_id: nanoid(16),
 			first_name: data.firstName,
 			last_name: data.lastName,

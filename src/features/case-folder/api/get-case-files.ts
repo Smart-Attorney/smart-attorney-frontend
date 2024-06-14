@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFileController } from "../../../services/mock-backend/document/case-file-controller";
+import { CaseFileController } from "../../../services/local-backend/document/case-file-controller";
 
 const mockApi = async (folderId: string) => {
 	const request = mockRequest.get(`/case/${folderId}`);

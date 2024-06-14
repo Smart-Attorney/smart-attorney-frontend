@@ -12,19 +12,6 @@ export class CaseLabel {
 		this.fk_case_id = null;
 	}
 
-	/* Setters */
-	public setLabelId(labelId: string): void {
-		this.label_id = labelId;
-	}
-
-	public setLabelName(labelName: string): void {
-		this.label_name = labelName;
-	}
-
-	public setfkCaseId(fkCaseId: string): void {
-		this.fk_case_id = fkCaseId;
-	}
-
 	/* Getters */
 	public getLabelId(): string | null {
 		return this.label_id;
@@ -34,7 +21,20 @@ export class CaseLabel {
 		return this.label_name;
 	}
 
-	public getfkCaseId(): string | null {
+	public getFkCaseId(): string | null {
 		return this.fk_case_id;
+	}
+
+	/* Setters */
+	public setLabelId(labelId: string): void {
+		this.label_id = labelId;
+	}
+
+	public setLabelName(labelName: string): void {
+		this.label_name = labelName;
+	}
+
+	public setFkCaseId(fkCaseId: string): void {
+		this.fk_case_id = fkCaseId;
 	}
 }

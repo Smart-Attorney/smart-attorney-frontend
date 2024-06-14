@@ -2,7 +2,7 @@
 // entity instance corresponds to a row in that table.
 // https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
 
-export interface Users {
+export interface UserEntity {
 	user_id: string;
 	first_name: string;
 	last_name: string;
@@ -12,7 +12,7 @@ export interface Users {
 	password: string;
 }
 
-export interface CaseFolders {
+export interface CaseEntity {
 	folder_id: string; // from nanoid
 	folder_name: string;
 	created_date: number; // as unix time
@@ -21,24 +21,13 @@ export interface CaseFolders {
 	user_id_fk: string; // from nanoid
 }
 
-export interface CaseFiles {
-	file_id: string;
-	file_name: string;
-	created_date: number;
-	last_opened_date: number;
-	status: document_status;
-	deadline: number; // as unix time
-	url: string;
-	case_folder_id_fk: string;
-}
-
-export interface FolderLabels {
+export interface CaseLabelEntity {
 	label_id: string;
 	label_name: string;
-	case_folder_id_fk: string;
+	fk_case_id: string;
 }
 
-export interface Clients {
+export interface ClientEntity {
 	client_id: string;
 	first_name: string;
 	middle_name: string;
@@ -50,10 +39,15 @@ export interface Clients {
 	case_folder_id_fk: string;
 }
 
-export interface CalendarDeadlines {
-	folder_id: string;
-	folder_name: string;
-	deadline: number;
+export interface DocumentEntity {
+	file_id: string;
+	file_name: string;
+	created_date: number;
+	last_opened_date: number;
+	status: document_status;
+	deadline: number; // as unix time
+	url: string;
+	case_folder_id_fk: string;
 }
 
 export type sex_options = "Male" | "Female" | "Other";

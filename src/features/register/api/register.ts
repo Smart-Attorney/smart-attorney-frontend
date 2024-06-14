@@ -1,7 +1,7 @@
-import { useMock } from "../../../config/use-mock";
+import { useLocalBackend } from "../../../config/use-local-backend";
 import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
-import { UserController } from "../../../services/mock-backend/user/user-controller";
+import { UserController } from "../../../services/local-backend/user/user-controller";
 
 export interface RegisterCredentialsDTO {
 	firstName: string;
@@ -22,5 +22,5 @@ const fetchApi = async (data: RegisterCredentialsDTO) => {
 };
 
 export const registerNewUser = async (data: RegisterCredentialsDTO) => {
-	return useMock ? await mockApi(data) : await fetchApi(data);
+	return useLocalBackend ? await mockApi(data) : await fetchApi(data);
 };

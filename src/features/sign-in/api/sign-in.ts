@@ -1,7 +1,7 @@
-import { useMock } from "../../../config/use-mock";
+import { useLocalBackend } from "../../../config/use-local-backend";
 import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
-import { UserController } from "../../../services/mock-backend/user/user-controller";
+import { UserController } from "../../../services/local-backend/user/user-controller";
 
 export interface SignInCredentialsDTO {
 	companyEmail: string;
@@ -18,8 +18,6 @@ const fetchApi = async (data: SignInCredentialsDTO) => {
 	return await fetchWrapper.post(url, data);
 };
 
-export const signInWithEmailAndPassword = async (
-	data: SignInCredentialsDTO
-) => {
-	return useMock ? await mockApi(data) : await fetchApi(data);
+export const signInWithEmailAndPassword = async (data: SignInCredentialsDTO) => {
+	return useLocalBackend ? await mockApi(data) : await fetchApi(data);
 };

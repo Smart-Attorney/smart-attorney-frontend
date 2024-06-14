@@ -1,14 +1,14 @@
 import { CaseFolderObj } from "../../../utils/types";
-import { CaseFolders } from "../mock-database/entities";
-import { SqlTables } from "../mock-database/sql-tables";
 import { DAO } from "../dao";
+import { CaseEntity } from "../../local-database/entities";
+import { SqlTables } from "../../local-database/sql-tables";
 
 export class CaseFolderDAO extends DAO {
 	private static CASE_FOLDER_STORAGE_KEY = SqlTables.TABLE.CASES;
 
 	static async getAllByUserId(userId: string) {
-		const userCases: CaseFolders[] = [];
-		const cases: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const userCases: CaseEntity[] = [];
+		const cases: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].user_id_fk === userId) {
 				userCases.push(cases[i]);
@@ -18,7 +18,7 @@ export class CaseFolderDAO extends DAO {
 	}
 
 	static async getById(caseId: string) {
-		const cases: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const cases: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].folder_id === caseId) {
 				const caseFolder: CaseFolderObj = {
@@ -35,8 +35,8 @@ export class CaseFolderDAO extends DAO {
 	}
 
 	static async add(userId: string, caseId: string, caseName: string) {
-		const cases: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
-		const newCase: CaseFolders = {
+		const cases: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const newCase: CaseEntity = {
 			folder_id: caseId,
 			folder_name: caseName,
 			created_date: Date.now(),
@@ -53,7 +53,7 @@ export class CaseFolderDAO extends DAO {
 	}
 
 	static async updateLastOpenedDate(userId: string, caseId: string, newDate: number) {
-		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const caseFolderArray: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === caseId) {
 				caseFolderArray[i].last_opened_date = newDate;
@@ -68,7 +68,7 @@ export class CaseFolderDAO extends DAO {
 	}
 
 	static async updateName(userId: string, caseId: string, newName: string): Promise<boolean> {
-		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const caseFolderArray: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === caseId) {
 				caseFolderArray[i].folder_name = newName;
@@ -83,7 +83,7 @@ export class CaseFolderDAO extends DAO {
 	}
 
 	static async updateStatus(userId: string, caseId: string, currentStatus: boolean): Promise<boolean> {
-		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const caseFolderArray: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === caseId) {
 				caseFolderArray[i].status = !currentStatus;
@@ -98,8 +98,8 @@ export class CaseFolderDAO extends DAO {
 	}
 
 	static async deleteById(userId: string, caseId: string): Promise<boolean> {
-		const updatedArray: CaseFolders[] = [];
-		const caseFolderArray: CaseFolders[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
+		const updatedArray: CaseEntity[] = [];
+		const caseFolderArray: CaseEntity[] = await super.getArray(this.CASE_FOLDER_STORAGE_KEY);
 		for (let i = 0, n = caseFolderArray.length; i < n; i++) {
 			if (caseFolderArray[i].user_id_fk === userId && caseFolderArray[i].folder_id === caseId) {
 				continue;
