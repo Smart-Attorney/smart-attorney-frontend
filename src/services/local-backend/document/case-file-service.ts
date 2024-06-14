@@ -1,7 +1,7 @@
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseFileDAO } from "./case-file-dao";
-import { CaseFolderService } from "../cases/case-folder-service";
+import { CasesService } from "../cases/cases-service";
 
 export class CaseFileService {
 	static async create(userId: string, folderId: string, files: File[]): Promise<CaseFileObj[] | null> {
@@ -46,7 +46,7 @@ export class CaseFileService {
 	static async getAllByUserId(userId: string): Promise<CaseFileObj[] | null> {
 		if (!userId) return null;
 		const documents: CaseFileObj[] = [];
-		const userCases = await CaseFolderService.getAllByUserId(userId);
+		const userCases = await CasesService.getAllByUserId(userId);
 		for (let i = 0, n = userCases.length; i < n; i++) {
 			if (userCases[i].files.length === 0) continue;
 			userCases[i].files.forEach((document) => {

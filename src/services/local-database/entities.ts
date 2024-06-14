@@ -12,13 +12,13 @@ export interface UserEntity {
 	password: string;
 }
 
-export interface CaseEntity {
-	folder_id: string; // from nanoid
-	folder_name: string;
+export interface CasesEntity {
+	case_id: string; // from nanoid
+	case_name: string;
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
 	status: boolean;
-	user_id_fk: string; // from nanoid
+	fk_user_id: string; // from nanoid
 }
 
 export interface CaseLabelEntity {

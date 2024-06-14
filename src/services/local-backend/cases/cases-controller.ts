@@ -1,19 +1,25 @@
 import { UpdateCaseFolderNameDTO } from "../../../features/case-folder/api/update-case-folder-name";
 import { UpdateCaseFolderLastOpenedDateDTO } from "../../../features/case-folder/api/update-last-opened-date";
 import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
-import { CaseFolderService } from "./case-folder-service";
+import { CasesService } from "./cases-service";
 
-export class CaseFolderController {
-	static async getUserCaseFolders(request: Request): Promise<Response> {
+export class CasesController {
+	private casesService: CasesService;
+
+	constructor() {
+		this.casesService = new CasesService();
+	}
+
+	public async getAllCasesByUserId(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
-		const userCaseFolders = await CaseFolderService.getAllByUserId(userId);
-		if (userCaseFolders !== null) {
-			const body = JSON.stringify(userCaseFolders);
+		const userId = authToken.id as string;
+		const userCases = await this.casesService.getAllByUserId(userId);
+		if (userCases !== null) {
+			const body = JSON.stringify(userCases);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -23,12 +29,12 @@ export class CaseFolderController {
 		}
 	}
 
-	static async getCaseFolder(request: Request): Promise<Response> {
+	public async getCaseById(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 1];
-		const retrievedCaseFolder = await CaseFolderService.getById(folderId);
-		if (retrievedCaseFolder !== null) {
-			const body = JSON.stringify(retrievedCaseFolder);
+		const caseId = urlArray[urlArray.length - 1];
+		const retrievedCase = await this.casesService.getById(caseId);
+		if (retrievedCase !== null) {
+			const body = JSON.stringify(retrievedCase);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -36,18 +42,19 @@ export class CaseFolderController {
 		}
 	}
 
-	static async createCaseFolder(request: Request): Promise<Response> {
+	public async createCase(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
-		const newFolder: CreateCaseFolderDTO = await request.json();
-		const { folderId, folderName } = newFolder;
-		const createdCaseFolder = await CaseFolderService.create(userId, folderId, folderName);
-		if (createdCaseFolder !== null) {
-			const body = JSON.stringify(createdCaseFolder);
+		const userId = authToken.id as string;
+		const newCase: CreateCaseFolderDTO = await request.json();
+		const caseId = newCase.folderId;
+		const caseName = newCase.folderName;
+		const createdCase = await this.casesService.create(userId, caseId, caseName);
+		if (createdCase !== null) {
+			const body = JSON.stringify(createdCase);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -55,17 +62,17 @@ export class CaseFolderController {
 		}
 	}
 
-	static async createLabel(request: Request): Promise<Response> {
+	public async createLabel(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
+		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 1];
-		const newLabel: string = await request.json();
-		const caseWithNewLabel = await CaseFolderService.createLabel(userId, folderId, newLabel);
+		const caseId = urlArray[urlArray.length - 1];
+		const newLabel = (await request.json()) as string;
+		const caseWithNewLabel = await this.casesService.createLabel(userId, caseId, newLabel);
 		if (caseWithNewLabel !== null) {
 			const body = JSON.stringify(caseWithNewLabel);
 			const options = { status: 200 };
@@ -75,19 +82,19 @@ export class CaseFolderController {
 		}
 	}
 
-	static async updateLastOpenedDate(request: Request): Promise<Response> {
+	public async updateLastOpenedDate(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
+		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 1];
+		const caseId: string = urlArray[urlArray.length - 1];
 		const newDate: UpdateCaseFolderLastOpenedDateDTO = await request.json();
-		const updatedDate = await CaseFolderService.updateLastOpenedDate(userId, folderId, newDate);
+		const updatedDate = await this.casesService.updateLastOpenedDate(userId, caseId, newDate);
 		if (updatedDate !== null) {
-			const updatedCaseFolders = await CaseFolderService.getAllByUserId(userId);
+			const updatedCaseFolders = await this.casesService.getAllByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
 			const options = { status: 200 };
 			return new Response(body, options);
@@ -96,17 +103,17 @@ export class CaseFolderController {
 		}
 	}
 
-	static async updateName(request: Request): Promise<Response> {
+	public async updateName(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
+		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 1];
+		const caseId = urlArray[urlArray.length - 1];
 		const newName: UpdateCaseFolderNameDTO = await request.json();
-		const caseWithUpdatedName = await CaseFolderService.updateName(userId, folderId, newName);
+		const caseWithUpdatedName = await this.casesService.updateName(userId, caseId, newName);
 		if (caseWithUpdatedName !== null) {
 			const body = JSON.stringify(caseWithUpdatedName);
 			const options = { status: 200 };
@@ -116,17 +123,17 @@ export class CaseFolderController {
 		}
 	}
 
-	static async updateStatus(request: Request): Promise<Response> {
+	public async updateStatus(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
+		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 1];
+		const caseId = urlArray[urlArray.length - 1];
 		const currentStatus: boolean = await request.json();
-		const caseWithUpdatedStatus = await CaseFolderService.updateStatus(userId, folderId, currentStatus);
+		const caseWithUpdatedStatus = await this.casesService.updateStatus(userId, caseId, currentStatus);
 		if (caseWithUpdatedStatus !== null) {
 			const body = JSON.stringify(caseWithUpdatedStatus);
 			const options = { status: 200 };
@@ -136,15 +143,15 @@ export class CaseFolderController {
 		}
 	}
 
-	static async deleteCaseLabel(request: Request): Promise<Response> {
+	public async deleteCaseLabel(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) throw new Error("User is not authorized/signed in.");
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
+		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 2];
+		const caseId: string = urlArray[urlArray.length - 2];
 		const labelId: string = urlArray[urlArray.length - 1];
-		const caseWithDeletedLabel = await CaseFolderService.deleteLabelById(userId, folderId, labelId);
+		const caseWithDeletedLabel = await this.casesService.deleteLabelById(userId, caseId, labelId);
 		if (caseWithDeletedLabel !== null) {
 			const body = JSON.stringify(caseWithDeletedLabel);
 			const options = { status: 200 };
@@ -154,16 +161,16 @@ export class CaseFolderController {
 		}
 	}
 
-	static async deleteCaseFolder(request: Request): Promise<Response> {
+	public async deleteCaseFolder(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
-		const userId: string = authToken.id;
+		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const folderId: string = urlArray[urlArray.length - 1];
-		const deletedCase = await CaseFolderService.deleteById(userId, folderId);
+		const caseId: string = urlArray[urlArray.length - 1];
+		const deletedCase = await this.casesService.deleteById(userId, caseId);
 		if (deletedCase !== null) {
 			const body = JSON.stringify(deletedCase);
 			const options = { status: 200 };
