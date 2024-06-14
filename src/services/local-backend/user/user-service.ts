@@ -3,45 +3,44 @@ import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
 import { UserDAO } from "./user-dao";
 
 export class UserService {
-	static async verifyUser(data: SignInCredentialsDTO) {
-		if (data.companyEmail.trim().length === 0) return null;
-		if (data.password.trim().length === 0) return null;
-		const foundIdByCompanyEmail = await UserDAO.getUserIdByCompanyEmail(data.companyEmail);
-		const foundIdByPassword = await UserDAO.getUserIdByPassword(data.password);
-		if (!foundIdByCompanyEmail) return null;
-		if (!foundIdByPassword) return null;
-		if (foundIdByCompanyEmail !== foundIdByPassword) return null;
-		const userData = await UserDAO.getUserById(foundIdByPassword);
-		if (userData) {
-			const foundUser = {
-				id: userData.user_id,
-				firstName: userData.first_name,
-				lastName: userData.last_name,
+	private userDao: UserDAO;
+
+	constructor() {
+		this.userDao = new UserDAO();
+	}
+
+	public async verify(data: SignInCredentialsDTO): Promise<{ id: string; firstName: string; lastName: string } | null> {
+		const { companyEmail, password } = data;
+		if (companyEmail.trim().length === 0) return null;
+		if (password.trim().length === 0) return null;
+		const foundUser = await this.userDao.getByCompanyEmailAndPassword(companyEmail, password);
+		if (foundUser !== null) {
+			const verifiedUser = {
+				id: foundUser.user_id,
+				firstName: foundUser.first_name,
+				lastName: foundUser.last_name,
 			};
-			return foundUser;
+			return verifiedUser;
 		}
 		return null;
 	}
 
-	static async registerUser(data: RegisterCredentialsDTO) {
+	public async register(data: RegisterCredentialsDTO) {
 		if (data.firstName.trim().length === 0) return null;
 		if (data.lastName.trim().length === 0) return null;
 		if (data.firmName.trim().length === 0) return null;
 		if (data.companyEmail.trim().length === 0) return null;
 		if (data.password.trim().length === 0) return null;
-		const registeredUser = await UserDAO.createUser(data);
-
-		if (registeredUser) {
+		const registeredUser = await this.userDao.add(data);
+		if (registeredUser !== null) {
 			return registeredUser;
 		}
 		return null;
 	}
 
-	static async getUser(userId: string) {
-		if (!userId) {
-			return null;
-		}
-		const retrievedUser = await UserDAO.getUserById(userId);
+	public async getById(userId: string) {
+		if (!userId) return null;
+		const retrievedUser = await this.userDao.getById(userId);
 		if (retrievedUser !== null) {
 			return retrievedUser;
 		}

@@ -13,7 +13,7 @@ export interface RegisterCredentialsDTO {
 
 const mockApi = async (data: RegisterCredentialsDTO) => {
 	const request = mockRequest.put("/", data);
-	return await UserController.registerUser(request);
+	return await new UserController().registerUser(request);
 };
 
 const fetchApi = async (data: RegisterCredentialsDTO) => {
