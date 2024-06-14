@@ -1,5 +1,5 @@
 import { CaseFolderLabelObj } from "../../../utils/types";
-import { CaseFolderService } from "../case-folder/case-folder-service";
+import { CaseFolderService } from "../cases/case-folder-service";
 import { FolderLabelDAO } from "./folder-label-dao";
 
 export class FolderLabelService {

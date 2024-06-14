@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { FolderLabelController } from "../../../services/mock-backend/case-folder-label/folder-label-controller";
+import { FolderLabelController } from "../../../services/mock-backend/case-label/folder-label-controller";
 
 const mockApi = async (): Promise<Response> => {
 	const request = mockRequest.get(`/dashboard`);

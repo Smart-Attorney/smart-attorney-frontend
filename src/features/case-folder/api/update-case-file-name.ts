@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFileController } from "../../../services/mock-backend/case-file/case-file-controller";
+import { CaseFileController } from "../../../services/mock-backend/document/case-file-controller";
 
 export type UpdateCaseFileNameDTO = string;
 

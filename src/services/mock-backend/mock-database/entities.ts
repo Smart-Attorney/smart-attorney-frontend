@@ -1,3 +1,7 @@
+// Typically, an entity represents a table in a relational database, and each
+// entity instance corresponds to a row in that table.
+// https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
+
 export interface Users {
 	user_id: string;
 	first_name: string;

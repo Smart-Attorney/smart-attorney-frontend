@@ -1,10 +1,10 @@
 import { DocumentUtils } from "../../../utils/document-utils";
 import { DashboardFolderCardObj } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
-import { CaseFolders } from "../../mock-database/table-schemas";
-import { ClientDAO } from "../case-client/client-dao";
-import { CaseFileDAO } from "../case-file/case-file-dao";
-import { FolderLabelDAO } from "../case-folder-label/folder-label-dao";
+import { CaseFolders } from "../mock-database/entities";
+import { ClientDAO } from "../client/client-dao";
+import { CaseFileDAO } from "../document/case-file-dao";
+import { FolderLabelDAO } from "../case-label/folder-label-dao";
 import { CaseFolderDAO } from "./case-folder-dao";
 
 export class CaseFolderService {

@@ -1,6 +1,6 @@
 import { CaseFolderObj } from "../../../utils/types";
-import { CaseFolders } from "../../mock-database/table-schemas";
-import { SqlTables } from "../../mock-database/sql-tables";
+import { CaseFolders } from "../mock-database/entities";
+import { SqlTables } from "../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class CaseFolderDAO extends DAO {

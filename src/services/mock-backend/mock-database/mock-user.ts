@@ -1,5 +1,5 @@
 import { SqlTables } from "./sql-tables";
-import { Users } from "./table-schemas";
+import { Users } from "./entities";
 
 export class MockUser {
 	private static mockUser: Users = Object.freeze({

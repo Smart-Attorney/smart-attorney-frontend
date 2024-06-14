@@ -1,7 +1,7 @@
 import { nanoid } from "../../../lib/nanoid";
 import { ClientObj } from "../../../utils/types";
-import { Clients, sex_options } from "../../mock-database/table-schemas";
-import { SqlTables } from "../../mock-database/sql-tables";
+import { Clients, sex_options } from "../mock-database/entities";
+import { SqlTables } from "../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class ClientDAO extends DAO {

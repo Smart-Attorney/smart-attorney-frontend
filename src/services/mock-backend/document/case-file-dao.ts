@@ -1,7 +1,7 @@
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { CaseFileObj, DocumentStatus } from "../../../utils/types";
-import { CaseFiles } from "../../mock-database/table-schemas";
-import { SqlTables } from "../../mock-database/sql-tables";
+import { CaseFiles } from "../mock-database/entities";
+import { SqlTables } from "../mock-database/sql-tables";
 import { DAO } from "../dao";
 
 export class CaseFileDAO extends DAO {
