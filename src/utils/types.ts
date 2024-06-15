@@ -62,7 +62,7 @@ export type CaseLabel = "Asylum" | "Employment" | "Family" | "Humanitarian";
 export interface LabelsDropdownMenuOptionObj {
 	id: string;
 	name: string;
-	clicked: boolean;
+	isClicked: boolean;
 }
 
 export interface FileForUploadObj {

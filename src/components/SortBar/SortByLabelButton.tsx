@@ -57,7 +57,7 @@ function SortByLabelButton({
 			formattedLabels.push({
 				id: labelName,
 				name: labelName,
-				clicked: false,
+				isClicked: false,
 			});
 		}
 		return formattedLabels;
@@ -91,7 +91,7 @@ function SortByLabelButton({
 
 	const toggleMenuOptionClicked = (menuOptionName: string) => {
 		const updatedOptions = menuOptions?.map((option) =>
-			menuOptionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
+			menuOptionName === option.name ? { ...option, clicked: !option.isClicked } : { ...option, clicked: false }
 		);
 		setMenuOptions(updatedOptions);
 	};
@@ -108,8 +108,8 @@ function SortByLabelButton({
 
 	/************************************************************/
 
-	const menuOptionElements = menuOptions?.map(({ id, name, clicked }) => (
-		<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={clicked} onChange={handleMenuOptionClick} />
+	const menuOptionElements = menuOptions?.map(({ id, name, isClicked }) => (
+		<LabelsDropdownMenuOptions key={id} id={id} name={name} clicked={isClicked} onChange={handleMenuOptionClick} />
 	));
 
 	return (
