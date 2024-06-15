@@ -31,7 +31,7 @@ export class CasesDAO {
 					name: cases[i].case_name,
 					createdDate: cases[i].created_date,
 					lastOpenedDate: cases[i].last_opened_date,
-					status: cases[i].status,
+					isOpen: cases[i].is_open,
 				};
 				return caseFolder;
 			}
@@ -46,7 +46,7 @@ export class CasesDAO {
 			case_name: caseName,
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
-			status: true,
+			is_open: true,
 			fk_user_id: userId,
 		};
 		const newCasesArr = [...cases, newCase];
@@ -87,11 +87,11 @@ export class CasesDAO {
 		return false;
 	}
 
-	public async updateStatus(userId: string, caseId: string, currentStatus: boolean): Promise<boolean> {
+	public async updateOpenState(userId: string, caseId: string, currentState: boolean): Promise<boolean> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].fk_user_id === userId && cases[i].case_id === caseId) {
-				cases[i].status = !currentStatus;
+				cases[i].is_open = !currentState;
 				break;
 			}
 		}

@@ -13,7 +13,7 @@ export interface DashboardFolderCardObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: boolean;
+	isOpen: boolean;
 	urgentDocumentDeadline: number;
 	labels: CaseFolderLabelObj[];
 	documents: CaseFileObj[];
@@ -24,7 +24,7 @@ export interface CaseFolderObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: boolean;
+	isOpen: boolean;
 }
 
 export interface CaseFolderLabelObj {

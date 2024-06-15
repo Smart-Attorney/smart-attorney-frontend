@@ -17,7 +17,7 @@ export interface CasesEntity {
 	case_name: string;
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
-	status: boolean;
+	is_open: boolean;
 	fk_user_id: string; // from nanoid
 }
 

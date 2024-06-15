@@ -80,8 +80,8 @@ export class CaseUtils {
 	 */
 	private static sortByOpenCases(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
 		const sortedArray = array.sort((a, b) => {
-			const la = a.status;
-			const lb = b.status;
+			const la = a.isOpen;
+			const lb = b.isOpen;
 			if (la < lb) {
 				return 1;
 			}

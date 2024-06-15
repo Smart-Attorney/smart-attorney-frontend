@@ -6,7 +6,7 @@ export class Cases {
 	private case_name: string | null;
 	private created_date: number | null;
 	private last_opened_date: number | null;
-	private status: boolean | null;
+	private is_open: boolean | null;
 	private fk_user_id: string | null;
 
 	constructor() {
@@ -14,7 +14,7 @@ export class Cases {
 		this.case_name = null;
 		this.created_date = null;
 		this.last_opened_date = null;
-		this.status = null;
+		this.is_open = null;
 		this.fk_user_id = null;
 	}
 
@@ -35,8 +35,8 @@ export class Cases {
 		return this.last_opened_date;
 	}
 
-	public getStatus(): boolean | null {
-		return this.status;
+	public getIsOpen(): boolean | null {
+		return this.is_open;
 	}
 
 	public getFkUserId(): string | null {
@@ -60,8 +60,8 @@ export class Cases {
 		this.last_opened_date = lastOpenedDate;
 	}
 
-	public setStatus(status: boolean): void {
-		this.status = status;
+	public setIsOpen(status: boolean): void {
+		this.is_open = status;
 	}
 
 	public setFkUserId(fkUserId: string): void {

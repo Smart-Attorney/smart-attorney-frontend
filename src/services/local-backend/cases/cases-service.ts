@@ -32,7 +32,7 @@ export class CasesService {
 				name: cases[i].case_name,
 				createdDate: cases[i].created_date,
 				lastOpenedDate: cases[i].last_opened_date,
-				status: cases[i].status,
+				isOpen: cases[i].is_open,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
 				documents: documents,
@@ -95,13 +95,13 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateStatus(
+	public async updateOpenStatus(
 		userId: string,
 		caseId: string,
-		currentStatus: boolean
+		currentState: boolean
 	): Promise<DashboardFolderCardObj | null> {
-		if (!userId || !caseId || typeof currentStatus !== "boolean") return null;
-		const isStatusUpdated = await this.casesDao.updateStatus(userId, caseId, currentStatus);
+		if (!userId || !caseId || typeof currentState !== "boolean") return null;
+		const isStatusUpdated = await this.casesDao.updateOpenState(userId, caseId, currentState);
 		if (isStatusUpdated) {
 			return await this.getById(caseId);
 		}

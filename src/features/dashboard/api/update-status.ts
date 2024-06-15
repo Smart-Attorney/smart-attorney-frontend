@@ -5,9 +5,9 @@ export type UpdateCaseFolderStatusDTO = boolean;
 
 const mockApi = async (folderId: string, data: UpdateCaseFolderStatusDTO) => {
 	const request = mockRequest.put(`/dashboard/${folderId}`, data);
-	return await new CasesController().updateStatus(request);
+	return await new CasesController().updateOpenState(request);
 };
 
-export const updateStatus = async (folderId: string, data: UpdateCaseFolderStatusDTO) => {
+export const updateOpenState = async (folderId: string, data: UpdateCaseFolderStatusDTO) => {
 	return await mockApi(folderId, data);
 };

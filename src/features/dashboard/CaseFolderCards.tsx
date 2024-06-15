@@ -16,7 +16,7 @@ import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
-import { UpdateCaseFolderStatusDTO, updateStatus } from "./api/update-status";
+import { UpdateCaseFolderStatusDTO, updateOpenState } from "./api/update-status";
 
 interface CaseFolderCardProps {
 	caseFolders: DashboardFolderCardObj[] | null;
@@ -66,7 +66,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			newStatus = currentStatus;
 		}
 		try {
-			const response = await updateStatus(folderId, newStatus);
+			const response = await updateOpenState(folderId, newStatus);
 			if (response.ok) {
 				const updatedCase: DashboardFolderCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
@@ -162,7 +162,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						<KebabMenuContainer>
 							<KebabMenu
 								id="kebab-menu"
-								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.status)}
+								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.isOpen)}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
@@ -190,7 +190,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						{/* Folder Status Dot Indicator */}
 						<div
 							className="relative left-0 bottom-[246px] w-3 h-3 rounded-full"
-							style={{ background: caseFolder.status ? "#53EF0A" : "#9C9DA4" }}
+							style={{ background: caseFolder.isOpen ? "#53EF0A" : "#9C9DA4" }}
 						>
 							<p className="text-xs text-center"></p>
 						</div>

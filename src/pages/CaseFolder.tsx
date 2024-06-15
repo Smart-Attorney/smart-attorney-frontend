@@ -39,7 +39,7 @@ function CaseFolder() {
 		name: "",
 		createdDate: 0,
 		lastOpenedDate: 0,
-		status: true,
+		isOpen: true,
 	});
 
 	const [client, setClient] = useState<ClientObj>({

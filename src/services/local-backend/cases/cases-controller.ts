@@ -123,7 +123,7 @@ export class CasesController {
 		}
 	}
 
-	public async updateStatus(request: Request): Promise<Response> {
+	public async updateOpenState(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -132,8 +132,8 @@ export class CasesController {
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
-		const currentStatus: boolean = await request.json();
-		const caseWithUpdatedStatus = await this.casesService.updateStatus(userId, caseId, currentStatus);
+		const currentState: boolean = await request.json();
+		const caseWithUpdatedStatus = await this.casesService.updateOpenStatus(userId, caseId, currentState);
 		if (caseWithUpdatedStatus !== null) {
 			const body = JSON.stringify(caseWithUpdatedStatus);
 			const options = { status: 200 };

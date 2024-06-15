@@ -6,7 +6,7 @@ export class CaseDTO {
 	private name: string;
 	private createdDate: number;
 	private lastOpenedDate: number;
-	private status: boolean;
+	private isOpen: boolean;
 	private urgentDocumentDeadline: number;
 	private labels: CaseLabelDTO[];
 	private documents: DocumentDTO[];
@@ -16,7 +16,7 @@ export class CaseDTO {
 		this.name = "";
 		this.createdDate = 0;
 		this.lastOpenedDate = 0;
-		this.status = true;
+		this.isOpen = true;
 		this.urgentDocumentDeadline = 0;
 		this.labels = [];
 		this.documents = [];
@@ -35,8 +35,8 @@ export class CaseDTO {
 	public getLastOpenedDate(): number {
 		return this.lastOpenedDate;
 	}
-	public getStatus(): boolean {
-		return this.status;
+	public getIsOpen(): boolean {
+		return this.isOpen;
 	}
 	public getUrgentDocumentDeadline(): number {
 		return this.urgentDocumentDeadline;
@@ -61,8 +61,8 @@ export class CaseDTO {
 	public setLastOpenedDate(lastOpenedDate: number): void {
 		this.lastOpenedDate = lastOpenedDate;
 	}
-	public setStatus(status: boolean): void {
-		this.status = status;
+	public setIsOpen(status: boolean): void {
+		this.isOpen = status;
 	}
 	public setUrgentDocumentDeadline(urgentDocumentDeadline: number): void {
 		this.urgentDocumentDeadline = urgentDocumentDeadline;
