@@ -40,14 +40,14 @@ export interface ClientEntity {
 }
 
 export interface DocumentEntity {
-	file_id: string;
-	file_name: string;
+	document_id: string;
+	document_name: string;
 	created_date: number;
 	last_opened_date: number;
 	status: document_status;
 	deadline: number; // as unix time
 	url: string;
-	case_folder_id_fk: string;
+	fk_case_id: string;
 }
 
 export type sex_options = "Male" | "Female" | "Other";

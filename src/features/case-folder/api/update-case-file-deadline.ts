@@ -1,11 +1,11 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFileController } from "../../../services/local-backend/document/case-file-controller";
+import { DocumentController } from "../../../services/local-backend/document/document-controller";
 
 export type UpdateCaseFileDeadlineDTO = number;
 
 const mockApi = async (folderId: string, fileId: string, newDeadline: number) => {
 	const request = mockRequest.put(`/case/${folderId}/${fileId}`, newDeadline);
-	return await CaseFileController.updateDocumentDeadline(request);
+	return await new DocumentController().updateDocumentDeadline(request);
 };
 
 export const updateDeadline = async (folderId: string, fileId: string, newDeadline: number) => {

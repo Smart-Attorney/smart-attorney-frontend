@@ -1,11 +1,11 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFileController } from "../../../services/local-backend/document/case-file-controller";
+import { DocumentController } from "../../../services/local-backend/document/document-controller";
 
 export type UpdateCaseFileNameDTO = string;
 
 const mockApi = async (folderId: string, fileId: string, newFileName: UpdateCaseFileNameDTO) => {
 	const request = mockRequest.put(`/case/${folderId}/${fileId}`, newFileName);
-	return await CaseFileController.updateDocumentName(request);
+	return await new DocumentController().updateDocumentName(request);
 };
 
 export const updateCaseFileName = async (folderId: string, fileId: string, newFileName: UpdateCaseFileNameDTO) => {

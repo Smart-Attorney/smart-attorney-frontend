@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFileController } from "../../../services/local-backend/document/case-file-controller";
+import { DocumentController } from "../../../services/local-backend/document/document-controller";
 
 export type CreateCaseFilesDTO = FormData;
 
@@ -10,7 +10,7 @@ const mockApi = async (data: CreateCaseFilesDTO) => {
 		body: data,
 	};
 	const request = new Request("/create-case", options);
-	return await CaseFileController.createCaseFiles(request);
+	return await new DocumentController().createDocuments(request);
 };
 
 export const createCaseFiles = async (data: CreateCaseFilesDTO) => {

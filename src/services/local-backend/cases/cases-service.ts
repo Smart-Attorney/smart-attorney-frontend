@@ -2,16 +2,21 @@ import { DocumentUtils } from "../../../utils/document-utils";
 import { CaseFolderObj, DashboardFolderCardObj } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
-import { CaseFileDAO } from "../document/case-file-dao";
+import { ClientDAO } from "../client/client-dao";
+import { DocumentDAO } from "../document/document-dao";
 import { CasesDAO } from "./cases-dao";
 
 export class CasesService {
 	private casesDao: CasesDAO;
 	private caseLabelDao: CaseLabelDAO;
+	private documentDao: DocumentDAO;
+	private clientDao: ClientDAO;
 
 	constructor() {
 		this.casesDao = new CasesDAO();
 		this.caseLabelDao = new CaseLabelDAO();
+		this.documentDao = new DocumentDAO();
+		this.clientDao = new ClientDAO();
 	}
 
 	public async getAllByUserId(userId: string): Promise<DashboardFolderCardObj[]> {
@@ -20,7 +25,7 @@ export class CasesService {
 		for (let i = 0, n = cases.length; i < n; i++) {
 			const caseId = cases[i].case_id;
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
-			const documents = await CaseFileDAO.getAllByCaseId(caseId);
+			const documents = await this.documentDao.getAllByCaseId(caseId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
 			userCases.push({
 				id: cases[i].case_id,
@@ -41,7 +46,7 @@ export class CasesService {
 		const caseFolder = await this.casesDao.getById(caseId);
 		if (caseFolder !== null) {
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
-			const documents = await CaseFileDAO.getAllByCaseId(caseId);
+			const documents = await this.documentDao.getAllByCaseId(caseId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
 			const retrievedCase: DashboardFolderCardObj = {
 				...caseFolder,
@@ -121,7 +126,7 @@ export class CasesService {
 		const deletedCase = await this.getById(caseId);
 
 		// delete all files from cloud storage associated with caseId
-		const cloudFiles = await CaseFileDAO.getAllByCaseId(caseId);
+		const cloudFiles = await this.documentDao.getAllByCaseId(caseId);
 		const promiseArray = [];
 		for (let i = 0, n = cloudFiles.length; i < n; i++) {
 			promiseArray.push(await Firebase.deleteFileById(userId, caseId, cloudFiles[i].id));
@@ -130,7 +135,7 @@ export class CasesService {
 		if (cloudFilesDeletedSuccessfully.includes(false)) return null;
 
 		// delete all documents associated with caseId
-		const isDocumentsDeleted = await CaseFileDAO.deleteAllByCaseId(caseId);
+		const isDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseId);
 		if (!isDocumentsDeleted) return null;
 
 		// delete all labels associated with caseId
@@ -138,7 +143,7 @@ export class CasesService {
 		if (!isLabelsDeleted) return null;
 
 		// delete all clients associated with caseId
-		const isClientDeleted = await this.clientDao.deleteClientByFolderId(caseId);
+		const isClientDeleted = await this.clientDao.deleteByCaseId(caseId);
 		if (!isClientDeleted) return null;
 
 		// delete case after all associated entities have been deleted
