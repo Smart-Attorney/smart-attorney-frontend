@@ -75,7 +75,7 @@ export interface ButtonProps {
 	name: string;
 	type: "button" | "submit" | "reset";
 	img?: string;
-	disabled?: boolean;
+	isDisabled?: boolean;
 	style?: React.CSSProperties;
 	className?: string;
 	onClick?: () => void;

@@ -86,7 +86,7 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 						type="button"
 						className="border-[5px] h-[68px]"
 						onClick={handleUploadFiles}
-						disabled={filesForUpload.length < 1 ? true : false}
+						isDisabled={filesForUpload.length < 1 ? true : false}
 						style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
 					/>
 					<ModalSpecialButton
