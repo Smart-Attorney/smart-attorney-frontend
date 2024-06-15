@@ -1,17 +1,11 @@
-export interface ButtonProps {
-	title?: string;
-	name: string;
-	type: "button" | "submit" | "reset";
-	img?: string;
-	disabled?: boolean;
-	style?: React.CSSProperties;
-	className?: string;
-	onClick?: () => void;
-}
-
-export interface FileForUploadObj {
-	id: string;
-	data: File;
+export interface UserObj {
+  id: string;
+  firstName: string;
+  lastName: string;
+  firmName: string;
+  companyEmail: string;
+  email: string;
+  password: string;
 }
 
 export interface DashboardFolderCardObj {
@@ -22,7 +16,7 @@ export interface DashboardFolderCardObj {
 	status: boolean;
 	urgentDocumentDeadline: number;
 	labels: CaseFolderLabelObj[];
-	files: CaseFileObj[];
+	documents: CaseFileObj[];
 }
 
 export interface CaseFolderObj {
@@ -38,10 +32,15 @@ export interface CaseFolderLabelObj {
 	name: string | CaseLabel;
 }
 
-export interface LabelsDropdownMenuOptionObj {
+export interface ClientObj {
 	id: string;
-	name: string;
-	clicked: boolean;
+	firstName: string;
+	middleName: string;
+	lastName: string;
+	dateOfBirth: number;
+	sex: SexOption;
+	countryOfCitizenship: string;
+	primaryLanguage: string;
 }
 
 export interface CaseFileObj {
@@ -54,19 +53,30 @@ export interface CaseFileObj {
 	url: string;
 }
 
-export interface ClientObj {
-	id: string;
-	firstName: string;
-	middleName: string;
-	lastName: string;
-	dateOfBirth: number;
-	sex: SexOptions;
-	countryOfCitizenship: string;
-	primaryLanguage: string;
-}
-
-export type SexOptions = "Male" | "Female" | "Other";
+export type SexOption = "Male" | "Female" | "Other";
 
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
 
 export type CaseLabel = "Asylum" | "Employment" | "Family" | "Humanitarian";
+
+export interface LabelsDropdownMenuOptionObj {
+	id: string;
+	name: string;
+	clicked: boolean;
+}
+
+export interface FileForUploadObj {
+	id: string;
+	data: File;
+}
+
+export interface ButtonProps {
+	title?: string;
+	name: string;
+	type: "button" | "submit" | "reset";
+	img?: string;
+	disabled?: boolean;
+	style?: React.CSSProperties;
+	className?: string;
+	onClick?: () => void;
+}

@@ -35,7 +35,7 @@ export class CasesService {
 				status: cases[i].status,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
-				files: documents,
+				documents: documents,
 			});
 		}
 		return userCases;
@@ -52,7 +52,7 @@ export class CasesService {
 				...caseFolder,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
-				files: documents,
+				documents: documents,
 			};
 			return retrievedCase;
 		}
