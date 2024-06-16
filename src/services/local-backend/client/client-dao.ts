@@ -1,7 +1,7 @@
 import { nanoid } from "../../../lib/nanoid";
 import { ClientObj } from "../../../utils/types";
 import { DatabaseConnection } from "../../local-database/database-connection";
-import { ClientEntity, sex_options } from "../../local-database/entities";
+import { ClientEntity, sex_option } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
 
 export class ClientDAO {
@@ -37,7 +37,7 @@ export class ClientDAO {
 		middleName: string,
 		lastName: string,
 		DOB: number,
-		sex: sex_options,
+		sex: sex_option,
 		country: string,
 		language: string,
 		caseFolderId: string

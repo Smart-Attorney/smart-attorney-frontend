@@ -2,50 +2,44 @@
  * A class that models an object from the "user" database table.
  */
 export class User {
-	private user_id: string | null;
-	private first_name: string | null;
-	private last_name: string | null;
-	private firm_name: string | null;
-	private company_email: string | null;
-	private email: string | null;
-	private password: string | null;
+	private user_id: string;
+	private first_name: string;
+	private last_name: string;
+	private firm_name: string;
+	private company_email: string;
+	private email: string;
+	private password: string;
 
 	constructor() {
-		this.user_id = null;
-		this.first_name = null;
-		this.last_name = null;
-		this.firm_name = null;
-		this.company_email = null;
-		this.email = null;
-		this.password = null;
+		this.user_id = "";
+		this.first_name = "";
+		this.last_name = "";
+		this.firm_name = "";
+		this.company_email = "";
+		this.email = "";
+		this.password = "";
 	}
 
 	/* Getters */
-	public getUserId(): string | null {
+	public getUserId(): string {
 		return this.user_id;
 	}
-
-	public getFirstName(): string | null {
+	public getFirstName(): string {
 		return this.first_name;
 	}
-
-	public getLastName(): string | null {
+	public getLastName(): string {
 		return this.last_name;
 	}
-
-	public getFirmName(): string | null {
+	public getFirmName(): string {
 		return this.firm_name;
 	}
-
-	public getCompanyEmail(): string | null {
+	public getCompanyEmail(): string {
 		return this.company_email;
 	}
-
-	public getEmail(): string | null {
+	public getEmail(): string {
 		return this.email;
 	}
-
-	public getPassword(): string | null {
+	public getPassword(): string {
 		return this.password;
 	}
 
@@ -53,27 +47,21 @@ export class User {
 	public setUserId(userId: string): void {
 		this.user_id = userId;
 	}
-
 	public setFirstName(firstName: string): void {
 		this.first_name = firstName;
 	}
-
 	public setLastName(lastName: string): void {
 		this.last_name = lastName;
 	}
-
 	public setFirmName(firmName: string): void {
 		this.firm_name = firmName;
 	}
-
 	public setCompanyEmail(companyEmail: string): void {
 		this.company_email = companyEmail;
 	}
-
 	public setEmail(email: string): void {
 		this.email = email;
 	}
-
 	public setPassword(password: string): void {
 		this.password = password;
 	}

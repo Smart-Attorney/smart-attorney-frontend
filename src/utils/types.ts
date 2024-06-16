@@ -1,11 +1,11 @@
 export interface UserObj {
-  id: string;
-  firstName: string;
-  lastName: string;
-  firmName: string;
-  companyEmail: string;
-  email: string;
-  password: string;
+	id: string;
+	firstName: string;
+	lastName: string;
+	firmName: string;
+	companyEmail: string;
+	email: string;
+	password: string;
 }
 
 export interface DashboardFolderCardObj {

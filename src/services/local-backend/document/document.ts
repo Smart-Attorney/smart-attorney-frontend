@@ -4,56 +4,49 @@ import { document_status } from "../../local-database/entities";
  * A class that models an object from the "document" database table.
  */
 export class Document {
-	private document_id: string | null;
-	private document_name: string | null;
-	private created_date: number | null;
-	private last_opened_date: number | null;
-	private status: document_status | null;
-	private deadline: number | null;
-	private url: string | null;
-	private fk_case_id: string | null;
+	private document_id: string;
+	private document_name: string;
+	private created_date: number;
+	private last_opened_date: number;
+	private status: document_status;
+	private deadline: number;
+	private url: string;
+	private fk_case_id: string;
 
 	constructor() {
-		this.document_id = null;
-		this.document_name = null;
-		this.created_date = null;
-		this.last_opened_date = null;
-		this.status = null;
-		this.deadline = null;
-		this.url = null;
-		this.fk_case_id = null;
+		this.document_id = "";
+		this.document_name = "";
+		this.created_date = 0;
+		this.last_opened_date = 0;
+		this.status = "In Progress";
+		this.deadline = 0;
+		this.url = "";
+		this.fk_case_id = "";
 	}
 
 	/* Getter */
-	public getDocumentId(): string | null {
+	public getDocumentId(): string {
 		return this.document_id;
 	}
-
-	public getDocumentName(): string | null {
+	public getDocumentName(): string {
 		return this.document_name;
 	}
-
-	public getCreatedDate(): number | null {
+	public getCreatedDate(): number {
 		return this.created_date;
 	}
-
-	public getLastOpenedDate(): number | null {
+	public getLastOpenedDate(): number {
 		return this.last_opened_date;
 	}
-
-	public getStatus(): document_status | null {
+	public getStatus(): document_status {
 		return this.status;
 	}
-
-	public getDeadline(): number | null {
+	public getDeadline(): number {
 		return this.deadline;
 	}
-
-	public getUrl(): string | null {
+	public getUrl(): string {
 		return this.url;
 	}
-
-	public getFkCaseId(): string | null {
+	public getFkCaseId(): string {
 		return this.fk_case_id;
 	}
 
@@ -61,31 +54,24 @@ export class Document {
 	public setDocumentId(documentId: string): void {
 		this.document_id = documentId;
 	}
-
 	public setDocumentName(documentName: string): void {
 		this.document_name = documentName;
 	}
-
 	public setCreatedDate(createdDate: number): void {
 		this.created_date = createdDate;
 	}
-
 	public setLastOpenedDate(lastOpenedDate: number): void {
 		this.last_opened_date = lastOpenedDate;
 	}
-
 	public setStatus(status: document_status): void {
 		this.status = status;
 	}
-
 	public setDeadline(deadline: number): void {
 		this.deadline = deadline;
 	}
-
 	public setUrl(url: string): void {
 		this.url = url;
 	}
-
 	public setFkCaseId(fkCaseId: string): void {
 		this.fk_case_id = fkCaseId;
 	}

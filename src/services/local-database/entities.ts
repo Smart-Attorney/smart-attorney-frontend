@@ -1,3 +1,5 @@
+import { DocumentStatus, SexOption } from "../../utils/types";
+
 // Typically, an entity represents a table in a relational database, and each
 // entity instance corresponds to a row in that table.
 // https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
@@ -33,7 +35,7 @@ export interface ClientEntity {
 	middle_name: string;
 	last_name: string;
 	date_of_birth: number;
-	sex: sex_options;
+	sex: sex_option;
 	country_of_citizenship: string;
 	primary_language: string;
 	fk_case_id: string;
@@ -50,6 +52,6 @@ export interface DocumentEntity {
 	fk_case_id: string;
 }
 
-export type sex_options = "Male" | "Female" | "Other";
+export type sex_option = SexOption;
 
-export type document_status = "In Progress" | "In Review" | "Submitted";
+export type document_status = DocumentStatus;
