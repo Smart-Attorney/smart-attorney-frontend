@@ -71,12 +71,12 @@ export interface FileForUploadObj {
 }
 
 export interface ButtonProps {
-	title?: string;
+	img: string;
+	title: string;
 	name: string;
 	type: "button" | "submit" | "reset";
-	img?: string;
-	isDisabled?: boolean;
-	style?: React.CSSProperties;
-	className?: string;
-	onClick?: () => void;
+	className: string;
+	style: React.CSSProperties;
+	isDisabled: boolean;
+	onClick: () => void;
 }
