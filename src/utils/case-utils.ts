@@ -121,22 +121,33 @@ export class CaseUtils {
 	}
 
 	private static sortByCaseLabel(array: DashboardFolderCardObj[], caseLabel: string): DashboardFolderCardObj[] {
-		let casesWithLabel: DashboardFolderCardObj[] = [];
-		let casesWithoutLabel: DashboardFolderCardObj[] = [];
-		let casesWithNoLabels: DashboardFolderCardObj[] = [];
+		const withMatchLabel: DashboardFolderCardObj[] = [];
+		const noMatchLabel: DashboardFolderCardObj[] = [];
+		const noLabels: DashboardFolderCardObj[] = [];
+		const caseSet = new Set<DashboardFolderCardObj>();
 		for (let i = 0, n = array.length; i < n; i++) {
+			// syntax is ugly but its the only way it works
 			if (array[i].labels.length === 0) {
-				casesWithNoLabels.push(array[i]);
-			}
-			for (let j = 0, o = array[i].labels.length; j < o; j++) {
-				if (array[i].labels[j].name.toLowerCase() === caseLabel.toLowerCase()) {
-					casesWithLabel.push(array[i]);
-				} else {
-					casesWithoutLabel.push(array[i]);
+				if (!caseSet.has(array[i])) {
+					noLabels.push(array[i]);
+					caseSet.add(array[i]);
 				}
 			}
+			for (let j = 0, o = array[i].labels.length; j < o; j++) {
+				// syntax is ugly but its the only way it works
+				if (array[i].labels[j].name.toLowerCase() === caseLabel.toLowerCase()) {
+					if (!caseSet.has(array[i])) {
+						withMatchLabel.push(array[i]);
+						caseSet.add(array[i]);
+					}
+				}
+			}
+			if (!caseSet.has(array[i])) {
+				noMatchLabel.push(array[i]);
+				caseSet.add(array[i]);
+			}
 		}
-		return [...casesWithLabel, ...casesWithoutLabel, ...casesWithNoLabels];
+		return [...withMatchLabel, ...noMatchLabel, ...noLabels];
 	}
 
 	public static sortByOption = (

@@ -91,17 +91,16 @@ function SortByLabelButton({
 
 	const toggleMenuOptionClicked = (menuOptionName: string) => {
 		const updatedOptions = menuOptions?.map((option) =>
-			menuOptionName === option.name ? { ...option, clicked: !option.isClicked } : { ...option, clicked: false }
+			menuOptionName === option.name ? { ...option, isClicked: !option.isClicked } : { ...option, isClicked: false }
 		);
 		setMenuOptions(updatedOptions);
 	};
 
 	const handleMenuOptionClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target;
-		// TODO: bug here
-		// if (checked === true) {
-		// 	sortByLabelsOption(name);
-		// }
+		if (checked === true) {
+			sortByLabelsOption(name);
+		}
 		toggleMenuOptionClicked(name);
 		toggleLabelsButtonClicked(checked);
 	};

@@ -99,28 +99,28 @@ function SortBar({
 		);
 	};
 
-	const sortDashboardCards = (sortOption: string) => {
+	const sortCaseCards = (sortOption: string) => {
 		if (!caseFolderCards || !setCaseFolderCards) return;
 		const sortedCards = CaseUtils.sortByOption(caseFolderCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
 		setCaseFolderCards(shallowCopy as DashboardFolderCardObj[]);
 	};
 
-	const sortFolderCards = (sortOption: string) => {
+	const sortDocumentCards = (sortOption: string) => {
 		if (!documentCards || !setDocumentCards) return;
 		const sortedCards = DocumentUtils.sortByOption(documentCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
 		setDocumentCards(shallowCopy as CaseFileObj[]);
 	};
 
-	const handleSortCardsByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
+	const handleSortByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
 		const { id: selectedOption } = event.target as HTMLParagraphElement;
 		toggleOptionClicked(selectedOption);
-		sortDashboardCards(selectedOption);
-		sortFolderCards(selectedOption);
+		sortCaseCards(selectedOption);
+		sortDocumentCards(selectedOption);
 	};
 
-	const handleSortCardsByLabelsOption = (labelOption: string) => {
+	const handleSortByLabelsOption = (labelOption: string) => {
 		if (!caseFolderCards || !setCaseFolderCards) return;
 		const sortedCards = CaseUtils.sortByOption(caseFolderCards, SORT_OPTION.LABELS, labelOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
@@ -136,7 +136,7 @@ function SortBar({
 				id={option.name}
 				name={option.name}
 				clicked={option.clicked}
-				sortByLabelsOption={handleSortCardsByLabelsOption}
+				sortByLabelsOption={handleSortByLabelsOption}
 				toggleLabelsButtonClicked={toggleLabelsButtonClicked}
 			/>
 		) : (
@@ -145,7 +145,7 @@ function SortBar({
 				id={option.name}
 				name={option.name}
 				clicked={option.clicked}
-				sortByOption={(event) => handleSortCardsByOption(event)}
+				sortByOption={(event) => handleSortByOption(event)}
 			/>
 		)
 	);
