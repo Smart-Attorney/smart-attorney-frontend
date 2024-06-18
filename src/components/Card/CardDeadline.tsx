@@ -1,4 +1,4 @@
-import { Format } from "../../utils/format";
+import { DateUtils } from "../../utils/date-utils";
 
 interface CardDeadlineProps {
 	id?: string;
@@ -21,7 +21,7 @@ function CardDeadline({ id, deadline }: CardDeadlineProps) {
 				// aria-label={navLabel}
 				className="text-xs"
 			>
-				Deadline: {Format.dateForCardDisplay(deadline)}
+				Deadline: {DateUtils.formatToMDY(deadline)}
 			</p>
 		</div>
 	);

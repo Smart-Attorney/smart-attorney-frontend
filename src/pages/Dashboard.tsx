@@ -9,7 +9,7 @@ import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { CaseFolderCount } from "../utils/case-folder-count";
+import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 import { DashboardFolderCardObj } from "../utils/types";
 
@@ -32,12 +32,12 @@ function Dashboard() {
 				case 200:
 					const data: DashboardFolderCardObj[] = await response.json();
 					setCaseFolders(data);
-					CaseFolderCount.set(data.length);
+					CaseUtils.setCaseCount(data.length);
 					break;
 				case 204:
 					console.log(response.statusText);
 					setCaseFolders([]);
-					CaseFolderCount.set(0);
+					CaseUtils.setCaseCount(0);
 					break;
 				default:
 					break;
@@ -49,11 +49,6 @@ function Dashboard() {
 	};
 
 	/************************************************************/
-
-	const newCaseBtnGradient = {
-		background:
-			"linear-gradient(0deg, #FFFFFF, #FFFFFF) padding-box ,linear-gradient(94.94deg, rgba(50, 68, 242, 0.87) 0%, rgba(52, 129, 244, 0.84474) 50.52%, rgba(255, 37, 246, 0.82) 100%) border-box",
-	};
 
 	return (
 		<SidebarLayout>
@@ -69,15 +64,18 @@ function Dashboard() {
 					initialWidth={700}
 					minWidth={1280}
 					options={DASHBOARD}
-					unsortedArray={caseFolders}
-					setSortedArray={setCaseFolders}
+					caseFolderCards={caseFolders}
+					setCaseFolderCards={setCaseFolders}
 				/>
 
 				{/* New Case Button */}
 				<button
 					type="button"
 					className="flex items-center justify-center font-medium border-[3px] border-transparent rounded-[30px] h-11 min-w-fit"
-					style={newCaseBtnGradient}
+					style={{
+						background:
+							"linear-gradient(0deg, #FFFFFF, #FFFFFF) padding-box ,linear-gradient(94.94deg, rgba(50, 68, 242, 0.87) 0%, rgba(52, 129, 244, 0.84474) 50.52%, rgba(255, 37, 246, 0.82) 100%) border-box",
+					}}
 					onClick={() => navigate("/create-case")}
 				>
 					<div className="flex flex-row items-center w-full h-full gap-2 px-3">

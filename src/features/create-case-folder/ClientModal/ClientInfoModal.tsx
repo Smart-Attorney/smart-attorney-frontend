@@ -180,7 +180,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 							name="Save"
 							type="button"
 							style={{ cursor: disableCreateButton ? "not-allowed" : "pointer" }}
-							disabled={disableCreateButton}
+							isDisabled={disableCreateButton}
 							className="h-[52px] border-[3px]"
 							onClick={handleCreateButtonClick}
 						/>

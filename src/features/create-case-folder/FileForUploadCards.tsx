@@ -1,7 +1,6 @@
 import RenderDocument from "../../components/Pdf/RenderDocument";
 import CardGrid from "../../layouts/CardGrid";
 import { FileForUploadObj } from "../../utils/types";
-// @ts-ignore
 
 interface CaseFileProps {
 	filesForUpload: FileForUploadObj[];

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import SidebarLayout from "../layouts/SidebarLayout";
 
-/**
+/*
  * Page to handle all routes not accounted for.
  */
 function Error() {

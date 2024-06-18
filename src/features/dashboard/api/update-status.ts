@@ -1,13 +1,13 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFolderController } from "../../../services/mock-backend/case-folder/case-folder-controller";
+import { CasesController } from "../../../services/local-backend/cases/cases-controller";
 
 export type UpdateCaseFolderStatusDTO = boolean;
 
 const mockApi = async (folderId: string, data: UpdateCaseFolderStatusDTO) => {
 	const request = mockRequest.put(`/dashboard/${folderId}`, data);
-	return await CaseFolderController.updateStatus(request);
+	return await new CasesController().updateOpenState(request);
 };
 
-export const updateStatus = async (folderId: string, data: UpdateCaseFolderStatusDTO) => {
+export const updateOpenState = async (folderId: string, data: UpdateCaseFolderStatusDTO) => {
 	return await mockApi(folderId, data);
 };

@@ -1,1 +1,5 @@
-export const DOC_STATUS = Object.freeze({ inProgress: "In Progress", inReview: "In Review", submitted: "Submitted" });
+export const DOCUMENT_STATUS = Object.freeze({
+	IN_PROGRESS: "In Progress",
+	IN_REVIEW: "In Review",
+	SUBMITTED: "Submitted",
+});

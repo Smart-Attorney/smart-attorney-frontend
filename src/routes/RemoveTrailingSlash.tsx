@@ -1,4 +1,4 @@
-/**
+/*
  * Source for this function:
  * https://stackoverflow.com/questions/41948228/how-to-remove-trailing-slash-in-react-router-urls
  */

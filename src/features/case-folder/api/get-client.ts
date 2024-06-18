@@ -1,9 +1,9 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { ClientController } from "../../../services/mock-backend/case-client/client-controller";
+import { ClientController } from "../../../services/local-backend/client/client-controller";
 
 const mockApi = async (folderId: string) => {
 	const request = mockRequest.get(`/case/${folderId}`);
-	return await ClientController.getClient(request);
+	return await new ClientController().getClient(request);
 };
 
 export const getCaseClient = async (folderId: string) => {

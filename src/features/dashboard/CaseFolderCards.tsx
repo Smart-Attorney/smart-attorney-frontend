@@ -11,12 +11,12 @@ import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import type { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
+import type { DashboardFolderCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
-import { UpdateCaseFolderStatusDTO, updateStatus } from "./api/update-status";
+import { UpdateCaseFolderStatusDTO, updateOpenState } from "./api/update-status";
 
 interface CaseFolderCardProps {
 	caseFolders: DashboardFolderCardObj[] | null;
@@ -25,6 +25,37 @@ interface CaseFolderCardProps {
 
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	const navigate = useNavigate();
+
+	/************************************************************/
+
+	const replaceCaseInArray = (
+		updatedCase: DashboardFolderCardObj,
+		currentCaseArr: DashboardFolderCardObj[]
+	): DashboardFolderCardObj[] => {
+		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
+		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
+			if (updatedCase.id === updatedCaseArr[i].id) {
+				updatedCaseArr[i] = updatedCase;
+				break;
+			}
+		}
+		return updatedCaseArr;
+	};
+
+	const removeCaseFromArray = (
+		deletedCase: DashboardFolderCardObj,
+		currentCaseArr: DashboardFolderCardObj[]
+	): DashboardFolderCardObj[] => {
+		const updatedCaseArr: DashboardFolderCardObj[] = [];
+		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
+			if (deletedCase.id !== currentCaseArr[i].id) {
+				updatedCaseArr.push(currentCaseArr[i]);
+			}
+		}
+		return updatedCaseArr;
+	};
+
+	/************************************************************/
 
 	const handleUpdateFolderStatus = async (folderId: string, currentStatus: boolean): Promise<void> => {
 		// changes previously stored string or number values into correct boolean type
@@ -35,32 +66,16 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			newStatus = currentStatus;
 		}
 		try {
-			const response = await updateStatus(folderId, newStatus);
+			const response = await updateOpenState(folderId, newStatus);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
-
-	// const handleUpdateFolderDeadline = async (
-	// 	folderId: string,
-	// 	event: React.ChangeEvent<HTMLInputElement>
-	// ): Promise<void> => {
-	// 	const { value } = event.target;
-	// 	const deadlineInUnixTime = Date.parse(value);
-	// 	try {
-	// 		const response = await updateDeadline(folderId, deadlineInUnixTime);
-	// 		if (response.ok) {
-	// 			const data: DashboardFolderCardObj[] = await response.json();
-	// 			setCaseFolders(data);
-	// 		}
-	// 	} catch (error) {
-	// 		alert(error);
-	// 	}
-	// };
 
 	const handleAddFolderLabel = async (folderId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
@@ -74,8 +89,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await createFolderLabel(folderId, newLabel);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -93,8 +109,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -105,48 +122,31 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteCaseFolder(folderId);
 			if (response.ok) {
-				const data: DashboardFolderCardObj[] = await response.json();
-				setCaseFolders(data);
+				const deletedCase: DashboardFolderCardObj = await response.json();
+				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
+				setCaseFolders(updatedCaseArray);
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
 
-	const getMostUrgentDocumentDeadline = (documents: CaseFileObj[]) => {
-		if (!documents) return 0;
-		const placeholderDate = 3250368000000; // (milliseconds) Wed Jan 01 3000 00:00:00 GMT+0000
-		const currentDate = Date.now();
-		let mostUrgentDeadline = placeholderDate;
-		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].deadline === 0) continue;
-			if (documents[i].deadline < currentDate) continue;
-			if (documents[i].deadline < mostUrgentDeadline) {
-				mostUrgentDeadline = documents[i].deadline;
-			}
-		}
-		if (mostUrgentDeadline === placeholderDate) {
-			return 0;
-		}
-		return mostUrgentDeadline;
-	};
-
 	// to identify which parts of the card allows navigation when clicked
-	const allowNavigateString = "allow-nav";
+	const navigationString = "allow-nav";
 	const handleViewCaseFolder = (event: React.MouseEvent<HTMLDivElement>, folderId: string) => {
 		const { ariaLabel } = event.target as HTMLElement;
 		const viewFile = () => navigate(`/case/${folderId}`);
-		// once case edit modal is created, can scrap this awful switch case tree
-		// and remove all instances of "allow-nav"
 		switch (ariaLabel) {
 			case folderId:
 				return viewFile();
-			case allowNavigateString:
+			case navigationString:
 				return viewFile();
 			default:
 				return;
 		}
 	};
+
+	/************************************************************/
 
 	return (
 		<CardGrid>
@@ -156,47 +156,41 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						className="cursor-pointer"
 						key={caseFolder.id}
 						id={caseFolder.id}
-						navLabel={allowNavigateString}
+						navLabel={navigationString}
 						onClick={(event) => handleViewCaseFolder(event!, caseFolder.id)}
 					>
 						<KebabMenuContainer>
 							<KebabMenu
 								id="kebab-menu"
-								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.status)}
-								// addDeadline={(event) => {
-								// 	handleUpdateFolderDeadline(caseFolder.id, event);
-								// }}
+								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.isOpen)}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
 						</KebabMenuContainer>
 
-						<CardBody navLabel={allowNavigateString}>
-							<CardHeaderContainer navLabel={allowNavigateString}>
-								<PillLabelContainer navLabel={allowNavigateString} className="ml-6">
-									<CardDeadline
-										navLabel={allowNavigateString}
-										deadline={getMostUrgentDocumentDeadline(caseFolder.files)}
-									/>
+						<CardBody navLabel={navigationString}>
+							<CardHeaderContainer navLabel={navigationString}>
+								<PillLabelContainer navLabel={navigationString} className="ml-6">
+									<CardDeadline navLabel={navigationString} deadline={caseFolder.urgentDocumentDeadline} />
 									<CardLabels
-										navLabel={allowNavigateString}
+										navLabel={navigationString}
 										labels={caseFolder.labels}
 										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
 									/>
 								</PillLabelContainer>
-								<CardName navLabel={allowNavigateString} name={caseFolder.name} />
+								<CardName navLabel={navigationString} name={caseFolder.name} />
 							</CardHeaderContainer>
 
-							<CardImage navLabel={allowNavigateString} imgSrc={FileSnapshot} />
+							<CardImage navLabel={navigationString} imgSrc={FileSnapshot} />
 
 							{/* Comment count, File count, Assigned to whom*/}
-							<CardFooter navLabel={allowNavigateString} hasFooter={true} />
+							<CardFooter navLabel={navigationString} hasFooter={true} />
 						</CardBody>
 
 						{/* Folder Status Dot Indicator */}
 						<div
 							className="relative left-0 bottom-[246px] w-3 h-3 rounded-full"
-							style={{ background: caseFolder.status ? "#53EF0A" : "#9C9DA4" }}
+							style={{ background: caseFolder.isOpen ? "#53EF0A" : "#9C9DA4" }}
 						>
 							<p className="text-xs text-center"></p>
 						</div>

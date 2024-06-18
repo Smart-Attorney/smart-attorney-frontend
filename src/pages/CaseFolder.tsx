@@ -21,7 +21,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
-import { Format } from "../utils/format";
+import { DateUtils } from "../utils/date-utils";
 import { CaseFileObj, CaseFolderObj, ClientObj } from "../utils/types";
 
 function CaseFolder() {
@@ -39,8 +39,7 @@ function CaseFolder() {
 		name: "",
 		createdDate: 0,
 		lastOpenedDate: 0,
-		status: true,
-		deadline: 0,
+		isOpen: true,
 	});
 
 	const [client, setClient] = useState<ClientObj>({
@@ -211,16 +210,12 @@ function CaseFolder() {
 		try {
 			const response = await updateLastOpenedDate(folderId.current!, Date.now());
 			if (response.ok) {
-				// do nothing here since this function is fired after the component unmounts
+				// for the future, maybe add a toast or something to confirm successful update
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
-
-	// const handleSaveChanges = () => {
-	// 	handleUpdateLastOpenedDate();
-	// };
 
 	/************************************************************/
 
@@ -265,8 +260,8 @@ function CaseFolder() {
 					initialWidth={450}
 					minWidth={1111}
 					options={CASE_FOLDER}
-					unsortedArray={caseFiles}
-					setSortedArray={setCaseFiles}
+					documentCards={caseFiles}
+					setDocumentCards={setCaseFiles}
 				/>
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
@@ -315,7 +310,7 @@ function CaseFolder() {
 						firstName: client.firstName,
 						middleName: client.middleName,
 						lastName: client.lastName,
-						dateOfBirth: Format.dateForInputDisplay(client.dateOfBirth),
+						dateOfBirth: DateUtils.formatToYMD(client.dateOfBirth),
 						sex: client.sex!,
 						countryOfCitizenship: client.countryOfCitizenship,
 						primaryLanguage: client.primaryLanguage,

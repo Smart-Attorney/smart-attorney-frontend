@@ -21,19 +21,9 @@ function CardGrid({ children }: CardGridProps) {
 	 * https://stackoverflow.com/questions/32802202/how-to-center-a-flex-container-but-left-align-flex-items
 	 */
 
-	// const style_0: string = `grid gap-x-10 gap-y-14 justify-items-center
-	// 	min-[2300px]:grid-cols-6 min-[1900px]:grid-cols-5 min-[1400px]:grid-cols-4
-	// 	min-[1100px]:grid-cols-3 min-[850px]:grid-cols-2 `;
-
-	// const style_1: string = `flex flex-row flex-wrap justify-center gap-x-10 gap-y-14`;
-
-	// const style_2: string = `flex flex-row flex-wrap justify-between gap-x-10 gap-y-14`;
-
-	const style_3: string = `grid grid-cols-customAuto gap-x-10 gap-y-14 justify-start`;
-
 	return (
-		<div className="w-full pl-[88px] pr-32">
-			<div className={style_3}>{children}</div>
+		<div className="w-full pl-[88px] pr-[116px]">
+			<div className="grid justify-start grid-cols-customAuto gap-x-10 gap-y-14">{children}</div>
 		</div>
 	);
 }

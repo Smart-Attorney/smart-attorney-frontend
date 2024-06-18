@@ -1,17 +1,11 @@
-export interface ButtonProps {
-	title?: string;
-	name: string;
-	type: "button" | "submit" | "reset";
-	img?: string;
-	disabled?: boolean;
-	style?: React.CSSProperties;
-	className?: string;
-	onClick?: () => void;
-}
-
-export interface FileForUploadObj {
+export interface UserObj {
 	id: string;
-	data: File;
+	firstName: string;
+	lastName: string;
+	firmName: string;
+	companyEmail: string;
+	email: string;
+	password: string;
 }
 
 export interface DashboardFolderCardObj {
@@ -19,10 +13,10 @@ export interface DashboardFolderCardObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: boolean;
-	deadline: number;
+	isOpen: boolean;
+	urgentDocumentDeadline: number;
 	labels: CaseFolderLabelObj[];
-	files: CaseFileObj[];
+	documents: CaseFileObj[];
 }
 
 export interface CaseFolderObj {
@@ -30,13 +24,23 @@ export interface CaseFolderObj {
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
-	status: boolean;
-	deadline: number;
+	isOpen: boolean;
 }
 
 export interface CaseFolderLabelObj {
 	id: string;
-	name: string;
+	name: string | CaseLabel;
+}
+
+export interface ClientObj {
+	id: string;
+	firstName: string;
+	middleName: string;
+	lastName: string;
+	dateOfBirth: number;
+	sex: SexOption;
+	countryOfCitizenship: string;
+	primaryLanguage: string;
 }
 
 export interface CaseFileObj {
@@ -49,17 +53,30 @@ export interface CaseFileObj {
 	url: string;
 }
 
-export interface ClientObj {
-	id: string;
-	firstName: string;
-	middleName: string;
-	lastName: string;
-	dateOfBirth: number;
-	sex: SexOptions;
-	countryOfCitizenship: string;
-	primaryLanguage: string;
-}
-
-export type SexOptions = "Male" | "Female" | "Other";
+export type SexOption = "Male" | "Female" | "Other";
 
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
+
+export type CaseLabel = "Asylum" | "Employment" | "Family" | "Humanitarian";
+
+export interface LabelsDropdownMenuOptionObj {
+	id: string;
+	name: string;
+	isClicked: boolean;
+}
+
+export interface FileForUploadObj {
+	id: string;
+	data: File;
+}
+
+export interface ButtonProps {
+	img: string;
+	title: string;
+	name: string;
+	type: "button" | "submit" | "reset";
+	className: string;
+	style: React.CSSProperties;
+	isDisabled: boolean;
+	onClick: () => void;
+}

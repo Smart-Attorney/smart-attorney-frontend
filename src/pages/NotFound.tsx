@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import StyledBackground from "../layouts/StyledBackground";
 
-/**
+/*
  * Page to handle all routes not accounted for.
  */
 function NotFound() {

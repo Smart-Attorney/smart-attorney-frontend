@@ -1,5 +1,5 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CaseFolderController } from "../../../services/mock-backend/case-folder/case-folder-controller";
+import { CasesController } from "../../../services/local-backend/cases/cases-controller";
 
 export interface CreateCaseFolderDTO {
 	folderId: string;
@@ -8,7 +8,7 @@ export interface CreateCaseFolderDTO {
 
 const mockApi = async (data: CreateCaseFolderDTO) => {
 	const request = mockRequest.post("/create-case", data);
-	return await CaseFolderController.createCaseFolder(request);
+	return await new CasesController().createCase(request);
 };
 
 export const createCaseFolder = async (data: CreateCaseFolderDTO) => {

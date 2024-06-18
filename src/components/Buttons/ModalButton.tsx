@@ -1,16 +1,14 @@
 import { ButtonProps } from "../../utils/types";
 
-function ModalButton(props: ButtonProps) {
-	const { title, name, type, disabled, style, className, onClick } = props;
-
+function ModalButton({ title, name, type, className, style, isDisabled, onClick }: Partial<ButtonProps>) {
 	return (
 		<button
 			title={title}
 			name={name}
 			type={type}
-			disabled={disabled}
-			style={style}
 			className={`${className} w-full rounded-xl border-solid border-[#3141e4] bg-[#2a2c84]`}
+			style={style}
+			disabled={isDisabled}
 			onClick={onClick}
 		>
 			<span className="text-xl font-semibold text-white">{name}</span>

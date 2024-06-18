@@ -1,5 +1,4 @@
-import { Format } from "../../../../utils/format";
-import { getFileTypeImg } from "../../../../utils/get-file-type-img";
+import { FileUtils } from "../../../../utils/file-utils";
 import { FileForUploadObj } from "../../../../utils/types";
 
 interface UploadedFileCardsProps {
@@ -14,7 +13,7 @@ function UploadedFileCards(props: UploadedFileCardsProps) {
 				const { name, size } = file.data;
 				const fileNameArray = name.split(".");
 				const fileType = fileNameArray[1];
-				const fileTypeImg = getFileTypeImg(fileType);
+				const fileTypeImg = FileUtils.getFileTypeImage(fileType);
 
 				return (
 					<div id="card-container" className="w-full px-4 py-2 bg-white rounded-md" key={index}>
@@ -26,7 +25,7 @@ function UploadedFileCards(props: UploadedFileCardsProps) {
 								<p className="w-[95%] overflow-hidden text-base font-semibold text-ellipsis whitespace-nowrap">
 									{name}
 								</p>
-								<p className="text-sm text-gray-500">{Format.fileBytesForCardDisplay(size)}</p>
+								<p className="text-sm text-gray-500">{FileUtils.formatBytes(size)}</p>
 								<p className="text-sm font-semibold">Ready to upload</p>
 							</div>
 							<span

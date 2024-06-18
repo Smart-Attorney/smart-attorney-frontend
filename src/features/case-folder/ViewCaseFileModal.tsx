@@ -11,7 +11,7 @@ interface ViewCaseFileCardsProps {
 function ViewCaseFileModal(props: ViewCaseFileCardsProps) {
 	const { fileName, fileURL } = props;
 
-	/**
+	/*
 	 * TODO:
 	 * Find a way to display .docx files in webpage.
 	 * Dynamically render proper html element based on file type.

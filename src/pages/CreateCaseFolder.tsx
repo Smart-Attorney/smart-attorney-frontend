@@ -17,9 +17,9 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { CaseFolderCount } from "../utils/case-folder-count";
+import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { FileForUploadObj, SexOptions } from "../utils/types";
+import { FileForUploadObj, SexOption } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -28,7 +28,7 @@ function CreateCaseFolder() {
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
 
-	const currentFolderCount = CaseFolderCount.get();
+	const currentFolderCount = CaseUtils.getCaseCount();
 	const defaultCaseName = `Case Folder ${currentFolderCount + 1}`;
 
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
@@ -110,7 +110,7 @@ function CreateCaseFolder() {
 			middleName: client.middleName,
 			lastName: client.lastName,
 			dateOfBirth: client.dateOfBirth === "" ? Date.parse("12/10/1815") : Date.parse(client.dateOfBirth),
-			sex: client.sex === "" ? "Other" : (client.sex as SexOptions),
+			sex: client.sex === "" ? "Other" : (client.sex as SexOption),
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
 			caseFolderId: caseFolderId.current,

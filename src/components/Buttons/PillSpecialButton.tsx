@@ -1,15 +1,14 @@
 import { ButtonProps } from "../../utils/types";
 
-function PillSpecialButton(props: ButtonProps) {
-	const { name, className, onClick, disabled, style, img } = props;
-
+function PillSpecialButton({ img, title, name, type, className, style, isDisabled, onClick }: Partial<ButtonProps>) {
 	return (
 		<button
-			type="button"
+			title={title}
+			type={type}
 			className={`${className} px-3 pill-special-btn-border border-[3px] border-transparent h-9 flex items-center justify-center rounded-[30px]`}
-			onClick={onClick}
-			disabled={disabled}
 			style={style}
+			disabled={isDisabled}
+			onClick={onClick}
 		>
 			<span className="flex flex-row items-center gap-1">
 				<img style={{ display: img ? "block" : "none" }} className="w-[22px] h-[22px]" src={img} />
