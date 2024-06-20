@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CaseLabelUtils } from "../../utils/case-label-utils";
-import { CaseFolderLabelObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
+import { CaseFolderLabelObj, DashboardFolderCardObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
 import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
 import { getCaseLabels } from "./api/get-case-labels";
 
@@ -10,16 +10,15 @@ interface SortByLabelButtonProps {
 	clicked: boolean;
 	sortByLabelsOption: (labelOption: string) => void;
 	toggleLabelsButtonClicked: (isClicked: boolean) => void;
+	uncheckMenuOptions: boolean;
+	caseLabels?: DashboardFolderCardObj[] | null;
 }
 
-function SortByLabelButton({
-	id,
-	name,
-	clicked,
-	//@ts-ignore
-	sortByLabelsOption,
-	toggleLabelsButtonClicked,
-}: SortByLabelButtonProps) {
+function SortByLabelButton(props: SortByLabelButtonProps) {
+	const { id, name, clicked, sortByLabelsOption, toggleLabelsButtonClicked, uncheckMenuOptions, caseLabels } = props;
+
+	const selectedOption = useRef<string>("");
+
 	const [isLabelsHovered, setIsLabelsHovered] = useState<boolean>(false);
 	const [dropdownMenuPosition, setDropdownMenuPosition] = useState({
 		top: 0,
@@ -29,7 +28,14 @@ function SortByLabelButton({
 
 	useEffect(() => {
 		handleGetUserCaseLabels();
-	}, []);
+	}, [caseLabels]);
+
+	useEffect(() => {
+		if (uncheckMenuOptions) {
+			selectedOption.current = "";
+			toggleMenuOptionsUnchecked();
+		}
+	}, [uncheckMenuOptions]);
 
 	/************************************************************/
 
@@ -57,7 +63,7 @@ function SortByLabelButton({
 			formattedLabels.push({
 				id: labelName,
 				name: labelName,
-				isClicked: false,
+				isClicked: selectedOption.current.toLowerCase() === label.toLowerCase() ? true : false,
 			});
 		}
 		return formattedLabels;
@@ -89,6 +95,11 @@ function SortByLabelButton({
 		openDropdownMenu();
 	};
 
+	const toggleMenuOptionsUnchecked = (): void => {
+		const updatedOptions = menuOptions?.map((option) => ({ ...option, isClicked: false }));
+		setMenuOptions(updatedOptions);
+	};
+
 	const toggleMenuOptionClicked = (menuOptionName: string) => {
 		const updatedOptions = menuOptions?.map((option) =>
 			menuOptionName === option.name ? { ...option, isClicked: !option.isClicked } : { ...option, isClicked: false }
@@ -99,6 +110,7 @@ function SortByLabelButton({
 	const handleMenuOptionClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target;
 		if (checked === true) {
+			selectedOption.current = name.toLowerCase();
 			sortByLabelsOption(name);
 		}
 		toggleMenuOptionClicked(name);

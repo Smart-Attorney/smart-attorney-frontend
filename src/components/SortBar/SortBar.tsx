@@ -17,17 +17,13 @@ interface SortBarProps {
 	setDocumentCards?: React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
 }
 
-function SortBar({
-	initialWidth,
-	minWidth,
-	options,
-	caseFolderCards,
-	setCaseFolderCards,
-	documentCards,
-	setDocumentCards,
-}: SortBarProps) {
+function SortBar(props: SortBarProps) {
+	const { initialWidth, minWidth, options, caseFolderCards, setCaseFolderCards, documentCards, setDocumentCards } =
+		props;
+
 	const optionsContainer = useRef<HTMLDivElement>(null);
 
+	const [uncheckMenuOptions, setUncheckMenuOptions] = useState(false);
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
 	const [containerWidth, setContainerWidth] = useState<number>(initialWidth);
 
@@ -89,6 +85,7 @@ function SortBar({
 				option.name === SORT_OPTION.LABELS ? { ...option, clicked: isClicked } : { ...option, clicked: false }
 			)
 		);
+		setUncheckMenuOptions(false);
 	};
 
 	const toggleOptionClicked = (optionName: string) => {
@@ -97,6 +94,7 @@ function SortBar({
 				optionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 			)
 		);
+		setUncheckMenuOptions(true);
 	};
 
 	const sortCaseCards = (sortOption: string) => {
@@ -138,6 +136,8 @@ function SortBar({
 				clicked={option.clicked}
 				sortByLabelsOption={handleSortByLabelsOption}
 				toggleLabelsButtonClicked={toggleLabelsButtonClicked}
+				uncheckMenuOptions={uncheckMenuOptions}
+				caseLabels={caseFolderCards}
 			/>
 		) : (
 			<SortByOptionButton
