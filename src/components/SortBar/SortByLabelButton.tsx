@@ -10,12 +10,12 @@ interface SortByLabelButtonProps {
 	clicked: boolean;
 	sortByLabelsOption: (labelOption: string) => void;
 	toggleLabelsButtonClicked: (isClicked: boolean) => void;
-	uncheckMenuOptions: boolean;
+	isMenuOptionChecked: boolean;
 	caseLabels?: DashboardFolderCardObj[] | null;
 }
 
 function SortByLabelButton(props: SortByLabelButtonProps) {
-	const { id, name, clicked, sortByLabelsOption, toggleLabelsButtonClicked, uncheckMenuOptions, caseLabels } = props;
+	const { id, name, clicked, sortByLabelsOption, toggleLabelsButtonClicked, isMenuOptionChecked, caseLabels } = props;
 
 	const selectedOption = useRef<string>("");
 
@@ -31,11 +31,10 @@ function SortByLabelButton(props: SortByLabelButtonProps) {
 	}, [caseLabels]);
 
 	useEffect(() => {
-		if (uncheckMenuOptions) {
-			selectedOption.current = "";
-			toggleMenuOptionsUnchecked();
-		}
-	}, [uncheckMenuOptions]);
+		if (isMenuOptionChecked) return;
+		selectedOption.current = "";
+		uncheckAllMenuOptions();
+	}, [isMenuOptionChecked]);
 
 	/************************************************************/
 
@@ -95,7 +94,7 @@ function SortByLabelButton(props: SortByLabelButtonProps) {
 		openDropdownMenu();
 	};
 
-	const toggleMenuOptionsUnchecked = (): void => {
+	const uncheckAllMenuOptions = (): void => {
 		const updatedOptions = menuOptions?.map((option) => ({ ...option, isClicked: false }));
 		setMenuOptions(updatedOptions);
 	};

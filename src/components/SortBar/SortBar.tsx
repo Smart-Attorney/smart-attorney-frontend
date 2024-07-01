@@ -23,7 +23,7 @@ function SortBar(props: SortBarProps) {
 
 	const optionsContainer = useRef<HTMLDivElement>(null);
 
-	const [uncheckMenuOptions, setUncheckMenuOptions] = useState(false);
+	const [isMenuOptionChecked, setIsMenuOptionChecked] = useState(false);
 	const [sortOptions, setSortOptions] = useState<SortOptionsObj[]>(options);
 	const [containerWidth, setContainerWidth] = useState<number>(initialWidth);
 
@@ -85,7 +85,7 @@ function SortBar(props: SortBarProps) {
 				option.name === SORT_OPTION.LABELS ? { ...option, clicked: isClicked } : { ...option, clicked: false }
 			)
 		);
-		setUncheckMenuOptions(false);
+		setIsMenuOptionChecked(true);
 	};
 
 	const toggleOptionClicked = (optionName: string) => {
@@ -94,7 +94,7 @@ function SortBar(props: SortBarProps) {
 				optionName === option.name ? { ...option, clicked: !option.clicked } : { ...option, clicked: false }
 			)
 		);
-		setUncheckMenuOptions(true);
+		setIsMenuOptionChecked(false);
 	};
 
 	const sortCaseCards = (sortOption: string) => {
@@ -136,7 +136,7 @@ function SortBar(props: SortBarProps) {
 				clicked={option.clicked}
 				sortByLabelsOption={handleSortByLabelsOption}
 				toggleLabelsButtonClicked={toggleLabelsButtonClicked}
-				uncheckMenuOptions={uncheckMenuOptions}
+				isMenuOptionChecked={isMenuOptionChecked}
 				caseLabels={caseFolderCards}
 			/>
 		) : (
