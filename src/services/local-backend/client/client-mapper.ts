@@ -1,4 +1,4 @@
-import { ClientDTO } from "../../../utils/dtos/ClientDTO";
+import { ClientDTO } from "../dtos/ClientDTO";
 import { Client } from "./client";
 
 export class ClientMapper {

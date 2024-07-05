@@ -1,4 +1,4 @@
-import { SexOption } from "../types";
+import { Sex } from "../../../utils/types";
 
 export class ClientDTO {
 	private id: string;
@@ -6,7 +6,7 @@ export class ClientDTO {
 	private middleName: string;
 	private lastName: string;
 	private dateOfBirth: number;
-	private sex: SexOption;
+	private sex: Sex;
 	private countryOfCitizenship: string;
 	private primaryLanguage: string;
 
@@ -37,7 +37,7 @@ export class ClientDTO {
 	public getDateOfBirth(): number {
 		return this.dateOfBirth;
 	}
-	public getSex(): SexOption {
+	public getSex(): Sex {
 		return this.sex;
 	}
 	public getCountryOfCitizenship(): string {
@@ -63,7 +63,7 @@ export class ClientDTO {
 	public setDateOfBirth(dateOfBirth: number): void {
 		this.dateOfBirth = dateOfBirth;
 	}
-	public setSex(sex: SexOption): void {
+	public setSex(sex: Sex): void {
 		this.sex = sex;
 	}
 	public setCountryOfCitizenship(countryOfCitizenship: string): void {

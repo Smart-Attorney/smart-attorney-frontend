@@ -11,12 +11,12 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
-import { DashboardFolderCardObj } from "../utils/types";
+import { DashboardCaseCardObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
 
-	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
+	const [caseFolders, setCaseFolders] = useState<DashboardCaseCardObj[] | null>([]);
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
@@ -30,7 +30,7 @@ function Dashboard() {
 			const response = await getUserCaseFolders();
 			switch (response.status) {
 				case 200:
-					const data: DashboardFolderCardObj[] = await response.json();
+					const data: DashboardCaseCardObj[] = await response.json();
 					setCaseFolders(data);
 					CaseUtils.setCaseCount(data.length);
 					break;

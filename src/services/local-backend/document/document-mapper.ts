@@ -1,4 +1,4 @@
-import { DocumentDTO } from "../../../utils/dtos/DocumentDTO";
+import { DocumentDTO } from "../dtos/DocumentDTO";
 import { Document } from "./document";
 
 export class DocumentMapper {

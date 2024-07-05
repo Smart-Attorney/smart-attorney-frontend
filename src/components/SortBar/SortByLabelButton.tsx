@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CaseLabelUtils } from "../../utils/case-label-utils";
-import { CaseFolderLabelObj, DashboardFolderCardObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
+import { CaseLabelObj, DashboardCaseCardObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
 import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
 import { getCaseLabels } from "./api/get-case-labels";
 
@@ -11,7 +11,7 @@ interface SortByLabelButtonProps {
 	sortByLabelsOption: (labelOption: string) => void;
 	toggleLabelsButtonClicked: (isClicked: boolean) => void;
 	isMenuOptionChecked: boolean;
-	caseLabels?: DashboardFolderCardObj[] | null;
+	caseLabels?: DashboardCaseCardObj[] | null;
 }
 
 function SortByLabelButton(props: SortByLabelButtonProps) {
@@ -42,7 +42,7 @@ function SortByLabelButton(props: SortByLabelButtonProps) {
 		try {
 			const response = await getCaseLabels();
 			if (response.ok) {
-				const data: CaseFolderLabelObj[] = await response.json();
+				const data: CaseLabelObj[] = await response.json();
 				const sortedLabels = CaseLabelUtils.alphabetize(data);
 				const uniqueLabels = CaseLabelUtils.unique(sortedLabels);
 				const menuOptions = formatLabels(uniqueLabels);

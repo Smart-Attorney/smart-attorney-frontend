@@ -1,9 +1,9 @@
 import { DOCUMENT_STATUS } from "./constants/document-status";
 import { SORT_OPTION } from "./constants/sort-options";
-import { CaseFileObj } from "./types";
+import { DocumentObj } from "./types";
 
 export class DocumentUtils {
-	public static getUrgentDeadline = (documents: CaseFileObj[]): number => {
+	public static getUrgentDeadline = (documents: DocumentObj[]): number => {
 		if (!documents) return 0;
 		const placeholderDate = Infinity;
 		const currentDate = Date.now();
@@ -23,7 +23,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts alphabetically from A to Z.
 	 */
-	private static sortByName(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByName(array: DocumentObj[]): DocumentObj[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.name.toLowerCase();
 			const lb = b.name.toLowerCase();
@@ -41,7 +41,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts from youngest to oldest.
 	 */
-	private static sortByDateCreated(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByDateCreated(array: DocumentObj[]): DocumentObj[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.createdDate;
 			const lb = b.createdDate;
@@ -59,7 +59,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts from most recent to least recent date.
 	 */
-	private static sortByLastOpened(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByLastOpened(array: DocumentObj[]): DocumentObj[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.lastOpenedDate;
 			const lb = b.lastOpenedDate;
@@ -77,7 +77,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts by status.
 	 */
-	private static sortByStatus(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByStatus(array: DocumentObj[]): DocumentObj[] {
 		const sortedArray = array.sort((a, b) => {
 			let la: number;
 			switch (a.status) {
@@ -120,7 +120,7 @@ export class DocumentUtils {
 		return sortedArray;
 	}
 
-	public static sortByOption = (array: CaseFileObj[], option: string): CaseFileObj[] => {
+	public static sortByOption = (array: DocumentObj[], option: string): DocumentObj[] => {
 		switch (option) {
 			case SORT_OPTION.NAME:
 				return DocumentUtils.sortByName(array);

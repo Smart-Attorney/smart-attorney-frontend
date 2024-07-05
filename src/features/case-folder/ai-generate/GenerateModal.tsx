@@ -1,11 +1,11 @@
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import fileExtractor from "../../../components/Pdf/FileExtractor";
-import { CaseFileObj } from "../../../utils/types";
+import { DocumentObj } from "../../../utils/types";
 
 interface GenerateModalProps {
 	closeModal: () => void;
-	files: CaseFileObj[];
+	files: DocumentObj[];
 }
 
 function GenerateModal({ closeModal }: GenerateModalProps) {

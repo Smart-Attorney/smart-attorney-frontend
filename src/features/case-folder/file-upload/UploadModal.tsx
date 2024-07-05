@@ -3,7 +3,7 @@ import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import { nanoid } from "../../../lib/nanoid";
-import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
+import { DocumentObj, FileForUploadObj } from "../../../utils/types";
 import { createCaseFiles } from "../api/create-case-files";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
@@ -12,7 +12,7 @@ import UploadedFileCards from "./modal-components/UploadedFileCards";
 interface UploadModalProps {
 	caseFolderId: string;
 	closeUploadModal: () => void;
-	addUploadedFileToCaseFileArray: (uploadedFile: CaseFileObj) => void;
+	addUploadedFileToCaseFileArray: (uploadedFile: DocumentObj) => void;
 }
 
 function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFileArray }: UploadModalProps) {
@@ -32,7 +32,7 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 		try {
 			const response = await createCaseFiles(caseFolderId, filesFormData);
 			if (response.ok) {
-				const createdCaseFiles: CaseFileObj[] = await response.json();
+				const createdCaseFiles: DocumentObj[] = await response.json();
 				for (let i = 0, n = createdCaseFiles.length; i < n; i++) {
 					addUploadedFileToCaseFileArray(createdCaseFiles[i]);
 				}

@@ -1,5 +1,5 @@
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
-import { CaseFileObj, DocumentStatus } from "../../../utils/types";
+import { DocumentObj, DocumentStatus } from "../../../utils/types";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { DocumentEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -12,8 +12,8 @@ export class DocumentDAO {
 		this.dbConn = new DatabaseConnection();
 	}
 
-	public async getAllByCaseId(caseId: string): Promise<CaseFileObj[]> {
-		const caseDocuments: CaseFileObj[] = [];
+	public async getAllByCaseId(caseId: string): Promise<DocumentObj[]> {
+		const caseDocuments: DocumentObj[] = [];
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].fk_case_id === caseId) {
@@ -31,11 +31,11 @@ export class DocumentDAO {
 		return caseDocuments;
 	}
 
-	public async getById(caseId: string, documentId: string): Promise<CaseFileObj | null> {
+	public async getById(caseId: string, documentId: string): Promise<DocumentObj | null> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
-				const caseFile: CaseFileObj = {
+				const caseFile: DocumentObj = {
 					id: documents[i].document_id,
 					name: documents[i].document_name,
 					createdDate: documents[i].created_date,

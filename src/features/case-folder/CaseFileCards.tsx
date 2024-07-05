@@ -10,7 +10,7 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { CaseFileObj, DocumentStatus as DocStatus } from "../../utils/types";
+import { DocumentObj, DocumentStatus as DocStatus } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
 import { updateDeadline } from "./api/update-case-file-deadline";
@@ -18,9 +18,9 @@ import { updateCaseFileName } from "./api/update-case-file-name";
 import { updateCaseFileStatus } from "./api/update-case-file-status";
 
 interface CaseFileCardsProps {
-	files: CaseFileObj[] | undefined;
+	files: DocumentObj[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	updateCaseFiles: (newCaseFileArray: CaseFileObj[]) => void;
+	updateCaseFiles: (newCaseFileArray: DocumentObj[]) => void;
 }
 
 function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
@@ -28,8 +28,8 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 
 	/************************************************************/
 
-	const replaceDocumentInArray = (updatedDocument: CaseFileObj, currentDocumentArr: CaseFileObj[]): CaseFileObj[] => {
-		const updatedDocumentArr: CaseFileObj[] = [...currentDocumentArr];
+	const replaceDocumentInArray = (updatedDocument: DocumentObj, currentDocumentArr: DocumentObj[]): DocumentObj[] => {
+		const updatedDocumentArr: DocumentObj[] = [...currentDocumentArr];
 		for (let i = 0, n = updatedDocumentArr.length; i < n; i++) {
 			if (updatedDocument.id === updatedDocumentArr[i].id) {
 				updatedDocumentArr[i] = updatedDocument;
@@ -39,8 +39,8 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		return updatedDocumentArr;
 	};
 
-	const removeDocumentFromArray = (deletedDocument: CaseFileObj, currentDocumentArr: CaseFileObj[]): CaseFileObj[] => {
-		const updatedDocumentArr: CaseFileObj[] = [];
+	const removeDocumentFromArray = (deletedDocument: DocumentObj, currentDocumentArr: DocumentObj[]): DocumentObj[] => {
+		const updatedDocumentArr: DocumentObj[] = [];
 		for (let i = 0, n = currentDocumentArr.length; i < n; i++) {
 			if (deletedDocument.id !== currentDocumentArr[i].id) {
 				updatedDocumentArr.push(currentDocumentArr[i]);
@@ -56,7 +56,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
 			if (response.ok) {
-				const updatedDocument: CaseFileObj = await response.json();
+				const updatedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
 				updateCaseFiles(updatedDocumentArray);
 			}
@@ -70,7 +70,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await updateCaseFileName(folderId!, fileId, newFileName);
 			if (response.ok) {
-				const updatedDocument: CaseFileObj = await response.json();
+				const updatedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
 				updateCaseFiles(updatedDocumentArray);
 			}
@@ -85,7 +85,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await updateDeadline(folderId!, fileId, deadlineInUnixTime);
 			if (response.ok) {
-				const updatedDocument: CaseFileObj = await response.json();
+				const updatedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
 				updateCaseFiles(updatedDocumentArray);
 			}
@@ -98,7 +98,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		try {
 			const response = await deleteCaseFileById(folderId!, fileId);
 			if (response.ok) {
-				const deletedDocument: CaseFileObj = await response.json();
+				const deletedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, files!);
 				updateCaseFiles(updatedDocumentArray);
 			}

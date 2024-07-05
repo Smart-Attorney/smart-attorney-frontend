@@ -7,7 +7,7 @@ import { getUserDocumentDeadlines } from "../features/calendar/api/get-document-
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import { DateUtils } from "../utils/date-utils";
-import { CaseFileObj } from "../utils/types";
+import { DocumentObj } from "../utils/types";
 
 function Calendar() {
 	const [events, setEvents] = useState<Event[]>();
@@ -20,7 +20,7 @@ function Calendar() {
 		try {
 			const response = await getUserDocumentDeadlines();
 			if (response.ok) {
-				const data: CaseFileObj[] = await response.json();
+				const data: DocumentObj[] = await response.json();
 				const deadlines: Event[] = [];
 				for (let i = 0, n = data.length; i < n; i++) {
 					const stringDate = DateUtils.formatToYMD(data[i].deadline);

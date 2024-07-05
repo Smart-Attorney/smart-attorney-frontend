@@ -11,7 +11,7 @@ import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import type { DashboardFolderCardObj } from "../../utils/types";
+import type { DashboardCaseCardObj } from "../../utils/types";
 import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
@@ -19,8 +19,8 @@ import { deleteFolderLabel } from "./api/delete-folder-label";
 import { UpdateCaseFolderStatusDTO, updateOpenState } from "./api/update-status";
 
 interface CaseFolderCardProps {
-	caseFolders: DashboardFolderCardObj[] | null;
-	setCaseFolders: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
+	caseFolders: DashboardCaseCardObj[] | null;
+	setCaseFolders: React.Dispatch<React.SetStateAction<DashboardCaseCardObj[] | null>>;
 }
 
 function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
@@ -29,10 +29,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	/************************************************************/
 
 	const replaceCaseInArray = (
-		updatedCase: DashboardFolderCardObj,
-		currentCaseArr: DashboardFolderCardObj[]
-	): DashboardFolderCardObj[] => {
-		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
+		updatedCase: DashboardCaseCardObj,
+		currentCaseArr: DashboardCaseCardObj[]
+	): DashboardCaseCardObj[] => {
+		const updatedCaseArr: DashboardCaseCardObj[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
 				updatedCaseArr[i] = updatedCase;
@@ -43,10 +43,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	};
 
 	const removeCaseFromArray = (
-		deletedCase: DashboardFolderCardObj,
-		currentCaseArr: DashboardFolderCardObj[]
-	): DashboardFolderCardObj[] => {
-		const updatedCaseArr: DashboardFolderCardObj[] = [];
+		deletedCase: DashboardCaseCardObj,
+		currentCaseArr: DashboardCaseCardObj[]
+	): DashboardCaseCardObj[] => {
+		const updatedCaseArr: DashboardCaseCardObj[] = [];
 		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
 			if (deletedCase.id !== currentCaseArr[i].id) {
 				updatedCaseArr.push(currentCaseArr[i]);
@@ -68,7 +68,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await updateOpenState(folderId, newStatus);
 			if (response.ok) {
-				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -89,7 +89,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await createFolderLabel(folderId, newLabel);
 			if (response.ok) {
-				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -109,7 +109,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteFolderLabel(folderId, labelId);
 			if (response.ok) {
-				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -122,7 +122,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		try {
 			const response = await deleteCaseFolder(folderId);
 			if (response.ok) {
-				const deletedCase: DashboardFolderCardObj = await response.json();
+				const deletedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}

@@ -22,7 +22,7 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { DateUtils } from "../utils/date-utils";
-import { CaseFileObj, CaseFolderObj, ClientObj } from "../utils/types";
+import { DocumentObj, CaseObj, ClientObj } from "../utils/types";
 
 function CaseFolder() {
 	const navigate = useNavigate();
@@ -34,7 +34,7 @@ function CaseFolder() {
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
 
-	const [caseFolder, setCaseFolder] = useState<CaseFolderObj>({
+	const [caseFolder, setCaseFolder] = useState<CaseObj>({
 		id: "",
 		name: "",
 		createdDate: 0,
@@ -53,7 +53,7 @@ function CaseFolder() {
 		dateOfBirth: 0,
 	});
 
-	const [caseFiles, setCaseFiles] = useState<CaseFileObj[]>([]);
+	const [caseFiles, setCaseFiles] = useState<DocumentObj[]>([]);
 
 	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
 	const newCaseFolderName = useRef<string>("");
@@ -89,7 +89,7 @@ function CaseFolder() {
 		try {
 			const response = await getCaseFolder(folderId.current!);
 			if (response.ok) {
-				const data: CaseFolderObj = await response.json();
+				const data: CaseObj = await response.json();
 				setCaseFolder(data);
 				newCaseFolderName.current = data.name;
 			}
@@ -102,7 +102,7 @@ function CaseFolder() {
 		try {
 			const response = await getCaseFiles(folderId.current!);
 			if (response.ok) {
-				const data: CaseFileObj[] = await response.json();
+				const data: DocumentObj[] = await response.json();
 				setCaseFiles(data);
 			}
 		} catch (error) {
@@ -127,7 +127,7 @@ function CaseFolder() {
 		try {
 			const response = await getCaseFileByIdFromDB(folderId.current!, id);
 			if (response.ok) {
-				const file: CaseFileObj = await response.json();
+				const file: DocumentObj = await response.json();
 				fileName.current = file.name;
 				fileId.current = file.id;
 				fileUrl.current = file.url;
@@ -174,7 +174,7 @@ function CaseFolder() {
 		try {
 			const response = await updateCaseFolderName(folderId, newFolderName);
 			if (response.ok) {
-				const data: CaseFolderObj = await response.json();
+				const data: CaseObj = await response.json();
 				setCaseFolder(data);
 			}
 		} catch (error) {
@@ -219,11 +219,11 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const addUploadedFileToCaseFileArray = (uploadedFile: CaseFileObj): void => {
+	const addUploadedFileToCaseFileArray = (uploadedFile: DocumentObj): void => {
 		setCaseFiles((prev) => [...prev, uploadedFile]);
 	};
 
-	const updateCaseFiles = (newCaseFileArray: CaseFileObj[]) => {
+	const updateCaseFiles = (newCaseFileArray: DocumentObj[]) => {
 		setCaseFiles(newCaseFileArray);
 	};
 

@@ -1,10 +1,10 @@
-import { CaseFolderLabelObj } from "../../utils/types";
+import { CaseLabelObj } from "../../utils/types";
 
 interface CardLabelsProps {
 	id?: string;
 	navLabel?: string;
 	deleteLabel?: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	labels: CaseFolderLabelObj[];
+	labels: CaseLabelObj[];
 }
 
 function CardLabels({ deleteLabel, labels }: CardLabelsProps) {

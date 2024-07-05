@@ -3,7 +3,7 @@ import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { CaseUtils } from "../../utils/case-utils";
 import { SORT_OPTION, SortOptionsObj } from "../../utils/constants/sort-options";
 import { DocumentUtils } from "../../utils/document-utils";
-import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
+import { DocumentObj, DashboardCaseCardObj } from "../../utils/types";
 import SortByLabelButton from "./SortByLabelButton";
 import SortByOptionButton from "./SortByOptionButton";
 
@@ -11,10 +11,10 @@ interface SortBarProps {
 	initialWidth: number; // value should be wide enough to fit all options on one line with no wrapping
 	minWidth: number; // value of window width before the sort bar resizes
 	options: SortOptionsObj[];
-	caseFolderCards?: DashboardFolderCardObj[] | null;
-	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
-	documentCards?: CaseFileObj[];
-	setDocumentCards?: React.Dispatch<React.SetStateAction<CaseFileObj[]>>;
+	caseFolderCards?: DashboardCaseCardObj[] | null;
+	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardCaseCardObj[] | null>>;
+	documentCards?: DocumentObj[];
+	setDocumentCards?: React.Dispatch<React.SetStateAction<DocumentObj[]>>;
 }
 
 function SortBar(props: SortBarProps) {
@@ -101,14 +101,14 @@ function SortBar(props: SortBarProps) {
 		if (!caseFolderCards || !setCaseFolderCards) return;
 		const sortedCards = CaseUtils.sortByOption(caseFolderCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
-		setCaseFolderCards(shallowCopy as DashboardFolderCardObj[]);
+		setCaseFolderCards(shallowCopy as DashboardCaseCardObj[]);
 	};
 
 	const sortDocumentCards = (sortOption: string) => {
 		if (!documentCards || !setDocumentCards) return;
 		const sortedCards = DocumentUtils.sortByOption(documentCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
-		setDocumentCards(shallowCopy as CaseFileObj[]);
+		setDocumentCards(shallowCopy as DocumentObj[]);
 	};
 
 	const handleSortByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {
@@ -122,7 +122,7 @@ function SortBar(props: SortBarProps) {
 		if (!caseFolderCards || !setCaseFolderCards) return;
 		const sortedCards = CaseUtils.sortByOption(caseFolderCards, SORT_OPTION.LABELS, labelOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
-		setCaseFolderCards(shallowCopy as DashboardFolderCardObj[]);
+		setCaseFolderCards(shallowCopy as DashboardCaseCardObj[]);
 	};
 
 	/************************************************************/

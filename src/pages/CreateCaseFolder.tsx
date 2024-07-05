@@ -19,7 +19,7 @@ import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { FileForUploadObj, SexOption } from "../utils/types";
+import { FileForUploadObj, Sex } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -110,7 +110,7 @@ function CreateCaseFolder() {
 			middleName: client.middleName,
 			lastName: client.lastName,
 			dateOfBirth: client.dateOfBirth === "" ? Date.parse("12/10/1815") : Date.parse(client.dateOfBirth),
-			sex: client.sex === "" ? "Other" : (client.sex as SexOption),
+			sex: client.sex === "" ? "Other" : (client.sex as Sex),
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
 			caseFolderId: caseFolderId.current,

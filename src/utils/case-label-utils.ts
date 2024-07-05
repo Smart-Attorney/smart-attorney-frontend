@@ -1,4 +1,4 @@
-import { CaseFolderLabelObj } from "./types";
+import { CaseLabelObj } from "./types";
 
 export class CaseLabelUtils {
 	/**
@@ -6,7 +6,7 @@ export class CaseLabelUtils {
 	 * @param labels - Array of case labels
 	 * @returns Set of case labels
 	 */
-	public static unique(labels: CaseFolderLabelObj[]): Set<string> {
+	public static unique(labels: CaseLabelObj[]): Set<string> {
 		let uniqueLabels = new Set<string>();
 		for (let i = 0, n = labels.length; i < n; i++) {
 			uniqueLabels.add(labels[i].name.toLowerCase());
@@ -14,7 +14,7 @@ export class CaseLabelUtils {
 		return uniqueLabels;
 	}
 
-	public static alphabetize(labels: CaseFolderLabelObj[]): CaseFolderLabelObj[] {
+	public static alphabetize(labels: CaseLabelObj[]): CaseLabelObj[] {
 		const sortedLabels = labels.sort((a, b) => {
 			const la = a.name;
 			const lb = b.name;

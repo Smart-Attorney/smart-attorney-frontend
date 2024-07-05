@@ -1,5 +1,5 @@
 import { nanoid } from "../../../lib/nanoid";
-import { CaseFolderLabelObj } from "../../../utils/types";
+import { CaseLabelObj } from "../../../utils/types";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CaseLabelEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -12,8 +12,8 @@ export class CaseLabelDAO {
 		this.dbConn = new DatabaseConnection();
 	}
 
-	public async getAllByCaseId(caseId: string): Promise<CaseFolderLabelObj[]> {
-		const caseLabels: CaseFolderLabelObj[] = [];
+	public async getAllByCaseId(caseId: string): Promise<CaseLabelObj[]> {
+		const caseLabels: CaseLabelObj[] = [];
 		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
 		for (let i = 0, n = labels.length; i < n; i++) {
 			if (labels[i].fk_case_id === caseId) {

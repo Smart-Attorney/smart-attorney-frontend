@@ -1,4 +1,4 @@
-import { DocumentStatus, SexOption } from "../../utils/types";
+import { DocumentStatus, Sex } from "../../utils/types";
 
 // Typically, an entity represents a table in a relational database, and each
 // entity instance corresponds to a row in that table.
@@ -52,6 +52,6 @@ export interface DocumentEntity {
 	fk_case_id: string;
 }
 
-export type sex_option = SexOption;
+export type sex_option = Sex;
 
 export type document_status = DocumentStatus;

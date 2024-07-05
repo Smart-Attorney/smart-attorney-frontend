@@ -8,18 +8,18 @@ export interface UserObj {
 	password: string;
 }
 
-export interface DashboardFolderCardObj {
+export interface DashboardCaseCardObj {
 	id: string;
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
 	isOpen: boolean;
 	urgentDocumentDeadline: number;
-	labels: CaseFolderLabelObj[];
-	documents: CaseFileObj[];
+	labels: CaseLabelObj[];
+	documents: DocumentObj[];
 }
 
-export interface CaseFolderObj {
+export interface CaseObj {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -27,9 +27,9 @@ export interface CaseFolderObj {
 	isOpen: boolean;
 }
 
-export interface CaseFolderLabelObj {
+export interface CaseLabelObj {
 	id: string;
-	name: string | CaseLabel;
+	name: string | CaseLabelPreset;
 }
 
 export interface ClientObj {
@@ -38,12 +38,12 @@ export interface ClientObj {
 	middleName: string;
 	lastName: string;
 	dateOfBirth: number;
-	sex: SexOption;
+	sex: Sex;
 	countryOfCitizenship: string;
 	primaryLanguage: string;
 }
 
-export interface CaseFileObj {
+export interface DocumentObj {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -53,11 +53,11 @@ export interface CaseFileObj {
 	url: string;
 }
 
-export type SexOption = "Male" | "Female" | "Other";
+export type Sex = "Male" | "Female" | "Other";
 
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
 
-export type CaseLabel = "Asylum" | "Employment" | "Family" | "Humanitarian";
+export type CaseLabelPreset = "Asylum" | "Employment" | "Family" | "Humanitarian";
 
 export interface LabelsDropdownMenuOptionObj {
 	id: string;

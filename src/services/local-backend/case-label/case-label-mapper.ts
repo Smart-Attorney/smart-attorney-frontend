@@ -1,4 +1,4 @@
-import { CaseLabelDTO } from "../../../utils/dtos/CaseLabelDTO";
+import { CaseLabelDTO } from "../dtos/CaseLabelDTO";
 import { CaseLabel } from "./case-label";
 
 export class CaseLabelMapper {

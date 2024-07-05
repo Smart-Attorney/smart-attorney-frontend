@@ -1,4 +1,4 @@
-import { CaseFolderObj } from "../../../utils/types";
+import { CaseObj } from "../../../utils/types";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CasesEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -22,11 +22,11 @@ export class CasesDAO {
 		return userCases;
 	}
 
-	public async getById(caseId: string): Promise<CaseFolderObj | null> {
+	public async getById(caseId: string): Promise<CaseObj | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].case_id === caseId) {
-				const caseFolder: CaseFolderObj = {
+				const caseFolder: CaseObj = {
 					id: cases[i].case_id,
 					name: cases[i].case_name,
 					createdDate: cases[i].created_date,

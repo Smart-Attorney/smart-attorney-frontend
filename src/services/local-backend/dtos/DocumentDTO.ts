@@ -1,4 +1,4 @@
-import { DocumentStatus } from "../types";
+import { DocumentStatus } from "../../../utils/types";
 
 export class DocumentDTO {
 	private id: string;

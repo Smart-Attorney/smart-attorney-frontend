@@ -1,5 +1,5 @@
 import { DocumentUtils } from "../../../utils/document-utils";
-import { CaseFolderObj, DashboardFolderCardObj } from "../../../utils/types";
+import { CaseObj, DashboardCaseCardObj } from "../../../utils/types";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
 import { ClientDAO } from "../client/client-dao";
@@ -19,8 +19,8 @@ export class CasesService {
 		this.clientDao = new ClientDAO();
 	}
 
-	public async getAllByUserId(userId: string): Promise<DashboardFolderCardObj[]> {
-		const userCases: DashboardFolderCardObj[] = [];
+	public async getAllByUserId(userId: string): Promise<DashboardCaseCardObj[]> {
+		const userCases: DashboardCaseCardObj[] = [];
 		const cases = await this.casesDao.getAllByUserId(userId);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			const caseId = cases[i].case_id;
@@ -41,14 +41,14 @@ export class CasesService {
 		return userCases;
 	}
 
-	public async getById(caseId: string): Promise<DashboardFolderCardObj | null> {
+	public async getById(caseId: string): Promise<DashboardCaseCardObj | null> {
 		if (!caseId) return null;
 		const caseFolder = await this.casesDao.getById(caseId);
 		if (caseFolder !== null) {
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
 			const documents = await this.documentDao.getAllByCaseId(caseId);
 			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
-			const retrievedCase: DashboardFolderCardObj = {
+			const retrievedCase: DashboardCaseCardObj = {
 				...caseFolder,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
@@ -59,7 +59,7 @@ export class CasesService {
 		return null;
 	}
 
-	public async create(userId: string, caseId: string, caseName: string): Promise<CaseFolderObj | null> {
+	public async create(userId: string, caseId: string, caseName: string): Promise<CaseObj | null> {
 		if (!userId || !caseId || !caseName) return null;
 		const isCaseCreated = await this.casesDao.add(userId, caseId, caseName);
 		if (isCaseCreated) {
@@ -68,7 +68,7 @@ export class CasesService {
 		return null;
 	}
 
-	public async createLabel(userId: string, caseId: string, newLabel: string): Promise<DashboardFolderCardObj | null> {
+	public async createLabel(userId: string, caseId: string, newLabel: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !newLabel) return null;
 		const isLabelCreated = await this.caseLabelDao.add(caseId, newLabel);
 		if (isLabelCreated) {
@@ -86,7 +86,7 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateName(userId: string, caseId: string, newName: string): Promise<DashboardFolderCardObj | null> {
+	public async updateName(userId: string, caseId: string, newName: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !newName) return null;
 		const isNameUpdated = await this.casesDao.updateName(userId, caseId, newName);
 		if (isNameUpdated) {
@@ -99,7 +99,7 @@ export class CasesService {
 		userId: string,
 		caseId: string,
 		currentState: boolean
-	): Promise<DashboardFolderCardObj | null> {
+	): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || typeof currentState !== "boolean") return null;
 		const isStatusUpdated = await this.casesDao.updateOpenState(userId, caseId, currentState);
 		if (isStatusUpdated) {
@@ -112,7 +112,7 @@ export class CasesService {
 		userId: string,
 		caseId: string,
 		labelId: string
-	): Promise<DashboardFolderCardObj | null> {
+	): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !labelId) return null;
 		const isLabelDeleted = await this.caseLabelDao.deleteById(caseId, labelId);
 		if (isLabelDeleted) {
@@ -121,7 +121,7 @@ export class CasesService {
 		return null;
 	}
 
-	public async deleteById(userId: string, caseId: string): Promise<DashboardFolderCardObj | null> {
+	public async deleteById(userId: string, caseId: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId) return null;
 		const deletedCase = await this.getById(caseId);
 
