@@ -1,3 +1,5 @@
+// for local backend
+
 type ZeroOrOne = 0 | 1;
 
 // "value = 0" to use actual backend api

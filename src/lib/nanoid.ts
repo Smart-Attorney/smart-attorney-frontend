@@ -1,3 +1,5 @@
+// for local backend
+
 import { customAlphabet } from "nanoid";
 
 const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
