@@ -1,5 +1,5 @@
 import { CreateClientDTO } from "../../../features/create-case-folder/api/create-client";
-import { ClientObj } from "../../../utils/types";
+import { ClientObj } from "../../../types/api";
 import { ClientEntity } from "../../local-database/entities";
 import { ClientDAO } from "./client-dao";
 

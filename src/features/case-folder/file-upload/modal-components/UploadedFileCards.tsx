@@ -1,5 +1,5 @@
 import { FileUtils } from "../../../../utils/file-utils";
-import { FileForUploadObj } from "../../../../utils/types";
+import { FileForUploadObj } from "../../../../types/api";
 
 interface UploadedFileCardsProps {
 	filesToUpload: FileForUploadObj[];

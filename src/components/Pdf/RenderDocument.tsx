@@ -1,6 +1,6 @@
 import { useState } from "react";
 import translateDoc from "../../features/translateDocuments/translateDocuments";
-import { FileForUploadObj } from "../../utils/types";
+import { FileForUploadObj } from "../../types/api";
 import CardBody from "../Card/CardBody";
 import CardContainer from "../Card/CardContainer";
 import CardName from "../Card/CardName";

@@ -1,4 +1,4 @@
-import { DocumentStatus, Sex } from "./types";
+import { DocumentStatus, Sex } from "../types/api";
 
 export interface UserDTO {
 	id: string;

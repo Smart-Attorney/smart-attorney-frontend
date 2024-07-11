@@ -1,5 +1,5 @@
 import { nanoid } from "../../../lib/nanoid";
-import { ClientObj } from "../../../utils/types";
+import { ClientObj } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { ClientEntity, sex_option } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";

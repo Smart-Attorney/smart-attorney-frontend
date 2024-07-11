@@ -1,5 +1,5 @@
 import { DocumentUtils } from "../../../utils/document-utils";
-import { CaseObj, DashboardCaseCardObj } from "../../../utils/types";
+import { CaseObj, DashboardCaseCardObj } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
 import { ClientDAO } from "../client/client-dao";

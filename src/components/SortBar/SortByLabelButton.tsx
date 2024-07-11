@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CaseLabelUtils } from "../../utils/case-label-utils";
-import { CaseLabelObj, DashboardCaseCardObj, LabelsDropdownMenuOptionObj } from "../../utils/types";
+import { CaseLabelObj, DashboardCaseCardObj, LabelsDropdownMenuOptionObj } from "../../types/api";
 import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
 import { getCaseLabels } from "./api/get-case-labels";
 

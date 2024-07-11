@@ -1,4 +1,4 @@
-import { DocumentStatus, Sex } from "../../utils/types";
+import { DocumentStatus, Sex } from "../../types/api";
 
 // Typically, an entity represents a table in a relational database, and each
 // entity instance corresponds to a row in that table.

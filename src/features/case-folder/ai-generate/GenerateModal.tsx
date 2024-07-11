@@ -1,7 +1,7 @@
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import fileExtractor from "../../../components/Pdf/FileExtractor";
-import { DocumentObj } from "../../../utils/types";
+import { DocumentObj } from "../../../types/api";
 
 interface GenerateModalProps {
 	closeModal: () => void;

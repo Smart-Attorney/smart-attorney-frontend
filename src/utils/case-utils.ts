@@ -1,5 +1,5 @@
 import { SORT_OPTION } from "./constants/sort-options";
-import { DashboardCaseCardObj } from "./types";
+import { DashboardCaseCardObj } from "../types/api";
 
 export class CaseUtils {
 	private static CASE_FOLDER_COUNT_KEY = "case-folder-count";

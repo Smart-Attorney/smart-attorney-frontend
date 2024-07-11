@@ -3,7 +3,7 @@ import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { CaseUtils } from "../../utils/case-utils";
 import { SORT_OPTION, SortOptionsObj } from "../../utils/constants/sort-options";
 import { DocumentUtils } from "../../utils/document-utils";
-import { DashboardCaseCardObj, DocumentObj } from "../../utils/types";
+import { DashboardCaseCardObj, DocumentObj } from "../../types/api";
 import SortByLabelButton from "./SortByLabelButton";
 import SortByOptionButton from "./SortByOptionButton";
 

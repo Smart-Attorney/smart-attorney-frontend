@@ -1,4 +1,4 @@
-import { CaseLabelObj } from "./types";
+import { CaseLabelObj } from "../types/api";
 
 export class CaseLabelUtils {
 	/**

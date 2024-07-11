@@ -21,7 +21,7 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { DateUtils } from "../utils/date-utils";
-import { ClientObj, DashboardCaseCardObj, DocumentObj } from "../utils/types";
+import { ClientObj, DashboardCaseCardObj, DocumentObj } from "../types/api";
 
 function CaseFolder() {
 	const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
-import { DocumentObj, DocumentStatus } from "../../../utils/types";
+import { DocumentObj, DocumentStatus } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { DocumentEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";

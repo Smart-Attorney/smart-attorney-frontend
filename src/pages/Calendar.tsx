@@ -7,7 +7,7 @@ import { getUserDocumentDeadlines } from "../features/calendar/api/get-document-
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import { DateUtils } from "../utils/date-utils";
-import { DocumentObj } from "../utils/types";
+import { DocumentObj } from "../types/api";
 
 function Calendar() {
 	const [events, setEvents] = useState<Event[]>();

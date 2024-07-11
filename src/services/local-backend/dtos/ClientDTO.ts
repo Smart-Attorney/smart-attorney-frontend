@@ -1,4 +1,4 @@
-import { Sex } from "../../../utils/types";
+import { Sex } from "../../../types/api";
 
 export class ClientDTO {
 	private id: string;

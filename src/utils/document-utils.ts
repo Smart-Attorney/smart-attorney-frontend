@@ -1,6 +1,6 @@
 import { DOCUMENT_STATUS } from "./constants/document-status";
 import { SORT_OPTION } from "./constants/sort-options";
-import { DocumentObj } from "./types";
+import { DocumentObj } from "../types/api";
 
 export class DocumentUtils {
 	public static getUrgentDeadline = (documents: DocumentObj[]): number => {

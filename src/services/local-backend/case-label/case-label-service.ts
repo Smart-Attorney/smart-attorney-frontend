@@ -1,4 +1,4 @@
-import { CaseLabelObj } from "../../../utils/types";
+import { CaseLabelObj } from "../../../types/api";
 import { CasesService } from "../cases/cases-service";
 import { CaseLabelDAO } from "./case-label-dao";
 

@@ -3,7 +3,7 @@ import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import { nanoid } from "../../../lib/nanoid";
-import { DocumentObj, FileForUploadObj } from "../../../utils/types";
+import { DocumentObj, FileForUploadObj } from "../../../types/api";
 import { createCaseFiles } from "../api/create-case-files";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";

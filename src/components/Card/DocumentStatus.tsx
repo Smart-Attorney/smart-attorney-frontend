@@ -1,5 +1,5 @@
 import { DOCUMENT_STATUS } from "../../utils/constants/document-status";
-import { DocumentStatus as DocStatus } from "../../utils/types";
+import { DocumentStatus as DocStatus } from "../../types/api";
 
 interface FileStatusProps {
 	id?: string;

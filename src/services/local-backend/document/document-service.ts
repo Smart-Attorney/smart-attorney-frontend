@@ -1,4 +1,4 @@
-import { DocumentObj, DocumentStatus } from "../../../utils/types";
+import { DocumentObj, DocumentStatus } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CasesDAO } from "../cases/cases-dao";
 import { DocumentDAO } from "./document-dao";

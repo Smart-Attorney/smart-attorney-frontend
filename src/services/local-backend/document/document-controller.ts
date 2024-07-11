@@ -1,6 +1,6 @@
 import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
 import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
-import { DocumentStatus } from "../../../utils/types";
+import { DocumentStatus } from "../../../types/api";
 import { DocumentService } from "./document-service";
 
 export class DocumentController {

@@ -1,4 +1,4 @@
-import { CaseLabelObj } from "../../utils/types";
+import { CaseLabelObj } from "../../types/api";
 
 interface CardLabelsProps {
 	id?: string;

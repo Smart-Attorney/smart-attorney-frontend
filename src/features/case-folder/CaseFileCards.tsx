@@ -10,7 +10,7 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { DocumentObj, DocumentStatus as DocStatus } from "../../utils/types";
+import { DocumentObj, DocumentStatus as DocStatus } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteCaseFileById } from "./api/delete-case-file";
 import { updateDeadline } from "./api/update-case-file-deadline";

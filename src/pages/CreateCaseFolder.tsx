@@ -19,7 +19,7 @@ import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { FileForUploadObj, Sex } from "../utils/types";
+import { FileForUploadObj, Sex } from "../types/api";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();

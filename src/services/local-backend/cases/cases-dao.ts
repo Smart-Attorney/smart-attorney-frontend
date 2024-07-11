@@ -1,4 +1,4 @@
-import { CaseObj } from "../../../utils/types";
+import { CaseObj } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CasesEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";

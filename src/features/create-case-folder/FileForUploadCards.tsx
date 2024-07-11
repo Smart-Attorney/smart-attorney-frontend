@@ -1,6 +1,6 @@
 import RenderDocument from "../../components/Pdf/RenderDocument";
 import CardGrid from "../../layouts/CardGrid";
-import { FileForUploadObj } from "../../utils/types";
+import { FileForUploadObj } from "../../types/api";
 
 interface CaseFileProps {
 	filesForUpload: FileForUploadObj[];

@@ -11,7 +11,7 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
-import { DashboardCaseCardObj } from "../utils/types";
+import { DashboardCaseCardObj } from "../types/api";
 
 function Dashboard() {
 	const navigate = useNavigate();

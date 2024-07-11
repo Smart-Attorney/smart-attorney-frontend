@@ -1,4 +1,4 @@
-import { ButtonProps } from "../../utils/types";
+import { ButtonProps } from "../../types/api";
 
 function ModalButton({ title, name, type, className, style, isDisabled, onClick }: Partial<ButtonProps>) {
 	return (

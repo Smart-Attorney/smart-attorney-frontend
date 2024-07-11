@@ -1,5 +1,5 @@
 import { nanoid } from "../../../lib/nanoid";
-import { CaseLabelObj } from "../../../utils/types";
+import { CaseLabelObj } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CaseLabelEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
