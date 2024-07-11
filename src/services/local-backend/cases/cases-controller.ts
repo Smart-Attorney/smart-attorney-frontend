@@ -1,5 +1,5 @@
+import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
-import { UpdateCaseFolderLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
 import { CasesService } from "./cases-service";
 
@@ -89,10 +89,9 @@ export class CasesController {
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
-		const urlArray = request.url.split("/");
-		const caseId: string = urlArray[urlArray.length - 1];
-		const newDate: UpdateCaseFolderLastOpenedDateDTO = await request.json();
-		const updatedDate = await this.casesService.updateLastOpenedDate(userId, caseId, newDate);
+		const body: UpdateCaseLastOpenedDateDTO = await request.json();
+		const { id } = body;
+		const updatedDate = await this.casesService.updateLastOpenedDate(userId, id);
 		if (updatedDate !== null) {
 			const updatedCaseFolders = await this.casesService.getAllByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);

@@ -1,13 +1,14 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { CasesController } from "../../../services/local-backend/cases/cases-controller";
+import { DashboardCaseCardObj } from "../../../types/api";
 
-export type UpdateCaseFolderLastOpenedDateDTO = number;
+export type UpdateCaseLastOpenedDateDTO = Pick<DashboardCaseCardObj, "id">;
 
-const mockApi = async (folderId: string, date: UpdateCaseFolderLastOpenedDateDTO) => {
-	const request = mockRequest.put(`/case/${folderId}`, date);
+const mockApi = async (caseId: string, data: UpdateCaseLastOpenedDateDTO) => {
+	const request = mockRequest.patch(`/case/${caseId}`, data);
 	return await new CasesController().updateLastOpenedDate(request);
 };
 
-export const updateLastOpenedDate = async (folderId: string, date: UpdateCaseFolderLastOpenedDateDTO) => {
-	return await mockApi(folderId, date);
+export const updateCaseLastOpenedDate = async (caseId: string, data: UpdateCaseLastOpenedDateDTO) => {
+	return await mockApi(caseId, data);
 };

@@ -1,5 +1,5 @@
-import { DocumentUtils } from "../../../utils/document-utils";
 import { CaseObj, DashboardCaseCardObj } from "../../../types/api";
+import { DocumentUtils } from "../../../utils/document-utils";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
 import { ClientDAO } from "../client/client-dao";
@@ -77,9 +77,9 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateLastOpenedDate(userId: string, caseId: string, newDate: number): Promise<number | null> {
-		if (!userId || !caseId || !newDate) return null;
-		const isDateUpdated = await this.casesDao.updateLastOpenedDate(userId, caseId, newDate);
+	public async updateLastOpenedDate(userId: string, caseId: string): Promise<number | null> {
+		if (!userId || !caseId) return null;
+		const isDateUpdated = await this.casesDao.updateLastOpenedDate(userId, caseId);
 		if (isDateUpdated !== null) {
 			return isDateUpdated;
 		}
@@ -108,11 +108,7 @@ export class CasesService {
 		return null;
 	}
 
-	public async deleteLabelById(
-		userId: string,
-		caseId: string,
-		labelId: string
-	): Promise<DashboardCaseCardObj | null> {
+	public async deleteLabelById(userId: string, caseId: string, labelId: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !labelId) return null;
 		const isLabelDeleted = await this.caseLabelDao.deleteById(caseId, labelId);
 		if (isLabelDeleted) {

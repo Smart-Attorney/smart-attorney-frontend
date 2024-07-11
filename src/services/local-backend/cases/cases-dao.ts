@@ -57,17 +57,18 @@ export class CasesDAO {
 		return null;
 	}
 
-	public async updateLastOpenedDate(userId: string, caseId: string, newDate: number): Promise<number | null> {
+	public async updateLastOpenedDate(userId: string, caseId: string): Promise<number | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
+		const currentDateUnixMilliseconds = Date.now();
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].fk_user_id === userId && cases[i].case_id === caseId) {
-				cases[i].last_opened_date = newDate;
+				cases[i].last_opened_date = currentDateUnixMilliseconds;
 				break;
 			}
 		}
 		const success = await this.dbConn.setArray(this.CASES_KEY, cases);
 		if (success) {
-			return newDate;
+			return currentDateUnixMilliseconds;
 		}
 		return null;
 	}

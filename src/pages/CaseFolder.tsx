@@ -12,8 +12,11 @@ import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import { getCase } from "../features/case-folder/api/get-case";
 import { getClient } from "../features/case-folder/api/get-client";
 import { getDocument } from "../features/case-folder/api/get-document";
+import {
+	updateCaseLastOpenedDate,
+	UpdateCaseLastOpenedDateDTO,
+} from "../features/case-folder/api/update-case-last-opened-date";
 import { updateCaseName, UpdateCaseNameDTO } from "../features/case-folder/api/update-case-name";
-import { updateLastOpenedDate } from "../features/case-folder/api/update-case-last-opened-date";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
@@ -78,7 +81,7 @@ function CaseFolder() {
 		handleGetCase();
 		handleGetClient();
 		return () => {
-			handleUpdateLastOpenedDate();
+			handleUpdateCaseLastOpenedDate();
 		};
 	}, []);
 
@@ -194,9 +197,10 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const handleUpdateLastOpenedDate = async (): Promise<void> => {
+	const handleUpdateCaseLastOpenedDate = async (): Promise<void> => {
+		const data: UpdateCaseLastOpenedDateDTO = { id: caseId.current! };
 		try {
-			const response = await updateLastOpenedDate(caseId.current!, Date.now());
+			const response = await updateCaseLastOpenedDate(caseId.current!, data);
 			if (response.ok) {
 				// for the future, maybe add a toast or something to confirm successful update
 			}
