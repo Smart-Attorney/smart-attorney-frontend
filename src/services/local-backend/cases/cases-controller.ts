@@ -1,5 +1,5 @@
-import { UpdateCaseFolderNameDTO } from "../../../features/case-folder/api/update-case-name";
-import { UpdateCaseFolderLastOpenedDateDTO } from "../../../features/case-folder/api/update-last-opened-date";
+import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
+import { UpdateCaseFolderLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
 import { CasesService } from "./cases-service";
 
@@ -112,8 +112,9 @@ export class CasesController {
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
-		const newName: UpdateCaseFolderNameDTO = await request.json();
-		const caseWithUpdatedName = await this.casesService.updateName(userId, caseId, newName);
+		const body: UpdateCaseNameDTO = await request.json();
+		const { name } = body;
+		const caseWithUpdatedName = await this.casesService.updateName(userId, caseId, name);
 		if (caseWithUpdatedName !== null) {
 			const body = JSON.stringify(caseWithUpdatedName);
 			const options = { status: 200 };

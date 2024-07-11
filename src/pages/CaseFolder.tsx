@@ -12,8 +12,8 @@ import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import { getCase } from "../features/case-folder/api/get-case";
 import { getClient } from "../features/case-folder/api/get-client";
 import { getDocument } from "../features/case-folder/api/get-document";
-import { updateCaseName } from "../features/case-folder/api/update-case-name";
-import { updateLastOpenedDate } from "../features/case-folder/api/update-last-opened-date";
+import { updateCaseName, UpdateCaseNameDTO } from "../features/case-folder/api/update-case-name";
+import { updateLastOpenedDate } from "../features/case-folder/api/update-case-last-opened-date";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
@@ -157,9 +157,10 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const handleUpdateCaseName = async (folderId: string, newFolderName: string) => {
+	const handleUpdateCaseName = async (caseId: string, newCaseName: string) => {
+		const data: UpdateCaseNameDTO = { id: caseId, name: newCaseName };
 		try {
-			const response = await updateCaseName(folderId, newFolderName);
+			const response = await updateCaseName(caseId, data);
 			if (response.ok) {
 				const data: DashboardCaseCardObj = await response.json();
 				setCaseFolder(data);
