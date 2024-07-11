@@ -3,7 +3,7 @@ import { SortIcon } from "../../assets/smart-attorney-figma/global";
 import { CaseUtils } from "../../utils/case-utils";
 import { SORT_OPTION, SortOptionsObj } from "../../utils/constants/sort-options";
 import { DocumentUtils } from "../../utils/document-utils";
-import { DocumentObj, DashboardCaseCardObj } from "../../utils/types";
+import { DashboardCaseCardObj, DocumentObj } from "../../utils/types";
 import SortByLabelButton from "./SortByLabelButton";
 import SortByOptionButton from "./SortByOptionButton";
 
@@ -14,11 +14,11 @@ interface SortBarProps {
 	caseFolderCards?: DashboardCaseCardObj[] | null;
 	setCaseFolderCards?: React.Dispatch<React.SetStateAction<DashboardCaseCardObj[] | null>>;
 	documentCards?: DocumentObj[];
-	setDocumentCards?: React.Dispatch<React.SetStateAction<DocumentObj[]>>;
+	updateDocumentCards?: (newDocuments: DocumentObj[]) => void;
 }
 
 function SortBar(props: SortBarProps) {
-	const { initialWidth, minWidth, options, caseFolderCards, setCaseFolderCards, documentCards, setDocumentCards } =
+	const { initialWidth, minWidth, options, caseFolderCards, setCaseFolderCards, documentCards, updateDocumentCards } =
 		props;
 
 	const optionsContainer = useRef<HTMLDivElement>(null);
@@ -105,10 +105,10 @@ function SortBar(props: SortBarProps) {
 	};
 
 	const sortDocumentCards = (sortOption: string) => {
-		if (!documentCards || !setDocumentCards) return;
+		if (!documentCards || !updateDocumentCards) return;
 		const sortedCards = DocumentUtils.sortByOption(documentCards, sortOption);
 		const shallowCopy = [...sortedCards]; // [1] See references below
-		setDocumentCards(shallowCopy as DocumentObj[]);
+		updateDocumentCards(shallowCopy as DocumentObj[]);
 	};
 
 	const handleSortByOption = (event: React.MouseEvent<HTMLParagraphElement>): void => {

@@ -1,4 +1,4 @@
-import { UpdateCaseFolderNameDTO } from "../../../features/case-folder/api/update-case-folder-name";
+import { UpdateCaseFolderNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { UpdateCaseFolderLastOpenedDateDTO } from "../../../features/case-folder/api/update-last-opened-date";
 import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
 import { CasesService } from "./cases-service";

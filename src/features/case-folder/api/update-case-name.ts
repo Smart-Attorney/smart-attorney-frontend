@@ -8,6 +8,6 @@ const mockApi = async (folderId: string, newFolderName: UpdateCaseFolderNameDTO)
 	return await new CasesController().updateName(request);
 };
 
-export const updateCaseFolderName = async (folderId: string, newFolderName: UpdateCaseFolderNameDTO) => {
+export const updateCaseName = async (folderId: string, newFolderName: UpdateCaseFolderNameDTO) => {
 	return await mockApi(folderId, newFolderName);
 };

@@ -9,11 +9,10 @@ import SortBar from "../components/SortBar/SortBar";
 import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
+import { getCase } from "../features/case-folder/api/get-case";
 import { getCaseFileByIdFromDB } from "../features/case-folder/api/get-case-file-by-id";
-import { getCaseFiles } from "../features/case-folder/api/get-case-files";
-import { getCaseFolder } from "../features/case-folder/api/get-case-folder";
 import { getCaseClient } from "../features/case-folder/api/get-client";
-import { updateCaseFolderName } from "../features/case-folder/api/update-case-folder-name";
+import { updateCaseName } from "../features/case-folder/api/update-case-name";
 import { updateLastOpenedDate } from "../features/case-folder/api/update-last-opened-date";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
@@ -22,24 +21,36 @@ import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { DateUtils } from "../utils/date-utils";
-import { DocumentObj, CaseObj, ClientObj } from "../utils/types";
+import { ClientObj, DashboardCaseCardObj, DocumentObj } from "../utils/types";
 
 function CaseFolder() {
 	const navigate = useNavigate();
 
 	const { id: idFromParams } = useParams();
-	const folderId = useRef(idFromParams);
+	const caseId = useRef(idFromParams);
 
 	const fileId = useRef<string>("");
 	const fileName = useRef<string>("");
 	const fileUrl = useRef<string>("");
 
-	const [caseFolder, setCaseFolder] = useState<CaseObj>({
+	const caseNameRef = useRef<HTMLHeadingElement>(null);
+	const newCaseName = useRef<string>("");
+	const [isCaseNameEditable, setIsCaseNameEditable] = useState<boolean>(false);
+
+	const [isClientModalOpen, setIsClientModalOpen] = useState<boolean>(false);
+	const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+	const [isFileModalOpen, setIsFileModalOpen] = useState<boolean>(false);
+	const [isGenerateModalOpen, setIsGenerateModalOpen] = useState<boolean>(false);
+
+	const [caseFolder, setCaseFolder] = useState<DashboardCaseCardObj>({
 		id: "",
 		name: "",
 		createdDate: 0,
 		lastOpenedDate: 0,
 		isOpen: true,
+		urgentDocumentDeadline: 0,
+		labels: [],
+		documents: [],
 	});
 
 	const [client, setClient] = useState<ClientObj>({
@@ -53,30 +64,18 @@ function CaseFolder() {
 		dateOfBirth: 0,
 	});
 
-	const [caseFiles, setCaseFiles] = useState<DocumentObj[]>([]);
-
-	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
-	const newCaseFolderName = useRef<string>("");
-	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
-
-	const [clientModalOpen, setClientModalOpen] = useState<boolean>(false);
-	const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
-	const [fileModalOpen, setFileModalOpen] = useState<boolean>(false);
-	const [generateModalOpen, setGenerateModalOpen] = useState<boolean>(false);
-
 	useEffect(() => {
-		if (caseFolderNameEditable) {
-			caseFolderNameRef.current?.focus();
+		if (isCaseNameEditable) {
+			caseNameRef.current?.focus();
 		}
-	}, [caseFolderNameEditable]);
+	}, [isCaseNameEditable]);
 
 	useEffect(() => {
-		if (folderId.current === undefined) {
+		if (caseId.current === undefined) {
 			navigate("/404");
 			return;
 		}
-		handleGetCaseFolder();
-		handleGetCaseFiles();
+		handleGetCase();
 		handleGetCaseClient();
 		return () => {
 			handleUpdateLastOpenedDate();
@@ -85,25 +84,13 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const handleGetCaseFolder = async () => {
+	const handleGetCase = async () => {
 		try {
-			const response = await getCaseFolder(folderId.current!);
+			const response = await getCase(caseId.current!);
 			if (response.ok) {
-				const data: CaseObj = await response.json();
+				const data: DashboardCaseCardObj = await response.json();
 				setCaseFolder(data);
-				newCaseFolderName.current = data.name;
-			}
-		} catch (error) {
-			alert(error);
-		}
-	};
-
-	const handleGetCaseFiles = async () => {
-		try {
-			const response = await getCaseFiles(folderId.current!);
-			if (response.ok) {
-				const data: DocumentObj[] = await response.json();
-				setCaseFiles(data);
+				newCaseName.current = data.name;
 			}
 		} catch (error) {
 			alert(error);
@@ -112,7 +99,7 @@ function CaseFolder() {
 
 	const handleGetCaseClient = async () => {
 		try {
-			const response = await getCaseClient(folderId.current!);
+			const response = await getCaseClient(caseId.current!);
 			if (response.ok) {
 				const data: ClientObj = await response.json();
 				setClient(data);
@@ -125,13 +112,13 @@ function CaseFolder() {
 	const handleGetFileToView = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id } = event.target as HTMLParagraphElement;
 		try {
-			const response = await getCaseFileByIdFromDB(folderId.current!, id);
+			const response = await getCaseFileByIdFromDB(caseId.current!, id);
 			if (response.ok) {
 				const file: DocumentObj = await response.json();
 				fileName.current = file.name;
 				fileId.current = file.id;
 				fileUrl.current = file.url;
-				setFileModalOpen(true);
+				setIsFileModalOpen(true);
 			}
 		} catch (error) {
 			alert(error);
@@ -141,40 +128,40 @@ function CaseFolder() {
 	/************************************************************/
 
 	const closeClientModal = (): void => {
-		setClientModalOpen(false);
+		setIsClientModalOpen(false);
 	};
 
 	const toggleClientModal = (): void => {
-		setClientModalOpen((prev) => !prev);
+		setIsClientModalOpen((prev) => !prev);
 	};
 
 	const closeGenerateModal = (): void => {
-		setGenerateModalOpen(false);
+		setIsGenerateModalOpen(false);
 	};
 
 	const toggleGenerateModal = (): void => {
-		setGenerateModalOpen((prev) => !prev);
+		setIsGenerateModalOpen((prev) => !prev);
 	};
 
 	const closeUploadModal = (): void => {
-		setUploadModalOpen(false);
+		setIsUploadModalOpen(false);
 	};
 
 	const toggleUploadModal = (): void => {
-		setUploadModalOpen((prev) => !prev);
+		setIsUploadModalOpen((prev) => !prev);
 	};
 
 	const closeViewFileModal = (): void => {
-		setFileModalOpen(false);
+		setIsFileModalOpen(false);
 	};
 
 	/************************************************************/
 
-	const handleUpdateCaseFolderName = async (folderId: string, newFolderName: string) => {
+	const handleUpdateCaseName = async (folderId: string, newFolderName: string) => {
 		try {
-			const response = await updateCaseFolderName(folderId, newFolderName);
+			const response = await updateCaseName(folderId, newFolderName);
 			if (response.ok) {
-				const data: CaseObj = await response.json();
+				const data: DashboardCaseCardObj = await response.json();
 				setCaseFolder(data);
 			}
 		} catch (error) {
@@ -182,8 +169,8 @@ function CaseFolder() {
 		}
 	};
 
-	const handleCaseFolderNameClick = () => {
-		setCaseFolderNameEditable(true);
+	const handleCaseNameClick = () => {
+		setIsCaseNameEditable(true);
 	};
 
 	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
@@ -192,23 +179,23 @@ function CaseFolder() {
 		if (innerHTML.trim().length === 0) {
 			document.getElementById("case-name")!.innerHTML = caseFolder.name;
 		}
-		caseFolderNameRef.current?.blur();
+		caseNameRef.current?.blur();
 	};
 
-	const handleCaseFolderNameBlur = (event: React.FocusEvent<HTMLHeadingElement>) => {
+	const handleCaseNameBlur = (event: React.FocusEvent<HTMLHeadingElement>) => {
 		const { innerHTML: newFolderName } = event.target;
-		setCaseFolderNameEditable(false);
+		setIsCaseNameEditable(false);
 		if (newFolderName === caseFolder.name) {
 			return;
 		}
-		handleUpdateCaseFolderName(folderId.current!, newFolderName);
+		handleUpdateCaseName(caseId.current!, newFolderName);
 	};
 
 	/************************************************************/
 
 	const handleUpdateLastOpenedDate = async (): Promise<void> => {
 		try {
-			const response = await updateLastOpenedDate(folderId.current!, Date.now());
+			const response = await updateLastOpenedDate(caseId.current!, Date.now());
 			if (response.ok) {
 				// for the future, maybe add a toast or something to confirm successful update
 			}
@@ -219,12 +206,13 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const addUploadedFileToCaseFileArray = (uploadedFile: DocumentObj): void => {
-		setCaseFiles((prev) => [...prev, uploadedFile]);
+	const addUploadedDocumentToDocumentArray = (uploadedFile: DocumentObj): void => {
+		const updatedDocuments = [...caseFolder.documents, uploadedFile];
+		setCaseFolder((prev) => ({ ...prev, documents: [...updatedDocuments] }));
 	};
 
-	const updateCaseFiles = (newCaseFileArray: DocumentObj[]) => {
-		setCaseFiles(newCaseFileArray);
+	const updateDocumentArray = (newDocuments: DocumentObj[]) => {
+		setCaseFolder((prev) => ({ ...prev, documents: newDocuments }));
 	};
 
 	/************************************************************/
@@ -242,26 +230,26 @@ function CaseFolder() {
 					id="case-name"
 					className="text-3xl font-bold text-white cursor-pointer"
 					title="Click to edit folder name"
-					contentEditable={caseFolderNameEditable}
+					contentEditable={isCaseNameEditable}
 					suppressContentEditableWarning={true}
-					ref={caseFolderNameRef}
-					onClick={handleCaseFolderNameClick}
-					onBlur={handleCaseFolderNameBlur}
+					ref={caseNameRef}
+					onClick={handleCaseNameClick}
+					onBlur={handleCaseNameBlur}
 					onKeyDown={handleEnterKeyPress}
 				>
-					{newCaseFolderName.current}
+					{newCaseName.current}
 				</h1>
 			</PageHeader>
 
-			<SearchBar cards={caseFiles} />
+			<SearchBar cards={caseFolder.documents} />
 
 			<SortBarWithButtons>
 				<SortBar
 					initialWidth={450}
 					minWidth={1111}
 					options={CASE_FOLDER}
-					documentCards={caseFiles}
-					setDocumentCards={setCaseFiles}
+					documentCards={caseFolder.documents}
+					updateDocumentCards={updateDocumentArray}
 				/>
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
@@ -280,20 +268,20 @@ function CaseFolder() {
 			</SortBarWithButtons>
 
 			<CaseFileCards
-				files={caseFiles}
+				files={caseFolder.documents}
 				onClick={(event) => handleGetFileToView(event)}
-				updateCaseFiles={updateCaseFiles}
+				updateCaseFiles={updateDocumentArray}
 			/>
 
-			{uploadModalOpen && (
+			{isUploadModalOpen && (
 				<UploadModal
 					caseFolderId={idFromParams!}
 					closeUploadModal={closeUploadModal}
-					addUploadedFileToCaseFileArray={addUploadedFileToCaseFileArray}
+					addUploadedFileToCaseFileArray={addUploadedDocumentToDocumentArray}
 				/>
 			)}
 
-			{fileModalOpen && (
+			{isFileModalOpen && (
 				<ViewCaseFileModal
 					fileName={fileName.current}
 					fileID={fileId.current}
@@ -302,9 +290,9 @@ function CaseFolder() {
 				/>
 			)}
 
-			{generateModalOpen && <GenerateModal closeModal={closeGenerateModal} files={caseFiles} />}
+			{isGenerateModalOpen && <GenerateModal closeModal={closeGenerateModal} files={caseFolder.documents} />}
 
-			{clientModalOpen && (
+			{isClientModalOpen && (
 				<ClientModal
 					client={{
 						firstName: client.firstName,
