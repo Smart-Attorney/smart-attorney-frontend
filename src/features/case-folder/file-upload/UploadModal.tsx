@@ -4,7 +4,7 @@ import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import { nanoid } from "../../../lib/nanoid";
 import { DocumentObj, FileForUploadObj } from "../../../types/api";
-import { createCaseFiles } from "../api/create-case-files";
+import { createDocuments } from "../api/create-documents";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
@@ -30,7 +30,7 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 		}
 
 		try {
-			const response = await createCaseFiles(caseFolderId, filesFormData);
+			const response = await createDocuments(caseFolderId, filesFormData);
 			if (response.ok) {
 				const createdCaseFiles: DocumentObj[] = await response.json();
 				for (let i = 0, n = createdCaseFiles.length; i < n; i++) {

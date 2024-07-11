@@ -13,6 +13,6 @@ const mockApi = async (folderId: string, data: CreateCaseFilesDTO) => {
 	return await new DocumentController().createDocuments(request);
 };
 
-export const createCaseFiles = async (folderId: string, data: CreateCaseFilesDTO) => {
+export const createDocuments = async (folderId: string, data: CreateCaseFilesDTO) => {
 	return await mockApi(folderId, data);
 };

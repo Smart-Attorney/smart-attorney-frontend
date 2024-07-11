@@ -10,9 +10,9 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { DocumentObj, DocumentStatus as DocStatus } from "../../types/api";
+import { DocumentStatus as DocStatus, DocumentObj } from "../../types/api";
 import KebabMenu from "./KebabMenu";
-import { deleteCaseFileById } from "./api/delete-case-file";
+import { deleteDocument } from "./api/delete-document";
 import { updateDeadline } from "./api/update-case-file-deadline";
 import { updateCaseFileName } from "./api/update-case-file-name";
 import { updateCaseFileStatus } from "./api/update-case-file-status";
@@ -94,9 +94,9 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		}
 	};
 
-	const handleDeleteFile = async (fileId: string) => {
+	const handleDeleteDocument = async (fileId: string) => {
 		try {
-			const response = await deleteCaseFileById(folderId!, fileId);
+			const response = await deleteDocument(folderId!, fileId);
 			if (response.ok) {
 				const deletedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, files!);
@@ -121,7 +121,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 								updateFileStatus={handleUpdateFileStatus(file.id)}
 								updateFileName={handleUpdateFileName(file.id)}
 								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
-								deleteFile={() => handleDeleteFile(file.id)}
+								deleteFile={() => handleDeleteDocument(file.id)}
 							/>
 						</KebabMenuContainer>
 

@@ -10,8 +10,8 @@ import CaseFileCards from "../features/case-folder/CaseFileCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import { getCase } from "../features/case-folder/api/get-case";
-import { getCaseFileByIdFromDB } from "../features/case-folder/api/get-case-file-by-id";
-import { getCaseClient } from "../features/case-folder/api/get-client";
+import { getClient } from "../features/case-folder/api/get-client";
+import { getDocument } from "../features/case-folder/api/get-document";
 import { updateCaseName } from "../features/case-folder/api/update-case-name";
 import { updateLastOpenedDate } from "../features/case-folder/api/update-last-opened-date";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
@@ -19,9 +19,9 @@ import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
+import { ClientObj, DashboardCaseCardObj, DocumentObj } from "../types/api";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { DateUtils } from "../utils/date-utils";
-import { ClientObj, DashboardCaseCardObj, DocumentObj } from "../types/api";
 
 function CaseFolder() {
 	const navigate = useNavigate();
@@ -76,7 +76,7 @@ function CaseFolder() {
 			return;
 		}
 		handleGetCase();
-		handleGetCaseClient();
+		handleGetClient();
 		return () => {
 			handleUpdateLastOpenedDate();
 		};
@@ -97,9 +97,9 @@ function CaseFolder() {
 		}
 	};
 
-	const handleGetCaseClient = async () => {
+	const handleGetClient = async () => {
 		try {
-			const response = await getCaseClient(caseId.current!);
+			const response = await getClient(caseId.current!);
 			if (response.ok) {
 				const data: ClientObj = await response.json();
 				setClient(data);
@@ -109,10 +109,10 @@ function CaseFolder() {
 		}
 	};
 
-	const handleGetFileToView = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
+	const handleGetDocument = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
 		const { id } = event.target as HTMLParagraphElement;
 		try {
-			const response = await getCaseFileByIdFromDB(caseId.current!, id);
+			const response = await getDocument(caseId.current!, id);
 			if (response.ok) {
 				const file: DocumentObj = await response.json();
 				fileName.current = file.name;
@@ -269,7 +269,7 @@ function CaseFolder() {
 
 			<CaseFileCards
 				files={caseFolder.documents}
-				onClick={(event) => handleGetFileToView(event)}
+				onClick={(event) => handleGetDocument(event)}
 				updateCaseFiles={updateDocumentArray}
 			/>
 
