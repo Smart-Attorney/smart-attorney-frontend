@@ -15,7 +15,7 @@ import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
 import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
 import { updateCaseFileName } from "./api/update-document-name";
-import { updateCaseFileStatus } from "./api/update-document-status";
+import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-document-status";
 
 interface DocumentCardsProps {
 	documents: DocumentObj[] | undefined;
@@ -52,9 +52,10 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 	/************************************************************/
 
 	// curried function
-	const handleUpdateFileStatus = (documentId: string) => async (newFileStatus: DocStatus) => {
+	const handleUpdateDocumentStatus = (documentId: string) => async (newDocumentStatus: DocStatus) => {
+		const data: UpdateDocumentStatusDTO = { id: documentId, status: newDocumentStatus };
 		try {
-			const response = await updateCaseFileStatus(caseId!, documentId, newFileStatus);
+			const response = await updateDocumentStatus(caseId!, documentId, data);
 			if (response.ok) {
 				const updatedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
@@ -119,7 +120,7 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 						<KebabMenuContainer>
 							<KebabMenu
 								fileName={file.name}
-								updateFileStatus={handleUpdateFileStatus(file.id)}
+								updateFileStatus={handleUpdateDocumentStatus(file.id)}
 								updateFileName={handleUpdateFileName(file.id)}
 								setDeadline={(event) => handleUpdateDocumentDeadline(file.id, event)}
 								deleteFile={() => handleDeleteDocument(file.id)}
