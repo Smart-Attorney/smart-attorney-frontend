@@ -14,7 +14,7 @@ import { DocumentStatus as DocStatus, DocumentObj } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
 import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
-import { updateCaseFileName } from "./api/update-document-name";
+import { updateDocumentName, UpdateDocumentNameDTO } from "./api/update-document-name";
 import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-document-status";
 
 interface DocumentCardsProps {
@@ -67,9 +67,10 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 	};
 
 	// curried function
-	const handleUpdateFileName = (documentId: string) => async (newFileName: string) => {
+	const handleUpdateDocumentName = (documentId: string) => async (newDocumentName: string) => {
+		const data: UpdateDocumentNameDTO = { id: documentId, name: newDocumentName };
 		try {
-			const response = await updateCaseFileName(caseId!, documentId, newFileName);
+			const response = await updateDocumentName(caseId!, documentId, data);
 			if (response.ok) {
 				const updatedDocument: DocumentObj = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
@@ -121,7 +122,7 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 							<KebabMenu
 								fileName={file.name}
 								updateFileStatus={handleUpdateDocumentStatus(file.id)}
-								updateFileName={handleUpdateFileName(file.id)}
+								updateFileName={handleUpdateDocumentName(file.id)}
 								setDeadline={(event) => handleUpdateDocumentDeadline(file.id, event)}
 								deleteFile={() => handleDeleteDocument(file.id)}
 							/>
