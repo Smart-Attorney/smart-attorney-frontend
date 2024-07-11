@@ -4,6 +4,7 @@ export class mockRequest {
 	private static POST = "POST";
 	private static GET = "GET";
 	private static PUT = "PUT";
+	private static PATCH = "PATCH";
 	private static DELETE = "DELETE";
 
 	static getToken() {
@@ -38,6 +39,16 @@ export class mockRequest {
 	static put(url: string, data: unknown): Request {
 		const options = {
 			method: this.PUT,
+			headers: { Authorization: this.getToken() },
+			body: JSON.stringify(data),
+		};
+		const request = new Request(url, options);
+		return request;
+	}
+
+	static patch(url: string, data: unknown): Request {
+		const options = {
+			method: this.PATCH,
 			headers: { Authorization: this.getToken() },
 			body: JSON.stringify(data),
 		};

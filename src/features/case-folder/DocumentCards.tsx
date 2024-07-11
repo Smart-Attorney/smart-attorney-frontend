@@ -13,18 +13,18 @@ import CardGrid from "../../layouts/CardGrid";
 import { DocumentStatus as DocStatus, DocumentObj } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
-import { updateDeadline } from "./api/update-case-file-deadline";
-import { updateCaseFileName } from "./api/update-case-file-name";
-import { updateCaseFileStatus } from "./api/update-case-file-status";
+import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
+import { updateCaseFileName } from "./api/update-document-name";
+import { updateCaseFileStatus } from "./api/update-document-status";
 
-interface CaseFileCardsProps {
-	files: DocumentObj[] | undefined;
+interface DocumentCardsProps {
+	documents: DocumentObj[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	updateCaseFiles: (newCaseFileArray: DocumentObj[]) => void;
+	updateDocuments: (newDocuments: DocumentObj[]) => void;
 }
 
-function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
-	const { id: folderId } = useParams();
+function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsProps) {
+	const { id: caseId } = useParams();
 
 	/************************************************************/
 
@@ -52,13 +52,13 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	/************************************************************/
 
 	// curried function
-	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: DocStatus) => {
+	const handleUpdateFileStatus = (documentId: string) => async (newFileStatus: DocStatus) => {
 		try {
-			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
+			const response = await updateCaseFileStatus(caseId!, documentId, newFileStatus);
 			if (response.ok) {
 				const updatedDocument: DocumentObj = await response.json();
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
-				updateCaseFiles(updatedDocumentArray);
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -66,41 +66,42 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	};
 
 	// curried function
-	const handleUpdateFileName = (fileId: string) => async (newFileName: string) => {
+	const handleUpdateFileName = (documentId: string) => async (newFileName: string) => {
 		try {
-			const response = await updateCaseFileName(folderId!, fileId, newFileName);
+			const response = await updateCaseFileName(caseId!, documentId, newFileName);
 			if (response.ok) {
 				const updatedDocument: DocumentObj = await response.json();
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
-				updateCaseFiles(updatedDocumentArray);
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
 
-	const handleSetFileDeadline = async (fileId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleUpdateDocumentDeadline = async (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
-		const deadlineInUnixTime = Date.parse(value);
+		const deadlineUnixMilliseconds = Date.parse(value);
+		const data: UpdateDocumentDeadlineDTO = { id: documentId, deadline: deadlineUnixMilliseconds };
 		try {
-			const response = await updateDeadline(folderId!, fileId, deadlineInUnixTime);
+			const response = await updateDocumentDeadline(caseId!, documentId, data);
 			if (response.ok) {
 				const updatedDocument: DocumentObj = await response.json();
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
-				updateCaseFiles(updatedDocumentArray);
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
 
-	const handleDeleteDocument = async (fileId: string) => {
+	const handleDeleteDocument = async (documentId: string) => {
 		try {
-			const response = await deleteDocument(folderId!, fileId);
+			const response = await deleteDocument(caseId!, documentId);
 			if (response.ok) {
 				const deletedDocument: DocumentObj = await response.json();
-				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, files!);
-				updateCaseFiles(updatedDocumentArray);
+				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
@@ -111,7 +112,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 
 	return (
 		<CardGrid>
-			{files?.map((file) => {
+			{documents?.map((file) => {
 				return (
 					<CardContainer key={file.id} id={file.id}>
 						{/* Kebab Menu */}
@@ -120,7 +121,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 								fileName={file.name}
 								updateFileStatus={handleUpdateFileStatus(file.id)}
 								updateFileName={handleUpdateFileName(file.id)}
-								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
+								setDeadline={(event) => handleUpdateDocumentDeadline(file.id, event)}
 								deleteFile={() => handleDeleteDocument(file.id)}
 							/>
 						</KebabMenuContainer>
@@ -146,4 +147,4 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	);
 }
 
-export default CaseFileCards;
+export default DocumentCards;

@@ -6,7 +6,7 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import CaseFileCards from "../features/case-folder/CaseFileCards";
+import DocumentCards from "../features/case-folder/DocumentCards";
 import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
 import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import { getCase } from "../features/case-folder/api/get-case";
@@ -267,10 +267,10 @@ function CaseFolder() {
 				</div>
 			</SortBarWithButtons>
 
-			<CaseFileCards
-				files={caseFolder.documents}
+			<DocumentCards
+				documents={caseFolder.documents}
 				onClick={(event) => handleGetDocument(event)}
-				updateCaseFiles={updateDocumentArray}
+				updateDocuments={updateDocumentArray}
 			/>
 
 			{isUploadModalOpen && (

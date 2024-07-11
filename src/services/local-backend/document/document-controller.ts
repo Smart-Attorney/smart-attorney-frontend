@@ -1,5 +1,5 @@
-import { UpdateCaseFileDeadlineDTO } from "../../../features/case-folder/api/update-case-file-deadline";
-import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-case-file-name";
+import { UpdateDocumentDeadlineDTO } from "../../../features/case-folder/api/update-document-deadline";
+import { UpdateCaseFileNameDTO } from "../../../features/case-folder/api/update-document-name";
 import { DocumentStatus } from "../../../types/api";
 import { DocumentService } from "./document-service";
 
@@ -114,8 +114,9 @@ export class DocumentController {
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 2];
 		const documentId = urlArray[urlArray.length - 1];
-		const newDeadline: UpdateCaseFileDeadlineDTO = await request.json();
-		const updatedDocument = await this.documentService.updateDeadline(caseId, documentId, newDeadline);
+		const body: UpdateDocumentDeadlineDTO = await request.json();
+		const { deadline } = body;
+		const updatedDocument = await this.documentService.updateDeadline(caseId, documentId, deadline);
 		if (updatedDocument !== null) {
 			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
