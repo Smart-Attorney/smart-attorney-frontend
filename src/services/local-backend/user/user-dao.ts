@@ -1,4 +1,4 @@
-import { RegisterCredentialsDTO } from "../../../features/register/api/register";
+import { RegisterUserDTO } from "../../../features/register/api/register";
 import { nanoid } from "../../../lib/nanoid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { UserEntity } from "../../local-database/entities";
@@ -10,6 +10,16 @@ export class UserDAO {
 
 	constructor() {
 		this.dbConn = new DatabaseConnection();
+	}
+
+	public async getById(userId: string): Promise<UserEntity | null> {
+		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
+		for (let i = 0, n = users.length; i < n; i++) {
+			if (users[i].user_id === userId) {
+				return users[i];
+			}
+		}
+		return null;
 	}
 
 	public async getIdByCompanyEmail(companyEmail: string): Promise<string | null> {
@@ -42,17 +52,7 @@ export class UserDAO {
 		return null;
 	}
 
-	public async getById(userId: string): Promise<UserEntity | null> {
-		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
-		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].user_id === userId) {
-				return users[i];
-			}
-		}
-		return null;
-	}
-
-	public async add(data: RegisterCredentialsDTO): Promise<UserEntity | null> {
+	public async add(data: RegisterUserDTO): Promise<UserEntity | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		const newUser: UserEntity = {
 			user_id: nanoid(16),
