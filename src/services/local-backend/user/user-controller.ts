@@ -1,5 +1,5 @@
 import { RegisterUserDTO } from "../../../features/register/api/register";
-import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
+import { SignInUserDTO } from "../../../features/sign-in/api/sign-in";
 import { UserService } from "./user-service";
 
 export class UserController {
@@ -39,7 +39,7 @@ export class UserController {
 	}
 
 	public async verifyUser(request: Request) {
-		const data: SignInCredentialsDTO = await request.json();
+		const data: SignInUserDTO = await request.json();
 		const verifiedUserToken = await this.userService.verify(data);
 		if (verifiedUserToken !== null) {
 			const body = JSON.stringify(verifiedUserToken);

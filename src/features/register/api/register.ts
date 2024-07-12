@@ -16,6 +16,6 @@ const fetchApi = async (data: RegisterUserDTO) => {
 	return await fetchWrapper.post(url, data);
 };
 
-export const registerNewUser = async (data: RegisterUserDTO) => {
+export const register = async (data: RegisterUserDTO) => {
 	return useLocalBackend ? await mockApi(data) : await fetchApi(data);
 };

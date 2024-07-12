@@ -1,5 +1,5 @@
 import { RegisterUserDTO } from "../../../features/register/api/register";
-import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
+import { SignInUserDTO } from "../../../features/sign-in/api/sign-in";
 import { UserProfile } from "../../../pages/Settings";
 import { UserDAO } from "./user-dao";
 
@@ -38,7 +38,7 @@ export class UserService {
 		return null;
 	}
 
-	public async verify(data: SignInCredentialsDTO): Promise<{ id: string; firstName: string; lastName: string } | null> {
+	public async verify(data: SignInUserDTO): Promise<{ id: string; firstName: string; lastName: string } | null> {
 		const { companyEmail, password } = data;
 		if (companyEmail.trim().length === 0) return null;
 		if (password.trim().length === 0) return null;
