@@ -1,4 +1,4 @@
-export interface UserObj {
+export type UserObj = {
 	id: string;
 	firstName: string;
 	lastName: string;
@@ -6,9 +6,9 @@ export interface UserObj {
 	companyEmail: string;
 	email: string;
 	password: string;
-}
+};
 
-export interface DashboardCaseCardObj {
+export type DashboardCaseCardObj = {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -17,22 +17,22 @@ export interface DashboardCaseCardObj {
 	urgentDocumentDeadline: number;
 	labels: CaseLabelObj[];
 	documents: DocumentObj[];
-}
+};
 
-export interface CaseObj {
+export type CaseObj = {
 	id: string;
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
 	isOpen: boolean;
-}
+};
 
-export interface CaseLabelObj {
+export type CaseLabelObj = {
 	id: string;
 	name: string | CaseLabelPreset;
-}
+};
 
-export interface ClientObj {
+export type ClientObj = {
 	id: string;
 	firstName: string;
 	middleName: string;
@@ -41,9 +41,9 @@ export interface ClientObj {
 	sex: Sex;
 	countryOfCitizenship: string;
 	primaryLanguage: string;
-}
+};
 
-export interface DocumentObj {
+export type DocumentObj = {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -51,7 +51,7 @@ export interface DocumentObj {
 	status: DocumentStatus;
 	deadline: number;
 	url: string;
-}
+};
 
 export type Sex = "Male" | "Female" | "Other";
 
@@ -59,18 +59,18 @@ export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
 
 export type CaseLabelPreset = "Asylum" | "Employment" | "Family" | "Humanitarian";
 
-export interface LabelsDropdownMenuOptionObj {
+export type LabelsDropdownMenuOptionObj = {
 	id: string;
 	name: string;
 	isClicked: boolean;
-}
+};
 
-export interface FileForUploadObj {
+export type FileForUploadObj = {
 	id: string;
 	data: File;
-}
+};
 
-export interface ButtonProps {
+export type ButtonProps = {
 	img: string;
 	title: string;
 	name: string;
@@ -79,4 +79,4 @@ export interface ButtonProps {
 	style: React.CSSProperties;
 	isDisabled: boolean;
 	onClick: () => void;
-}
+};

@@ -4,7 +4,7 @@ import { DocumentStatus, Sex } from "../../types/api";
 // entity instance corresponds to a row in that table.
 // https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
 
-export interface UserEntity {
+export type UserEntity = {
 	user_id: string;
 	first_name: string;
 	last_name: string;
@@ -12,24 +12,24 @@ export interface UserEntity {
 	company_email: string;
 	email: string;
 	password: string;
-}
+};
 
-export interface CasesEntity {
+export type CasesEntity = {
 	case_id: string; // from nanoid
 	case_name: string;
 	created_date: number; // as unix time
 	last_opened_date: number; // as unix time
 	is_open: boolean;
 	fk_user_id: string; // from nanoid
-}
+};
 
-export interface CaseLabelEntity {
+export type CaseLabelEntity = {
 	label_id: string;
 	label_name: string;
 	fk_case_id: string;
-}
+};
 
-export interface ClientEntity {
+export type ClientEntity = {
 	client_id: string;
 	first_name: string;
 	middle_name: string;
@@ -39,9 +39,9 @@ export interface ClientEntity {
 	country_of_citizenship: string;
 	primary_language: string;
 	fk_case_id: string;
-}
+};
 
-export interface DocumentEntity {
+export type DocumentEntity = {
 	document_id: string;
 	document_name: string;
 	created_date: number;
@@ -50,7 +50,7 @@ export interface DocumentEntity {
 	deadline: number; // as unix time
 	url: string;
 	fk_case_id: string;
-}
+};
 
 export type sex_option = Sex;
 

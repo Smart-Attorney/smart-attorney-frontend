@@ -1,6 +1,6 @@
 import { DocumentStatus, Sex } from "../types/api";
 
-export interface UserDTO {
+export type UserDTO = {
 	id: string;
 	firstName: string;
 	lastName: string;
@@ -8,9 +8,9 @@ export interface UserDTO {
 	companyEmail: string;
 	email: string;
 	password: string;
-}
+};
 
-export interface CaseDTO {
+export type CaseDTO = {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -19,14 +19,14 @@ export interface CaseDTO {
 	urgentDocumentDeadline: number;
 	labels: CaseLabelDTO[];
 	documents: DocumentDTO[];
-}
+};
 
-export interface CaseLabelDTO {
+export type CaseLabelDTO = {
 	id: string;
 	name: string;
-}
+};
 
-export interface ClientDTO {
+export type ClientDTO = {
 	id: string;
 	firstName: string;
 	middleName: string;
@@ -35,9 +35,9 @@ export interface ClientDTO {
 	sex: Sex;
 	countryOfCitizenship: string;
 	primaryLanguage: string;
-}
+};
 
-export interface DocumentDTO {
+export type DocumentDTO = {
 	id: string;
 	name: string;
 	createdDate: number;
@@ -45,4 +45,4 @@ export interface DocumentDTO {
 	status: DocumentStatus;
 	deadline: number;
 	url: string;
-}
+};
