@@ -6,6 +6,6 @@ const mockApi = async () => {
 	return await new CasesController().getAllCasesByUserId(request);
 };
 
-export const getUserCaseFolders = async () => {
+export const getCases = async () => {
 	return await mockApi();
 };
