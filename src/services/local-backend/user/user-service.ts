@@ -1,5 +1,6 @@
 import { RegisterUserDTO } from "../../../features/register/api/register";
 import { SignInCredentialsDTO } from "../../../features/sign-in/api/sign-in";
+import { UserProfile } from "../../../pages/Settings";
 import { UserDAO } from "./user-dao";
 
 export class UserService {
@@ -11,9 +12,15 @@ export class UserService {
 
 	public async getById(userId: string) {
 		if (!userId) return null;
-		const retrievedUser = await this.userDao.getById(userId);
-		if (retrievedUser !== null) {
-			return retrievedUser;
+		const foundUser = await this.userDao.getById(userId);
+		if (foundUser !== null) {
+			const userProfile: UserProfile = {
+				firstName: foundUser.first_name,
+				lastName: foundUser.last_name,
+				firmName: foundUser.firm_name,
+				companyEmail: foundUser.company_email,
+			};
+			return userProfile;
 		}
 		return null;
 	}

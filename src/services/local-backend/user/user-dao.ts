@@ -55,12 +55,11 @@ export class UserDAO {
 	public async add(data: RegisterUserDTO): Promise<UserEntity | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		const newUser: UserEntity = {
-			user_id: nanoid(16),
+			user_id: nanoid(20),
 			first_name: data.firstName,
 			last_name: data.lastName,
 			firm_name: data.firmName,
 			company_email: data.companyEmail,
-			email: "",
 			password: data.password,
 		};
 		const newUsersArr = [...users, newUser];

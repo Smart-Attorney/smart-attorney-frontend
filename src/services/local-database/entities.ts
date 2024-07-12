@@ -10,7 +10,6 @@ export type UserEntity = {
 	last_name: string;
 	firm_name: string;
 	company_email: string;
-	email: string;
 	password: string;
 };
 

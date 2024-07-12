@@ -8,7 +8,6 @@ export class MockUser {
 		last_name: "Doe",
 		firm_name: "Attorney Law Group",
 		company_email: "lawyer@email.com",
-		email: "personal@email.com",
 		password: "password123",
 	});
 

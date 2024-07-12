@@ -48,13 +48,8 @@ function Settings() {
 		try {
 			const response = await getUserInfo();
 			if (response.ok) {
-				const data = await response.json();
-				setUser({
-					firstName: data.first_name,
-					lastName: data.last_name,
-					firmName: data.firm_name,
-					companyEmail: data.company_email,
-				});
+				const data: UserProfile = await response.json();
+				setUser(data);
 			}
 		} catch (error) {
 			alert(error);
