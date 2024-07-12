@@ -9,9 +9,9 @@ import SortBar from "../components/SortBar/SortBar";
 import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
-import { createDocuments } from "../features/create-case-folder/api/create-case-files";
-import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
+import { CreateCaseDTO, createCase } from "../features/create-case-folder/api/create-case";
 import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
+import { createDocuments } from "../features/create-case-folder/api/create-documents";
 import uploadDocuments from "../features/uploadDocument/uploadDocuments";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
@@ -89,12 +89,12 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateCase = async () => {
-		const newCaseFolder: CreateCaseFolderDTO = {
-			folderId: caseFolderId.current,
-			folderName: caseFolderName,
+		const newCase: CreateCaseDTO = {
+			id: caseFolderId.current,
+			name: caseFolderName,
 		};
 		try {
-			const response = await createCaseFolder(newCaseFolder);
+			const response = await createCase(newCase);
 			if (response.ok) {
 				return true;
 			}
@@ -127,13 +127,13 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateDocuments = async () => {
-		const filesFormData = new FormData();
-		filesFormData.append("caseFolderId", caseFolderId.current);
+		const filesData = new FormData();
+		filesData.append("caseFolderId", caseFolderId.current);
 		for (let i = 0, n = filesForUpload.length; i < n; i++) {
-			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
+			filesData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
 		try {
-			const response = await createDocuments(filesFormData);
+			const response = await createDocuments(filesData);
 			if (response.ok) {
 				return true;
 			}

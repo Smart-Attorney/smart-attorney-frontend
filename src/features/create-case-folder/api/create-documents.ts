@@ -1,7 +1,6 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { DocumentController } from "../../../services/local-backend/document/document-controller";
-
-export type CreateDocumentsDTO = FormData;
+import { CreateDocumentsDTO } from "../../case-folder/api/create-documents";
 
 const mockApi = async (data: CreateDocumentsDTO) => {
 	const options = {

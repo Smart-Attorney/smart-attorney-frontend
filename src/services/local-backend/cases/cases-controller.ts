@@ -1,6 +1,6 @@
 import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
-import { CreateCaseFolderDTO } from "../../../features/create-case-folder/api/create-case-folder";
+import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
 import { CasesService } from "./cases-service";
 
 export class CasesController {
@@ -49,9 +49,9 @@ export class CasesController {
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
-		const newCase: CreateCaseFolderDTO = await request.json();
-		const caseId = newCase.folderId;
-		const caseName = newCase.folderName;
+		const body: CreateCaseDTO = await request.json();
+		const caseId = body.id;
+		const caseName = body.name;
 		const createdCase = await this.casesService.create(userId, caseId, caseName);
 		if (createdCase !== null) {
 			const body = JSON.stringify(createdCase);

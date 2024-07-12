@@ -2,7 +2,7 @@ import { mockRequest } from "../../../lib/mock-request";
 import { ClientController } from "../../../services/local-backend/client/client-controller";
 import { Sex } from "../../../types/api";
 
-export interface CreateClientDTO {
+export type CreateClientDTO = {
 	firstName: string;
 	middleName: string;
 	lastName: string;
@@ -11,7 +11,7 @@ export interface CreateClientDTO {
 	countryOfCitizenship: string;
 	primaryLanguage: string;
 	caseFolderId: string;
-}
+};
 
 const mockApi = async (data: CreateClientDTO) => {
 	const request = mockRequest.post("/create-case", data);

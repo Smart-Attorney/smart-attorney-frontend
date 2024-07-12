@@ -1,16 +1,14 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { CasesController } from "../../../services/local-backend/cases/cases-controller";
+import { DashboardCaseCardObj } from "../../../types/api";
 
-export interface CreateCaseFolderDTO {
-	folderId: string;
-	folderName: string;
-}
+export type CreateCaseDTO = Pick<DashboardCaseCardObj, "id" | "name">;
 
-const mockApi = async (data: CreateCaseFolderDTO) => {
+const mockApi = async (data: CreateCaseDTO) => {
 	const request = mockRequest.post("/create-case", data);
 	return await new CasesController().createCase(request);
 };
 
-export const createCaseFolder = async (data: CreateCaseFolderDTO) => {
+export const createCase = async (data: CreateCaseDTO) => {
 	return await mockApi(data);
 };
