@@ -10,27 +10,24 @@ export class DocumentController {
 		this.documentService = new DocumentService();
 	}
 
-	public async createDocuments(request: Request): Promise<Response> {
+	public async getAllDocumentsByUserId(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
-		const formData = await request.formData();
-		const caseId = formData.get("caseFolderId") as string;
-		const files = formData.getAll("files[]") as File[];
-		const newDocuments = await this.documentService.create(userId, caseId, files);
-		if (newDocuments !== null) {
-			const body = JSON.stringify(newDocuments);
+		const retrievedDeadlines = await this.documentService.getAllByUserId(userId);
+		if (retrievedDeadlines != null) {
+			const body = JSON.stringify(retrievedDeadlines);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with uploading the file(s).");
+			throw new Error("There was an issue with retrieving the document deadlines.");
 		}
 	}
 
-	public async getDocumentsByCaseId(request: Request): Promise<Response> {
+	public async getAllDocumentsByCaseId(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
 		const retrievedDocuments = await this.documentService.getAllByCaseId(caseId);
@@ -63,20 +60,23 @@ export class DocumentController {
 		}
 	}
 
-	public async getDocumentDeadlines(request: Request): Promise<Response> {
+	public async createDocuments(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
-		const retrievedDeadlines = await this.documentService.getAllByUserId(userId);
-		if (retrievedDeadlines != null) {
-			const body = JSON.stringify(retrievedDeadlines);
+		const formData = await request.formData();
+		const caseId = formData.get("caseFolderId") as string;
+		const files = formData.getAll("files[]") as File[];
+		const newDocuments = await this.documentService.create(userId, caseId, files);
+		if (newDocuments !== null) {
+			const body = JSON.stringify(newDocuments);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with retrieving the document deadlines.");
+			throw new Error("There was an issue with uploading the file(s).");
 		}
 	}
 

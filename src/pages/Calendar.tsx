@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Event } from "react-big-calendar";
 import { CalendarWhite } from "../assets/smart-attorney-figma/sidebar";
 import EventCalendar from "../features/calendar/EventCalendar";
-import { getUserDocumentDeadlines } from "../features/calendar/api/get-document-deadlines";
+import { getUserDocuments } from "../features/calendar/api/get-document-deadlines";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import { DateUtils } from "../utils/date-utils";
@@ -13,12 +13,12 @@ function Calendar() {
 	const [events, setEvents] = useState<Event[]>();
 
 	useEffect(() => {
-		handleGetDocumentDeadlines();
+		getDocumentDeadlines();
 	}, []);
 
-	const handleGetDocumentDeadlines = async () => {
+	const getDocumentDeadlines = async () => {
 		try {
-			const response = await getUserDocumentDeadlines();
+			const response = await getUserDocuments();
 			if (response.ok) {
 				const data: DocumentObj[] = await response.json();
 				const deadlines: Event[] = [];

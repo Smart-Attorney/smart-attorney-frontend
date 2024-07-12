@@ -12,6 +12,35 @@ export class DocumentService {
 		this.casesDao = new CasesDAO();
 	}
 
+	public async getAllByUserId(userId: string): Promise<DocumentObj[] | null> {
+		if (!userId) return null;
+		const userDocuments: DocumentObj[] = [];
+		const userCases = await this.casesDao.getAllByUserId(userId);
+		for (let i = 0, n = userCases.length; i < n; i++) {
+			const documents = await this.documentDao.getAllByCaseId(userCases[i].case_id);
+			if (!documents) continue;
+			for (let i = 0, n = documents.length; i < n; i++) {
+				userDocuments.push(documents[i]);
+			}
+		}
+		return userDocuments;
+	}
+
+	public async getAllByCaseId(caseId: string): Promise<DocumentObj[] | null> {
+		if (!caseId) return null;
+		const retrievedDocuments = await this.documentDao.getAllByCaseId(caseId);
+		return retrievedDocuments;
+	}
+
+	public async getById(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
+		if (!userId || !caseId || !documentId) return null;
+		const retrievedDocument = await this.documentDao.getById(caseId, documentId);
+		if (retrievedDocument !== null) {
+			return retrievedDocument;
+		}
+		return null;
+	}
+
 	public async create(userId: string, caseId: string, files: File[]): Promise<DocumentObj[] | null> {
 		if (!caseId || !files) return null;
 		const documents: DocumentObj[] = [];
@@ -34,35 +63,6 @@ export class DocumentService {
 			});
 		}
 		return documents;
-	}
-
-	public async getAllByCaseId(caseId: string): Promise<DocumentObj[] | null> {
-		if (!caseId) return null;
-		const retrievedDocuments = await this.documentDao.getAllByCaseId(caseId);
-		return retrievedDocuments;
-	}
-
-	public async getById(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
-		if (!userId || !caseId || !documentId) return null;
-		const retrievedDocument = await this.documentDao.getById(caseId, documentId);
-		if (retrievedDocument !== null) {
-			return retrievedDocument;
-		}
-		return null;
-	}
-
-	public async getAllByUserId(userId: string): Promise<DocumentObj[] | null> {
-		if (!userId) return null;
-		const userDocuments: DocumentObj[] = [];
-		const userCases = await this.casesDao.getAllByUserId(userId);
-		for (let i = 0, n = userCases.length; i < n; i++) {
-			const documents = await this.documentDao.getAllByCaseId(userCases[i].case_id);
-			if (!documents) continue;
-			for (let i = 0, n = documents.length; i < n; i++) {
-				userDocuments.push(documents[i]);
-			}
-		}
-		return userDocuments;
 	}
 
 	public async updateStatus(
