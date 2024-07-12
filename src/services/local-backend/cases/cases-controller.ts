@@ -1,7 +1,7 @@
 import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
-import { CreateCaseLabelDTO } from "../../../features/dashboard/api/create-folder-label";
+import { CreateCaseLabelDTO } from "../../../features/dashboard/api/create-case-label";
 import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-is-open";
 import { CasesService } from "./cases-service";
 

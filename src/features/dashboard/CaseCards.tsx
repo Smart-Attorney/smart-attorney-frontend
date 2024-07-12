@@ -13,9 +13,9 @@ import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
 import type { DashboardCaseCardObj } from "../../types/api";
 import KebabMenu from "./KebabMenu";
-import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-folder-label";
+import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-case-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
-import { deleteFolderLabel } from "./api/delete-folder-label";
+import { deleteCaseLabel } from "./api/delete-folder-label";
 import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-is-open";
 
 interface CaseCardProps {
@@ -107,13 +107,13 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		}
 	};
 
-	const handleDeleteFolderLabel = async (
-		folderId: string,
+	const handleDeleteCaseLabel = async (
+		caseId: string,
 		event: React.MouseEvent<HTMLParagraphElement>
 	): Promise<void> => {
 		const { id: labelId } = event.target as HTMLParagraphElement;
 		try {
-			const response = await deleteFolderLabel(folderId, labelId);
+			const response = await deleteCaseLabel(caseId, labelId);
 			if (response.ok) {
 				const updatedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
@@ -181,7 +181,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 									<CardLabels
 										navLabel={navigationString}
 										labels={caseFolder.labels}
-										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
+										deleteLabel={(event) => handleDeleteCaseLabel(caseFolder.id, event)}
 									/>
 								</PillLabelContainer>
 								<CardName navLabel={navigationString} name={caseFolder.name} />
