@@ -14,9 +14,9 @@ import CardGrid from "../../layouts/CardGrid";
 import type { DashboardCaseCardObj } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-case-label";
-import { deleteCaseFolder } from "./api/delete-case-folder";
-import { deleteCaseLabel } from "./api/delete-folder-label";
-import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-is-open";
+import { deleteCase } from "./api/delete-case";
+import { deleteCaseLabel } from "./api/delete-case-label";
+import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-case-is-open";
 
 interface CaseCardProps {
 	caseFolders: DashboardCaseCardObj[] | null;
@@ -124,9 +124,9 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		}
 	};
 
-	const handleDeleteFolder = async (folderId: string): Promise<void> => {
+	const handleDeleteCase = async (caseId: string): Promise<void> => {
 		try {
-			const response = await deleteCaseFolder(folderId);
+			const response = await deleteCase(caseId);
 			if (response.ok) {
 				const deletedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
@@ -170,7 +170,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 								id="kebab-menu"
 								updateStatus={() => handleUpdateCaseIsOpen(caseFolder.id, caseFolder.isOpen)}
 								addLabel={(event) => handleAddCaseLabel(caseFolder.id, event)}
-								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
+								deleteFolder={() => handleDeleteCase(caseFolder.id)}
 							/>
 						</KebabMenuContainer>
 

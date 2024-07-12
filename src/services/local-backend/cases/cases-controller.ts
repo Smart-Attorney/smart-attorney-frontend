@@ -2,7 +2,7 @@ import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/u
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
 import { CreateCaseLabelDTO } from "../../../features/dashboard/api/create-case-label";
-import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-is-open";
+import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-case-is-open";
 import { CasesService } from "./cases-service";
 
 export class CasesController {
@@ -165,7 +165,7 @@ export class CasesController {
 		}
 	}
 
-	public async deleteCaseFolder(request: Request): Promise<Response> {
+	public async deleteCase(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
