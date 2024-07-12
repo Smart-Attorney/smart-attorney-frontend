@@ -1,9 +1,9 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { DocumentController } from "../../../services/local-backend/document/document-controller";
 
-export type CreateCaseFilesDTO = FormData;
+export type CreateDocumentsDTO = FormData;
 
-const mockApi = async (data: CreateCaseFilesDTO) => {
+const mockApi = async (data: CreateDocumentsDTO) => {
 	const options = {
 		method: "POST",
 		headers: { Authorization: mockRequest.getToken() },
@@ -13,6 +13,6 @@ const mockApi = async (data: CreateCaseFilesDTO) => {
 	return await new DocumentController().createDocuments(request);
 };
 
-export const createCaseFiles = async (data: CreateCaseFilesDTO) => {
+export const createDocuments = async (data: CreateDocumentsDTO) => {
 	return await mockApi(data);
 };

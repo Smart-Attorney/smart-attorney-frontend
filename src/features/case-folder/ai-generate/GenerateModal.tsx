@@ -5,7 +5,7 @@ import { DocumentObj } from "../../../types/api";
 
 interface GenerateModalProps {
 	closeModal: () => void;
-	files: DocumentObj[];
+	documents: DocumentObj[];
 }
 
 function GenerateModal({ closeModal }: GenerateModalProps) {

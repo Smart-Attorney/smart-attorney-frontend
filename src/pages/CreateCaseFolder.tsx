@@ -9,7 +9,7 @@ import SortBar from "../components/SortBar/SortBar";
 import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
-import { createCaseFiles } from "../features/create-case-folder/api/create-case-files";
+import { createDocuments } from "../features/create-case-folder/api/create-case-files";
 import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
 import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
 import uploadDocuments from "../features/uploadDocument/uploadDocuments";
@@ -17,9 +17,9 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
+import { FileForUploadObj, Sex } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { FileForUploadObj, Sex } from "../types/api";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
@@ -73,22 +73,22 @@ function CreateCaseFolder() {
 			return;
 		}
 		if (filesForUpload.length > 0) {
-			const caseFolderCreated = await handleCreateNewCaseFolder();
-			const clientCreated = await handleCreateNewClient();
-			const caseFilesCreated = await handleCreateNewCaseFiles();
-			if (caseFolderCreated && clientCreated && caseFilesCreated) {
+			const caseFolderCreated = await handleCreateCase();
+			const clientCreated = await handleCreateClient();
+			const documentsCreated = await handleCreateDocuments();
+			if (caseFolderCreated && clientCreated && documentsCreated) {
 				navigate("/dashboard");
 			}
 		} else {
-			const caseFolderResponse = await handleCreateNewCaseFolder();
-			const clientResponse = await handleCreateNewClient();
+			const caseFolderResponse = await handleCreateCase();
+			const clientResponse = await handleCreateClient();
 			if (caseFolderResponse && clientResponse) {
 				navigate("/dashboard");
 			}
 		}
 	};
 
-	const handleCreateNewCaseFolder = async () => {
+	const handleCreateCase = async () => {
 		const newCaseFolder: CreateCaseFolderDTO = {
 			folderId: caseFolderId.current,
 			folderName: caseFolderName,
@@ -104,7 +104,7 @@ function CreateCaseFolder() {
 		return false;
 	};
 
-	const handleCreateNewClient = async () => {
+	const handleCreateClient = async () => {
 		const newClient: CreateClientDTO = {
 			firstName: client.firstName,
 			middleName: client.middleName,
@@ -126,14 +126,14 @@ function CreateCaseFolder() {
 		return false;
 	};
 
-	const handleCreateNewCaseFiles = async () => {
+	const handleCreateDocuments = async () => {
 		const filesFormData = new FormData();
 		filesFormData.append("caseFolderId", caseFolderId.current);
 		for (let i = 0, n = filesForUpload.length; i < n; i++) {
 			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
 		try {
-			const response = await createCaseFiles(filesFormData);
+			const response = await createDocuments(filesFormData);
 			if (response.ok) {
 				return true;
 			}

@@ -1,5 +1,5 @@
-import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { DocumentObj, DocumentStatus } from "../../../types/api";
+import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { DocumentEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -35,7 +35,7 @@ export class DocumentDAO {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
-				const caseFile: DocumentObj = {
+				const document: DocumentObj = {
 					id: documents[i].document_id,
 					name: documents[i].document_name,
 					createdDate: documents[i].created_date,
@@ -44,7 +44,7 @@ export class DocumentDAO {
 					deadline: documents[i].deadline,
 					url: documents[i].url,
 				};
-				return caseFile;
+				return document;
 			}
 		}
 		return null;

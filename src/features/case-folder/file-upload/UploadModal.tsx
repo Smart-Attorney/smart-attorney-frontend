@@ -10,12 +10,14 @@ import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
 
 interface UploadModalProps {
-	caseFolderId: string;
+	caseId: string;
 	closeUploadModal: () => void;
-	addUploadedFileToCaseFileArray: (uploadedFile: DocumentObj) => void;
+	addNewDocumentToArray: (newDocument: DocumentObj) => void;
 }
 
-function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFileArray }: UploadModalProps) {
+function UploadModal(props: UploadModalProps) {
+	const { caseId, closeUploadModal, addNewDocumentToArray } = props;
+
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 	const [uploadDone, setUploadDone] = useState(false);
 
@@ -24,17 +26,17 @@ function UploadModal({ caseFolderId, closeUploadModal, addUploadedFileToCaseFile
 		if (filesForUpload.length < 1) return;
 
 		const filesData: CreateDocumentsDTO = new FormData();
-		filesData.append("caseFolderId", caseFolderId);
+		filesData.append("caseFolderId", caseId);
 		for (let i = 0, n = filesForUpload.length; i < n; i++) {
 			filesData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
 
 		try {
-			const response = await createDocuments(caseFolderId, filesData);
+			const response = await createDocuments(caseId, filesData);
 			if (response.ok) {
-				const createdCaseFiles: DocumentObj[] = await response.json();
-				for (let i = 0, n = createdCaseFiles.length; i < n; i++) {
-					addUploadedFileToCaseFileArray(createdCaseFiles[i]);
+				const createdDocuments: DocumentObj[] = await response.json();
+				for (let i = 0, n = createdDocuments.length; i < n; i++) {
+					addNewDocumentToArray(createdDocuments[i]);
 				}
 				setUploadDone(true);
 			}

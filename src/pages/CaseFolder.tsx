@@ -7,7 +7,7 @@ import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
 import DocumentCards from "../features/case-folder/DocumentCards";
-import ViewCaseFileModal from "../features/case-folder/ViewCaseFileModal";
+import ViewDocumentModal from "../features/case-folder/ViewDocumentModal";
 import GenerateModal from "../features/case-folder/ai-generate/GenerateModal";
 import { getCase } from "../features/case-folder/api/get-case";
 import { getClient } from "../features/case-folder/api/get-client";
@@ -32,9 +32,9 @@ function CaseFolder() {
 	const { id: idFromParams } = useParams();
 	const caseId = useRef(idFromParams);
 
-	const fileId = useRef<string>("");
-	const fileName = useRef<string>("");
-	const fileUrl = useRef<string>("");
+	const documentId = useRef<string>("");
+	const documentName = useRef<string>("");
+	const documentUrl = useRef<string>("");
 
 	const caseNameRef = useRef<HTMLHeadingElement>(null);
 	const newCaseName = useRef<string>("");
@@ -42,7 +42,7 @@ function CaseFolder() {
 
 	const [isClientModalOpen, setIsClientModalOpen] = useState<boolean>(false);
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
-	const [isFileModalOpen, setIsFileModalOpen] = useState<boolean>(false);
+	const [isDocumentModalOpen, setIsDocumentModalOpen] = useState<boolean>(false);
 	const [isGenerateModalOpen, setIsGenerateModalOpen] = useState<boolean>(false);
 
 	const [caseFolder, setCaseFolder] = useState<DashboardCaseCardObj>({
@@ -117,11 +117,11 @@ function CaseFolder() {
 		try {
 			const response = await getDocument(caseId.current!, id);
 			if (response.ok) {
-				const file: DocumentObj = await response.json();
-				fileName.current = file.name;
-				fileId.current = file.id;
-				fileUrl.current = file.url;
-				setIsFileModalOpen(true);
+				const document: DocumentObj = await response.json();
+				documentName.current = document.name;
+				documentId.current = document.id;
+				documentUrl.current = document.url;
+				setIsDocumentModalOpen(true);
 			}
 		} catch (error) {
 			alert(error);
@@ -154,8 +154,8 @@ function CaseFolder() {
 		setIsUploadModalOpen((prev) => !prev);
 	};
 
-	const closeViewFileModal = (): void => {
-		setIsFileModalOpen(false);
+	const closeViewDocumentModal = (): void => {
+		setIsDocumentModalOpen(false);
 	};
 
 	/************************************************************/
@@ -211,8 +211,8 @@ function CaseFolder() {
 
 	/************************************************************/
 
-	const addUploadedDocumentToDocumentArray = (uploadedFile: DocumentObj): void => {
-		const updatedDocuments = [...caseFolder.documents, uploadedFile];
+	const addNewDocumentToArray = (newDocument: DocumentObj): void => {
+		const updatedDocuments = [...caseFolder.documents, newDocument];
 		setCaseFolder((prev) => ({ ...prev, documents: [...updatedDocuments] }));
 	};
 
@@ -280,22 +280,22 @@ function CaseFolder() {
 
 			{isUploadModalOpen && (
 				<UploadModal
-					caseFolderId={idFromParams!}
+					caseId={idFromParams!}
 					closeUploadModal={closeUploadModal}
-					addUploadedFileToCaseFileArray={addUploadedDocumentToDocumentArray}
+					addNewDocumentToArray={addNewDocumentToArray}
 				/>
 			)}
 
-			{isFileModalOpen && (
-				<ViewCaseFileModal
-					fileName={fileName.current}
-					fileID={fileId.current}
-					fileURL={fileUrl.current}
-					closeModal={closeViewFileModal}
+			{isDocumentModalOpen && (
+				<ViewDocumentModal
+					documentName={documentName.current}
+					documentId={documentId.current}
+					documentUrl={documentUrl.current}
+					closeModal={closeViewDocumentModal}
 				/>
 			)}
 
-			{isGenerateModalOpen && <GenerateModal closeModal={closeGenerateModal} files={caseFolder.documents} />}
+			{isGenerateModalOpen && <GenerateModal closeModal={closeGenerateModal} documents={caseFolder.documents} />}
 
 			{isClientModalOpen && (
 				<ClientModal
