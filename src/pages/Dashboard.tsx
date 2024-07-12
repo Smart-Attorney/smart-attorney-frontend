@@ -4,14 +4,14 @@ import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import CaseFolderCards from "../features/dashboard/CaseFolderCards";
+import CaseCards from "../features/dashboard/CaseCards";
 import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
+import { DashboardCaseCardObj } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
-import { DashboardCaseCardObj } from "../types/api";
 
 function Dashboard() {
 	const navigate = useNavigate();
@@ -85,7 +85,7 @@ function Dashboard() {
 				</button>
 			</SortBarWithButtons>
 
-			<CaseFolderCards caseFolders={caseFolders} setCaseFolders={setCaseFolders} />
+			<CaseCards caseFolders={caseFolders} setCaseFolders={setCaseFolders} />
 		</SidebarLayout>
 	);
 }

@@ -1,6 +1,7 @@
 import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
+import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-is-open";
 import { CasesService } from "./cases-service";
 
 export class CasesController {
@@ -123,7 +124,7 @@ export class CasesController {
 		}
 	}
 
-	public async updateOpenState(request: Request): Promise<Response> {
+	public async updateIsOpen(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
@@ -132,8 +133,9 @@ export class CasesController {
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
-		const currentState: boolean = await request.json();
-		const caseWithUpdatedStatus = await this.casesService.updateOpenStatus(userId, caseId, currentState);
+		const body: UpdateCaseIsOpenDTO = await request.json();
+		const { isOpen } = body;
+		const caseWithUpdatedStatus = await this.casesService.updateOpenStatus(userId, caseId, isOpen);
 		if (caseWithUpdatedStatus !== null) {
 			const body = JSON.stringify(caseWithUpdatedStatus);
 			const options = { status: 200 };

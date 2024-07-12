@@ -16,14 +16,14 @@ import KebabMenu from "./KebabMenu";
 import { createFolderLabel } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
-import { UpdateCaseFolderStatusDTO, updateOpenState } from "./api/update-status";
+import { UpdateCaseIsOpenDTO, updateCaseIsOpen } from "./api/update-is-open";
 
-interface CaseFolderCardProps {
+interface CaseCardProps {
 	caseFolders: DashboardCaseCardObj[] | null;
 	setCaseFolders: React.Dispatch<React.SetStateAction<DashboardCaseCardObj[] | null>>;
 }
 
-function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
+function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 	const navigate = useNavigate();
 
 	/************************************************************/
@@ -57,16 +57,19 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 	/************************************************************/
 
-	const handleUpdateFolderStatus = async (folderId: string, currentStatus: boolean): Promise<void> => {
+	const handleUpdateCaseIsOpen = async (caseId: string, isOpen: boolean): Promise<void> => {
 		// changes previously stored string or number values into correct boolean type
-		let newStatus: UpdateCaseFolderStatusDTO;
-		if (typeof currentStatus != "boolean") {
-			newStatus = true;
+		let newIsOpen: boolean;
+		if (typeof isOpen != "boolean") {
+			newIsOpen = true;
 		} else {
-			newStatus = currentStatus;
+			newIsOpen = isOpen;
 		}
+		const data: UpdateCaseIsOpenDTO = {
+			isOpen: newIsOpen,
+		};
 		try {
-			const response = await updateOpenState(folderId, newStatus);
+			const response = await updateCaseIsOpen(caseId, data);
 			if (response.ok) {
 				const updatedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
@@ -162,7 +165,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						<KebabMenuContainer>
 							<KebabMenu
 								id="kebab-menu"
-								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.isOpen)}
+								updateStatus={() => handleUpdateCaseIsOpen(caseFolder.id, caseFolder.isOpen)}
 								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
@@ -201,4 +204,4 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	);
 }
 
-export default CaseFolderCards;
+export default CaseCards;
