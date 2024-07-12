@@ -4,11 +4,11 @@ import { DashboardCaseCardObj } from "../../../types/api";
 
 export type UpdateCaseIsOpenDTO = Pick<DashboardCaseCardObj, "isOpen">;
 
-const mockApi = async (folderId: string, data: UpdateCaseIsOpenDTO) => {
-	const request = mockRequest.patch(`/dashboard/${folderId}`, data);
+const mockApi = async (caseId: string, data: UpdateCaseIsOpenDTO) => {
+	const request = mockRequest.patch(`/dashboard/${caseId}`, data);
 	return await new CasesController().updateIsOpen(request);
 };
 
-export const updateCaseIsOpen = async (folderId: string, data: UpdateCaseIsOpenDTO) => {
-	return await mockApi(folderId, data);
+export const updateCaseIsOpen = async (caseId: string, data: UpdateCaseIsOpenDTO) => {
+	return await mockApi(caseId, data);
 };

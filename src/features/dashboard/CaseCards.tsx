@@ -13,10 +13,10 @@ import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
 import type { DashboardCaseCardObj } from "../../types/api";
 import KebabMenu from "./KebabMenu";
-import { createFolderLabel } from "./api/create-folder-label";
+import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-folder-label";
 import { deleteCaseFolder } from "./api/delete-case-folder";
 import { deleteFolderLabel } from "./api/delete-folder-label";
-import { UpdateCaseIsOpenDTO, updateCaseIsOpen } from "./api/update-is-open";
+import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-is-open";
 
 interface CaseCardProps {
 	caseFolders: DashboardCaseCardObj[] | null;
@@ -80,7 +80,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		}
 	};
 
-	const handleAddFolderLabel = async (folderId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+	const handleAddCaseLabel = async (caseId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		const { value: newLabel } = (event.target as HTMLFormElement)[0] as HTMLInputElement;
 		// checks for empty inputs and null errors
@@ -89,8 +89,11 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 			((event.target as HTMLFormElement)[0] as HTMLInputElement).value = "";
 			return;
 		}
+		const data: CreateCaseLabelDTO = {
+			name: newLabel,
+		};
 		try {
-			const response = await createFolderLabel(folderId, newLabel);
+			const response = await createCaseLabel(caseId, data);
 			if (response.ok) {
 				const updatedCase: DashboardCaseCardObj = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
@@ -166,7 +169,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 							<KebabMenu
 								id="kebab-menu"
 								updateStatus={() => handleUpdateCaseIsOpen(caseFolder.id, caseFolder.isOpen)}
-								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
+								addLabel={(event) => handleAddCaseLabel(caseFolder.id, event)}
 								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
 							/>
 						</KebabMenuContainer>

@@ -1,13 +1,14 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { CasesController } from "../../../services/local-backend/cases/cases-controller";
+import { CaseLabelObj } from "../../../types/api";
 
-export type CreateFolderLabelDTO = string;
+export type CreateCaseLabelDTO = Pick<CaseLabelObj, "name">;
 
-const mockApi = async (folderId: string, data: CreateFolderLabelDTO) => {
-	const request = mockRequest.post(`/dashboard/${folderId}`, data);
+const mockApi = async (caseId: string, data: CreateCaseLabelDTO) => {
+	const request = mockRequest.post(`/dashboard/${caseId}`, data);
 	return await new CasesController().createLabel(request);
 };
 
-export const createFolderLabel = async (folderId: string, data: CreateFolderLabelDTO) => {
-	return await mockApi(folderId, data);
+export const createCaseLabel = async (caseId: string, data: CreateCaseLabelDTO) => {
+	return await mockApi(caseId, data);
 };

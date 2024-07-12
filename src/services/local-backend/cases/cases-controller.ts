@@ -1,6 +1,7 @@
 import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
+import { CreateCaseLabelDTO } from "../../../features/dashboard/api/create-folder-label";
 import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-is-open";
 import { CasesService } from "./cases-service";
 
@@ -72,8 +73,9 @@ export class CasesController {
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
-		const newLabel = (await request.json()) as string;
-		const caseWithNewLabel = await this.casesService.createLabel(userId, caseId, newLabel);
+		const body: CreateCaseLabelDTO = await request.json();
+		const { name } = body;
+		const caseWithNewLabel = await this.casesService.createLabel(userId, caseId, name);
 		if (caseWithNewLabel !== null) {
 			const body = JSON.stringify(caseWithNewLabel);
 			const options = { status: 200 };
