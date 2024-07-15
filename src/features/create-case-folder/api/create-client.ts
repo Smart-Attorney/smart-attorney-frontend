@@ -10,7 +10,7 @@ export type CreateClientDTO = {
 	sex: Sex;
 	countryOfCitizenship: string;
 	primaryLanguage: string;
-	caseFolderId: string;
+	caseId: string;
 };
 
 const mockApi = async (data: CreateClientDTO) => {

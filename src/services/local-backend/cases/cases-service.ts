@@ -59,11 +59,11 @@ export class CasesService {
 		return null;
 	}
 
-	public async create(userId: string, caseId: string, caseName: string): Promise<CaseObj | null> {
-		if (!userId || !caseId || !caseName) return null;
-		const isCaseCreated = await this.casesDao.add(userId, caseId, caseName);
-		if (isCaseCreated) {
-			return this.getById(caseId);
+	public async create(userId: string, caseName: string): Promise<CaseObj | null> {
+		if (!userId || !caseName) return null;
+		const newCaseId = await this.casesDao.add(userId, caseName);
+		if (newCaseId !== null) {
+			return this.getById(newCaseId);
 		}
 		return null;
 	}

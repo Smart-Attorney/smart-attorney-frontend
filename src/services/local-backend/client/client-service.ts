@@ -12,8 +12,7 @@ export class ClientService {
 
 	public async create(client: CreateClientDTO): Promise<ClientEntity | null> {
 		if (!client) return null;
-		const { firstName, middleName, lastName, dateOfBirth, sex, countryOfCitizenship, primaryLanguage, caseFolderId } =
-			client;
+		const { firstName, middleName, lastName, dateOfBirth, sex, countryOfCitizenship, primaryLanguage, caseId } = client;
 		const newClient = await this.clientDao.add(
 			firstName,
 			middleName,
@@ -22,7 +21,7 @@ export class ClientService {
 			sex,
 			countryOfCitizenship,
 			primaryLanguage,
-			caseFolderId
+			caseId
 		);
 		if (newClient !== null) {
 			return newClient;

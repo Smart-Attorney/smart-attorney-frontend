@@ -17,23 +17,20 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { FileForUploadObj, Sex } from "../types/api";
+import { CaseObj, FileForUploadObj, Sex } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
 
-	const caseFolderId = useRef<string>("");
-
 	const dropAreaRef = useRef<HTMLInputElement>(null);
-
-	const currentFolderCount = CaseUtils.getCaseCount();
-	const defaultCaseName = `Case Folder ${currentFolderCount + 1}`;
-
-	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
-	const [caseFolderName, setCaseFolderName] = useState<string>(defaultCaseName);
-	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
+  const caseNameRef = useRef<HTMLHeadingElement>(null);
+  
+	const currentCaseCount = CaseUtils.getCaseCount();
+	const defaultCaseName = `Case Folder ${currentCaseCount + 1}`;
+	const [caseName, setCaseName] = useState<string>(defaultCaseName);
+	const [isCaseNameEditable, setIsCaseNameEditable] = useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
 	const [client, setClient] = useState<ClientInfoForm>({
@@ -49,16 +46,10 @@ function CreateCaseFolder() {
 	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
 
 	useEffect(() => {
-		if (caseFolderId.current.length < 1) {
-			caseFolderId.current = nanoid(8);
+		if (isCaseNameEditable) {
+			caseNameRef.current?.focus();
 		}
-	}, []);
-
-	useEffect(() => {
-		if (caseFolderNameEditable) {
-			caseFolderNameRef.current?.focus();
-		}
-	}, [caseFolderNameEditable]);
+	}, [isCaseNameEditable]);
 
 	/************************************************************/
 
@@ -68,43 +59,43 @@ function CreateCaseFolder() {
 		// 	alert("Please change the default case name before creating.");
 		// 	return;
 		// }
-		if (caseFolderName.trim().length === 0) {
+		if (caseName.trim().length === 0) {
 			alert("Case name cannot be blank. Please change case name before creating.");
 			return;
 		}
-		if (filesForUpload.length > 0) {
-			const caseFolderCreated = await handleCreateCase();
-			const clientCreated = await handleCreateClient();
-			const documentsCreated = await handleCreateDocuments();
-			if (caseFolderCreated && clientCreated && documentsCreated) {
-				navigate("/dashboard");
-			}
-		} else {
-			const caseFolderResponse = await handleCreateCase();
-			const clientResponse = await handleCreateClient();
-			if (caseFolderResponse && clientResponse) {
-				navigate("/dashboard");
-			}
-		}
-	};
-
-	const handleCreateCase = async () => {
-		const newCase: CreateCaseDTO = {
-			id: caseFolderId.current,
-			name: caseFolderName,
-		};
+		let isClientCreated: boolean = false;
+		let areDocumentsCreated: boolean = false;
 		try {
-			const response = await createCase(newCase);
-			if (response.ok) {
-				return true;
+			const newCaseId = await handleCreateCase();
+			if (newCaseId) {
+				isClientCreated = await handleCreateClient(newCaseId);
+				areDocumentsCreated = await handleCreateDocuments(newCaseId);
 			}
 		} catch (error) {
 			alert(error);
 		}
-		return false;
+		if (isClientCreated && areDocumentsCreated) {
+			navigate("/dashboard");
+		}
 	};
 
-	const handleCreateClient = async () => {
+	const handleCreateCase = async (): Promise<string | null> => {
+		const newCase: CreateCaseDTO = {
+			name: caseName,
+		};
+		try {
+			const response = await createCase(newCase);
+			if (response.ok) {
+				const data: CaseObj = await response.json();
+				return data.id;
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return null;
+	};
+
+	const handleCreateClient = async (caseId: string): Promise<boolean> => {
 		const newClient: CreateClientDTO = {
 			firstName: client.firstName,
 			middleName: client.middleName,
@@ -113,7 +104,7 @@ function CreateCaseFolder() {
 			sex: client.sex === "" ? "Other" : (client.sex as Sex),
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
-			caseFolderId: caseFolderId.current,
+			caseId: caseId,
 		};
 		try {
 			const response = await createClient(newClient);
@@ -126,9 +117,10 @@ function CreateCaseFolder() {
 		return false;
 	};
 
-	const handleCreateDocuments = async () => {
+	const handleCreateDocuments = async (caseId: string): Promise<boolean> => {
+		if (filesForUpload.length === 0) return true;
 		const filesData = new FormData();
-		filesData.append("caseFolderId", caseFolderId.current);
+		filesData.append("caseFolderId", caseId);
 		for (let i = 0, n = filesForUpload.length; i < n; i++) {
 			filesData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
 		}
@@ -157,26 +149,26 @@ function CreateCaseFolder() {
 
 	/* Clears the input field on initial click focus to save user the hassle of backspacing. */
 	const handeClickOnCaseName = (): void => {
-		if (caseFolderName === defaultCaseName) {
-			setCaseFolderName("");
+		if (caseName === defaultCaseName) {
+			setCaseName("");
 		}
-		setCaseFolderNameEditable(true);
+		setIsCaseNameEditable(true);
 	};
 
 	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
 		if (event.key !== "Enter") return;
-		caseFolderNameRef.current?.blur();
-		setCaseFolderNameEditable(false);
+		caseNameRef.current?.blur();
+		setIsCaseNameEditable(false);
 	};
 
 	const handleCaseNameBlur = (event: React.FocusEvent<HTMLHeadingElement>): void => {
 		const { innerText } = event.target;
 		if (innerText.trim() === "") {
-			setCaseFolderName(defaultCaseName);
+			setCaseName(defaultCaseName);
 		} else {
-			setCaseFolderName(innerText);
+			setCaseName(innerText);
 		}
-		setCaseFolderNameEditable(false);
+		setIsCaseNameEditable(false);
 	};
 
 	/************************************************************/
@@ -236,14 +228,14 @@ function CreateCaseFolder() {
 					id="case-name"
 					className="text-3xl font-bold text-white cursor-pointer"
 					title="Click to edit case name"
-					contentEditable={caseFolderNameEditable}
+					contentEditable={isCaseNameEditable}
 					suppressContentEditableWarning={true}
-					ref={caseFolderNameRef}
+					ref={caseNameRef}
 					onClick={handeClickOnCaseName}
 					onBlur={handleCaseNameBlur}
 					onKeyDown={handleEnterKeyPress}
 				>
-					{caseFolderName}
+					{caseName}
 				</h1>
 			</PageHeader>
 

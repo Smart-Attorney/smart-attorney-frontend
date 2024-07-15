@@ -1,3 +1,4 @@
+import { CreateClientDTO } from "../../../features/create-case-folder/api/create-client";
 import { ClientService } from "./client-service";
 
 export class ClientController {
@@ -8,7 +9,7 @@ export class ClientController {
 	}
 
 	public async createClient(request: Request): Promise<Response> {
-		const newClient = await request.json();
+		const newClient: CreateClientDTO = await request.json();
 		const createdClient = await this.clientService.create(newClient);
 		if (createdClient !== null) {
 			const body = JSON.stringify(createdClient);

@@ -1,3 +1,4 @@
+import { nanoid } from "../../../lib/nanoid";
 import { CaseObj } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CasesEntity } from "../../local-database/entities";
@@ -39,10 +40,10 @@ export class CasesDAO {
 		return null;
 	}
 
-	public async add(userId: string, caseId: string, caseName: string): Promise<CasesEntity | null> {
+	public async add(userId: string, caseName: string): Promise<string | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		const newCase: CasesEntity = {
-			case_id: caseId,
+			case_id: nanoid(20),
 			case_name: caseName,
 			created_date: Date.now(),
 			last_opened_date: Date.now(),
@@ -52,7 +53,7 @@ export class CasesDAO {
 		const newCasesArr = [...cases, newCase];
 		const success = await this.dbConn.setArray(this.CASES_KEY, newCasesArr);
 		if (success) {
-			return newCase;
+			return newCase.case_id;
 		}
 		return null;
 	}

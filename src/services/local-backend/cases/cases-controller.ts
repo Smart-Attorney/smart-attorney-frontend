@@ -52,9 +52,8 @@ export class CasesController {
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
 		const body: CreateCaseDTO = await request.json();
-		const caseId = body.id;
 		const caseName = body.name;
-		const createdCase = await this.casesService.create(userId, caseId, caseName);
+		const createdCase = await this.casesService.create(userId, caseName);
 		if (createdCase !== null) {
 			const body = JSON.stringify(createdCase);
 			const options = { status: 200 };

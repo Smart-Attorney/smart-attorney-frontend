@@ -40,11 +40,11 @@ export class ClientDAO {
 		sex: sex_option,
 		country: string,
 		language: string,
-		caseFolderId: string
+		caseId: string
 	): Promise<ClientEntity | null> {
 		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
 		const newClient: ClientEntity = {
-			client_id: nanoid(8),
+			client_id: nanoid(20),
 			first_name: firstName,
 			middle_name: middleName,
 			last_name: lastName,
@@ -52,7 +52,7 @@ export class ClientDAO {
 			sex: sex,
 			country_of_citizenship: country,
 			primary_language: language,
-			fk_case_id: caseFolderId,
+			fk_case_id: caseId,
 		};
 		const newClientsArr = [...clients, newClient];
 		const success = await this.dbConn.setArray(this.CLIENT_KEY, newClientsArr);
