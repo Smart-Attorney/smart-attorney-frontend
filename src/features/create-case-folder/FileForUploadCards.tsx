@@ -1,19 +1,17 @@
 import RenderDocument from "../../components/Pdf/RenderDocument";
 import CardGrid from "../../layouts/CardGrid";
-import { FileForUploadObj } from "../../types/api";
+import { UploadFile } from "../../types/api";
 
 interface DocumentProps {
-	filesForUpload: FileForUploadObj[];
-	removeFromFilesForUploadArray: (id: string) => void;
+	uploadFiles: UploadFile[];
+	removeFromUploadFilesArray: (id: string) => void;
 }
 
-function FileForUploadCards(props: DocumentProps) {
-	const { filesForUpload, removeFromFilesForUploadArray } = props;
-
+function FileForUploadCards({ uploadFiles, removeFromUploadFilesArray }: DocumentProps) {
 	return (
 		<CardGrid>
-			{filesForUpload.map((file, index) => (
-				<RenderDocument key={index} file={file} removeFromFilesForUploadArray={removeFromFilesForUploadArray} />
+			{uploadFiles.map((file, index) => (
+				<RenderDocument key={index} file={file} removeFromUploadFilesArray={removeFromUploadFilesArray} />
 			))}
 		</CardGrid>
 	);

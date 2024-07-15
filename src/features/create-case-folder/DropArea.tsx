@@ -2,14 +2,14 @@ import { forwardRef } from "react";
 import { UploadIcon } from "../../assets/smart-attorney-figma/global";
 
 interface DropAreaProps {
-	ref: React.MutableRefObject<null>;
 	style?: React.CSSProperties;
+	ref: React.MutableRefObject<null>;
 	handleOpenFileBrowser: () => void;
-	addToFilesForUploadArray: (files: FileList) => void;
+	addToUploadFilesArray: (files: FileList) => void;
 }
 
 const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(props, ref) {
-	const { style, handleOpenFileBrowser, addToFilesForUploadArray } = props;
+	const { style, handleOpenFileBrowser, addToUploadFilesArray } = props;
 
 	const dropAreaStyle = {
 		...style,
@@ -18,18 +18,17 @@ const DropArea = forwardRef<HTMLInputElement, DropAreaProps>(function DropArea(p
 	const handleUploadFilesFromBrowser = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { files } = event.target;
 		if (!files) return;
-		addToFilesForUploadArray(files);
+		addToUploadFilesArray(files);
 	};
 
 	const handleUploadFilesFromDrop = (event: React.DragEvent): void => {
 		event.preventDefault();
 		const { files } = event.dataTransfer;
-		addToFilesForUploadArray(files);
+		addToUploadFilesArray(files);
 	};
 
 	const handleDragOver = (event: React.DragEvent): void => {
-		console.log(event);
-
+		// console.log(event);
 		return event.preventDefault();
 	};
 

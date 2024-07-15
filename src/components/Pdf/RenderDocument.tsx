@@ -1,6 +1,6 @@
 import { useState } from "react";
 import translateDoc from "../../features/translateDocuments/translateDocuments";
-import { FileForUploadObj } from "../../types/api";
+import { UploadFile } from "../../types/api";
 import CardBody from "../Card/CardBody";
 import CardContainer from "../Card/CardContainer";
 import CardName from "../Card/CardName";
@@ -15,14 +15,11 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 interface RenderDocumentProps {
-	file: FileForUploadObj;
-	removeFromFilesForUploadArray: (id: string) => void;
+	file: UploadFile;
+	removeFromUploadFilesArray: (id: string) => void;
 }
 
-const RenderDocument = ({
-	file,
-	removeFromFilesForUploadArray,
-}: RenderDocumentProps) => {
+const RenderDocument = ({ file, removeFromUploadFilesArray }: RenderDocumentProps) => {
 	const [translatedDocUrl, setTranslatedDocUrl] = useState<null | string>(null);
 
 	const handleTranslate = (fileName: string) => {
@@ -37,15 +34,15 @@ const RenderDocument = ({
 	};
 
 	const downloadTranslatedFile = (url: string) => {
-		window.location.href = url ;
-    window.open(url);
+		window.location.href = url;
+		window.open(url);
 	};
 
 	return file.data ? (
 		<CardContainer key={file.id} id={file.id}>
 			<KebabMenuContainer>
 				<KebabMenu
-					deleteFile={() => removeFromFilesForUploadArray(file.id)}
+					deleteFile={() => removeFromUploadFilesArray(file.id)}
 					onClickTranslate={() => handleTranslate(file.data.name)}
 				/>
 			</KebabMenuContainer>
@@ -58,17 +55,10 @@ const RenderDocument = ({
 					</div>
 					<CardName name={file.data.name} />
 					{translatedDocUrl && (
-						<CardName
-							name="Download English Version"
-							viewFile={() => downloadTranslatedFile(translatedDocUrl)}
-						/>
+						<CardName name="Download English Version" viewFile={() => downloadTranslatedFile(translatedDocUrl)} />
 					)}
 
-					<Page
-						className="self-center border border-black rounded-sm"
-						pageNumber={1}
-						height={125}
-					/>
+					<Page className="self-center border border-black rounded-sm" pageNumber={1} height={125} />
 				</Document>
 			</CardBody>
 		</CardContainer>

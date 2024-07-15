@@ -1,8 +1,8 @@
+import { UploadFile } from "../../../../types/api";
 import { FileUtils } from "../../../../utils/file-utils";
-import { FileForUploadObj } from "../../../../types/api";
 
 interface UploadedFileCardsProps {
-	filesToUpload: FileForUploadObj[];
+	filesToUpload: UploadFile[];
 	handleRemoveFileFromStaging: (id: string) => void;
 }
 

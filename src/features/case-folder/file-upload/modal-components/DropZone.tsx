@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import { FileForUploadObj } from "../../../../types/api";
+import { UploadFile } from "../../../../types/api";
 
 interface DropAreaProps {
-	addFilesToUploadArray: (files: FileList) => void;
-	filesToUpload: FileForUploadObj[];
+	addToUploadFilesArray: (files: FileList) => void;
+	uploadFiles: UploadFile[];
 }
 
-function DropZone(props: DropAreaProps) {
+function DropZone({ addToUploadFilesArray, uploadFiles }: DropAreaProps) {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const handleOpenFileBrowser = (): void => {
@@ -18,7 +18,7 @@ function DropZone(props: DropAreaProps) {
 	const handleUploadFilesFromBrowser = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { files } = event.target;
 		if (files) {
-			props.addFilesToUploadArray(files);
+			addToUploadFilesArray(files);
 		}
 	};
 
@@ -27,13 +27,13 @@ function DropZone(props: DropAreaProps) {
 	const handleUploadFilesFromDrop = (event: React.DragEvent): void => {
 		event.preventDefault();
 		const { files } = event.dataTransfer;
-		props.addFilesToUploadArray(files);
+		addToUploadFilesArray(files);
 	};
 
 	return (
 		<div
 			className="min-w-[624px] p-6 cursor-pointer border-dashed-custom flex items-center justify-center"
-			style={{ height: props.filesToUpload.length > 0 ? "112px" : "224px" }}
+			style={{ height: uploadFiles.length > 0 ? "112px" : "224px" }}
 			onDragOver={handleDragOver}
 			onDrop={handleUploadFilesFromDrop}
 			onClick={handleOpenFileBrowser}

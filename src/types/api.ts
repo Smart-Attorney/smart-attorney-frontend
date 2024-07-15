@@ -65,7 +65,7 @@ export type LabelsDropdownMenuOptionObj = {
 	isClicked: boolean;
 };
 
-export type FileForUploadObj = {
+export type UploadFile = {
 	id: string;
 	data: File;
 };

@@ -3,7 +3,7 @@ import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import { nanoid } from "../../../lib/nanoid";
-import { DocumentObj, FileForUploadObj } from "../../../types/api";
+import { DocumentObj, UploadFile } from "../../../types/api";
 import { createDocuments, CreateDocumentsDTO } from "../api/create-documents";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
@@ -15,20 +15,18 @@ interface UploadModalProps {
 	addNewDocumentToArray: (newDocument: DocumentObj) => void;
 }
 
-function UploadModal(props: UploadModalProps) {
-	const { caseId, closeUploadModal, addNewDocumentToArray } = props;
-
-	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
-	const [uploadDone, setUploadDone] = useState(false);
+function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: UploadModalProps) {
+	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
+	const [isUploadDone, setIsUploadDone] = useState(false);
 
 	const handleUploadFiles = async (): Promise<void> => {
-		if (filesForUpload === null) return;
-		if (filesForUpload.length < 1) return;
+		if (uploadFiles === null) return;
+		if (uploadFiles.length < 1) return;
 
 		const filesData: CreateDocumentsDTO = new FormData();
 		filesData.append("caseFolderId", caseId);
-		for (let i = 0, n = filesForUpload.length; i < n; i++) {
-			filesData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
+		for (let i = 0, n = uploadFiles.length; i < n; i++) {
+			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
 		}
 
 		try {
@@ -38,22 +36,22 @@ function UploadModal(props: UploadModalProps) {
 				for (let i = 0, n = createdDocuments.length; i < n; i++) {
 					addNewDocumentToArray(createdDocuments[i]);
 				}
-				setUploadDone(true);
+				setIsUploadDone(true);
 			}
 		} catch (error) {
 			alert(error);
 		} finally {
-			setUploadDone(false);
+			setIsUploadDone(false);
 			closeUploadModal();
 		}
 	};
 
-	const addFilesToUploadArray = (files: FileList): void => {
+	const addToUploadFilesArray = (files: FileList): void => {
 		for (let i = 0, n = files.length; i < n; i++) {
-			setFilesForUpload((prev) => [
+			setUploadFiles((prev) => [
 				...prev,
 				{
-					id: nanoid(8),
+					id: nanoid(20),
 					data: files[i],
 				},
 			]);
@@ -61,7 +59,7 @@ function UploadModal(props: UploadModalProps) {
 	};
 
 	const handleRemoveFileFromUploadStaging = (id: string): void =>
-		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
+		setUploadFiles((prev) => prev.filter((file) => file.id !== id));
 
 	const handleCloseUploadModal = (): void => {
 		closeUploadModal();
@@ -72,11 +70,11 @@ function UploadModal(props: UploadModalProps) {
 			<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
 				<Header />
 
-				<DropZone filesToUpload={filesForUpload} addFilesToUploadArray={addFilesToUploadArray} />
+				<DropZone uploadFiles={uploadFiles} addToUploadFilesArray={addToUploadFilesArray} />
 
-				{filesForUpload.length > 0 && (
+				{uploadFiles.length > 0 && (
 					<UploadedFileCards
-						filesToUpload={filesForUpload}
+						filesToUpload={uploadFiles}
 						handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}
 					/>
 				)}
@@ -88,8 +86,8 @@ function UploadModal(props: UploadModalProps) {
 						type="button"
 						className="border-[5px] h-[68px]"
 						onClick={handleUploadFiles}
-						isDisabled={filesForUpload.length < 1 ? true : false}
-						style={{ cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer" }}
+						isDisabled={uploadFiles.length < 1 ? true : false}
+						style={{ cursor: uploadFiles.length < 1 ? "not-allowed" : "pointer" }}
 					/>
 					<ModalSpecialButton
 						name="Translate"
@@ -99,7 +97,7 @@ function UploadModal(props: UploadModalProps) {
 					/>
 				</div>
 
-				{uploadDone && (
+				{isUploadDone && (
 					<p className="text-xl font-semibold text-green-600">Selected files have been successfully uploaded!</p>
 				)}
 			</div>

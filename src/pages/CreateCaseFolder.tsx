@@ -17,7 +17,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { CaseObj, FileForUploadObj, Sex } from "../types/api";
+import { CaseObj, Sex, UploadFile } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
 
@@ -25,8 +25,8 @@ function CreateCaseFolder() {
 	const navigate = useNavigate();
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
-  const caseNameRef = useRef<HTMLHeadingElement>(null);
-  
+	const caseNameRef = useRef<HTMLHeadingElement>(null);
+
 	const currentCaseCount = CaseUtils.getCaseCount();
 	const defaultCaseName = `Case Folder ${currentCaseCount + 1}`;
 	const [caseName, setCaseName] = useState<string>(defaultCaseName);
@@ -43,7 +43,7 @@ function CreateCaseFolder() {
 		primaryLanguage: "",
 	});
 
-	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
+	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
 
 	useEffect(() => {
 		if (isCaseNameEditable) {
@@ -118,11 +118,11 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateDocuments = async (caseId: string): Promise<boolean> => {
-		if (filesForUpload.length === 0) return true;
+		if (uploadFiles.length === 0) return true;
 		const filesData = new FormData();
 		filesData.append("caseFolderId", caseId);
-		for (let i = 0, n = filesForUpload.length; i < n; i++) {
-			filesData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
+		for (let i = 0, n = uploadFiles.length; i < n; i++) {
+			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
 		}
 		try {
 			const response = await createDocuments(filesData);
@@ -177,20 +177,20 @@ function CreateCaseFolder() {
 		dropAreaRef.current?.click();
 	};
 
-	// const addToFilesForUploadArray = (filesFromUser: FileList): void => {
+	// const addToUploadFilesArray = (filesFromUser: FileList): void => {
 	// 	for (let i = 0, n = filesFromUser.length; i < n; i++) {
 	// 		setFilesForUpload((prev) => [
 	// 			...prev,
 	// 			{
-	// 				id: nanoid(8),
+	// 				id: nanoid(20),
 	// 				data: filesFromUser[i],
 	// 			},
 	// 		]);
 	// 	}
 	// };
 
-	const removeFromFilesForUploadArray = (fileId: string): void => {
-		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
+	const removeFromUploadFilesArray = (fileId: string): void => {
+		setUploadFiles((prev) => prev.filter((file) => file.id !== fileId));
 	};
 
 	const handleUpload = (fileList: FileList) => {
@@ -198,10 +198,10 @@ function CreateCaseFolder() {
 		uploadDocuments(fileArr)
 			.then((res) => {
 				if (Array.isArray(res)) {
-					setFilesForUpload((prev) => [
+					setUploadFiles((prev) => [
 						...prev,
 						...fileArr.map((_file, i) => ({
-							id: nanoid(8),
+							id: nanoid(20),
 							data: fileList[i],
 						})),
 					]);
@@ -254,22 +254,19 @@ function CreateCaseFolder() {
 				</div>
 			</SortBarWithButtons>
 
-			{filesForUpload.length > 0 && (
-				<FileForUploadCards
-					filesForUpload={filesForUpload}
-					removeFromFilesForUploadArray={removeFromFilesForUploadArray}
-				/>
+			{uploadFiles.length > 0 && (
+				<FileForUploadCards uploadFiles={uploadFiles} removeFromUploadFilesArray={removeFromUploadFilesArray} />
 			)}
 
 			<DropArea
 				ref={dropAreaRef}
 				style={{
-					zIndex: filesForUpload.length > 0 ? -5 : 5,
-					display: filesForUpload.length > 0 ? "none" : "flex",
+					zIndex: uploadFiles.length > 0 ? -5 : 5,
+					display: uploadFiles.length > 0 ? "none" : "flex",
 				}}
 				handleOpenFileBrowser={handleOpenFileBrowser}
 				// addToFilesForUploadArray={addToFilesForUploadArray}
-				addToFilesForUploadArray={handleUpload}
+				addToUploadFilesArray={handleUpload}
 			/>
 
 			{clientModalOpen && (
