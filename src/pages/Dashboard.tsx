@@ -23,6 +23,15 @@ function Dashboard() {
 		handleGetUserCases();
 	}, []);
 
+	// updates case count whenever the number of cases change on dashboard
+	useEffect(() => {
+		if (caseFolders) {
+			CaseUtils.setCaseCount(caseFolders.length);
+		} else {
+			CaseUtils.setCaseCount(0);
+		}
+	}, [caseFolders]);
+
 	/************************************************************/
 
 	const handleGetUserCases = async () => {
@@ -32,12 +41,10 @@ function Dashboard() {
 				case 200:
 					const data: DashboardCaseCardObj[] = await response.json();
 					setCaseFolders(data);
-					CaseUtils.setCaseCount(data.length);
 					break;
 				case 204:
 					console.log(response.statusText);
 					setCaseFolders([]);
-					CaseUtils.setCaseCount(0);
 					break;
 				default:
 					break;
