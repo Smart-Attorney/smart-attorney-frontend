@@ -14,6 +14,16 @@ function SignIn() {
 	/************************************************************/
 
 	const handleSignIn = async () => {
+		const isCompanyEmailEmpty = credentials.companyEmail.trim().length === 0;
+		const isPasswordEmpty = credentials.password.trim().length === 0;
+		if (isCompanyEmailEmpty) {
+			alert("ERROR: Company email field is empty.");
+			return;
+		}
+		if (isPasswordEmpty) {
+			alert("ERROR: Password field is empty.");
+			return;
+		}
 		try {
 			const response = await signIn(credentials);
 			if (response.ok) {
@@ -28,7 +38,6 @@ function SignIn() {
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-
 		setCredentials((prev) => ({
 			...prev,
 			[name]: value,
