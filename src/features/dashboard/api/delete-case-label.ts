@@ -3,7 +3,7 @@ import { CasesController } from "../../../services/local-backend/cases/cases-con
 
 const mockApi = async (caseId: string, labelId: string) => {
 	const request = mockRequest.delete(`/dashboard/${caseId}/${labelId}`);
-	return await new CasesController().deleteCaseLabel(request);
+	return await new CasesController().deleteCaseLabelHandler(request);
 };
 
 export const deleteCaseLabel = async (caseId: string, labelId: string) => {

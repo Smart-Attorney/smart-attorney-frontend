@@ -23,7 +23,7 @@ export class CasesDAO {
 		return userCases;
 	}
 
-	public async getById(caseId: string): Promise<CaseObj | null> {
+	public async get(caseId: string): Promise<CaseObj | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].case_id === caseId) {
@@ -40,7 +40,7 @@ export class CasesDAO {
 		return null;
 	}
 
-	public async add(userId: string, caseName: string): Promise<string | null> {
+	public async save(userId: string, caseName: string): Promise<string | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		const newCase: CasesEntity = {
 			case_id: nanoid(20),
@@ -104,7 +104,7 @@ export class CasesDAO {
 		return false;
 	}
 
-	public async deleteById(userId: string, caseId: string): Promise<boolean> {
+	public async delete(userId: string, caseId: string): Promise<boolean> {
 		const newCasesArr: CasesEntity[] = [];
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {

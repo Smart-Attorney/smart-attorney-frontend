@@ -9,17 +9,17 @@ import { CasesDAO } from "./cases-dao";
 export class CasesService {
 	private casesDao: CasesDAO;
 	private caseLabelDao: CaseLabelDAO;
-	private documentDao: DocumentDAO;
 	private clientDao: ClientDAO;
+	private documentDao: DocumentDAO;
 
 	constructor() {
 		this.casesDao = new CasesDAO();
 		this.caseLabelDao = new CaseLabelDAO();
-		this.documentDao = new DocumentDAO();
 		this.clientDao = new ClientDAO();
+		this.documentDao = new DocumentDAO();
 	}
 
-	public async getAllByUserId(userId: string): Promise<DashboardCaseCardObj[]> {
+	public async getAllCasesByUserId(userId: string): Promise<DashboardCaseCardObj[]> {
 		const userCases: DashboardCaseCardObj[] = [];
 		const cases = await this.casesDao.getAllByUserId(userId);
 		for (let i = 0, n = cases.length; i < n; i++) {
@@ -41,9 +41,9 @@ export class CasesService {
 		return userCases;
 	}
 
-	public async getById(caseId: string): Promise<DashboardCaseCardObj | null> {
+	public async getCase(caseId: string): Promise<DashboardCaseCardObj | null> {
 		if (!caseId) return null;
-		const caseFolder = await this.casesDao.getById(caseId);
+		const caseFolder = await this.casesDao.get(caseId);
 		if (caseFolder !== null) {
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
 			const documents = await this.documentDao.getAllByCaseId(caseId);
@@ -59,25 +59,25 @@ export class CasesService {
 		return null;
 	}
 
-	public async create(userId: string, caseName: string): Promise<CaseObj | null> {
+	public async addCase(userId: string, caseName: string): Promise<CaseObj | null> {
 		if (!userId || !caseName) return null;
-		const newCaseId = await this.casesDao.add(userId, caseName);
+		const newCaseId = await this.casesDao.save(userId, caseName);
 		if (newCaseId !== null) {
-			return this.getById(newCaseId);
+			return this.getCase(newCaseId);
 		}
 		return null;
 	}
 
-	public async createLabel(userId: string, caseId: string, newLabel: string): Promise<DashboardCaseCardObj | null> {
+	public async addCaseLabel(userId: string, caseId: string, newLabel: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !newLabel) return null;
-		const isLabelCreated = await this.caseLabelDao.add(caseId, newLabel);
+		const isLabelCreated = await this.caseLabelDao.save(caseId, newLabel);
 		if (isLabelCreated) {
-			return await this.getById(caseId);
+			return await this.getCase(caseId);
 		}
 		return null;
 	}
 
-	public async updateLastOpenedDate(userId: string, caseId: string): Promise<number | null> {
+	public async updateCaseLastOpenedDate(userId: string, caseId: string): Promise<number | null> {
 		if (!userId || !caseId) return null;
 		const isDateUpdated = await this.casesDao.updateLastOpenedDate(userId, caseId);
 		if (isDateUpdated !== null) {
@@ -86,16 +86,16 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateName(userId: string, caseId: string, newName: string): Promise<DashboardCaseCardObj | null> {
+	public async updateCaseName(userId: string, caseId: string, newName: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !newName) return null;
 		const isNameUpdated = await this.casesDao.updateName(userId, caseId, newName);
 		if (isNameUpdated) {
-			return await this.getById(caseId);
+			return await this.getCase(caseId);
 		}
 		return null;
 	}
 
-	public async updateOpenStatus(
+	public async updateCaseIsOpen(
 		userId: string,
 		caseId: string,
 		currentState: boolean
@@ -103,23 +103,27 @@ export class CasesService {
 		if (!userId || !caseId || typeof currentState !== "boolean") return null;
 		const isStatusUpdated = await this.casesDao.updateOpenState(userId, caseId, currentState);
 		if (isStatusUpdated) {
-			return await this.getById(caseId);
+			return await this.getCase(caseId);
 		}
 		return null;
 	}
 
-	public async deleteLabelById(userId: string, caseId: string, labelId: string): Promise<DashboardCaseCardObj | null> {
+	public async deleteCaseLabelById(
+		userId: string,
+		caseId: string,
+		labelId: string
+	): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId || !labelId) return null;
-		const isLabelDeleted = await this.caseLabelDao.deleteById(caseId, labelId);
+		const isLabelDeleted = await this.caseLabelDao.delete(caseId, labelId);
 		if (isLabelDeleted) {
-			return await this.getById(caseId);
+			return await this.getCase(caseId);
 		}
 		return null;
 	}
 
-	public async deleteById(userId: string, caseId: string): Promise<DashboardCaseCardObj | null> {
+	public async deleteCase(userId: string, caseId: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseId) return null;
-		const deletedCase = await this.getById(caseId);
+		const deletedCase = await this.getCase(caseId);
 
 		// delete all files from cloud storage associated with caseId
 		const cloudFiles = await this.documentDao.getAllByCaseId(caseId);
@@ -143,7 +147,7 @@ export class CasesService {
 		if (!isClientDeleted) return null;
 
 		// delete case after all associated entities have been deleted
-		const isCaseDeleted = await this.casesDao.deleteById(userId, caseId);
+		const isCaseDeleted = await this.casesDao.delete(userId, caseId);
 		if (isCaseDeleted) {
 			return deletedCase;
 		}

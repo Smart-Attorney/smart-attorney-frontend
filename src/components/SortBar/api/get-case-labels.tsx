@@ -3,7 +3,7 @@ import { CaseLabelController } from "../../../services/local-backend/case-label/
 
 const mockApi = async (): Promise<Response> => {
 	const request = mockRequest.get(`/dashboard`);
-	return await new CaseLabelController().getAllUserCaseLabels(request);
+	return await new CaseLabelController().getAllUserCaseLabelsHandler(request);
 };
 
 export const getCaseLabels = async (): Promise<Response> => {

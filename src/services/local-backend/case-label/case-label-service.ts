@@ -1,22 +1,22 @@
 import { CaseLabelObj } from "../../../types/api";
-import { CasesService } from "../cases/cases-service";
+import { CasesDAO } from "../cases/cases-dao";
 import { CaseLabelDAO } from "./case-label-dao";
 
 export class CaseLabelService {
 	private caseLabelDao: CaseLabelDAO;
-	private casesService: CasesService;
+	private casesDao: CasesDAO;
 
 	constructor() {
 		this.caseLabelDao = new CaseLabelDAO();
-		this.casesService = new CasesService();
+		this.casesDao = new CasesDAO();
 	}
 
-	public async getAllByUserId(userId: string): Promise<CaseLabelObj[] | null> {
+	public async getAllLabelsByUserId(userId: string): Promise<CaseLabelObj[] | null> {
 		if (!userId) return null;
 		let userCaseLabels: CaseLabelObj[] = [];
-		const userCases = await this.casesService.getAllByUserId(userId);
+		const userCases = await this.casesDao.getAllByUserId(userId);
 		for (let i = 0, n = userCases.length; i < n; i++) {
-			const caseLabels = await this.caseLabelDao.getAllByCaseId(userCases[i].id);
+			const caseLabels = await this.caseLabelDao.getAllByCaseId(userCases[i].case_id);
 			userCaseLabels = [...userCaseLabels, ...caseLabels];
 		}
 		return userCaseLabels;

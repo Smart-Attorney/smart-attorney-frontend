@@ -6,7 +6,7 @@ export type CreateCaseDTO = Pick<DashboardCaseCardObj, "name">;
 
 const mockApi = async (data: CreateCaseDTO) => {
 	const request = mockRequest.post("/create-case", data);
-	return await new CasesController().createCase(request);
+	return await new CasesController().postCaseHandler(request);
 };
 
 export const createCase = async (data: CreateCaseDTO) => {

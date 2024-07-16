@@ -3,7 +3,7 @@ import { CasesController } from "../../../services/local-backend/cases/cases-con
 
 const mockApi = async () => {
 	const request = mockRequest.get(`/dashboard`);
-	return await new CasesController().getAllCasesByUserId(request);
+	return await new CasesController().getAllCasesByUserIdHandler(request);
 };
 
 export const getCases = async () => {

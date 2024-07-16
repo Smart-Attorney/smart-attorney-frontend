@@ -6,7 +6,7 @@ export type CreateCaseLabelDTO = Pick<CaseLabelObj, "name">;
 
 const mockApi = async (caseId: string, data: CreateCaseLabelDTO) => {
 	const request = mockRequest.post(`/dashboard/${caseId}`, data);
-	return await new CasesController().createLabel(request);
+	return await new CasesController().postCaseLabelHandler(request);
 };
 
 export const createCaseLabel = async (caseId: string, data: CreateCaseLabelDTO) => {

@@ -6,7 +6,7 @@ export type UpdateCaseIsOpenDTO = Pick<DashboardCaseCardObj, "isOpen">;
 
 const mockApi = async (caseId: string, data: UpdateCaseIsOpenDTO) => {
 	const request = mockRequest.patch(`/dashboard/${caseId}`, data);
-	return await new CasesController().updateIsOpen(request);
+	return await new CasesController().updateIsOpenHandler(request);
 };
 
 export const updateCaseIsOpen = async (caseId: string, data: UpdateCaseIsOpenDTO) => {

@@ -6,7 +6,7 @@ export type UpdateCaseLastOpenedDateDTO = Pick<DashboardCaseCardObj, "id">;
 
 const mockApi = async (caseId: string, data: UpdateCaseLastOpenedDateDTO) => {
 	const request = mockRequest.patch(`/case/${caseId}`, data);
-	return await new CasesController().updateLastOpenedDate(request);
+	return await new CasesController().updateLastOpenedDateHandler(request);
 };
 
 export const updateCaseLastOpenedDate = async (caseId: string, data: UpdateCaseLastOpenedDateDTO) => {

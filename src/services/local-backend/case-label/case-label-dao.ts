@@ -26,26 +26,26 @@ export class CaseLabelDAO {
 		return caseLabels;
 	}
 
-	public async add(caseId: string, labelName: string): Promise<boolean> {
+	public async save(caseId: string, labelName: string): Promise<CaseLabelEntity | null> {
 		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
 		const newLabel: CaseLabelEntity = {
-			label_id: nanoid(8),
+			label_id: nanoid(20),
 			label_name: labelName,
 			fk_case_id: caseId,
 		};
 		const newLabelsArr = [...labels, newLabel];
 		const success = await this.dbConn.setArray(this.CASE_LABEL_KEY, newLabelsArr);
 		if (success) {
-			return true;
+			return newLabel;
 		}
-		return false;
+		return null;
 	}
 
-	public async deleteById(caseId: string, labelId: string): Promise<boolean> {
+	public async deleteAllByCaseId(caseId: string): Promise<boolean> {
 		const newLabelsArr: CaseLabelEntity[] = [];
 		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
 		for (let i = 0, n = labels.length; i < n; i++) {
-			if (labels[i].fk_case_id === caseId && labels[i].label_id === labelId) {
+			if (labels[i].fk_case_id === caseId) {
 				continue;
 			}
 			newLabelsArr.push(labels[i]);
@@ -57,11 +57,11 @@ export class CaseLabelDAO {
 		return false;
 	}
 
-	public async deleteAllByCaseId(caseId: string): Promise<boolean> {
+	public async delete(caseId: string, labelId: string): Promise<boolean> {
 		const newLabelsArr: CaseLabelEntity[] = [];
 		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
 		for (let i = 0, n = labels.length; i < n; i++) {
-			if (labels[i].fk_case_id === caseId) {
+			if (labels[i].fk_case_id === caseId && labels[i].label_id === labelId) {
 				continue;
 			}
 			newLabelsArr.push(labels[i]);
