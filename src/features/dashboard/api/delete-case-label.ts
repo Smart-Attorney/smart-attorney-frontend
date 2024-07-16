@@ -1,9 +1,9 @@
 import { mockRequest } from "../../../lib/mock-request";
-import { CasesController } from "../../../services/local-backend/cases/cases-controller";
+import { CaseLabelController } from "../../../services/local-backend/case-label/case-label-controller";
 
 const mockApi = async (caseId: string, labelId: string) => {
 	const request = mockRequest.delete(`/dashboard/${caseId}/${labelId}`);
-	return await new CasesController().deleteCaseLabelHandler(request);
+	return await new CaseLabelController().deleteCaseLabelByIdHandler(request);
 };
 
 export const deleteCaseLabel = async (caseId: string, labelId: string) => {

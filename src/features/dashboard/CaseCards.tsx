@@ -16,6 +16,7 @@ import KebabMenu from "./KebabMenu";
 import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-case-label";
 import { deleteCase } from "./api/delete-case";
 import { deleteCaseLabel } from "./api/delete-case-label";
+import { getCase } from "./api/get-case";
 import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-case-is-open";
 
 interface CaseCardProps {
@@ -57,6 +58,19 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 
 	/************************************************************/
 
+	const handleGetUpdatedCase = async (caseId: string): Promise<DashboardCaseCardObj | null> => {
+		try {
+			const response = await getCase(caseId);
+			if (response.ok) {
+				const updatedCase: DashboardCaseCardObj = await response.json();
+				return updatedCase;
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return null;
+	};
+
 	const handleUpdateCaseIsOpen = async (caseId: string, isOpen: boolean): Promise<void> => {
 		// changes previously stored string or number values into correct boolean type
 		let newIsOpen: boolean;
@@ -95,9 +109,11 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		try {
 			const response = await createCaseLabel(caseId, data);
 			if (response.ok) {
-				const updatedCase: DashboardCaseCardObj = await response.json();
-				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
-				setCaseFolders(updatedCaseArray);
+				const updatedCase = await handleGetUpdatedCase(caseId);
+				if (updatedCase) {
+					const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+					setCaseFolders(updatedCaseArray);
+				}
 			}
 		} catch (error) {
 			alert(error);
@@ -115,9 +131,11 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		try {
 			const response = await deleteCaseLabel(caseId, labelId);
 			if (response.ok) {
-				const updatedCase: DashboardCaseCardObj = await response.json();
-				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
-				setCaseFolders(updatedCaseArray);
+				const updatedCase = await handleGetUpdatedCase(caseId);
+				if (updatedCase) {
+					const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+					setCaseFolders(updatedCaseArray);
+				}
 			}
 		} catch (error) {
 			alert(error);

@@ -1,7 +1,6 @@
 import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
-import { CreateCaseLabelDTO } from "../../../features/dashboard/api/create-case-label";
 import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-case-is-open";
 import { CasesService } from "./cases-service";
 
@@ -60,27 +59,6 @@ export class CasesController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with creating the case folder.");
-		}
-	}
-
-	public async postCaseLabelHandler(request: Request): Promise<Response> {
-		const authHeader = request.headers.get("Authorization");
-		if (!authHeader) {
-			throw new Error("User is not authorized/signed in.");
-		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
-		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 1];
-		const body: CreateCaseLabelDTO = await request.json();
-		const { name } = body;
-		const caseWithNewLabel = await this.casesService.addCaseLabel(userId, caseId, name);
-		if (caseWithNewLabel !== null) {
-			const body = JSON.stringify(caseWithNewLabel);
-			const options = { status: 200 };
-			return new Response(body, options);
-		} else {
-			throw new Error("There was an issue with creating the case folder label.");
 		}
 	}
 
@@ -143,24 +121,6 @@ export class CasesController {
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with updating the case folder status.");
-		}
-	}
-
-	public async deleteCaseLabelHandler(request: Request): Promise<Response> {
-		const authHeader = request.headers.get("Authorization");
-		if (!authHeader) throw new Error("User is not authorized/signed in.");
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
-		const urlArray = request.url.split("/");
-		const caseId: string = urlArray[urlArray.length - 2];
-		const labelId: string = urlArray[urlArray.length - 1];
-		const caseWithDeletedLabel = await this.casesService.deleteCaseLabelById(userId, caseId, labelId);
-		if (caseWithDeletedLabel !== null) {
-			const body = JSON.stringify(caseWithDeletedLabel);
-			const options = { status: 200 };
-			return new Response(body, options);
-		} else {
-			throw new Error("There was an issue with deleting the case folder label.");
 		}
 	}
 

@@ -26,6 +26,20 @@ export class CaseLabelDAO {
 		return caseLabels;
 	}
 
+	public async get(labelId: string): Promise<CaseLabelObj | null> {
+		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
+		for (let i = 0, n = labels.length; i < n; i++) {
+			if (labels[i].label_id === labelId) {
+				const caseLabel: CaseLabelObj = {
+					id: labels[i].label_id,
+					name: labels[i].label_name,
+				};
+				return caseLabel;
+			}
+		}
+		return null;
+	}
+
 	public async save(caseId: string, labelName: string): Promise<CaseLabelEntity | null> {
 		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
 		const newLabel: CaseLabelEntity = {

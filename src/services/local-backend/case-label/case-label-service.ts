@@ -1,4 +1,5 @@
 import { CaseLabelObj } from "../../../types/api";
+import { CaseLabelEntity } from "../../local-database/entities";
 import { CasesDAO } from "../cases/cases-dao";
 import { CaseLabelDAO } from "./case-label-dao";
 
@@ -20,5 +21,24 @@ export class CaseLabelService {
 			userCaseLabels = [...userCaseLabels, ...caseLabels];
 		}
 		return userCaseLabels;
+	}
+
+	public async addCaseLabel(userId: string, caseId: string, labelName: string): Promise<CaseLabelEntity | null> {
+		if (!userId || !caseId || !labelName) return null;
+		const newLabel = await this.caseLabelDao.save(caseId, labelName);
+		if (newLabel !== null) {
+			return newLabel;
+		}
+		return null;
+	}
+
+	public async deleteCaseLabel(userId: string, caseId: string, labelId: string) {
+		if (!userId || !caseId || !labelId) return null;
+		const deletedLabel = this.caseLabelDao.get(labelId);
+		const isLabelDeleted = await this.caseLabelDao.delete(caseId, labelId);
+		if (isLabelDeleted) {
+			return deletedLabel;
+		}
+		return null;
 	}
 }

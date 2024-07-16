@@ -68,15 +68,6 @@ export class CasesService {
 		return null;
 	}
 
-	public async addCaseLabel(userId: string, caseId: string, newLabel: string): Promise<DashboardCaseCardObj | null> {
-		if (!userId || !caseId || !newLabel) return null;
-		const isLabelCreated = await this.caseLabelDao.save(caseId, newLabel);
-		if (isLabelCreated) {
-			return await this.getCase(caseId);
-		}
-		return null;
-	}
-
 	public async updateCaseLastOpenedDate(userId: string, caseId: string): Promise<number | null> {
 		if (!userId || !caseId) return null;
 		const isDateUpdated = await this.casesDao.updateLastOpenedDate(userId, caseId);
@@ -103,19 +94,6 @@ export class CasesService {
 		if (!userId || !caseId || typeof currentState !== "boolean") return null;
 		const isStatusUpdated = await this.casesDao.updateOpenState(userId, caseId, currentState);
 		if (isStatusUpdated) {
-			return await this.getCase(caseId);
-		}
-		return null;
-	}
-
-	public async deleteCaseLabelById(
-		userId: string,
-		caseId: string,
-		labelId: string
-	): Promise<DashboardCaseCardObj | null> {
-		if (!userId || !caseId || !labelId) return null;
-		const isLabelDeleted = await this.caseLabelDao.delete(caseId, labelId);
-		if (isLabelDeleted) {
 			return await this.getCase(caseId);
 		}
 		return null;
