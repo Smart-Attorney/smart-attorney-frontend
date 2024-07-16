@@ -8,7 +8,7 @@ export type SignInUserDTO = Pick<UserObj, "companyEmail" | "password">;
 
 const mockApi = async (data: SignInUserDTO) => {
 	const request = mockRequest.post("/signin", data);
-	return await new UserController().verifyUser(request);
+	return await new UserController().verifyUserHandler(request);
 };
 
 const fetchApi = async (data: SignInUserDTO) => {

@@ -9,14 +9,14 @@ export class UserController {
 		this.userService = new UserService();
 	}
 
-	public async getUser(request: Request) {
+	public async getUserHandler(request: Request) {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId: string = authToken.id;
-		const retrievedUser = await this.userService.getById(userId);
+		const retrievedUser = await this.userService.getUser(userId);
 		if (retrievedUser !== null) {
 			const body = JSON.stringify(retrievedUser);
 			const options = { status: 200 };
@@ -26,9 +26,9 @@ export class UserController {
 		}
 	}
 
-	public async registerUser(request: Request) {
+	public async postUserHandler(request: Request) {
 		const userData: RegisterUserDTO = await request.json();
-		const registeredUser = await this.userService.register(userData);
+		const registeredUser = await this.userService.addUser(userData);
 		if (registeredUser !== null) {
 			const body = JSON.stringify(registeredUser);
 			const options = { status: 200 };
@@ -38,9 +38,9 @@ export class UserController {
 		}
 	}
 
-	public async verifyUser(request: Request) {
+	public async verifyUserHandler(request: Request) {
 		const data: SignInUserDTO = await request.json();
-		const verifiedUserToken = await this.userService.verify(data);
+		const verifiedUserToken = await this.userService.verifyUser(data);
 		if (verifiedUserToken !== null) {
 			const body = JSON.stringify(verifiedUserToken);
 			const options = { status: 200 };

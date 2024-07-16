@@ -10,9 +10,9 @@ export class UserService {
 		this.userDao = new UserDAO();
 	}
 
-	public async getById(userId: string) {
+	public async getUser(userId: string) {
 		if (!userId) return null;
-		const foundUser = await this.userDao.getById(userId);
+		const foundUser = await this.userDao.get(userId);
 		if (foundUser !== null) {
 			const userProfile: UserProfile = {
 				firstName: foundUser.first_name,
@@ -25,20 +25,20 @@ export class UserService {
 		return null;
 	}
 
-	public async register(data: RegisterUserDTO) {
+	public async addUser(data: RegisterUserDTO) {
 		if (data.firstName.trim().length === 0) return null;
 		if (data.lastName.trim().length === 0) return null;
 		if (data.firmName.trim().length === 0) return null;
 		if (data.companyEmail.trim().length === 0) return null;
 		if (data.password.trim().length === 0) return null;
-		const registeredUser = await this.userDao.add(data);
+		const registeredUser = await this.userDao.save(data);
 		if (registeredUser !== null) {
 			return registeredUser;
 		}
 		return null;
 	}
 
-	public async verify(data: SignInUserDTO): Promise<{ id: string; firstName: string; lastName: string } | null> {
+	public async verifyUser(data: SignInUserDTO): Promise<{ id: string; firstName: string; lastName: string } | null> {
 		const { companyEmail, password } = data;
 		if (companyEmail.trim().length === 0) return null;
 		if (password.trim().length === 0) return null;

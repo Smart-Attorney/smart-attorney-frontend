@@ -8,7 +8,7 @@ export type RegisterUserDTO = Omit<UserObj, "id" | "email">;
 
 const mockApi = async (data: RegisterUserDTO) => {
 	const request = mockRequest.post("/", data);
-	return await new UserController().registerUser(request);
+	return await new UserController().postUserHandler(request);
 };
 
 const fetchApi = async (data: RegisterUserDTO) => {

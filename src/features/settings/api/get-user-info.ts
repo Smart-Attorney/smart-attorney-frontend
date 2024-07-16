@@ -3,7 +3,7 @@ import { UserController } from "../../../services/local-backend/user/user-contro
 
 const mockApi = async () => {
 	const request = mockRequest.get("/settings");
-	return await new UserController().getUser(request);
+	return await new UserController().getUserHandler(request);
 };
 
 export const getUserInfo = async () => {
