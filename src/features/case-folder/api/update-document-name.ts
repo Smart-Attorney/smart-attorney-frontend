@@ -6,7 +6,7 @@ export type UpdateDocumentNameDTO = Pick<DocumentObj, "id" | "name">;
 
 const mockApi = async (caseId: string, documentId: string, data: UpdateDocumentNameDTO) => {
 	const request = mockRequest.patch(`/case/${caseId}/${documentId}`, data);
-	return await new DocumentController().updateDocumentName(request);
+	return await new DocumentController().updateDocumentNameHandler(request);
 };
 
 export const updateDocumentName = async (caseId: string, documentId: string, data: UpdateDocumentNameDTO) => {

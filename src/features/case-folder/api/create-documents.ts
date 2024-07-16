@@ -11,7 +11,7 @@ const mockApi = async (caseId: string, data: CreateDocumentsDTO) => {
 	};
 	const request = new Request(`/case/${caseId}`, options);
 	// JSON.stringify(FormData) == {};
-	return await new DocumentController().createDocuments(request);
+	return await new DocumentController().postDocumentsHandler(request);
 };
 
 export const createDocuments = async (caseId: string, data: CreateDocumentsDTO) => {

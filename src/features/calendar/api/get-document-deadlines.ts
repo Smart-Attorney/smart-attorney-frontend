@@ -3,7 +3,7 @@ import { DocumentController } from "../../../services/local-backend/document/doc
 
 const mockApi = async () => {
 	const request = mockRequest.get(`/calendar`);
-	return await new DocumentController().getAllDocumentsByUserId(request);
+	return await new DocumentController().getAllDocumentsByUserIdHandler(request);
 };
 
 export const getUserDocuments = async () => {

@@ -3,7 +3,7 @@ import { DocumentController } from "../../../services/local-backend/document/doc
 
 const mockApi = async (caseId: string, documentId: string) => {
 	const request = mockRequest.get(`/case/${caseId}/${documentId}`);
-	return await new DocumentController().getDocumentById(request);
+	return await new DocumentController().getDocumentByIdHandler(request);
 };
 
 export const getDocument = async (caseId: string, documentId: string) => {

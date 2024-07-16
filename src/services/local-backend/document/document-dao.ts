@@ -31,7 +31,7 @@ export class DocumentDAO {
 		return caseDocuments;
 	}
 
-	public async getById(caseId: string, documentId: string): Promise<DocumentObj | null> {
+	public async get(caseId: string, documentId: string): Promise<DocumentObj | null> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
@@ -50,7 +50,7 @@ export class DocumentDAO {
 		return null;
 	}
 
-	public async add(
+	public async save(
 		documentId: string,
 		documentName: string,
 		documentUrl: string,
@@ -133,7 +133,7 @@ export class DocumentDAO {
 		return false;
 	}
 
-	public async deleteById(caseId: string, documentId: string): Promise<boolean> {
+	public async delete(caseId: string, documentId: string): Promise<boolean> {
 		const newDocumentsArr: DocumentEntity[] = [];
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {

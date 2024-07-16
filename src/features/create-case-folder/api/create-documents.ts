@@ -9,7 +9,7 @@ const mockApi = async (data: CreateDocumentsDTO) => {
 		body: data,
 	};
 	const request = new Request("/create-case", options);
-	return await new DocumentController().createDocuments(request);
+	return await new DocumentController().postDocumentsHandler(request);
 };
 
 export const createDocuments = async (data: CreateDocumentsDTO) => {

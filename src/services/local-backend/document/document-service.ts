@@ -12,7 +12,7 @@ export class DocumentService {
 		this.casesDao = new CasesDAO();
 	}
 
-	public async getAllByUserId(userId: string): Promise<DocumentObj[] | null> {
+	public async getAllDocumentsByUserId(userId: string): Promise<DocumentObj[] | null> {
 		if (!userId) return null;
 		const userDocuments: DocumentObj[] = [];
 		const userCases = await this.casesDao.getAllByUserId(userId);
@@ -26,22 +26,22 @@ export class DocumentService {
 		return userDocuments;
 	}
 
-	public async getAllByCaseId(caseId: string): Promise<DocumentObj[] | null> {
+	public async getAllDocumentsByCaseId(caseId: string): Promise<DocumentObj[] | null> {
 		if (!caseId) return null;
 		const retrievedDocuments = await this.documentDao.getAllByCaseId(caseId);
 		return retrievedDocuments;
 	}
 
-	public async getById(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
+	public async getDocumentById(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
 		if (!userId || !caseId || !documentId) return null;
-		const retrievedDocument = await this.documentDao.getById(caseId, documentId);
+		const retrievedDocument = await this.documentDao.get(caseId, documentId);
 		if (retrievedDocument !== null) {
 			return retrievedDocument;
 		}
 		return null;
 	}
 
-	public async create(userId: string, caseId: string, files: File[]): Promise<DocumentObj[] | null> {
+	public async addDocument(userId: string, caseId: string, files: File[]): Promise<DocumentObj[] | null> {
 		if (!caseId || !files) return null;
 		const documents: DocumentObj[] = [];
 		for (let i = 0, n = files.length; i < n; i++) {
@@ -50,7 +50,7 @@ export class DocumentService {
 			const fileName = name.split("/")[1];
 			const fileUrl = await Firebase.uploadFile(userId, caseId, fileId, files[i]);
 			if (fileUrl === null) return null;
-			const newDocument = await this.documentDao.add(fileId, fileName, fileUrl, caseId);
+			const newDocument = await this.documentDao.save(fileId, fileName, fileUrl, caseId);
 			if (newDocument === null) return null;
 			documents.push({
 				id: newDocument.document_id,
@@ -65,7 +65,7 @@ export class DocumentService {
 		return documents;
 	}
 
-	public async updateStatus(
+	public async updateDocumentStatus(
 		caseId: string,
 		documentId: string,
 		newStatus: DocumentStatus
@@ -73,35 +73,39 @@ export class DocumentService {
 		if (!caseId || !documentId || !newStatus) return null;
 		const isUpdated = await this.documentDao.updateStatus(caseId, documentId, newStatus);
 		if (isUpdated) {
-			return this.documentDao.getById(caseId, documentId);
+			return this.documentDao.get(caseId, documentId);
 		}
 		return null;
 	}
 
-	public async updateName(caseId: string, documentId: string, newName: string): Promise<DocumentObj | null> {
+	public async updateDocumentName(caseId: string, documentId: string, newName: string): Promise<DocumentObj | null> {
 		if (!caseId || !documentId || !newName) return null;
 		const isUpdated = await this.documentDao.updateName(caseId, documentId, newName);
 		if (isUpdated) {
-			return this.documentDao.getById(caseId, documentId);
+			return this.documentDao.get(caseId, documentId);
 		}
 		return null;
 	}
 
-	public async updateDeadline(caseId: string, documentId: string, newDeadline: number): Promise<DocumentObj | null> {
+	public async updateDocumentDeadline(
+		caseId: string,
+		documentId: string,
+		newDeadline: number
+	): Promise<DocumentObj | null> {
 		if (!caseId || !documentId || !newDeadline) return null;
 		const isUpdated = await this.documentDao.updateDeadline(caseId, documentId, newDeadline);
 		if (isUpdated) {
-			return this.documentDao.getById(caseId, documentId);
+			return this.documentDao.get(caseId, documentId);
 		}
 		return null;
 	}
 
-	public async deleteById(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
+	public async deleteDocument(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
 		if (!userId || !caseId || !documentId) return null;
 		const isFileDeletedFromCloud = await Firebase.deleteFileById(userId, caseId, documentId);
 		if (!isFileDeletedFromCloud) return null;
-		const deletedDocument = await this.documentDao.getById(caseId, documentId);
-		const isDeleted = await this.documentDao.deleteById(caseId, documentId);
+		const deletedDocument = await this.documentDao.get(caseId, documentId);
+		const isDeleted = await this.documentDao.delete(caseId, documentId);
 		if (isDeleted) {
 			return deletedDocument;
 		}

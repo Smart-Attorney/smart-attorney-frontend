@@ -6,7 +6,7 @@ export type UpdateDocumentDeadlineDTO = Pick<DocumentObj, "id" | "deadline">;
 
 const mockApi = async (caseId: string, documentId: string, data: UpdateDocumentDeadlineDTO) => {
 	const request = mockRequest.patch(`/case/${caseId}/${documentId}`, data);
-	return await new DocumentController().updateDocumentDeadline(request);
+	return await new DocumentController().updateDocumentDeadlineHandler(request);
 };
 
 export const updateDocumentDeadline = async (caseId: string, documentId: string, data: UpdateDocumentDeadlineDTO) => {

@@ -3,7 +3,7 @@ import { DocumentController } from "../../../services/local-backend/document/doc
 
 const mockApi = async (caseId: string, documentId: string) => {
 	const request = mockRequest.delete(`/case/${caseId}/${documentId}`);
-	return await new DocumentController().deleteDocumentById(request);
+	return await new DocumentController().deleteDocumentByIdHandler(request);
 };
 
 export const deleteDocument = async (caseId: string, documentId: string) => {
