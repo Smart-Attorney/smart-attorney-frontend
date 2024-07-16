@@ -3,7 +3,7 @@ import { ClientController } from "../../../services/local-backend/client/client-
 
 const mockApi = async (caseId: string) => {
 	const request = mockRequest.get(`/case/${caseId}`);
-	return await new ClientController().getClient(request);
+	return await new ClientController().getClientByCaseIdHandler(request);
 };
 
 export const getClient = async (caseId: string) => {

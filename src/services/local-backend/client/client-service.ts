@@ -10,10 +10,19 @@ export class ClientService {
 		this.clientDao = new ClientDAO();
 	}
 
-	public async create(client: CreateClientDTO): Promise<ClientEntity | null> {
+	public async getClientByCaseId(caseId: string): Promise<ClientObj | null> {
+		if (!caseId) return null;
+		const retrievedClient = await this.clientDao.getByCaseId(caseId);
+		if (retrievedClient !== null) {
+			return retrievedClient;
+		}
+		return null;
+	}
+
+	public async addClient(client: CreateClientDTO): Promise<ClientEntity | null> {
 		if (!client) return null;
 		const { firstName, middleName, lastName, dateOfBirth, sex, countryOfCitizenship, primaryLanguage, caseId } = client;
-		const newClient = await this.clientDao.add(
+		const newClient = await this.clientDao.save(
 			firstName,
 			middleName,
 			lastName,
@@ -25,15 +34,6 @@ export class ClientService {
 		);
 		if (newClient !== null) {
 			return newClient;
-		}
-		return null;
-	}
-
-	public async getByCaseId(caseId: string): Promise<ClientObj | null> {
-		if (!caseId) return null;
-		const retrievedClient = await this.clientDao.getByCaseId(caseId);
-		if (retrievedClient !== null) {
-			return retrievedClient;
 		}
 		return null;
 	}

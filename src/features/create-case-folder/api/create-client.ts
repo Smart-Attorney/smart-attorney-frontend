@@ -15,7 +15,7 @@ export type CreateClientDTO = {
 
 const mockApi = async (data: CreateClientDTO) => {
 	const request = mockRequest.post("/create-case", data);
-	return await new ClientController().createClient(request);
+	return await new ClientController().postClientHandler(request);
 };
 
 export const createClient = async (data: CreateClientDTO) => {

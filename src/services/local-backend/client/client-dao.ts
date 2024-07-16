@@ -32,7 +32,7 @@ export class ClientDAO {
 		return null;
 	}
 
-	public async add(
+	public async save(
 		firstName: string,
 		middleName: string,
 		lastName: string,
