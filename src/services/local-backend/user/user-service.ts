@@ -31,6 +31,9 @@ export class UserService {
 		if (data.firmName.trim().length === 0) return null;
 		if (data.companyEmail.trim().length === 0) return null;
 		if (data.password.trim().length === 0) return null;
+		if (this.userDao.getIdByCompanyEmail(data.companyEmail) !== null) {
+			throw new Error("This email already exists.");
+		}
 		const registeredUser = await this.userDao.save(data);
 		if (registeredUser !== null) {
 			return registeredUser;

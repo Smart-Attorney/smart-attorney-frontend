@@ -28,13 +28,17 @@ export class UserController {
 
 	public async postUserHandler(request: Request) {
 		const userData: RegisterUserDTO = await request.json();
-		const registeredUser = await this.userService.addUser(userData);
-		if (registeredUser !== null) {
-			const body = JSON.stringify(registeredUser);
-			const options = { status: 200 };
-			return new Response(body, options);
-		} else {
-			throw new Error("There was an issue trying to register the user.");
+		try {
+			const registeredUser = await this.userService.addUser(userData);
+			if (registeredUser !== null) {
+				const body = JSON.stringify(registeredUser);
+				const options = { status: 200 };
+				return new Response(body, options);
+			} else {
+				throw new Error("There was an issue trying to register the user.");
+			}
+		} catch (error) {
+			throw error;
 		}
 	}
 
