@@ -8,7 +8,7 @@ export class MockUser {
 		last_name: "Doe",
 		firm_name: "Attorney Law Group",
 		company_email: "lawyer@email.com",
-		password: "password123",
+		// password: "password123",
 	};
 
 	private static mockUserAuth: UserAuthEntity = {

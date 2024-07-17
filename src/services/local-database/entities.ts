@@ -17,7 +17,6 @@ export type UserEntity = {
 	last_name: string;
 	firm_name: string;
 	company_email: string;
-	password: string;
 };
 
 export type CasesEntity = {

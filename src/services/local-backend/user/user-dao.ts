@@ -22,26 +22,6 @@ export class UserDAO {
 		return null;
 	}
 
-	public async getIdByPassword(password: string): Promise<string | null> {
-		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
-		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].password === password) {
-				return users[i].user_id;
-			}
-		}
-		return null;
-	}
-
-	public async getByCompanyEmailAndPassword(companyEmail: string, password: string): Promise<UserEntity | null> {
-		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
-		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].company_email === companyEmail && users[i].password === password) {
-				return users[i];
-			}
-		}
-		return null;
-	}
-
 	public async get(userId: string): Promise<UserEntity | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		for (let i = 0, n = users.length; i < n; i++) {
@@ -60,7 +40,6 @@ export class UserDAO {
 			last_name: data.lastName,
 			firm_name: data.firmName,
 			company_email: data.companyEmail,
-			password: data.password,
 		};
 		const newUsersArr = [...users, newUser];
 		const success = await this.dbConn.setArray(this.USER_KEY, newUsersArr);
