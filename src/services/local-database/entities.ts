@@ -4,6 +4,13 @@ import { DocumentStatus, Sex } from "../../types/api";
 // entity instance corresponds to a row in that table.
 // https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html
 
+export type UserAuthEntity = {
+	user_auth_id: string;
+	company_email: string;
+	salt: string;
+	password_hash: string;
+};
+
 export type UserEntity = {
 	user_id: string;
 	first_name: string;

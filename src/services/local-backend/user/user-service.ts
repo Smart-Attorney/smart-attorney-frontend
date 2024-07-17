@@ -1,13 +1,17 @@
+import * as bcrypt from "bcryptjs";
 import { RegisterUserDTO } from "../../../features/register/api/register";
 import { SignInUserDTO } from "../../../features/sign-in/api/sign-in";
 import { UserProfile } from "../../../pages/Settings";
+import { UserAuthDAO } from "../user-auth/user-auth-dao";
 import { UserDAO } from "./user-dao";
 
 export class UserService {
 	private userDao: UserDAO;
+	private userAuthDao: UserAuthDAO;
 
 	constructor() {
 		this.userDao = new UserDAO();
+		this.userAuthDao = new UserAuthDAO();
 	}
 
 	public async getUser(userId: string) {
@@ -31,8 +35,17 @@ export class UserService {
 		if (data.firmName.trim().length === 0) return null;
 		if (data.companyEmail.trim().length === 0) return null;
 		if (data.password.trim().length === 0) return null;
-		if (this.userDao.getIdByCompanyEmail(data.companyEmail) !== null) {
+		const userId = await this.userDao.getIdByCompanyEmail(data.companyEmail);
+		if (userId !== null) {
 			throw new Error("This email already exists.");
+		}
+		const { companyEmail, password } = data;
+		const saltRounds: number = 15;
+		const salt = await bcrypt.genSalt(saltRounds);
+		const hashedPassword = await bcrypt.hash(password, salt);
+		const isUserAuthSaved = await this.userAuthDao.save(companyEmail, salt, hashedPassword);
+		if (!isUserAuthSaved) {
+			throw new Error("An issue occurred when attempting to register the user.");
 		}
 		const registeredUser = await this.userDao.save(data);
 		if (registeredUser !== null) {
