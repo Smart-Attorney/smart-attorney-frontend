@@ -1,17 +1,19 @@
-import * as bcrypt from "bcryptjs";
 import { RegisterUserDTO } from "../../../features/register/api/register";
 import { SignInUserDTO } from "../../../features/sign-in/api/sign-in";
 import { UserProfile } from "../../../pages/Settings";
-import { UserAuthDAO } from "../user-auth/user-auth-dao";
 import { UserDAO } from "./user-dao";
+
+type UserToken = {
+	id: string;
+	firstName: string;
+	lastName: string;
+};
 
 export class UserService {
 	private userDao: UserDAO;
-	private userAuthDao: UserAuthDAO;
 
 	constructor() {
 		this.userDao = new UserDAO();
-		this.userAuthDao = new UserAuthDAO();
 	}
 
 	public async getUser(userId: string) {
@@ -29,6 +31,23 @@ export class UserService {
 		return null;
 	}
 
+	public async getToken(userData: SignInUserDTO): Promise<UserToken | null> {
+		const { companyEmail } = userData;
+		if (!companyEmail) return null;
+		const userId = await this.userDao.getIdByCompanyEmail(companyEmail);
+		if (!userId) return null;
+		const user = await this.userDao.get(userId);
+		if (user !== null) {
+			const token: UserToken = {
+				id: user.user_id,
+				firstName: user.first_name,
+				lastName: user.last_name,
+			};
+			return token;
+		}
+		return null;
+	}
+
 	public async addUser(data: RegisterUserDTO) {
 		if (data.firstName.trim().length === 0) return null;
 		if (data.lastName.trim().length === 0) return null;
@@ -39,33 +58,9 @@ export class UserService {
 		if (userId !== null) {
 			throw new Error("This email already exists.");
 		}
-		const { companyEmail, password } = data;
-		const saltRounds: number = 15;
-		const salt = await bcrypt.genSalt(saltRounds);
-		const hashedPassword = await bcrypt.hash(password, salt);
-		const isUserAuthSaved = await this.userAuthDao.save(companyEmail, salt, hashedPassword);
-		if (!isUserAuthSaved) {
-			throw new Error("An issue occurred when attempting to register the user.");
-		}
 		const registeredUser = await this.userDao.save(data);
 		if (registeredUser !== null) {
 			return registeredUser;
-		}
-		return null;
-	}
-
-	public async verifyUser(data: SignInUserDTO): Promise<{ id: string; firstName: string; lastName: string } | null> {
-		const { companyEmail, password } = data;
-		if (companyEmail.trim().length === 0) return null;
-		if (password.trim().length === 0) return null;
-		const foundUser = await this.userDao.getByCompanyEmailAndPassword(companyEmail, password);
-		if (foundUser !== null) {
-			const verifiedUser = {
-				id: foundUser.user_id,
-				firstName: foundUser.first_name,
-				lastName: foundUser.last_name,
-			};
-			return verifiedUser;
 		}
 		return null;
 	}

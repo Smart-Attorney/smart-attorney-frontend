@@ -1,12 +1,15 @@
 import { RegisterUserDTO } from "../../../features/register/api/register";
 import { SignInUserDTO } from "../../../features/sign-in/api/sign-in";
+import { UserAuthService } from "../user-auth/user-auth-service";
 import { UserService } from "./user-service";
 
 export class UserController {
 	private userService: UserService;
+	private userAuthService: UserAuthService;
 
 	constructor() {
 		this.userService = new UserService();
+		this.userAuthService = new UserAuthService();
 	}
 
 	public async getUserHandler(request: Request) {
@@ -29,6 +32,10 @@ export class UserController {
 	public async postUserHandler(request: Request) {
 		const userData: RegisterUserDTO = await request.json();
 		try {
+			const isPasswordHashed = await this.userAuthService.addUserAuth(userData);
+			if (!isPasswordHashed) {
+				throw new Error("An issue occurred when attempting to register the user.");
+			}
 			const registeredUser = await this.userService.addUser(userData);
 			if (registeredUser !== null) {
 				const body = JSON.stringify(registeredUser);
@@ -43,10 +50,15 @@ export class UserController {
 	}
 
 	public async verifyUserHandler(request: Request) {
-		const data: SignInUserDTO = await request.json();
-		const verifiedUserToken = await this.userService.verifyUser(data);
-		if (verifiedUserToken !== null) {
-			const body = JSON.stringify(verifiedUserToken);
+		const userData: SignInUserDTO = await request.json();
+		const { companyEmail, password } = userData;
+		const isUserAuthenticated = await this.userAuthService.authenticateUser(companyEmail, password);
+		if (!isUserAuthenticated) {
+			throw new Error("Invalid login credentials.");
+		}
+		const token = await this.userService.getToken(userData);
+		if (token !== null) {
+			const body = JSON.stringify(token);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
