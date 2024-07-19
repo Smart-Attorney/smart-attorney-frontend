@@ -6,14 +6,17 @@ import { UserObj } from "../../../types/api";
 
 export type RegisterUserDTO = Omit<UserObj, "id" | "email">;
 
+const baseUrl = "http://localhost:8080";
+const endpoint = "/auth/register";
+
 const mockApi = async (data: RegisterUserDTO) => {
-	const request = mockRequest.post("/", data);
+	const request = mockRequest.post(endpoint, data);
 	return await new UserController().postUserHandler(request);
 };
 
 const fetchApi = async (data: RegisterUserDTO) => {
-	const url = "http://localhost:8080/register";
-	return await fetchWrapper.post(url, data);
+	const absoluteUrl = baseUrl + endpoint;
+	return await fetchWrapper.post(absoluteUrl, data);
 };
 
 export const register = async (data: RegisterUserDTO) => {

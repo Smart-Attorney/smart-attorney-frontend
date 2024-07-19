@@ -6,14 +6,17 @@ import { UserObj } from "../../../types/api";
 
 export type SignInUserDTO = Pick<UserObj, "companyEmail" | "password">;
 
+const baseUrl = "http://localhost:8080";
+const endpoint = "/auth/signin";
+
 const mockApi = async (data: SignInUserDTO) => {
-	const request = mockRequest.post("/signin", data);
+	const request = mockRequest.post(endpoint, data);
 	return await new UserController().verifyUserHandler(request);
 };
 
 const fetchApi = async (data: SignInUserDTO) => {
-	const url = "http://localhost:8080/signin";
-	return await fetchWrapper.post(url, data);
+	const absoluteUrl = baseUrl + endpoint;
+	return await fetchWrapper.post(absoluteUrl, data);
 };
 
 export const signIn = async (data: SignInUserDTO) => {
