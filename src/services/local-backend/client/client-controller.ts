@@ -22,8 +22,10 @@ export class ClientController {
 	}
 
 	public async postClientHandler(request: Request): Promise<Response> {
+		const urlArray = request.url.split("/");
+		const caseId = urlArray[urlArray.length - 1];
 		const newClient: CreateClientDTO = await request.json();
-		const createdClient = await this.clientService.addClient(newClient);
+		const createdClient = await this.clientService.addClient(caseId, newClient);
 		if (createdClient !== null) {
 			const body = JSON.stringify(createdClient);
 			const options = { status: 200 };

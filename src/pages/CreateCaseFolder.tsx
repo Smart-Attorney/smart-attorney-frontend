@@ -104,10 +104,9 @@ function CreateCaseFolder() {
 			sex: client.sex === "" ? "Other" : (client.sex as Sex),
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
-			caseId: caseId,
 		};
 		try {
-			const response = await createClient(newClient);
+			const response = await createClient(caseId, newClient);
 			if (response.ok) {
 				return true;
 			}
@@ -125,7 +124,7 @@ function CreateCaseFolder() {
 			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
 		}
 		try {
-			const response = await createDocuments(filesData);
+			const response = await createDocuments(caseId, filesData);
 			if (response.ok) {
 				return true;
 			}

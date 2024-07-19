@@ -5,7 +5,8 @@ import { DashboardCaseCardObj } from "../../../types/api";
 export type CreateCaseDTO = Pick<DashboardCaseCardObj, "name">;
 
 const mockApi = async (data: CreateCaseDTO) => {
-	const request = mockRequest.post("/create-case", data);
+	const endpoint = `/users/cases`;
+	const request = mockRequest.post(endpoint, data);
 	return await new CasesController().postCaseHandler(request);
 };
 
