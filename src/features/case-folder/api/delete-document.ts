@@ -2,7 +2,8 @@ import { mockRequest } from "../../../lib/mock-request";
 import { DocumentController } from "../../../services/local-backend/document/document-controller";
 
 const mockApi = async (caseId: string, documentId: string) => {
-	const request = mockRequest.delete(`/case/${caseId}/${documentId}`);
+	const endpoint = `/users/cases/${caseId}/documents/${documentId}`;
+	const request = mockRequest.delete(endpoint);
 	return await new DocumentController().deleteDocumentByIdHandler(request);
 };
 

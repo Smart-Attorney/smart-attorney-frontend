@@ -9,7 +9,8 @@ const mockApi = async (caseId: string, data: CreateDocumentsDTO) => {
 		headers: { Authorization: mockRequest.getToken() },
 		body: data,
 	};
-	const request = new Request(`/case/${caseId}`, options);
+	const endpoint = `/users/cases/${caseId}/documents`;
+	const request = new Request(endpoint, options);
 	// JSON.stringify(FormData) == {};
 	return await new DocumentController().postDocumentsHandler(request);
 };

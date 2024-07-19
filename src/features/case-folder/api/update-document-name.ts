@@ -5,7 +5,8 @@ import { DocumentObj } from "../../../types/api";
 export type UpdateDocumentNameDTO = Pick<DocumentObj, "id" | "name">;
 
 const mockApi = async (caseId: string, documentId: string, data: UpdateDocumentNameDTO) => {
-	const request = mockRequest.patch(`/case/${caseId}/${documentId}`, data);
+	const endpoint = `/users/cases/${caseId}/documents/${documentId}`;
+	const request = mockRequest.patch(endpoint, data);
 	return await new DocumentController().updateDocumentNameHandler(request);
 };
 
