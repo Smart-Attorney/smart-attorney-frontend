@@ -5,7 +5,8 @@ import { CaseLabelObj } from "../../../types/api";
 export type CreateCaseLabelDTO = Pick<CaseLabelObj, "name">;
 
 const mockApi = async (caseId: string, data: CreateCaseLabelDTO) => {
-	const request = mockRequest.post(`/dashboard/${caseId}`, data);
+	const endpoint = `/users/cases/${caseId}/case-labels`;
+	const request = mockRequest.post(endpoint, data);
 	return await new CaseLabelController().postCaseLabelHandler(request);
 };
 
