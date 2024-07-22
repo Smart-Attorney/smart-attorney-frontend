@@ -42,11 +42,12 @@ export class CasesDAO {
 
 	public async save(userId: string, caseName: string): Promise<string | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
+		const currentDateUnixMilliseconds = Date.now();
 		const newCase: CasesEntity = {
 			case_id: nanoid(20),
 			case_name: caseName,
-			created_date: Date.now(),
-			last_opened_date: Date.now(),
+			created_date: currentDateUnixMilliseconds,
+			last_opened_date: currentDateUnixMilliseconds,
 			is_open: true,
 			fk_user_id: userId,
 		};

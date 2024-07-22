@@ -57,11 +57,12 @@ export class DocumentDAO {
 		caseId: string
 	): Promise<DocumentEntity | null> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
+		const currentDateUnixMilliseconds = Date.now();
 		const newDocument: DocumentEntity = {
 			document_id: documentId,
 			document_name: documentName,
-			created_date: Date.now(),
-			last_opened_date: Date.now(),
+			created_date: currentDateUnixMilliseconds,
+			last_opened_date: currentDateUnixMilliseconds,
 			status: DOCUMENT_STATUS.IN_PROGRESS,
 			deadline: 0,
 			url: documentUrl,
