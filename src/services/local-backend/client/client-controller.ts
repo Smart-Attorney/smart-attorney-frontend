@@ -10,7 +10,7 @@ export class ClientController {
 
 	public async getClientByCaseIdHandler(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 1];
+		const caseId = urlArray[urlArray.length - 2];
 		const retrievedClient = await this.clientService.getClientByCaseId(caseId);
 		if (retrievedClient !== null) {
 			const body = JSON.stringify(retrievedClient);
@@ -23,7 +23,7 @@ export class ClientController {
 
 	public async postClientHandler(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 1];
+		const caseId = urlArray[urlArray.length - 2];
 		const newClient: CreateClientDTO = await request.json();
 		const createdClient = await this.clientService.addClient(caseId, newClient);
 		if (createdClient !== null) {

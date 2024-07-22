@@ -33,7 +33,7 @@ export class CaseLabelController {
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 1];
+		const caseId = urlArray[urlArray.length - 2];
 		const body: CreateCaseLabelDTO = await request.json();
 		const { name } = body;
 		const newLabel = await this.caseLabelService.addCaseLabel(userId, caseId, name);
@@ -54,7 +54,7 @@ export class CaseLabelController {
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const caseId: string = urlArray[urlArray.length - 2];
+		const caseId: string = urlArray[urlArray.length - 3];
 		const labelId: string = urlArray[urlArray.length - 1];
 		const deletedLabel = await this.caseLabelService.deleteCaseLabel(userId, caseId, labelId);
 		if (deletedLabel !== null) {
