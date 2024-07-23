@@ -24,8 +24,18 @@ export class ClientController {
 	public async postClientHandler(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 2];
-		const newClient: CreateClientDTO = await request.json();
-		const createdClient = await this.clientService.addClient(caseId, newClient);
+		const body: CreateClientDTO = await request.json();
+		const { firstName, middleName, lastName, dateOfBirth, sex, countryOfCitizenship, primaryLanguage } = body;
+		const createdClient = await this.clientService.addClient(
+			caseId,
+			firstName,
+			middleName,
+			lastName,
+			dateOfBirth,
+			sex,
+			countryOfCitizenship,
+			primaryLanguage
+		);
 		if (createdClient !== null) {
 			const body = JSON.stringify(createdClient);
 			const options = { status: 200 };

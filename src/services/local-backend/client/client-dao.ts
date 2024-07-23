@@ -1,5 +1,4 @@
 import { nanoid } from "../../../lib/nanoid";
-import { ClientObj } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { ClientEntity, sex_option } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -12,52 +11,52 @@ export class ClientDAO {
 		this.dbConn = new DatabaseConnection();
 	}
 
-	public async getByCaseId(caseId: string): Promise<ClientObj | null> {
+	public async getByCaseId(caseId: string): Promise<ClientEntity | null> {
 		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
 		for (let i = 0, n = clients.length; i < n; i++) {
 			if (clients[i].fk_case_id === caseId) {
-				const caseClient: ClientObj = {
-					id: clients[i].client_id,
-					firstName: clients[i].first_name,
-					middleName: clients[i].middle_name,
-					lastName: clients[i].last_name,
-					dateOfBirth: clients[i].date_of_birth,
-					sex: clients[i].sex,
-					countryOfCitizenship: clients[i].country_of_citizenship,
-					primaryLanguage: clients[i].primary_language,
-				};
-				return caseClient;
+				return clients[i];
+			}
+		}
+		return null;
+	}
+
+	public async get(clientId: string): Promise<ClientEntity | null> {
+		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
+		for (let i = 0, n = clients.length; i < n; i++) {
+			if (clients[i].client_id === clientId) {
+				return clients[i];
 			}
 		}
 		return null;
 	}
 
 	public async save(
+		caseId: string,
 		firstName: string,
 		middleName: string,
 		lastName: string,
-		DOB: number,
+		dateOfBirth: number,
 		sex: sex_option,
-		country: string,
-		language: string,
-		caseId: string
-	): Promise<ClientEntity | null> {
+		countryOfCitizenship: string,
+		primaryLanguage: string
+	): Promise<string | null> {
 		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
 		const newClient: ClientEntity = {
 			client_id: nanoid(20),
 			first_name: firstName,
 			middle_name: middleName,
 			last_name: lastName,
-			date_of_birth: DOB,
+			date_of_birth: dateOfBirth,
 			sex: sex,
-			country_of_citizenship: country,
-			primary_language: language,
+			country_of_citizenship: countryOfCitizenship,
+			primary_language: primaryLanguage,
 			fk_case_id: caseId,
 		};
 		const newClientsArr = [...clients, newClient];
 		const success = await this.dbConn.setArray(this.CLIENT_KEY, newClientsArr);
 		if (success) {
-			return newClient;
+			return newClient.client_id;
 		}
 		return null;
 	}
