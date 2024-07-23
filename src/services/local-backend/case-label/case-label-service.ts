@@ -1,5 +1,4 @@
 import { CaseLabelObj } from "../../../types/api";
-import { CaseLabelEntity } from "../../local-database/entities";
 import { CasesDAO } from "../cases/cases-dao";
 import { CaseLabelDAO } from "./case-label-dao";
 
@@ -12,22 +11,39 @@ export class CaseLabelService {
 		this.casesDao = new CasesDAO();
 	}
 
-	public async getAllLabelsByUserId(userId: string): Promise<CaseLabelObj[] | null> {
+	public async getAllCaseLabelsByUserId(userId: string): Promise<CaseLabelObj[] | null> {
 		if (!userId) return null;
 		let userCaseLabels: CaseLabelObj[] = [];
 		const userCases = await this.casesDao.getAllByUserId(userId);
 		for (let i = 0, n = userCases.length; i < n; i++) {
-			const caseLabels = await this.caseLabelDao.getAllByCaseId(userCases[i].case_id);
+			const labels = await this.caseLabelDao.getAllByCaseId(userCases[i].case_id);
+			const caseLabels: CaseLabelObj[] = labels.map((label) => ({
+				id: label.label_id,
+				name: label.label_name,
+			}));
 			userCaseLabels = [...userCaseLabels, ...caseLabels];
 		}
 		return userCaseLabels;
 	}
 
-	public async addCaseLabel(userId: string, caseId: string, labelName: string): Promise<CaseLabelEntity | null> {
+	public async getCaseLabel(labelId: string): Promise<CaseLabelObj | null> {
+		if (!labelId) return null;
+		const label = await this.caseLabelDao.get(labelId);
+		if (label !== null) {
+			const caseLabel: CaseLabelObj = {
+				id: label.label_id,
+				name: label.label_name,
+			};
+			return caseLabel;
+		}
+		return null;
+	}
+
+	public async addCaseLabel(userId: string, caseId: string, labelName: string): Promise<CaseLabelObj | null> {
 		if (!userId || !caseId || !labelName) return null;
-		const newLabel = await this.caseLabelDao.save(caseId, labelName);
-		if (newLabel !== null) {
-			return newLabel;
+		const newLabelId = await this.caseLabelDao.save(caseId, labelName);
+		if (newLabelId !== null) {
+			return this.getCaseLabel(newLabelId);
 		}
 		return null;
 	}

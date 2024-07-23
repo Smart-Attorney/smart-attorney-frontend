@@ -15,7 +15,7 @@ export class CaseLabelController {
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
-		const userCaseLabels = await this.caseLabelService.getAllLabelsByUserId(userId);
+		const userCaseLabels = await this.caseLabelService.getAllCaseLabelsByUserId(userId);
 		if (userCaseLabels !== null) {
 			const body = JSON.stringify(userCaseLabels);
 			const options = { status: 200 };

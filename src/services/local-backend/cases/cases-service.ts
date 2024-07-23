@@ -1,4 +1,4 @@
-import { DashboardCaseCardObj, DocumentObj } from "../../../types/api";
+import { CaseLabelObj, DashboardCaseCardObj, DocumentObj } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
 import { ClientDAO } from "../client/client-dao";
@@ -25,6 +25,10 @@ export class CasesService {
 			const caseId = cases[i].case_id;
 			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseId);
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
+			const caseLabels: CaseLabelObj[] = labels.map((label) => ({
+				id: label.label_id,
+				name: label.label_name,
+			}));
 			const documents = await this.documentDao.getAllByCaseId(caseId);
 			const caseDocuments: DocumentObj[] = documents.map((document) => ({
 				id: document.document_id,
@@ -42,7 +46,7 @@ export class CasesService {
 				lastOpenedDate: cases[i].last_opened_date,
 				isOpen: cases[i].is_open,
 				urgentDocumentDeadline: urgentDeadline,
-				labels: labels,
+				labels: caseLabels,
 				documents: caseDocuments,
 			});
 		}
@@ -55,6 +59,10 @@ export class CasesService {
 		if (caseFolder !== null) {
 			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseId);
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
+			const caseLabels: CaseLabelObj[] = labels.map((label) => ({
+				id: label.label_id,
+				name: label.label_name,
+			}));
 			const documents = await this.documentDao.getAllByCaseId(caseId);
 			const caseDocuments: DocumentObj[] = documents.map((document) => ({
 				id: document.document_id,
@@ -72,7 +80,7 @@ export class CasesService {
 				lastOpenedDate: caseFolder.last_opened_date,
 				isOpen: caseFolder.is_open,
 				urgentDocumentDeadline: urgentDeadline,
-				labels: labels,
+				labels: caseLabels,
 				documents: caseDocuments,
 			};
 			return retrievedCase;
