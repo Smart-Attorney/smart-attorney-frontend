@@ -1,4 +1,3 @@
-import { RegisterUserDTO } from "../../../features/register/api/register";
 import { nanoid } from "../../../lib/nanoid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { UserEntity } from "../../local-database/entities";
@@ -32,19 +31,24 @@ export class UserDAO {
 		return null;
 	}
 
-	public async save(data: RegisterUserDTO): Promise<UserEntity | null> {
+	public async save(
+		firstName: string,
+		lastName: string,
+		firmName: string,
+		companyEmail: string
+	): Promise<string | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		const newUser: UserEntity = {
 			user_id: nanoid(20),
-			first_name: data.firstName,
-			last_name: data.lastName,
-			firm_name: data.firmName,
-			company_email: data.companyEmail,
+			first_name: firstName,
+			last_name: lastName,
+			firm_name: firmName,
+			company_email: companyEmail,
 		};
 		const newUsersArr = [...users, newUser];
 		const success = await this.dbConn.setArray(this.USER_KEY, newUsersArr);
 		if (success) {
-			return newUser;
+			return newUser.user_id;
 		}
 		return null;
 	}

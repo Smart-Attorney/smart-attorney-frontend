@@ -1,5 +1,4 @@
 import * as bcrypt from "bcryptjs";
-import { RegisterUserDTO } from "../../../features/register/api/register";
 import { UserAuthDAO } from "./user-auth-dao";
 
 export class UserAuthService {
@@ -10,10 +9,9 @@ export class UserAuthService {
 		this.userAuthDao = new UserAuthDAO();
 	}
 
-	public async addUserAuth(userData: RegisterUserDTO): Promise<boolean> {
-		const { companyEmail, password: plainPassword } = userData;
+	public async addUserAuth(companyEmail: string, password: string): Promise<boolean> {
 		const generatedSalt = await bcrypt.genSalt(this.saltRounds);
-		const passwordHash = await bcrypt.hash(plainPassword, generatedSalt);
+		const passwordHash = await bcrypt.hash(password, generatedSalt);
 		const isUserAuthSaved = await this.userAuthDao.save(companyEmail, generatedSalt, passwordHash);
 		if (isUserAuthSaved) {
 			return true;

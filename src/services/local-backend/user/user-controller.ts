@@ -30,13 +30,14 @@ export class UserController {
 	}
 
 	public async postUserHandler(request: Request) {
-		const userData: RegisterUserDTO = await request.json();
+		const body: RegisterUserDTO = await request.json();
+		const { firstName, lastName, firmName, companyEmail, password } = body;
 		try {
-			const isPasswordHashed = await this.userAuthService.addUserAuth(userData);
+			const isPasswordHashed = await this.userAuthService.addUserAuth(companyEmail, password);
 			if (!isPasswordHashed) {
 				throw new Error("An issue occurred when attempting to register the user.");
 			}
-			const registeredUser = await this.userService.addUser(userData);
+			const registeredUser = await this.userService.addUser(firstName, lastName, firmName, companyEmail, password);
 			if (registeredUser !== null) {
 				const body = JSON.stringify(registeredUser);
 				const options = { status: 200 };
@@ -50,13 +51,13 @@ export class UserController {
 	}
 
 	public async verifyUserHandler(request: Request) {
-		const userData: SignInUserDTO = await request.json();
-		const { companyEmail, password } = userData;
+		const body: SignInUserDTO = await request.json();
+		const { companyEmail, password } = body;
 		const isUserAuthenticated = await this.userAuthService.authenticateUser(companyEmail, password);
 		if (!isUserAuthenticated) {
 			throw new Error("Invalid login credentials.");
 		}
-		const token = await this.userService.getToken(userData);
+		const token = await this.userService.getToken(companyEmail);
 		if (token !== null) {
 			const body = JSON.stringify(token);
 			const options = { status: 200 };

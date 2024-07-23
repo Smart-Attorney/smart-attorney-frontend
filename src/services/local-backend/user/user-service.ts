@@ -1,5 +1,3 @@
-import { RegisterUserDTO } from "../../../features/register/api/register";
-import { SignInUserDTO } from "../../../features/sign-in/api/sign-in";
 import { UserProfile } from "../../../pages/Settings";
 import { UserDAO } from "./user-dao";
 
@@ -14,6 +12,22 @@ export class UserService {
 
 	constructor() {
 		this.userDao = new UserDAO();
+	}
+
+	public async getToken(companyEmail: string): Promise<UserToken | null> {
+		if (!companyEmail) return null;
+		const userId = await this.userDao.getIdByCompanyEmail(companyEmail);
+		if (!userId) return null;
+		const user = await this.userDao.get(userId);
+		if (user !== null) {
+			const token: UserToken = {
+				id: user.user_id,
+				firstName: user.first_name,
+				lastName: user.last_name,
+			};
+			return token;
+		}
+		return null;
 	}
 
 	public async getUser(userId: string) {
@@ -31,36 +45,25 @@ export class UserService {
 		return null;
 	}
 
-	public async getToken(userData: SignInUserDTO): Promise<UserToken | null> {
-		const { companyEmail } = userData;
-		if (!companyEmail) return null;
+	public async addUser(
+		firstName: string,
+		lastName: string,
+		firmName: string,
+		companyEmail: string,
+		password: string
+	): Promise<UserProfile | null> {
+		if (firstName.trim().length === 0) return null;
+		if (lastName.trim().length === 0) return null;
+		if (firmName.trim().length === 0) return null;
+		if (companyEmail.trim().length === 0) return null;
+		if (password.trim().length === 0) return null;
 		const userId = await this.userDao.getIdByCompanyEmail(companyEmail);
-		if (!userId) return null;
-		const user = await this.userDao.get(userId);
-		if (user !== null) {
-			const token: UserToken = {
-				id: user.user_id,
-				firstName: user.first_name,
-				lastName: user.last_name,
-			};
-			return token;
-		}
-		return null;
-	}
-
-	public async addUser(data: RegisterUserDTO) {
-		if (data.firstName.trim().length === 0) return null;
-		if (data.lastName.trim().length === 0) return null;
-		if (data.firmName.trim().length === 0) return null;
-		if (data.companyEmail.trim().length === 0) return null;
-		if (data.password.trim().length === 0) return null;
-		const userId = await this.userDao.getIdByCompanyEmail(data.companyEmail);
 		if (userId !== null) {
 			throw new Error("This email already exists.");
 		}
-		const registeredUser = await this.userDao.save(data);
-		if (registeredUser !== null) {
-			return registeredUser;
+		const newUserId = await this.userDao.save(firstName, lastName, firmName, companyEmail);
+		if (newUserId !== null) {
+			return await this.getUser(newUserId);
 		}
 		return null;
 	}
