@@ -27,30 +27,17 @@ export class DocumentController {
 		}
 	}
 
-	// public async getAllDocumentsByCaseIdHandler(request: Request): Promise<Response> {
-	// 	const urlArray = request.url.split("/");
-	// 	const caseId = urlArray[urlArray.length - 1];
-	// 	const retrievedDocuments = await this.documentService.getAllDocumentsByCaseId(caseId);
-	// 	if (retrievedDocuments !== null) {
-	// 		const body = JSON.stringify(retrievedDocuments);
-	// 		const options = { status: 200 };
-	// 		return new Response(body, options);
-	// 	} else {
-	// 		throw new Error("There was an issue with retrieving the case files.");
-	// 	}
-	// }
-
 	public async getDocumentByIdHandler(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
+		// const authToken = JSON.parse(authHeader);
+		// const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 3];
+		// const caseId = urlArray[urlArray.length - 3];
 		const documentId = urlArray[urlArray.length - 1];
-		const retrievedDocument = await this.documentService.getDocumentById(userId, caseId, documentId);
+		const retrievedDocument = await this.documentService.getDocument(documentId);
 		if (retrievedDocument !== null) {
 			const body = JSON.stringify(retrievedDocument);
 			const options = { status: 200 };

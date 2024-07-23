@@ -1,4 +1,4 @@
-import { DocumentObj, DocumentStatus } from "../../../types/api";
+import { DocumentStatus } from "../../../types/api";
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { DocumentEntity } from "../../local-database/entities";
@@ -39,20 +39,11 @@ export class DocumentDAO {
 		return caseDocuments;
 	}
 
-	public async get(caseId: string, documentId: string): Promise<DocumentObj | null> {
+	public async get(documentId: string): Promise<DocumentEntity | null> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
-				const document: DocumentObj = {
-					id: documents[i].document_id,
-					name: documents[i].document_name,
-					createdDate: documents[i].created_date,
-					lastOpenedDate: documents[i].last_opened_date,
-					status: documents[i].status,
-					deadline: documents[i].deadline,
-					url: documents[i].url,
-				};
-				return document;
+			if (documents[i].document_id === documentId) {
+				return documents[i];
 			}
 		}
 		return null;

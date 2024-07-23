@@ -49,10 +49,19 @@ export class DocumentService {
 		return retrievedDocuments;
 	}
 
-	public async getDocumentById(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
-		if (!userId || !caseId || !documentId) return null;
-		const retrievedDocument = await this.documentDao.get(caseId, documentId);
-		if (retrievedDocument !== null) {
+	public async getDocument(documentId: string): Promise<DocumentObj | null> {
+		if (!documentId) return null;
+		const document = await this.documentDao.get(documentId);
+		if (document !== null) {
+			const retrievedDocument: DocumentObj = {
+				id: document.document_id,
+				name: document.document_name,
+				createdDate: document.created_date,
+				lastOpenedDate: document.last_opened_date,
+				status: document.status,
+				deadline: document.deadline,
+				url: document.url,
+			};
 			return retrievedDocument;
 		}
 		return null;
@@ -90,7 +99,7 @@ export class DocumentService {
 		if (!caseId || !documentId || !newStatus) return null;
 		const isUpdated = await this.documentDao.updateStatus(caseId, documentId, newStatus);
 		if (isUpdated) {
-			return this.documentDao.get(caseId, documentId);
+			return this.getDocument(documentId);
 		}
 		return null;
 	}
@@ -99,7 +108,7 @@ export class DocumentService {
 		if (!caseId || !documentId || !newName) return null;
 		const isUpdated = await this.documentDao.updateName(caseId, documentId, newName);
 		if (isUpdated) {
-			return this.documentDao.get(caseId, documentId);
+			return this.getDocument(documentId);
 		}
 		return null;
 	}
@@ -112,7 +121,7 @@ export class DocumentService {
 		if (!caseId || !documentId || !newDeadline) return null;
 		const isUpdated = await this.documentDao.updateDeadline(caseId, documentId, newDeadline);
 		if (isUpdated) {
-			return this.documentDao.get(caseId, documentId);
+			return this.getDocument(documentId);
 		}
 		return null;
 	}
@@ -121,7 +130,7 @@ export class DocumentService {
 		if (!userId || !caseId || !documentId) return null;
 		const isFileDeletedFromCloud = await Firebase.deleteFileById(userId, caseId, documentId);
 		if (!isFileDeletedFromCloud) return null;
-		const deletedDocument = await this.documentDao.get(caseId, documentId);
+		const deletedDocument = await this.getDocument(documentId);
 		const isDeleted = await this.documentDao.delete(caseId, documentId);
 		if (isDeleted) {
 			return deletedDocument;
