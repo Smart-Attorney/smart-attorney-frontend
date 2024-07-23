@@ -1,22 +1,22 @@
+import { DocumentObj } from "../types/api";
 import { DOCUMENT_STATUS } from "./constants/document-status";
 import { SORT_OPTION } from "./constants/sort-options";
-import { DocumentObj } from "../types/api";
 
 export class DocumentUtils {
-	public static getUrgentDeadline = (documents: DocumentObj[]): number => {
-		if (!documents) return 0;
-		const placeholderDate = Infinity;
-		const currentDate = Date.now();
-		let mostUrgentDeadline = placeholderDate;
-		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].deadline === 0) continue;
-			if (documents[i].deadline < currentDate) continue;
-			if (documents[i].deadline > mostUrgentDeadline) continue;
-			mostUrgentDeadline = documents[i].deadline;
-		}
-		if (mostUrgentDeadline === placeholderDate) return 0;
-		return mostUrgentDeadline;
-	};
+	// public static getUrgentDeadline = (documents: DocumentObj[]): number => {
+	// 	if (!documents) return 0;
+	// 	const placeholderDate = Infinity;
+	// 	const currentDate = Date.now();
+	// 	let mostUrgentDeadline = placeholderDate;
+	// 	for (let i = 0, n = documents.length; i < n; i++) {
+	// 		if (documents[i].deadline === 0) continue;
+	// 		if (documents[i].deadline < currentDate) continue;
+	// 		if (documents[i].deadline > mostUrgentDeadline) continue;
+	// 		mostUrgentDeadline = documents[i].deadline;
+	// 	}
+	// 	if (mostUrgentDeadline === placeholderDate) return 0;
+	// 	return mostUrgentDeadline;
+	// };
 
 	/************************************************************/
 

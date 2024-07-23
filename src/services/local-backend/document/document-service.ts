@@ -20,7 +20,15 @@ export class DocumentService {
 			const documents = await this.documentDao.getAllByCaseId(userCases[i].case_id);
 			if (!documents) continue;
 			for (let i = 0, n = documents.length; i < n; i++) {
-				userDocuments.push(documents[i]);
+				userDocuments.push({
+					id: documents[i].document_id,
+					name: documents[i].document_name,
+					createdDate: documents[i].created_date,
+					lastOpenedDate: documents[i].last_opened_date,
+					status: documents[i].status,
+					deadline: documents[i].deadline,
+					url: documents[i].url,
+				});
 			}
 		}
 		return userDocuments;
@@ -28,7 +36,16 @@ export class DocumentService {
 
 	public async getAllDocumentsByCaseId(caseId: string): Promise<DocumentObj[] | null> {
 		if (!caseId) return null;
-		const retrievedDocuments = await this.documentDao.getAllByCaseId(caseId);
+		const documents = await this.documentDao.getAllByCaseId(caseId);
+		const retrievedDocuments: DocumentObj[] = documents.map((document) => ({
+			id: document.document_id,
+			name: document.document_name,
+			createdDate: document.created_date,
+			lastOpenedDate: document.last_opened_date,
+			status: document.status,
+			deadline: document.deadline,
+			url: document.url,
+		}));
 		return retrievedDocuments;
 	}
 

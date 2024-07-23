@@ -1,5 +1,4 @@
 import { nanoid } from "../../../lib/nanoid";
-import { CaseObj } from "../../../types/api";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CasesEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -23,18 +22,11 @@ export class CasesDAO {
 		return userCases;
 	}
 
-	public async get(caseId: string): Promise<CaseObj | null> {
+	public async get(caseId: string): Promise<CasesEntity | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].case_id === caseId) {
-				const caseFolder: CaseObj = {
-					id: cases[i].case_id,
-					name: cases[i].case_name,
-					createdDate: cases[i].created_date,
-					lastOpenedDate: cases[i].last_opened_date,
-					isOpen: cases[i].is_open,
-				};
-				return caseFolder;
+				return cases[i];
 			}
 		}
 		return null;

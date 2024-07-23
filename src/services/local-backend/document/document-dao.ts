@@ -12,20 +12,28 @@ export class DocumentDAO {
 		this.dbConn = new DatabaseConnection();
 	}
 
-	public async getAllByCaseId(caseId: string): Promise<DocumentObj[]> {
-		const caseDocuments: DocumentObj[] = [];
+	public async getUrgentDeadline(caseId: string): Promise<number> {
+		const documents: DocumentEntity[] = await this.getAllByCaseId(caseId);
+		if (documents.length === 0) return 0;
+		const placeholderDate = Infinity;
+		const currentDate = Date.now();
+		let mostUrgentDeadline = placeholderDate;
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].deadline === 0) continue;
+			if (documents[i].deadline < currentDate) continue;
+			if (documents[i].deadline > mostUrgentDeadline) continue;
+			mostUrgentDeadline = documents[i].deadline;
+		}
+		if (mostUrgentDeadline === placeholderDate) return 0;
+		return mostUrgentDeadline;
+	}
+
+	public async getAllByCaseId(caseId: string): Promise<DocumentEntity[]> {
+		const caseDocuments: DocumentEntity[] = [];
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].fk_case_id === caseId) {
-				caseDocuments.push({
-					id: documents[i].document_id,
-					name: documents[i].document_name,
-					createdDate: documents[i].created_date,
-					lastOpenedDate: documents[i].last_opened_date,
-					status: documents[i].status,
-					deadline: documents[i].deadline,
-					url: documents[i].url,
-				});
+				caseDocuments.push(documents[i]);
 			}
 		}
 		return caseDocuments;

@@ -1,5 +1,4 @@
-import { CaseObj, DashboardCaseCardObj } from "../../../types/api";
-import { DocumentUtils } from "../../../utils/document-utils";
+import { DashboardCaseCardObj, DocumentObj } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
 import { ClientDAO } from "../client/client-dao";
@@ -24,9 +23,18 @@ export class CasesService {
 		const cases = await this.casesDao.getAllByUserId(userId);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			const caseId = cases[i].case_id;
+			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseId);
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
 			const documents = await this.documentDao.getAllByCaseId(caseId);
-			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
+			const caseDocuments: DocumentObj[] = documents.map((document) => ({
+				id: document.document_id,
+				name: document.document_name,
+				createdDate: document.created_date,
+				lastOpenedDate: document.last_opened_date,
+				status: document.status,
+				deadline: document.deadline,
+				url: document.url,
+			}));
 			userCases.push({
 				id: cases[i].case_id,
 				name: cases[i].case_name,
@@ -35,7 +43,7 @@ export class CasesService {
 				isOpen: cases[i].is_open,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
-				documents: documents,
+				documents: caseDocuments,
 			});
 		}
 		return userCases;
@@ -45,21 +53,34 @@ export class CasesService {
 		if (!caseId) return null;
 		const caseFolder = await this.casesDao.get(caseId);
 		if (caseFolder !== null) {
+			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseId);
 			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
 			const documents = await this.documentDao.getAllByCaseId(caseId);
-			const urgentDeadline = DocumentUtils.getUrgentDeadline(documents);
+			const caseDocuments: DocumentObj[] = documents.map((document) => ({
+				id: document.document_id,
+				name: document.document_name,
+				createdDate: document.created_date,
+				lastOpenedDate: document.last_opened_date,
+				status: document.status,
+				deadline: document.deadline,
+				url: document.url,
+			}));
 			const retrievedCase: DashboardCaseCardObj = {
-				...caseFolder,
+				id: caseFolder.case_id,
+				name: caseFolder.case_name,
+				createdDate: caseFolder.created_date,
+				lastOpenedDate: caseFolder.last_opened_date,
+				isOpen: caseFolder.is_open,
 				urgentDocumentDeadline: urgentDeadline,
 				labels: labels,
-				documents: documents,
+				documents: caseDocuments,
 			};
 			return retrievedCase;
 		}
 		return null;
 	}
 
-	public async addCase(userId: string, caseName: string): Promise<CaseObj | null> {
+	public async addCase(userId: string, caseName: string): Promise<DashboardCaseCardObj | null> {
 		if (!userId || !caseName) return null;
 		const newCaseId = await this.casesDao.save(userId, caseName);
 		if (newCaseId !== null) {
@@ -107,7 +128,7 @@ export class CasesService {
 		const cloudFiles = await this.documentDao.getAllByCaseId(caseId);
 		const promiseArray = [];
 		for (let i = 0, n = cloudFiles.length; i < n; i++) {
-			promiseArray.push(await Firebase.deleteFileById(userId, caseId, cloudFiles[i].id));
+			promiseArray.push(await Firebase.deleteFileById(userId, caseId, cloudFiles[i].document_id));
 		}
 		const cloudFilesDeletedSuccessfully = await Promise.all(promiseArray);
 		if (cloudFilesDeletedSuccessfully.includes(false)) return null;
