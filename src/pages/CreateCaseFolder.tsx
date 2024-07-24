@@ -6,7 +6,7 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
+import ClientModal from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
 import { CreateCaseDTO, createCase } from "../features/create-case-folder/api/create-case";
@@ -17,7 +17,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { CaseObj, Sex, UploadFile } from "../types/api";
+import { CaseObj, ClientForm, Sex, UploadFile } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
 
@@ -33,7 +33,7 @@ function CreateCaseFolder() {
 	const [isCaseNameEditable, setIsCaseNameEditable] = useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
-	const [client, setClient] = useState<ClientInfoForm>({
+	const [client, setClient] = useState<ClientForm>({
 		firstName: "",
 		middleName: "",
 		lastName: "",
@@ -269,7 +269,7 @@ function CreateCaseFolder() {
 			/>
 
 			{clientModalOpen && (
-				<ClientInfoModal
+				<ClientModal
 					client={client}
 					setClient={setClient}
 					closeModal={closeClientModal}
