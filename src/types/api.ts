@@ -19,14 +19,6 @@ export type DashboardCaseCardObj = {
 	documents: DocumentObj[];
 };
 
-export type CaseObj = {
-	id: string;
-	name: string;
-	createdDate: number;
-	lastOpenedDate: number;
-	isOpen: boolean;
-};
-
 export type CaseLabelObj = {
 	id: string;
 	name: string | CaseLabelPreset;

@@ -17,7 +17,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { CaseObj, Sex } from "../types/api";
+import { DashboardCaseCardObj, Sex } from "../types/api";
 import { UploadFile } from "../types/file";
 import { ClientForm } from "../types/form";
 import { CaseUtils } from "../utils/case-utils";
@@ -88,7 +88,7 @@ function CreateCaseFolder() {
 		try {
 			const response = await createCase(newCase);
 			if (response.ok) {
-				const data: CaseObj = await response.json();
+				const data: DashboardCaseCardObj = await response.json();
 				return data.id;
 			}
 		} catch (error) {
