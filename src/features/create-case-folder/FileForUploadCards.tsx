@@ -1,6 +1,6 @@
 import RenderDocument from "../../components/Pdf/RenderDocument";
 import CardGrid from "../../layouts/CardGrid";
-import { UploadFile } from "../../types/api";
+import { UploadFile } from "../../types/file";
 
 interface DocumentProps {
 	uploadFiles: UploadFile[];

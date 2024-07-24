@@ -17,7 +17,9 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { nanoid } from "../lib/nanoid";
-import { CaseObj, ClientForm, Sex, UploadFile } from "../types/api";
+import { CaseObj, Sex } from "../types/api";
+import { UploadFile } from "../types/file";
+import { ClientForm } from "../types/form";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
 
@@ -269,12 +271,7 @@ function CreateCaseFolder() {
 			/>
 
 			{clientModalOpen && (
-				<ClientModal
-					client={client}
-					setClient={setClient}
-					closeModal={closeClientModal}
-					createCase={createNewCase}
-				/>
+				<ClientModal client={client} setClient={setClient} closeModal={closeClientModal} createCase={createNewCase} />
 			)}
 		</SidebarLayout>
 	);

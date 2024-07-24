@@ -1,4 +1,4 @@
-import { UploadFile } from "../../../../types/api";
+import { UploadFile } from "../../../../types/file";
 import { FileUtils } from "../../../../utils/file-utils";
 
 interface UploadedFileCardsProps {

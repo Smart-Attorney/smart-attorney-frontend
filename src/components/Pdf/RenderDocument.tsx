@@ -1,6 +1,6 @@
 import { useState } from "react";
 import translateDoc from "../../features/translateDocuments/translateDocuments";
-import { UploadFile } from "../../types/api";
+import { UploadFile } from "../../types/file";
 import CardBody from "../Card/CardBody";
 import CardContainer from "../Card/CardContainer";
 import CardName from "../Card/CardName";

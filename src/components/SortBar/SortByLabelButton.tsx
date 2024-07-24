@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import { CaseLabelObj, DashboardCaseCardObj } from "../../types/api";
 import { CaseLabelUtils } from "../../utils/case-label-utils";
-import { CaseLabelObj, DashboardCaseCardObj, LabelsDropdownMenuOptionObj } from "../../types/api";
 import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
 import { getCaseLabels } from "./api/get-case-labels";
+
+export type LabelsDropdownMenuOption = {
+	id: string;
+	name: string;
+	isClicked: boolean;
+};
 
 interface SortByLabelButtonProps {
 	id: string;
@@ -24,7 +30,7 @@ function SortByLabelButton(props: SortByLabelButtonProps) {
 		top: 0,
 		left: 0,
 	});
-	const [menuOptions, setMenuOptions] = useState<LabelsDropdownMenuOptionObj[]>();
+	const [menuOptions, setMenuOptions] = useState<LabelsDropdownMenuOption[]>();
 
 	useEffect(() => {
 		handleGetUserCaseLabels();
@@ -55,8 +61,8 @@ function SortByLabelButton(props: SortByLabelButtonProps) {
 
 	/************************************************************/
 
-	const formatLabels = (labels: Set<string>): LabelsDropdownMenuOptionObj[] => {
-		let formattedLabels: LabelsDropdownMenuOptionObj[] = [];
+	const formatLabels = (labels: Set<string>): LabelsDropdownMenuOption[] => {
+		let formattedLabels: LabelsDropdownMenuOption[] = [];
 		for (let label of labels) {
 			const labelName = label.substring(0, 1).toUpperCase() + label.substring(1, label.length).toLowerCase();
 			formattedLabels.push({

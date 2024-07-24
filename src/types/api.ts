@@ -43,16 +43,6 @@ export type ClientObj = {
 	primaryLanguage: string;
 };
 
-export type ClientForm = {
-  firstName: string;
-	middleName: string;
-	lastName: string;
-	dateOfBirth: string;
-	sex: string;
-	countryOfCitizenship: string;
-	primaryLanguage: string;
-}
-
 export type DocumentObj = {
 	id: string;
 	name: string;
@@ -68,25 +58,3 @@ export type Sex = "Male" | "Female" | "Other";
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
 
 export type CaseLabelPreset = "Asylum" | "Employment" | "Family" | "Humanitarian";
-
-export type LabelsDropdownMenuOptionObj = {
-	id: string;
-	name: string;
-	isClicked: boolean;
-};
-
-export type UploadFile = {
-	id: string;
-	data: File;
-};
-
-export type ButtonProps = {
-	img: string;
-	title: string;
-	name: string;
-	type: "button" | "submit" | "reset";
-	className: string;
-	style: React.CSSProperties;
-	isDisabled: boolean;
-	onClick: () => void;
-};

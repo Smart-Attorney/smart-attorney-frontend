@@ -1,4 +1,4 @@
-import { ButtonProps } from "../../types/api";
+import { ButtonProps } from "../../types/button";
 
 function PillSpecialButton({ img, title, name, type, className, style, isDisabled, onClick }: Partial<ButtonProps>) {
 	return (

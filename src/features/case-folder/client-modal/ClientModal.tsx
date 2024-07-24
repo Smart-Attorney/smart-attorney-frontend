@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { UserIcon } from "../../../assets/smart-attorney-figma/global";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import { ClientForm } from "../../../types/api";
+import { ClientForm } from "../../../types/form";
 import { COUNTRIES } from "../../../utils/constants/countries";
 import { LANGUAGES } from "../../../utils/constants/languages";
 import { SEX } from "../../../utils/constants/sex";

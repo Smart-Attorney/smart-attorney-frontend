@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { UploadFile } from "../../../../types/api";
+import { UploadFile } from "../../../../types/file";
 
 interface DropAreaProps {
 	addToUploadFilesArray: (files: FileList) => void;
