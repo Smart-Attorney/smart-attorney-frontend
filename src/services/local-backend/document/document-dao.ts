@@ -1,7 +1,6 @@
-import { DocumentStatus } from "../../../types/api";
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
 import { DatabaseConnection } from "../../local-database/database-connection";
-import { DocumentEntity } from "../../local-database/entities";
+import { document_status, DocumentEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
 
 export class DocumentDAO {
@@ -75,7 +74,7 @@ export class DocumentDAO {
 		return null;
 	}
 
-	public async updateStatus(caseId: string, documentId: string, newStatus: DocumentStatus): Promise<boolean> {
+	public async updateStatus(caseId: string, documentId: string, newStatus: document_status): Promise<boolean> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
