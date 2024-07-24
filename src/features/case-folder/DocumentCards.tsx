@@ -10,7 +10,7 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { DocumentStatus as DocStatus, DocumentObj } from "../../types/api";
+import { DocumentStatus as DocStatus, Document } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
 import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
@@ -18,9 +18,9 @@ import { updateDocumentName, UpdateDocumentNameDTO } from "./api/update-document
 import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-document-status";
 
 interface DocumentCardsProps {
-	documents: DocumentObj[] | undefined;
+	documents: Document[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	updateDocuments: (newDocuments: DocumentObj[]) => void;
+	updateDocuments: (newDocuments: Document[]) => void;
 }
 
 function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsProps) {
@@ -28,8 +28,8 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 
 	/************************************************************/
 
-	const replaceDocumentInArray = (updatedDocument: DocumentObj, currentDocumentArr: DocumentObj[]): DocumentObj[] => {
-		const updatedDocumentArr: DocumentObj[] = [...currentDocumentArr];
+	const replaceDocumentInArray = (updatedDocument: Document, currentDocumentArr: Document[]): Document[] => {
+		const updatedDocumentArr: Document[] = [...currentDocumentArr];
 		for (let i = 0, n = updatedDocumentArr.length; i < n; i++) {
 			if (updatedDocument.id === updatedDocumentArr[i].id) {
 				updatedDocumentArr[i] = updatedDocument;
@@ -39,8 +39,8 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 		return updatedDocumentArr;
 	};
 
-	const removeDocumentFromArray = (deletedDocument: DocumentObj, currentDocumentArr: DocumentObj[]): DocumentObj[] => {
-		const updatedDocumentArr: DocumentObj[] = [];
+	const removeDocumentFromArray = (deletedDocument: Document, currentDocumentArr: Document[]): Document[] => {
+		const updatedDocumentArr: Document[] = [];
 		for (let i = 0, n = currentDocumentArr.length; i < n; i++) {
 			if (deletedDocument.id !== currentDocumentArr[i].id) {
 				updatedDocumentArr.push(currentDocumentArr[i]);
@@ -57,7 +57,7 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 		try {
 			const response = await updateDocumentStatus(caseId!, documentId, data);
 			if (response.ok) {
-				const updatedDocument: DocumentObj = await response.json();
+				const updatedDocument: Document = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
 			}
@@ -72,7 +72,7 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 		try {
 			const response = await updateDocumentName(caseId!, documentId, data);
 			if (response.ok) {
-				const updatedDocument: DocumentObj = await response.json();
+				const updatedDocument: Document = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
 			}
@@ -88,7 +88,7 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 		try {
 			const response = await updateDocumentDeadline(caseId!, documentId, data);
 			if (response.ok) {
-				const updatedDocument: DocumentObj = await response.json();
+				const updatedDocument: Document = await response.json();
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
 			}
@@ -101,7 +101,7 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 		try {
 			const response = await deleteDocument(caseId!, documentId);
 			if (response.ok) {
-				const deletedDocument: DocumentObj = await response.json();
+				const deletedDocument: Document = await response.json();
 				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
 			}

@@ -1,4 +1,4 @@
-import { DocumentObj, DocumentStatus } from "../../../types/api";
+import { Document, DocumentStatus } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CasesDAO } from "../cases/cases-dao";
 import { DocumentDAO } from "./document-dao";
@@ -12,9 +12,9 @@ export class DocumentService {
 		this.casesDao = new CasesDAO();
 	}
 
-	public async getAllDocumentsByUserId(userId: string): Promise<DocumentObj[] | null> {
+	public async getAllDocumentsByUserId(userId: string): Promise<Document[] | null> {
 		if (!userId) return null;
-		const userDocuments: DocumentObj[] = [];
+		const userDocuments: Document[] = [];
 		const userCases = await this.casesDao.getAllByUserId(userId);
 		for (let i = 0, n = userCases.length; i < n; i++) {
 			const documents = await this.documentDao.getAllByCaseId(userCases[i].case_id);
@@ -34,10 +34,10 @@ export class DocumentService {
 		return userDocuments;
 	}
 
-	public async getAllDocumentsByCaseId(caseId: string): Promise<DocumentObj[] | null> {
+	public async getAllDocumentsByCaseId(caseId: string): Promise<Document[] | null> {
 		if (!caseId) return null;
 		const documents = await this.documentDao.getAllByCaseId(caseId);
-		const retrievedDocuments: DocumentObj[] = documents.map((document) => ({
+		const retrievedDocuments: Document[] = documents.map((document) => ({
 			id: document.document_id,
 			name: document.document_name,
 			createdDate: document.created_date,
@@ -49,11 +49,11 @@ export class DocumentService {
 		return retrievedDocuments;
 	}
 
-	public async getDocument(documentId: string): Promise<DocumentObj | null> {
+	public async getDocument(documentId: string): Promise<Document | null> {
 		if (!documentId) return null;
 		const document = await this.documentDao.get(documentId);
 		if (document !== null) {
-			const retrievedDocument: DocumentObj = {
+			const retrievedDocument: Document = {
 				id: document.document_id,
 				name: document.document_name,
 				createdDate: document.created_date,
@@ -67,9 +67,9 @@ export class DocumentService {
 		return null;
 	}
 
-	public async addDocument(userId: string, caseId: string, files: File[]): Promise<DocumentObj[] | null> {
+	public async addDocument(userId: string, caseId: string, files: File[]): Promise<Document[] | null> {
 		if (!caseId || !files) return null;
-		const documents: DocumentObj[] = [];
+		const documents: Document[] = [];
 		for (let i = 0, n = files.length; i < n; i++) {
 			const { name } = files[i];
 			const fileId = name.split("/")[0];
@@ -95,7 +95,7 @@ export class DocumentService {
 		caseId: string,
 		documentId: string,
 		newStatus: DocumentStatus
-	): Promise<DocumentObj | null> {
+	): Promise<Document | null> {
 		if (!caseId || !documentId || !newStatus) return null;
 		const isUpdated = await this.documentDao.updateStatus(caseId, documentId, newStatus);
 		if (isUpdated) {
@@ -104,7 +104,7 @@ export class DocumentService {
 		return null;
 	}
 
-	public async updateDocumentName(caseId: string, documentId: string, newName: string): Promise<DocumentObj | null> {
+	public async updateDocumentName(caseId: string, documentId: string, newName: string): Promise<Document | null> {
 		if (!caseId || !documentId || !newName) return null;
 		const isUpdated = await this.documentDao.updateName(caseId, documentId, newName);
 		if (isUpdated) {
@@ -117,7 +117,7 @@ export class DocumentService {
 		caseId: string,
 		documentId: string,
 		newDeadline: number
-	): Promise<DocumentObj | null> {
+	): Promise<Document | null> {
 		if (!caseId || !documentId || !newDeadline) return null;
 		const isUpdated = await this.documentDao.updateDeadline(caseId, documentId, newDeadline);
 		if (isUpdated) {
@@ -126,7 +126,7 @@ export class DocumentService {
 		return null;
 	}
 
-	public async deleteDocument(userId: string, caseId: string, documentId: string): Promise<DocumentObj | null> {
+	public async deleteDocument(userId: string, caseId: string, documentId: string): Promise<Document | null> {
 		if (!userId || !caseId || !documentId) return null;
 		const isFileDeletedFromCloud = await Firebase.deleteFileById(userId, caseId, documentId);
 		if (!isFileDeletedFromCloud) return null;

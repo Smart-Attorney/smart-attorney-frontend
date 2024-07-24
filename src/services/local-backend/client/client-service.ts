@@ -1,4 +1,4 @@
-import { ClientObj } from "../../../types/api";
+import { Client } from "../../../types/api";
 import { sex_option } from "../../local-database/entities";
 import { ClientDAO } from "./client-dao";
 
@@ -9,11 +9,11 @@ export class ClientService {
 		this.clientDao = new ClientDAO();
 	}
 
-	public async getClientByCaseId(caseId: string): Promise<ClientObj | null> {
+	public async getClientByCaseId(caseId: string): Promise<Client | null> {
 		if (!caseId) return null;
 		const client = await this.clientDao.getByCaseId(caseId);
 		if (client !== null) {
-			const retrievedClient: ClientObj = {
+			const retrievedClient: Client = {
 				id: client.client_id,
 				firstName: client.first_name,
 				middleName: client.middle_name,
@@ -28,11 +28,11 @@ export class ClientService {
 		return null;
 	}
 
-	public async getClient(clientId: string): Promise<ClientObj | null> {
+	public async getClient(clientId: string): Promise<Client | null> {
 		if (!clientId) return null;
 		const client = await this.clientDao.get(clientId);
 		if (client !== null) {
-			const retrievedClient: ClientObj = {
+			const retrievedClient: Client = {
 				id: client.client_id,
 				firstName: client.first_name,
 				middleName: client.middle_name,
@@ -56,7 +56,7 @@ export class ClientService {
 		sex: sex_option,
 		countryOfCitizenship: string,
 		primaryLanguage: string
-	): Promise<ClientObj | null> {
+	): Promise<Client | null> {
 		if (!caseId) return null;
 		const newClientId = await this.clientDao.save(
 			caseId,

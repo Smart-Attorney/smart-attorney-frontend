@@ -1,8 +1,8 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { ClientController } from "../../../services/local-backend/client/client-controller";
-import { ClientObj } from "../../../types/api";
+import { Client } from "../../../types/api";
 
-export type CreateClientDTO = Omit<ClientObj, "id">;
+export type CreateClientDTO = Omit<Client, "id">;
 
 const mockApi = async (caseId: string, data: CreateClientDTO) => {
 	const endpoint = `/users/cases/${caseId}/clients`;

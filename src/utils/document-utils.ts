@@ -1,4 +1,4 @@
-import { DocumentObj } from "../types/api";
+import { Document } from "../types/api";
 import { DOCUMENT_STATUS } from "./constants/document-status";
 import { SORT_OPTION } from "./constants/sort-options";
 
@@ -6,7 +6,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts alphabetically from A to Z.
 	 */
-	private static sortByName(array: DocumentObj[]): DocumentObj[] {
+	private static sortByName(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.name.toLowerCase();
 			const lb = b.name.toLowerCase();
@@ -24,7 +24,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts from youngest to oldest.
 	 */
-	private static sortByDateCreated(array: DocumentObj[]): DocumentObj[] {
+	private static sortByDateCreated(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.createdDate;
 			const lb = b.createdDate;
@@ -42,7 +42,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts from most recent to least recent date.
 	 */
-	private static sortByLastOpened(array: DocumentObj[]): DocumentObj[] {
+	private static sortByLastOpened(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.lastOpenedDate;
 			const lb = b.lastOpenedDate;
@@ -60,7 +60,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts by status.
 	 */
-	private static sortByStatus(array: DocumentObj[]): DocumentObj[] {
+	private static sortByStatus(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			let la: number;
 			switch (a.status) {
@@ -103,7 +103,7 @@ export class DocumentUtils {
 		return sortedArray;
 	}
 
-	public static sortByOption = (array: DocumentObj[], option: string): DocumentObj[] => {
+	public static sortByOption = (array: Document[], option: string): Document[] => {
 		switch (option) {
 			case SORT_OPTION.NAME:
 				return DocumentUtils.sortByName(array);

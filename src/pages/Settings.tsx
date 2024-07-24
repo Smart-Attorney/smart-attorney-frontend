@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../features/settings/api/get-user-info";
 import SidebarLayout from "../layouts/SidebarLayout";
-import { UserObj } from "../types/api";
+import { User } from "../types/api";
 
 /************************************************************/
 
@@ -24,7 +24,7 @@ function AccountSection({ title, info }: AccountSectionProps) {
 
 /************************************************************/
 
-export type UserProfile = Omit<UserObj, "id" | "password" | "email">;
+export type UserProfile = Omit<User, "id" | "password" | "email">;
 
 function Settings() {
 	const navigate = useNavigate();

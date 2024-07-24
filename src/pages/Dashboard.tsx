@@ -9,14 +9,14 @@ import { getCases } from "../features/dashboard/api/get-cases";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { DashboardCaseCardObj } from "../types/api";
+import { Case } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 
 function Dashboard() {
 	const navigate = useNavigate();
 
-	const [caseFolders, setCaseFolders] = useState<DashboardCaseCardObj[] | null>([]);
+	const [caseFolders, setCaseFolders] = useState<Case[] | null>([]);
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
@@ -39,7 +39,7 @@ function Dashboard() {
 			const response = await getCases();
 			switch (response.status) {
 				case 200:
-					const data: DashboardCaseCardObj[] = await response.json();
+					const data: Case[] = await response.json();
 					setCaseFolders(data);
 					break;
 				case 204:

@@ -2,9 +2,9 @@ import { useLocalBackend } from "../../../config/use-local-backend";
 import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
 import { UserController } from "../../../services/local-backend/user/user-controller";
-import { UserObj } from "../../../types/api";
+import { User } from "../../../types/api";
 
-export type RegisterUserDTO = Omit<UserObj, "id" | "email">;
+export type RegisterUserDTO = Omit<User, "id" | "email">;
 
 const baseUrl = "http://localhost:8080";
 const endpoint = "/auth/register";

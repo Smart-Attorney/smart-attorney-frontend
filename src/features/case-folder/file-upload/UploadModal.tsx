@@ -3,7 +3,7 @@ import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import { nanoid } from "../../../lib/nanoid";
-import { DocumentObj } from "../../../types/api";
+import { Document } from "../../../types/api";
 import { UploadFile } from "../../../types/file";
 import { createDocuments, CreateDocumentsDTO } from "../api/create-documents";
 import DropZone from "./modal-components/DropZone";
@@ -13,7 +13,7 @@ import UploadedFileCards from "./modal-components/UploadedFileCards";
 interface UploadModalProps {
 	caseId: string;
 	closeUploadModal: () => void;
-	addNewDocumentToArray: (newDocument: DocumentObj) => void;
+	addNewDocumentToArray: (newDocument: Document) => void;
 }
 
 function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: UploadModalProps) {
@@ -33,7 +33,7 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 		try {
 			const response = await createDocuments(caseId, filesData);
 			if (response.ok) {
-				const createdDocuments: DocumentObj[] = await response.json();
+				const createdDocuments: Document[] = await response.json();
 				for (let i = 0, n = createdDocuments.length; i < n; i++) {
 					addNewDocumentToArray(createdDocuments[i]);
 				}

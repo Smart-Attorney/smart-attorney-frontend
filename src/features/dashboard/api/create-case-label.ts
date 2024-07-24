@@ -1,8 +1,8 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { CaseLabelController } from "../../../services/local-backend/case-label/case-label-controller";
-import { CaseLabelObj } from "../../../types/api";
+import { CaseLabel } from "../../../types/api";
 
-export type CreateCaseLabelDTO = Pick<CaseLabelObj, "name">;
+export type CreateCaseLabelDTO = Pick<CaseLabel, "name">;
 
 const mockApi = async (caseId: string, data: CreateCaseLabelDTO) => {
 	const endpoint = `/users/cases/${caseId}/case-labels`;

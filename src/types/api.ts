@@ -1,4 +1,4 @@
-export type UserObj = {
+export type User = {
 	id: string;
 	firstName: string;
 	lastName: string;
@@ -8,23 +8,23 @@ export type UserObj = {
 	password: string;
 };
 
-export type DashboardCaseCardObj = {
+export type Case = {
 	id: string;
 	name: string;
 	createdDate: number;
 	lastOpenedDate: number;
 	isOpen: boolean;
 	urgentDocumentDeadline: number;
-	labels: CaseLabelObj[];
-	documents: DocumentObj[];
+	labels: CaseLabel[];
+	documents: Document[];
 };
 
-export type CaseLabelObj = {
+export type CaseLabel = {
 	id: string;
 	name: string | CaseLabelPreset;
 };
 
-export type ClientObj = {
+export type Client = {
 	id: string;
 	firstName: string;
 	middleName: string;
@@ -35,7 +35,7 @@ export type ClientObj = {
 	primaryLanguage: string;
 };
 
-export type DocumentObj = {
+export type Document = {
 	id: string;
 	name: string;
 	createdDate: number;
