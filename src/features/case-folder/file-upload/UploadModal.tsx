@@ -2,7 +2,7 @@ import { useState } from "react";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import { nanoid } from "../../../lib/nanoid";
+import { ShortUuid } from "../../../lib/short-uuid";
 import { Document } from "../../../types/api";
 import { UploadFile } from "../../../types/file";
 import { createDocuments, CreateDocumentsDTO } from "../api/create-documents";
@@ -17,6 +17,8 @@ interface UploadModalProps {
 }
 
 function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: UploadModalProps) {
+	const uuid = new ShortUuid();
+
 	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
 	const [isUploadDone, setIsUploadDone] = useState(false);
 
@@ -52,7 +54,7 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 			setUploadFiles((prev) => [
 				...prev,
 				{
-					id: nanoid(20),
+					id: uuid.newShort(),
 					data: files[i],
 				},
 			]);

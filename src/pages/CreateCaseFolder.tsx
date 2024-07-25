@@ -16,7 +16,7 @@ import uploadDocuments from "../features/uploadDocument/uploadDocuments";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { nanoid } from "../lib/nanoid";
+import { ShortUuid } from "../lib/short-uuid";
 import { Case, Sex } from "../types/api";
 import { UploadFile } from "../types/file";
 import { ClientForm } from "../types/form";
@@ -25,6 +25,7 @@ import { NEW_CASE } from "../utils/constants/sort-options";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
+	const uuid = new ShortUuid();
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
 	const caseNameRef = useRef<HTMLHeadingElement>(null);
@@ -202,7 +203,7 @@ function CreateCaseFolder() {
 					setUploadFiles((prev) => [
 						...prev,
 						...fileArr.map((_file, i) => ({
-							id: nanoid(20),
+							id: uuid.newShort(),
 							data: fileList[i],
 						})),
 					]);
