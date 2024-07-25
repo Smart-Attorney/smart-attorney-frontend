@@ -3,7 +3,7 @@ import { SqlTables } from "./sql-tables";
 
 export class MockUser {
 	private static mockUser: UserEntity = {
-		user_id: "12345abcdeABCDE0000",
+		user_id: "00add5b8-e1c9-49ba-902a-77583003d16f",
 		first_name: "Jane",
 		last_name: "Doe",
 		firm_name: "Attorney Law Group",
@@ -12,7 +12,7 @@ export class MockUser {
 	};
 
 	private static mockUserAuth: UserAuthEntity = {
-		user_auth_id: "12345abcdeABCDE1111",
+		user_auth_id: "00afbfff-1e77-4e9c-bf30-1896c57052da",
 		company_email: "lawyer@email.com",
 		salt: "$2a$15$1SbYDpXwQ6r904RSwsgQsO",
 		password_hash: "$2a$15$1SbYDpXwQ6r904RSwsgQsOXojpQfc/xDY12nEc9/FvzWAXDx3CM9W",
@@ -43,8 +43,9 @@ export class MockUser {
 		for (let i = 0, n = userArray.length; i < n; i++) {
 			const firstNameMatch = userArray[i].first_name === this.mockUser.first_name;
 			const lastNameMatch = userArray[i].last_name === this.mockUser.last_name;
+			const firmNameMatch = userArray[i].firm_name === this.mockUser.firm_name;
 			const companyEmailMatch = userArray[i].company_email === this.mockUser.company_email;
-			if (firstNameMatch && lastNameMatch && companyEmailMatch) {
+			if (firstNameMatch && lastNameMatch && firmNameMatch && companyEmailMatch) {
 				mockUserArray.push(userArray[i]);
 			} else {
 				uniqueUsersArray.push(userArray[i]);
