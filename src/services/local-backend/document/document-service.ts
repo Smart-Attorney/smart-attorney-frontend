@@ -1,3 +1,5 @@
+import { ShortUuid } from "../../../lib/short-uuid";
+import { Uuid } from "../../../lib/uuid";
 import { Document, DocumentStatus } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CasesDAO } from "../cases/cases-dao";
@@ -6,10 +8,14 @@ import { DocumentDAO } from "./document-dao";
 export class DocumentService {
 	private documentDao: DocumentDAO;
 	private casesDao: CasesDAO;
+	private uuid: Uuid;
+	private shortUuid: ShortUuid;
 
 	constructor() {
 		this.documentDao = new DocumentDAO();
 		this.casesDao = new CasesDAO();
+		this.uuid = new Uuid();
+		this.shortUuid = new ShortUuid();
 	}
 
 	public async getAllDocumentsByUserId(userId: string): Promise<Document[] | null> {
@@ -71,12 +77,13 @@ export class DocumentService {
 		if (!caseId || !files) return null;
 		const documents: Document[] = [];
 		for (let i = 0, n = files.length; i < n; i++) {
+			const fileUuid = this.uuid.generate(); // uuid to store as document id in database
+			const fileShortId = this.shortUuid.toShort(fileUuid); // short uuid to store as id in firebase
 			const { name } = files[i];
-			const fileId = name.split("/")[0];
 			const fileName = name.split("/")[1];
-			const fileUrl = await Firebase.uploadFile(userId, caseId, fileId, files[i]);
+			const fileUrl = await Firebase.uploadFile(userId, caseId, fileShortId, files[i]);
 			if (fileUrl === null) return null;
-			const newDocument = await this.documentDao.save(fileId, fileName, fileUrl, caseId);
+			const newDocument = await this.documentDao.save(fileUuid, fileName, fileUrl, caseId);
 			if (newDocument === null) return null;
 			documents.push({
 				id: newDocument.document_id,

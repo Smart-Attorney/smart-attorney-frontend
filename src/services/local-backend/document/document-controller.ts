@@ -54,11 +54,10 @@ export class DocumentController {
 		}
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
-		const formData = await request.formData();
-		const files = formData.getAll("files[]") as File[];
-		// const caseId = formData.get("caseFolderId") as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 2];
+		const formData = await request.formData();
+		const files = formData.getAll("files[]") as File[];
 		const newDocuments = await this.documentService.addDocument(userId, caseId, files);
 		if (newDocuments !== null) {
 			const body = JSON.stringify(newDocuments);

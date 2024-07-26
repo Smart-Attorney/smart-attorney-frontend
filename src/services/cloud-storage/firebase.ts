@@ -6,13 +6,13 @@ const app = initializeApp(config);
 const storage = getStorage(app);
 
 export class Firebase {
-	public static async uploadFile(userId: string, folderId: string, fileId: string, file: File) {
+	public static async uploadFile(userId: string, caseId: string, fileId: string, file: File) {
 		const metadata = {
 			name: file.name,
 			size: file.size,
 			contentType: file.type,
 		};
-		const filePath = `${userId}/${folderId}/${fileId}`;
+		const filePath = `${userId}/${caseId}/${fileId}`;
 		const fileRef = ref(storage, filePath);
 		try {
 			const snapshot = await uploadBytes(fileRef, file, metadata);
@@ -24,8 +24,8 @@ export class Firebase {
 		}
 	}
 
-	public static async getFileById(userId: string, folderId: string, fileId: string) {
-		const filePath = `${userId}/${folderId}/${fileId}`;
+	public static async getFileById(userId: string, caseId: string, fileId: string) {
+		const filePath = `${userId}/${caseId}/${fileId}`;
 		const fileRef = ref(storage, filePath);
 		try {
 			const url = await getDownloadURL(fileRef);
@@ -36,8 +36,8 @@ export class Firebase {
 		}
 	}
 
-	public static async deleteFileById(userId: string, folderId: string, fileId: string) {
-		const filePath = `${userId}/${folderId}/${fileId}`;
+	public static async deleteFileById(userId: string, caseId: string, fileId: string) {
+		const filePath = `${userId}/${caseId}/${fileId}`;
 		const fileRef = ref(storage, filePath);
 		try {
 			await deleteObject(fileRef);

@@ -1,5 +1,5 @@
 export type User = {
-	id: string;
+	id: string; // short uuid
 	firstName: string;
 	lastName: string;
 	firmName: string;
@@ -9,37 +9,37 @@ export type User = {
 };
 
 export type Case = {
-	id: string;
+	id: string; // short uuid
 	name: string;
-	createdDate: number;
-	lastOpenedDate: number;
+	createdDate: number; // unix time ms
+	lastOpenedDate: number; // unix time ms
 	isOpen: boolean;
-	urgentDocumentDeadline: number;
+	urgentDocumentDeadline: number; // unix time ms
 	labels: CaseLabel[];
 	documents: Document[];
 };
 
 export type CaseLabel = {
-	id: string;
+	id: string; // short uuid
 	name: string | CaseLabelPreset;
 };
 
 export type Client = {
-	id: string;
+	id: string; // short uuid
 	firstName: string;
 	middleName: string;
 	lastName: string;
-	dateOfBirth: number;
+	dateOfBirth: number; // unix time ms
 	sex: Sex;
 	countryOfCitizenship: string;
 	primaryLanguage: string;
 };
 
 export type Document = {
-	id: string;
+	id: string; // short uuid
 	name: string;
-	createdDate: number;
-	lastOpenedDate: number;
+	createdDate: number; // unix time ms
+	lastOpenedDate: number; // unix time ms
 	status: DocumentStatus;
 	deadline: number;
 	url: string;

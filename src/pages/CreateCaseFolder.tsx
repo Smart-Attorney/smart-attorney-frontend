@@ -122,7 +122,6 @@ function CreateCaseFolder() {
 	const handleCreateDocuments = async (caseId: string): Promise<boolean> => {
 		if (uploadFiles.length === 0) return true;
 		const filesData = new FormData();
-		filesData.append("caseFolderId", caseId);
 		for (let i = 0, n = uploadFiles.length; i < n; i++) {
 			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
 		}

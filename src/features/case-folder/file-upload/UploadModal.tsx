@@ -25,13 +25,10 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 	const handleUploadFiles = async (): Promise<void> => {
 		if (uploadFiles === null) return;
 		if (uploadFiles.length < 1) return;
-
 		const filesData: CreateDocumentsDTO = new FormData();
-		filesData.append("caseFolderId", caseId);
 		for (let i = 0, n = uploadFiles.length; i < n; i++) {
 			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
 		}
-
 		try {
 			const response = await createDocuments(caseId, filesData);
 			if (response.ok) {
