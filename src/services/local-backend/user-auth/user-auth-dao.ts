@@ -1,4 +1,4 @@
-import { nanoid } from "../../../lib/nanoid";
+import { Uuid } from "../../../lib/uuid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { UserAuthEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -6,9 +6,11 @@ import { SqlTables } from "../../local-database/sql-tables";
 export class UserAuthDAO {
 	private USER_AUTH_KEY = SqlTables.TABLE.USER_AUTH;
 	private dbConn: DatabaseConnection;
+	private uuid: Uuid;
 
 	constructor() {
 		this.dbConn = new DatabaseConnection();
+		this.uuid = new Uuid();
 	}
 
 	public async get(userId: string): Promise<UserAuthEntity | null> {
@@ -50,7 +52,7 @@ export class UserAuthDAO {
 	public async save(companyEmail: string, salt: string, passwordHash: string): Promise<boolean> {
 		const userAuths: UserAuthEntity[] = await this.dbConn.getArray(this.USER_AUTH_KEY);
 		const newUserAuth: UserAuthEntity = {
-			user_auth_id: nanoid(20),
+			user_auth_id: this.uuid.generate(),
 			company_email: companyEmail,
 			salt: salt,
 			password_hash: passwordHash,

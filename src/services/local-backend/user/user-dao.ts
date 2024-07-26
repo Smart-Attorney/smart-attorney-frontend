@@ -1,4 +1,4 @@
-import { nanoid } from "../../../lib/nanoid";
+import { Uuid } from "../../../lib/uuid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { UserEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -6,9 +6,11 @@ import { SqlTables } from "../../local-database/sql-tables";
 export class UserDAO {
 	private USER_KEY = SqlTables.TABLE.USER;
 	private dbConn: DatabaseConnection;
+	private uuid: Uuid;
 
 	constructor() {
 		this.dbConn = new DatabaseConnection();
+		this.uuid = new Uuid();
 	}
 
 	public async getIdByCompanyEmail(companyEmail: string): Promise<string | null> {
@@ -39,7 +41,7 @@ export class UserDAO {
 	): Promise<string | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		const newUser: UserEntity = {
-			user_id: nanoid(20),
+			user_id: this.uuid.generate(),
 			first_name: firstName,
 			last_name: lastName,
 			firm_name: firmName,

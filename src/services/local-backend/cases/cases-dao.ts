@@ -1,4 +1,4 @@
-import { nanoid } from "../../../lib/nanoid";
+import { Uuid } from "../../../lib/uuid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CasesEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -6,9 +6,11 @@ import { SqlTables } from "../../local-database/sql-tables";
 export class CasesDAO {
 	private CASES_KEY = SqlTables.TABLE.CASES;
 	private dbConn: DatabaseConnection;
+	private uuid: Uuid;
 
 	constructor() {
 		this.dbConn = new DatabaseConnection();
+		this.uuid = new Uuid();
 	}
 
 	public async getAllByUserId(userId: string): Promise<CasesEntity[]> {
@@ -36,7 +38,7 @@ export class CasesDAO {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		const currentDateUnixMilliseconds = Date.now();
 		const newCase: CasesEntity = {
-			case_id: nanoid(20),
+			case_id: this.uuid.generate(),
 			case_name: caseName,
 			created_date: currentDateUnixMilliseconds,
 			last_opened_date: currentDateUnixMilliseconds,

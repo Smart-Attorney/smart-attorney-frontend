@@ -1,4 +1,4 @@
-import { nanoid } from "../../../lib/nanoid";
+import { Uuid } from "../../../lib/uuid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { CaseLabelEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -6,9 +6,11 @@ import { SqlTables } from "../../local-database/sql-tables";
 export class CaseLabelDAO {
 	private CASE_LABEL_KEY = SqlTables.TABLE.CASE_LABEL;
 	private dbConn: DatabaseConnection;
+	private uuid: Uuid;
 
 	constructor() {
 		this.dbConn = new DatabaseConnection();
+		this.uuid = new Uuid();
 	}
 
 	public async getAllByCaseId(caseId: string): Promise<CaseLabelEntity[]> {
@@ -35,7 +37,7 @@ export class CaseLabelDAO {
 	public async save(caseId: string, labelName: string): Promise<string | null> {
 		const labels: CaseLabelEntity[] = await this.dbConn.getArray(this.CASE_LABEL_KEY);
 		const newLabel: CaseLabelEntity = {
-			label_id: nanoid(20),
+			label_id: this.uuid.generate(),
 			label_name: labelName,
 			fk_case_id: caseId,
 		};

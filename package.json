@@ -15,7 +15,6 @@
 		"bcryptjs": "^2.4.3",
 		"dayjs": "^1.11.10",
 		"firebase": "^10.8.0",
-		"nanoid": "^5.0.4",
 		"pdfjs": "^2.5.3",
 		"prettier": "^3.2.4",
 		"react": "^18.2.0",
