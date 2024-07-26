@@ -24,12 +24,13 @@ function AccountSection({ title, info }: AccountSectionProps) {
 
 /************************************************************/
 
-export type UserProfile = Omit<User, "id" | "password" | "email">;
+export type UserProfile = Omit<User, "password" | "email">;
 
 function Settings() {
 	const navigate = useNavigate();
 
 	const [user, setUser] = useState<UserProfile>({
+		id: "",
 		firstName: "",
 		lastName: "",
 		firmName: "",

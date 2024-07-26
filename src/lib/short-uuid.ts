@@ -13,9 +13,9 @@ export class ShortUuid {
 	 * Generates a random 32 character v4 uuid
 	 * @returns {string} uuid
 	 */
-	public newUuid(): string {
-		return this.shortUuid.uuid();
-	}
+	// public newUuid(): string {
+	// 	return this.shortUuid.uuid();
+	// }
 
 	/**
 	 * Generates a random 22 character short uuid
@@ -41,5 +41,14 @@ export class ShortUuid {
 	 */
 	public toUuid(shortId: string): string {
 		return this.shortUuid.toUUID(shortId);
+	}
+
+	/**
+	 * Checks a string to see if its a valid short uuid and translates to a valid uuid
+	 * @param {string}shortId
+	 * @returns {boolean} true if valid short uuid
+	 */
+	public validate(shortId: string): boolean {
+		return this.shortUuid.validate(shortId, true);
 	}
 }

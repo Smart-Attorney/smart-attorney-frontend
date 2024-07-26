@@ -16,4 +16,13 @@ export class Uuid {
 	public generate(): string {
 		return this.uuid();
 	}
+
+	/**
+	 * Checks a string to see if its a valid uuid
+	 * @param {string} uuid
+	 * @returns {boolean} true if valid uuid
+	 */
+	public validate(uuid: string): boolean {
+		return this.validate(uuid);
+	}
 }

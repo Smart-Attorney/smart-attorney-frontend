@@ -1,17 +1,20 @@
+import { ShortUuid } from "../../../lib/short-uuid";
 import { UserProfile } from "../../../pages/Settings";
 import { UserDAO } from "./user-dao";
 
 type UserToken = {
-	id: string;
+	id: string; // short uuid
 	firstName: string;
 	lastName: string;
 };
 
 export class UserService {
 	private userDao: UserDAO;
+	private shortUuid: ShortUuid;
 
 	constructor() {
 		this.userDao = new UserDAO();
+		this.shortUuid = new ShortUuid();
 	}
 
 	public async getToken(companyEmail: string): Promise<UserToken | null> {
@@ -21,7 +24,7 @@ export class UserService {
 		const user = await this.userDao.get(userId);
 		if (user !== null) {
 			const token: UserToken = {
-				id: user.user_id,
+				id: this.shortUuid.toShort(user.user_id),
 				firstName: user.first_name,
 				lastName: user.last_name,
 			};
@@ -32,9 +35,11 @@ export class UserService {
 
 	public async getUser(userId: string) {
 		if (!userId) return null;
-		const foundUser = await this.userDao.get(userId);
+		if (!this.shortUuid.validate(userId)) return null;
+		const foundUser = await this.userDao.get(this.shortUuid.toUuid(userId));
 		if (foundUser !== null) {
 			const userProfile: UserProfile = {
+				id: this.shortUuid.toShort(foundUser.user_id),
 				firstName: foundUser.first_name,
 				lastName: foundUser.last_name,
 				firmName: foundUser.firm_name,
