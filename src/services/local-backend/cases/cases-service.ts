@@ -1,4 +1,6 @@
-import { CaseLabel, Case, Document } from "../../../types/api";
+import { ShortUuid } from "../../../lib/short-uuid";
+import { Uuid } from "../../../lib/uuid";
+import { Case, CaseLabel, Document } from "../../../types/api";
 import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
 import { ClientDAO } from "../client/client-dao";
@@ -10,28 +12,35 @@ export class CasesService {
 	private caseLabelDao: CaseLabelDAO;
 	private clientDao: ClientDAO;
 	private documentDao: DocumentDAO;
+	private shortUuid: ShortUuid;
+	private uuid: Uuid;
 
 	constructor() {
 		this.casesDao = new CasesDAO();
 		this.caseLabelDao = new CaseLabelDAO();
 		this.clientDao = new ClientDAO();
 		this.documentDao = new DocumentDAO();
+		this.shortUuid = new ShortUuid();
+		this.uuid = new Uuid();
 	}
 
-	public async getAllCasesByUserId(userId: string): Promise<Case[]> {
+	public async getAllCasesByUserId(userShortId: string): Promise<Case[] | null> {
+		if (!userShortId) return null;
+		const userUuid = this.shortUuid.toUUID(userShortId);
+		if (!this.uuid.isValid(userUuid)) return null;
 		const userCases: Case[] = [];
-		const cases = await this.casesDao.getAllByUserId(userId);
+		const cases = await this.casesDao.getAllByUserId(userUuid);
 		for (let i = 0, n = cases.length; i < n; i++) {
-			const caseId = cases[i].case_id;
-			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseId);
-			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
+			const caseUuid = cases[i].case_id;
+			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseUuid);
+			const labels = await this.caseLabelDao.getAllByCaseId(caseUuid);
 			const caseLabels: CaseLabel[] = labels.map((label) => ({
-				id: label.label_id,
+				id: this.shortUuid.toShort(label.label_id),
 				name: label.label_name,
 			}));
-			const documents = await this.documentDao.getAllByCaseId(caseId);
+			const documents = await this.documentDao.getAllByCaseId(caseUuid);
 			const caseDocuments: Document[] = documents.map((document) => ({
-				id: document.document_id,
+				id: this.shortUuid.toShort(document.document_id),
 				name: document.document_name,
 				createdDate: document.created_date,
 				lastOpenedDate: document.last_opened_date,
@@ -40,7 +49,7 @@ export class CasesService {
 				url: document.url,
 			}));
 			userCases.push({
-				id: cases[i].case_id,
+				id: this.shortUuid.toShort(cases[i].case_id),
 				name: cases[i].case_name,
 				createdDate: cases[i].created_date,
 				lastOpenedDate: cases[i].last_opened_date,
@@ -53,19 +62,21 @@ export class CasesService {
 		return userCases;
 	}
 
-	public async getCase(caseId: string): Promise<Case | null> {
-		if (!caseId) return null;
-		const caseFolder = await this.casesDao.get(caseId);
+	public async getCase(caseShortId: string): Promise<Case | null> {
+		if (!caseShortId) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const caseFolder = await this.casesDao.get(caseUuid);
 		if (caseFolder !== null) {
-			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseId);
-			const labels = await this.caseLabelDao.getAllByCaseId(caseId);
+			const urgentDeadline = await this.documentDao.getUrgentDeadline(caseUuid);
+			const labels = await this.caseLabelDao.getAllByCaseId(caseUuid);
 			const caseLabels: CaseLabel[] = labels.map((label) => ({
-				id: label.label_id,
+				id: this.shortUuid.toShort(label.label_id),
 				name: label.label_name,
 			}));
-			const documents = await this.documentDao.getAllByCaseId(caseId);
+			const documents = await this.documentDao.getAllByCaseId(caseUuid);
 			const caseDocuments: Document[] = documents.map((document) => ({
-				id: document.document_id,
+				id: this.shortUuid.toShort(document.document_id),
 				name: document.document_name,
 				createdDate: document.created_date,
 				lastOpenedDate: document.last_opened_date,
@@ -74,7 +85,7 @@ export class CasesService {
 				url: document.url,
 			}));
 			const retrievedCase: Case = {
-				id: caseFolder.case_id,
+				id: this.shortUuid.toShort(caseFolder.case_id),
 				name: caseFolder.case_name,
 				createdDate: caseFolder.created_date,
 				lastOpenedDate: caseFolder.last_opened_date,
@@ -88,73 +99,84 @@ export class CasesService {
 		return null;
 	}
 
-	public async addCase(userId: string, caseName: string): Promise<Case | null> {
-		if (!userId || !caseName) return null;
-		const newCaseId = await this.casesDao.save(userId, caseName);
-		if (newCaseId !== null) {
-			return this.getCase(newCaseId);
+	public async addCase(userShortId: string, caseName: string): Promise<Case | null> {
+		if (!userShortId || !caseName) return null;
+		const userUuid = this.shortUuid.toUUID(userShortId);
+		if (!this.uuid.isValid(userUuid)) return null;
+		const newCaseUuid = await this.casesDao.save(userUuid, caseName);
+		if (newCaseUuid !== null) {
+			const newCaseShortId = this.shortUuid.toShort(newCaseUuid);
+			return await this.getCase(newCaseShortId);
 		}
 		return null;
 	}
 
-	public async updateCaseLastOpenedDate(userId: string, caseId: string): Promise<number | null> {
-		if (!userId || !caseId) return null;
-		const isDateUpdated = await this.casesDao.updateLastOpenedDate(userId, caseId);
+	public async updateCaseLastOpenedDate(caseShortId: string): Promise<Case | null> {
+		if (!caseShortId) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const isDateUpdated = await this.casesDao.updateLastOpenedDate(caseUuid);
 		if (isDateUpdated !== null) {
-			return isDateUpdated;
+			return await this.getCase(caseShortId);
 		}
 		return null;
 	}
 
-	public async updateCaseName(userId: string, caseId: string, newName: string): Promise<Case | null> {
-		if (!userId || !caseId || !newName) return null;
-		const isNameUpdated = await this.casesDao.updateName(userId, caseId, newName);
+	public async updateCaseName(caseShortId: string, newName: string): Promise<Case | null> {
+		if (!caseShortId || !newName) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const isNameUpdated = await this.casesDao.updateName(caseUuid, newName);
 		if (isNameUpdated) {
-			return await this.getCase(caseId);
+			return await this.getCase(caseShortId);
 		}
 		return null;
 	}
 
-	public async updateCaseIsOpen(
-		userId: string,
-		caseId: string,
-		currentState: boolean
-	): Promise<Case | null> {
-		if (!userId || !caseId || typeof currentState !== "boolean") return null;
-		const isStatusUpdated = await this.casesDao.updateOpenState(userId, caseId, currentState);
+	public async updateCaseIsOpen(caseShortId: string, currentState: boolean): Promise<Case | null> {
+		if (!caseShortId || typeof currentState !== "boolean") return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const isStatusUpdated = await this.casesDao.updateOpenState(caseUuid, currentState);
 		if (isStatusUpdated) {
-			return await this.getCase(caseId);
+			return await this.getCase(caseShortId);
 		}
 		return null;
 	}
 
-	public async deleteCase(userId: string, caseId: string): Promise<Case | null> {
-		if (!userId || !caseId) return null;
-		const deletedCase = await this.getCase(caseId);
+	public async deleteCase(userShortId: string, caseShortId: string): Promise<Case | null> {
+		if (!userShortId || !caseShortId) return null;
+		const userUuid = this.shortUuid.toUUID(userShortId);
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(userUuid) || !this.uuid.isValid(caseUuid)) return null;
 
-		// delete all files from cloud storage associated with caseId
-		const cloudFiles = await this.documentDao.getAllByCaseId(caseId);
+		// store the case that is to be deleted in memory
+		const deletedCase = await this.getCase(caseUuid);
+
+		// delete all documents from cloud storage associated with case id
+		const documents = await this.documentDao.getAllByCaseId(caseUuid);
 		const promiseArray = [];
-		for (let i = 0, n = cloudFiles.length; i < n; i++) {
-			promiseArray.push(await Firebase.deleteFileById(userId, caseId, cloudFiles[i].document_id));
+		for (let i = 0, n = documents.length; i < n; i++) {
+			const documentShortId = this.shortUuid.toShort(documents[i].document_id);
+			promiseArray.push(await Firebase.deleteFileById(userShortId, caseShortId, documentShortId));
 		}
-		const cloudFilesDeletedSuccessfully = await Promise.all(promiseArray);
-		if (cloudFilesDeletedSuccessfully.includes(false)) return null;
+		const areCloudDocumentsDeleted = await Promise.all(promiseArray);
+		if (areCloudDocumentsDeleted.includes(false)) return null;
 
-		// delete all documents associated with caseId
-		const isDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseId);
-		if (!isDocumentsDeleted) return null;
+		// delete all documents associated with case id
+		const areDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseUuid);
+		if (!areDocumentsDeleted) return null;
 
-		// delete all labels associated with caseId
-		const isLabelsDeleted = await this.caseLabelDao.deleteAllByCaseId(caseId);
-		if (!isLabelsDeleted) return null;
+		// delete all labels associated with case id
+		const areLabelsDeleted = await this.caseLabelDao.deleteAllByCaseId(caseUuid);
+		if (!areLabelsDeleted) return null;
 
-		// delete all clients associated with caseId
-		const isClientDeleted = await this.clientDao.deleteByCaseId(caseId);
+		// delete all clients associated with case id
+		const isClientDeleted = await this.clientDao.deleteByCaseId(caseUuid);
 		if (!isClientDeleted) return null;
 
 		// delete case after all associated entities have been deleted
-		const isCaseDeleted = await this.casesDao.delete(userId, caseId);
+		const isCaseDeleted = await this.casesDao.delete(caseUuid);
 		if (isCaseDeleted) {
 			return deletedCase;
 		}

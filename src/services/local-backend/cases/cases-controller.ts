@@ -72,7 +72,7 @@ export class CasesController {
 		const caseId = urlArray[urlArray.length - 1];
 		// const body: UpdateCaseLastOpenedDateDTO = await request.json();
 		// const { id } = body;
-		const updatedDate = await this.casesService.updateCaseLastOpenedDate(userId, caseId);
+		const updatedDate = await this.casesService.updateCaseLastOpenedDate(caseId);
 		if (updatedDate !== null) {
 			const updatedCaseFolders = await this.casesService.getAllCasesByUserId(userId);
 			const body = JSON.stringify(updatedCaseFolders);
@@ -88,13 +88,13 @@ export class CasesController {
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
+		// const authToken = JSON.parse(authHeader);
+		// const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
 		const body: UpdateCaseNameDTO = await request.json();
 		const { name } = body;
-		const caseWithUpdatedName = await this.casesService.updateCaseName(userId, caseId, name);
+		const caseWithUpdatedName = await this.casesService.updateCaseName(caseId, name);
 		if (caseWithUpdatedName !== null) {
 			const body = JSON.stringify(caseWithUpdatedName);
 			const options = { status: 200 };
@@ -109,13 +109,13 @@ export class CasesController {
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
+		// const authToken = JSON.parse(authHeader);
+		// const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
 		const body: UpdateCaseIsOpenDTO = await request.json();
 		const { isOpen } = body;
-		const caseWithUpdatedStatus = await this.casesService.updateCaseIsOpen(userId, caseId, isOpen);
+		const caseWithUpdatedStatus = await this.casesService.updateCaseIsOpen(caseId, isOpen);
 		if (caseWithUpdatedStatus !== null) {
 			const body = JSON.stringify(caseWithUpdatedStatus);
 			const options = { status: 200 };
