@@ -34,13 +34,4 @@ export class ShortUuid {
 	public toUUID(shortId: string): string {
 		return this.shortUuid.toUUID(shortId);
 	}
-
-	/**
-	 * Checks a string to see if its a valid short UUID and translates to a valid UUID v4
-	 * @param {string}shortId
-	 * @returns {boolean} true if valid short uuid
-	 */
-	public validate(shortId: string): boolean {
-		return this.shortUuid.validate(shortId, true);
-	}
 }

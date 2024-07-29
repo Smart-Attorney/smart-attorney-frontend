@@ -70,11 +70,11 @@ export class DocumentController {
 
 	public async updateDocumentStatusHandler(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 3];
+		// const caseId = urlArray[urlArray.length - 3];
 		const documentId = urlArray[urlArray.length - 1];
 		const body: UpdateDocumentStatusDTO = await request.json();
 		const { status } = body;
-		const updatedDocument = await this.documentService.updateDocumentStatus(caseId, documentId, status);
+		const updatedDocument = await this.documentService.updateDocumentStatus(documentId, status);
 		if (updatedDocument !== null) {
 			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
@@ -86,11 +86,11 @@ export class DocumentController {
 
 	public async updateDocumentNameHandler(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 3];
+		// const caseId = urlArray[urlArray.length - 3];
 		const documentId = urlArray[urlArray.length - 1];
 		const body: UpdateDocumentNameDTO = await request.json();
 		const { name } = body;
-		const updatedDocument = await this.documentService.updateDocumentName(caseId, documentId, name);
+		const updatedDocument = await this.documentService.updateDocumentName(documentId, name);
 		if (updatedDocument !== null) {
 			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
@@ -102,11 +102,11 @@ export class DocumentController {
 
 	public async updateDocumentDeadlineHandler(request: Request): Promise<Response> {
 		const urlArray = request.url.split("/");
-		const caseId = urlArray[urlArray.length - 3];
+		// const caseId = urlArray[urlArray.length - 3];
 		const documentId = urlArray[urlArray.length - 1];
 		const body: UpdateDocumentDeadlineDTO = await request.json();
 		const { deadline } = body;
-		const updatedDocument = await this.documentService.updateDocumentDeadline(caseId, documentId, deadline);
+		const updatedDocument = await this.documentService.updateDocumentDeadline(documentId, deadline);
 		if (updatedDocument !== null) {
 			const body = JSON.stringify(updatedDocument);
 			const options = { status: 200 };
