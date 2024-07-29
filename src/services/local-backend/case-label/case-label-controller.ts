@@ -30,13 +30,13 @@ export class CaseLabelController {
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
+		// const authToken = JSON.parse(authHeader);
+		// const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 2];
 		const body: CreateCaseLabelDTO = await request.json();
 		const { name } = body;
-		const newLabel = await this.caseLabelService.addCaseLabel(userId, caseId, name);
+		const newLabel = await this.caseLabelService.addCaseLabel(caseId, name);
 		if (newLabel !== null) {
 			const body = JSON.stringify(newLabel);
 			const options = { status: 200 };
@@ -51,12 +51,12 @@ export class CaseLabelController {
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
+		// const authToken = JSON.parse(authHeader);
+		// const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const caseId: string = urlArray[urlArray.length - 3];
+		// const caseId: string = urlArray[urlArray.length - 3];
 		const labelId: string = urlArray[urlArray.length - 1];
-		const deletedLabel = await this.caseLabelService.deleteCaseLabel(userId, caseId, labelId);
+		const deletedLabel = await this.caseLabelService.deleteCaseLabel(labelId);
 		if (deletedLabel !== null) {
 			const body = JSON.stringify(deletedLabel);
 			const options = { status: 200 };
