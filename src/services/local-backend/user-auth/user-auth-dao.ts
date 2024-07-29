@@ -13,10 +13,10 @@ export class UserAuthDAO {
 		this.uuid = new Uuid();
 	}
 
-	public async get(userId: string): Promise<UserAuthEntity | null> {
+	public async get(userUuid: string): Promise<UserAuthEntity | null> {
 		const userAuths: UserAuthEntity[] = await this.dbConn.getArray(this.USER_AUTH_KEY);
 		for (let i = 0, n = userAuths.length; i < n; i++) {
-			if (userAuths[i].user_auth_id === userId) {
+			if (userAuths[i].user_auth_id === userUuid) {
 				const userAuthDetails: UserAuthEntity = {
 					user_auth_id: userAuths[i].user_auth_id,
 					company_email: userAuths[i].company_email,

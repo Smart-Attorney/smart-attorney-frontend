@@ -151,7 +151,7 @@ export class CasesService {
 		if (!this.uuid.isValid(userUuid) || !this.uuid.isValid(caseUuid)) return null;
 
 		// store the case that is to be deleted in memory
-		const deletedCase = await this.getCase(caseUuid);
+		const deletedCase = await this.getCase(caseShortId);
 
 		// delete all documents from cloud storage associated with case id
 		const documents = await this.documentDao.getAllByCaseId(caseUuid);

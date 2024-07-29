@@ -133,7 +133,7 @@ export class CasesController {
 		const authToken = JSON.parse(authHeader);
 		const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
-		const caseId: string = urlArray[urlArray.length - 1];
+    const caseId: string = urlArray[urlArray.length - 1];
 		const deletedCase = await this.casesService.deleteCase(userId, caseId);
 		if (deletedCase !== null) {
 			const body = JSON.stringify(deletedCase);
