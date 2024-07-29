@@ -23,10 +23,10 @@ export class UserDAO {
 		return null;
 	}
 
-	public async get(userId: string): Promise<UserEntity | null> {
+	public async get(userUuid: string): Promise<UserEntity | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].user_id === userId) {
+			if (users[i].user_id === userUuid) {
 				return users[i];
 			}
 		}

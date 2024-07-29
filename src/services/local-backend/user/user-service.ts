@@ -1,4 +1,5 @@
 import { ShortUuid } from "../../../lib/short-uuid";
+import { Uuid } from "../../../lib/uuid";
 import { UserProfile } from "../../../pages/Settings";
 import { UserDAO } from "./user-dao";
 
@@ -11,17 +12,19 @@ type UserToken = {
 export class UserService {
 	private userDao: UserDAO;
 	private shortUuid: ShortUuid;
+	private uuid: Uuid;
 
 	constructor() {
 		this.userDao = new UserDAO();
 		this.shortUuid = new ShortUuid();
+		this.uuid = new Uuid();
 	}
 
 	public async getToken(companyEmail: string): Promise<UserToken | null> {
 		if (!companyEmail) return null;
-		const userId = await this.userDao.getIdByCompanyEmail(companyEmail);
-		if (!userId) return null;
-		const user = await this.userDao.get(userId);
+		const userUuid = await this.userDao.getIdByCompanyEmail(companyEmail);
+		if (!userUuid) return null;
+		const user = await this.userDao.get(userUuid);
 		if (user !== null) {
 			const token: UserToken = {
 				id: this.shortUuid.toShort(user.user_id),
@@ -33,9 +36,11 @@ export class UserService {
 		return null;
 	}
 
-	public async getUser(userId: string) {
-		if (!userId) return null;
-		const foundUser = await this.userDao.get(this.shortUuid.toUUID(userId));
+	public async getUser(userShortId: string) {
+		if (!userShortId) return null;
+		const userUuid = this.shortUuid.toUUID(userShortId);
+		if (!this.uuid.isValid(userUuid)) return null;
+		const foundUser = await this.userDao.get(userUuid);
 		if (foundUser !== null) {
 			const userProfile: UserProfile = {
 				id: this.shortUuid.toShort(foundUser.user_id),
@@ -61,13 +66,14 @@ export class UserService {
 		if (firmName.trim().length === 0) return null;
 		if (companyEmail.trim().length === 0) return null;
 		if (password.trim().length === 0) return null;
-		const userId = await this.userDao.getIdByCompanyEmail(companyEmail);
-		if (userId !== null) {
+		const userUuid = await this.userDao.getIdByCompanyEmail(companyEmail);
+		if (userUuid !== null) {
 			throw new Error("This email already exists.");
 		}
-		const newUserId = await this.userDao.save(firstName, lastName, firmName, companyEmail);
-		if (newUserId !== null) {
-			return await this.getUser(newUserId);
+		const newUserUuid = await this.userDao.save(firstName, lastName, firmName, companyEmail);
+		if (newUserUuid !== null) {
+			const newUserShortId = this.shortUuid.toShort(newUserUuid);
+			return await this.getUser(newUserShortId);
 		}
 		return null;
 	}
