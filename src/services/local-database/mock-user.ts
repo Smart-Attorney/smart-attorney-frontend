@@ -3,7 +3,7 @@ import { SqlTables } from "./sql-tables";
 
 export class MockUser {
 	private static mockUser: UserEntity = {
-		user_id: "00add5b8-e1c9-49ba-902a-77583003d16f",
+		user_id: "018cc251-f400-7000-8000-0145a85e43db",
 		first_name: "Jane",
 		last_name: "Doe",
 		firm_name: "Attorney Law Group",
@@ -12,7 +12,7 @@ export class MockUser {
 	};
 
 	private static mockUserAuth: UserAuthEntity = {
-		user_auth_id: "00afbfff-1e77-4e9c-bf30-1896c57052da",
+		user_auth_id: "018cc251-f400-7000-8000-0280ac841786",
 		company_email: "lawyer@email.com",
 		salt: "$2a$15$1SbYDpXwQ6r904RSwsgQsO",
 		password_hash: "$2a$15$1SbYDpXwQ6r904RSwsgQsOXojpQfc/xDY12nEc9/FvzWAXDx3CM9W",

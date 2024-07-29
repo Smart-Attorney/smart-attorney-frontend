@@ -10,14 +10,6 @@ export class ShortUuid {
 	}
 
 	/**
-	 * Generates a random 32 character v4 uuid
-	 * @returns {string} uuid
-	 */
-	// public newUuid(): string {
-	// 	return this.shortUuid.uuid();
-	// }
-
-	/**
 	 * Generates a random 22 character short uuid
 	 * @returns {string} short uuid
 	 */
@@ -26,7 +18,7 @@ export class ShortUuid {
 	}
 
 	/**
-	 * Translates a regular UUID to a 22-character shortened format
+	 * Translates a regular UUID to a 22 character shortened format
 	 * @param {string} uuid
 	 * @returns {string} shortened uuid
 	 */
@@ -39,12 +31,12 @@ export class ShortUuid {
 	 * @param {string} shortId
 	 * @returns {string} uuid
 	 */
-	public toUuid(shortId: string): string {
+	public toUUID(shortId: string): string {
 		return this.shortUuid.toUUID(shortId);
 	}
 
 	/**
-	 * Checks a string to see if its a valid short uuid and translates to a valid uuid
+	 * Checks a string to see if its a valid short UUID and translates to a valid UUID v4
 	 * @param {string}shortId
 	 * @returns {boolean} true if valid short uuid
 	 */

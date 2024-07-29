@@ -35,8 +35,7 @@ export class UserService {
 
 	public async getUser(userId: string) {
 		if (!userId) return null;
-		if (!this.shortUuid.validate(userId)) return null;
-		const foundUser = await this.userDao.get(this.shortUuid.toUuid(userId));
+		const foundUser = await this.userDao.get(this.shortUuid.toUUID(userId));
 		if (foundUser !== null) {
 			const userProfile: UserProfile = {
 				id: this.shortUuid.toShort(foundUser.user_id),
