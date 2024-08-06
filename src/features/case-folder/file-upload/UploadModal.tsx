@@ -2,27 +2,28 @@ import { useState } from "react";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import { nanoid } from "../../../lib/nanoid";
-import { CaseFileObj, FileForUploadObj } from "../../../utils/types";
-import { createCaseFiles } from "../api/create-case-files";
+import { ShortUuid } from "../../../lib/short-uuid";
+import { Document } from "../../../types/api";
+import { UploadFile } from "../../../types/file";
+import { createDocuments, CreateDocumentsDTO } from "../api/create-documents";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
 import uploadDocuments from "../../uploadDocument/uploadDocuments";
-
 interface UploadModalProps {
-	caseFolderId: string;
+	caseId: string;
 	closeUploadModal: () => void;
-	addUploadedFileToCaseFileArray: (uploadedFile: CaseFileObj) => void;
+	addNewDocumentToArray: (newDocument: Document) => void;
 }
 
 function UploadModal({
-	caseFolderId,
+	caseId,
 	closeUploadModal,
-	addUploadedFileToCaseFileArray,
+	addNewDocumentToArray,
 }: UploadModalProps) {
-	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
-	const [uploadDone, setUploadDone] = useState(false);
+	const uuid = new ShortUuid();
+	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
+	const [isUploadDone, setIsUploadDone] = useState(false);
 	const [fileList, setFileList] = useState<FileList>();
 
 	const uploadToCloudBucket = (fileList: FileList): Promise<any> => {
@@ -42,48 +43,46 @@ function UploadModal({
 	};
 
 	const handleUploadFiles = async (): Promise<void> => {
-		if (filesForUpload === null) return;
-		if (filesForUpload.length < 1) return;
+		if (uploadFiles === null) return;
+		if (uploadFiles.length < 1) return;
 		if (!fileList) return;
 
 		const fileSrcArr = await uploadToCloudBucket(fileList);
 		if (!Array.isArray(fileSrcArr) || fileSrcArr.length < 1) return;
 
-		const filesFormData = new FormData();
-		filesFormData.append("caseFolderId", caseFolderId);
-		for (let i = 0, n = filesForUpload.length; i < n; i++) {
-			filesFormData.append(
+		const filesData: CreateDocumentsDTO = new FormData();
+		for (let i = 0, n = uploadFiles.length; i < n; i++) {
+			filesData.append(
 				"files[]",
-				filesForUpload[i].data,
-				`${filesForUpload[i].id}/${filesForUpload[i].data.name}`
+				uploadFiles[i].data,
+				`${uploadFiles[i].id}/${uploadFiles[i].data.name}`
 			);
 		}
-
 		try {
-			const response = await createCaseFiles(caseFolderId, filesFormData);
+			const response = await createDocuments(caseId, filesData);
 			if (response.ok) {
-				const createdCaseFiles: CaseFileObj[] = await response.json();
-				for (let i = 0, n = createdCaseFiles.length; i < n; i++) {
-					addUploadedFileToCaseFileArray(createdCaseFiles[i]);
+				const createdDocuments: Document[] = await response.json();
+				for (let i = 0, n = createdDocuments.length; i < n; i++) {
+					addNewDocumentToArray(createdDocuments[i]);
 				}
-				setUploadDone(true);
+				setIsUploadDone(true);
 			}
 		} catch (error) {
 			alert(error);
 		} finally {
-			setUploadDone(false);
+			setIsUploadDone(false);
 			closeUploadModal();
 		}
 	};
 
-	const addFilesToUploadArray = (files: FileList): void => {
+	const addToUploadFilesArray = (files: FileList): void => {
 		setFileList(files);
 
 		for (let i = 0, n = files.length; i < n; i++) {
-			setFilesForUpload((prev) => [
+			setUploadFiles((prev) => [
 				...prev,
 				{
-					id: nanoid(8),
+					id: uuid.newShort(),
 					data: files[i],
 				},
 			]);
@@ -91,7 +90,7 @@ function UploadModal({
 	};
 
 	const handleRemoveFileFromUploadStaging = (id: string): void =>
-		setFilesForUpload((prev) => prev.filter((file) => file.id !== id));
+		setUploadFiles((prev) => prev.filter((file) => file.id !== id));
 
 	const handleCloseUploadModal = (): void => {
 		closeUploadModal();
@@ -110,13 +109,13 @@ function UploadModal({
 				<Header />
 
 				<DropZone
-					filesToUpload={filesForUpload}
-					addFilesToUploadArray={addFilesToUploadArray}
+					uploadFiles={uploadFiles}
+					addToUploadFilesArray={addToUploadFilesArray}
 				/>
 
-				{filesForUpload.length > 0 && (
+				{uploadFiles.length > 0 && (
 					<UploadedFileCards
-						filesToUpload={filesForUpload}
+						filesToUpload={uploadFiles}
 						handleRemoveFileFromStaging={handleRemoveFileFromUploadStaging}
 					/>
 				)}
@@ -128,9 +127,9 @@ function UploadModal({
 						type="button"
 						className="border-[5px] h-[68px]"
 						onClick={handleUploadFiles}
-						isDisabled={filesForUpload.length < 1 ? true : false}
+						isDisabled={uploadFiles.length < 1 ? true : false}
 						style={{
-							cursor: filesForUpload.length < 1 ? "not-allowed" : "pointer",
+							cursor: uploadFiles.length < 1 ? "not-allowed" : "pointer",
 						}}
 					/>
 					<ModalSpecialButton
@@ -141,7 +140,7 @@ function UploadModal({
 					/>
 				</div>
 
-				{uploadDone && (
+				{isUploadDone && (
 					<p className="text-xl font-semibold text-green-600">
 						Selected files have been successfully uploaded!
 					</p>

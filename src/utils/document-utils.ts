@@ -1,29 +1,12 @@
+import { Document } from "../types/api";
 import { DOCUMENT_STATUS } from "./constants/document-status";
 import { SORT_OPTION } from "./constants/sort-options";
-import { CaseFileObj } from "./types";
 
 export class DocumentUtils {
-	public static getUrgentDeadline = (documents: CaseFileObj[]): number => {
-		if (!documents) return 0;
-		const placeholderDate = Infinity;
-		const currentDate = Date.now();
-		let mostUrgentDeadline = placeholderDate;
-		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].deadline === 0) continue;
-			if (documents[i].deadline < currentDate) continue;
-			if (documents[i].deadline > mostUrgentDeadline) continue;
-			mostUrgentDeadline = documents[i].deadline;
-		}
-		if (mostUrgentDeadline === placeholderDate) return 0;
-		return mostUrgentDeadline;
-	};
-
-	/************************************************************/
-
 	/**
 	 * Sorts alphabetically from A to Z.
 	 */
-	private static sortByName(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByName(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.name.toLowerCase();
 			const lb = b.name.toLowerCase();
@@ -41,7 +24,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts from youngest to oldest.
 	 */
-	private static sortByDateCreated(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByDateCreated(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.createdDate;
 			const lb = b.createdDate;
@@ -59,7 +42,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts from most recent to least recent date.
 	 */
-	private static sortByLastOpened(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByLastOpened(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.lastOpenedDate;
 			const lb = b.lastOpenedDate;
@@ -77,7 +60,7 @@ export class DocumentUtils {
 	/**
 	 * Sorts by status.
 	 */
-	private static sortByStatus(array: CaseFileObj[]): CaseFileObj[] {
+	private static sortByStatus(array: Document[]): Document[] {
 		const sortedArray = array.sort((a, b) => {
 			let la: number;
 			switch (a.status) {
@@ -120,7 +103,7 @@ export class DocumentUtils {
 		return sortedArray;
 	}
 
-	public static sortByOption = (array: CaseFileObj[], option: string): CaseFileObj[] => {
+	public static sortByOption = (array: Document[], option: string): Document[] => {
 		switch (option) {
 			case SORT_OPTION.NAME:
 				return DocumentUtils.sortByName(array);

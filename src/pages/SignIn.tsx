@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
-import { SignInCredentialsDTO, signInWithEmailAndPassword } from "../features/sign-in/api/sign-in";
+import { SignInUserDTO, signIn } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
 import { CurrenUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
 
@@ -9,13 +9,23 @@ function SignIn() {
 	const navigate = useNavigate();
 
 	const { setCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
-	const [credentials, setCredentials] = useState<SignInCredentialsDTO>({ companyEmail: "", password: "" });
+	const [credentials, setCredentials] = useState<SignInUserDTO>({ companyEmail: "", password: "" });
 
 	/************************************************************/
 
 	const handleSignIn = async () => {
+		const isCompanyEmailEmpty = credentials.companyEmail.trim().length === 0;
+		const isPasswordEmpty = credentials.password.trim().length === 0;
+		if (isCompanyEmailEmpty) {
+			alert("ERROR: Company email field is empty.");
+			return;
+		}
+		if (isPasswordEmpty) {
+			alert("ERROR: Password field is empty.");
+			return;
+		}
 		try {
-			const response = await signInWithEmailAndPassword(credentials);
+			const response = await signIn(credentials);
 			if (response.ok) {
 				const data: CurrentUser = await response.json();
 				setCurrentUser(data);
@@ -28,7 +38,6 @@ function SignIn() {
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-
 		setCredentials((prev) => ({
 			...prev,
 			[name]: value,

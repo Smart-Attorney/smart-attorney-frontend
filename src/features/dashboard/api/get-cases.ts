@@ -2,10 +2,11 @@ import { mockRequest } from "../../../lib/mock-request";
 import { CasesController } from "../../../services/local-backend/cases/cases-controller";
 
 const mockApi = async () => {
-	const request = mockRequest.get(`/dashboard`);
-	return await new CasesController().getAllCasesByUserId(request);
+	const endpoint = `/users/cases`;
+	const request = mockRequest.get(endpoint);
+	return await new CasesController().getAllCasesByUserIdHandler(request);
 };
 
-export const getUserCaseFolders = async () => {
+export const getCases = async () => {
 	return await mockApi();
 };

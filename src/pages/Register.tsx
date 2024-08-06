@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import InputField from "../features/register/InputField";
 import TermsOfService from "../features/register/TermsOfService";
-import { RegisterCredentialsDTO, registerNewUser } from "../features/register/api/register";
+import { RegisterUserDTO, register } from "../features/register/api/register";
 import StyledBackground from "../layouts/StyledBackground";
 
 // keep these consistent with credentials object property names
@@ -58,7 +58,7 @@ function Register() {
 			return;
 		}
 
-		const newUser: RegisterCredentialsDTO = {
+		const newUser: RegisterUserDTO = {
 			firstName: user.firstName,
 			lastName: user.lastName,
 			firmName: user.firmName,
@@ -67,7 +67,7 @@ function Register() {
 		};
 
 		try {
-			const response = await registerNewUser(newUser);
+			const response = await register(newUser);
 			if (response.ok) {
 				navigate("/signin");
 			}

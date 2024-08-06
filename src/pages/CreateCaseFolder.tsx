@@ -6,37 +6,37 @@ import PillButton from "../components/Buttons/PillButton";
 import PillSpecialButton from "../components/Buttons/PillSpecialButton";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import ClientInfoModal, { ClientInfoForm } from "../features/create-case-folder/ClientModal/ClientInfoModal";
+import ClientModal from "../features/create-case-folder/ClientModal/ClientInfoModal";
 import DropArea from "../features/create-case-folder/DropArea";
 import FileForUploadCards from "../features/create-case-folder/FileForUploadCards";
-import { createCaseFiles } from "../features/create-case-folder/api/create-case-files";
-import { CreateCaseFolderDTO, createCaseFolder } from "../features/create-case-folder/api/create-case-folder";
+import { CreateCaseDTO, createCase } from "../features/create-case-folder/api/create-case";
 import { CreateClientDTO, createClient } from "../features/create-case-folder/api/create-client";
+import { createDocuments } from "../features/create-case-folder/api/create-documents";
 import uploadDocuments from "../features/uploadDocument/uploadDocuments";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { nanoid } from "../lib/nanoid";
+import { ShortUuid } from "../lib/short-uuid";
+import { Case, Sex } from "../types/api";
+import { UploadFile } from "../types/file";
+import { ClientForm } from "../types/form";
 import { CaseUtils } from "../utils/case-utils";
 import { NEW_CASE } from "../utils/constants/sort-options";
-import { FileForUploadObj, SexOption } from "../utils/types";
 
 function CreateCaseFolder() {
 	const navigate = useNavigate();
-
-	const caseFolderId = useRef<string>("");
+	const uuid = new ShortUuid();
 
 	const dropAreaRef = useRef<HTMLInputElement>(null);
+	const caseNameRef = useRef<HTMLHeadingElement>(null);
 
-	const currentFolderCount = CaseUtils.getCaseCount();
-	const defaultCaseName = `Case Folder ${currentFolderCount + 1}`;
-
-	const caseFolderNameRef = useRef<HTMLHeadingElement>(null);
-	const [caseFolderName, setCaseFolderName] = useState<string>(defaultCaseName);
-	const [caseFolderNameEditable, setCaseFolderNameEditable] = useState<boolean>(false);
+	const currentCaseCount = CaseUtils.getCaseCount();
+	const defaultCaseName = `Case Folder ${currentCaseCount + 1}`;
+	const [caseName, setCaseName] = useState<string>(defaultCaseName);
+	const [isCaseNameEditable, setIsCaseNameEditable] = useState<boolean>(false);
 
 	const [clientModalOpen, setClientModalOpen] = useState<boolean>(true);
-	const [client, setClient] = useState<ClientInfoForm>({
+	const [client, setClient] = useState<ClientForm>({
 		firstName: "",
 		middleName: "",
 		lastName: "",
@@ -46,19 +46,13 @@ function CreateCaseFolder() {
 		primaryLanguage: "",
 	});
 
-	const [filesForUpload, setFilesForUpload] = useState<FileForUploadObj[]>([]);
+	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
 
 	useEffect(() => {
-		if (caseFolderId.current.length < 1) {
-			caseFolderId.current = nanoid(8);
+		if (isCaseNameEditable) {
+			caseNameRef.current?.focus();
 		}
-	}, []);
-
-	useEffect(() => {
-		if (caseFolderNameEditable) {
-			caseFolderNameRef.current?.focus();
-		}
-	}, [caseFolderNameEditable]);
+	}, [isCaseNameEditable]);
 
 	/************************************************************/
 
@@ -68,55 +62,54 @@ function CreateCaseFolder() {
 		// 	alert("Please change the default case name before creating.");
 		// 	return;
 		// }
-		if (caseFolderName.trim().length === 0) {
+		if (caseName.trim().length === 0) {
 			alert("Case name cannot be blank. Please change case name before creating.");
 			return;
 		}
-		if (filesForUpload.length > 0) {
-			const caseFolderCreated = await handleCreateNewCaseFolder();
-			const clientCreated = await handleCreateNewClient();
-			const caseFilesCreated = await handleCreateNewCaseFiles();
-			if (caseFolderCreated && clientCreated && caseFilesCreated) {
-				navigate("/dashboard");
-			}
-		} else {
-			const caseFolderResponse = await handleCreateNewCaseFolder();
-			const clientResponse = await handleCreateNewClient();
-			if (caseFolderResponse && clientResponse) {
-				navigate("/dashboard");
-			}
-		}
-	};
-
-	const handleCreateNewCaseFolder = async () => {
-		const newCaseFolder: CreateCaseFolderDTO = {
-			folderId: caseFolderId.current,
-			folderName: caseFolderName,
-		};
+		let isClientCreated: boolean = false;
+		let areDocumentsCreated: boolean = false;
 		try {
-			const response = await createCaseFolder(newCaseFolder);
-			if (response.ok) {
-				return true;
+			const newCaseId = await handleCreateCase();
+			if (newCaseId) {
+				isClientCreated = await handleCreateClient(newCaseId);
+				areDocumentsCreated = await handleCreateDocuments(newCaseId);
 			}
 		} catch (error) {
 			alert(error);
 		}
-		return false;
+		if (isClientCreated && areDocumentsCreated) {
+			navigate("/dashboard");
+		}
 	};
 
-	const handleCreateNewClient = async () => {
+	const handleCreateCase = async (): Promise<string | null> => {
+		const newCase: CreateCaseDTO = {
+			name: caseName,
+		};
+		try {
+			const response = await createCase(newCase);
+			if (response.ok) {
+				const data: Case = await response.json();
+				return data.id;
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return null;
+	};
+
+	const handleCreateClient = async (caseId: string): Promise<boolean> => {
 		const newClient: CreateClientDTO = {
 			firstName: client.firstName,
 			middleName: client.middleName,
 			lastName: client.lastName,
 			dateOfBirth: client.dateOfBirth === "" ? Date.parse("12/10/1815") : Date.parse(client.dateOfBirth),
-			sex: client.sex === "" ? "Other" : (client.sex as SexOption),
+			sex: client.sex === "" ? "Other" : (client.sex as Sex),
 			countryOfCitizenship: client.countryOfCitizenship,
 			primaryLanguage: client.primaryLanguage,
-			caseFolderId: caseFolderId.current,
 		};
 		try {
-			const response = await createClient(newClient);
+			const response = await createClient(caseId, newClient);
 			if (response.ok) {
 				return true;
 			}
@@ -126,14 +119,14 @@ function CreateCaseFolder() {
 		return false;
 	};
 
-	const handleCreateNewCaseFiles = async () => {
-		const filesFormData = new FormData();
-		filesFormData.append("caseFolderId", caseFolderId.current);
-		for (let i = 0, n = filesForUpload.length; i < n; i++) {
-			filesFormData.append("files[]", filesForUpload[i].data, `${filesForUpload[i].id}/${filesForUpload[i].data.name}`);
+	const handleCreateDocuments = async (caseId: string): Promise<boolean> => {
+		if (uploadFiles.length === 0) return true;
+		const filesData = new FormData();
+		for (let i = 0, n = uploadFiles.length; i < n; i++) {
+			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
 		}
 		try {
-			const response = await createCaseFiles(filesFormData);
+			const response = await createDocuments(caseId, filesData);
 			if (response.ok) {
 				return true;
 			}
@@ -157,26 +150,26 @@ function CreateCaseFolder() {
 
 	/* Clears the input field on initial click focus to save user the hassle of backspacing. */
 	const handeClickOnCaseName = (): void => {
-		if (caseFolderName === defaultCaseName) {
-			setCaseFolderName("");
+		if (caseName === defaultCaseName) {
+			setCaseName("");
 		}
-		setCaseFolderNameEditable(true);
+		setIsCaseNameEditable(true);
 	};
 
 	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
 		if (event.key !== "Enter") return;
-		caseFolderNameRef.current?.blur();
-		setCaseFolderNameEditable(false);
+		caseNameRef.current?.blur();
+		setIsCaseNameEditable(false);
 	};
 
 	const handleCaseNameBlur = (event: React.FocusEvent<HTMLHeadingElement>): void => {
 		const { innerText } = event.target;
 		if (innerText.trim() === "") {
-			setCaseFolderName(defaultCaseName);
+			setCaseName(defaultCaseName);
 		} else {
-			setCaseFolderName(innerText);
+			setCaseName(innerText);
 		}
-		setCaseFolderNameEditable(false);
+		setIsCaseNameEditable(false);
 	};
 
 	/************************************************************/
@@ -185,20 +178,20 @@ function CreateCaseFolder() {
 		dropAreaRef.current?.click();
 	};
 
-	// const addToFilesForUploadArray = (filesFromUser: FileList): void => {
+	// const addToUploadFilesArray = (filesFromUser: FileList): void => {
 	// 	for (let i = 0, n = filesFromUser.length; i < n; i++) {
 	// 		setFilesForUpload((prev) => [
 	// 			...prev,
 	// 			{
-	// 				id: nanoid(8),
+	// 				id: nanoid(20),
 	// 				data: filesFromUser[i],
 	// 			},
 	// 		]);
 	// 	}
 	// };
 
-	const removeFromFilesForUploadArray = (fileId: string): void => {
-		setFilesForUpload((prev) => prev.filter((file) => file.id !== fileId));
+	const removeFromUploadFilesArray = (fileId: string): void => {
+		setUploadFiles((prev) => prev.filter((file) => file.id !== fileId));
 	};
 
 	const handleUpload = (fileList: FileList) => {
@@ -206,10 +199,10 @@ function CreateCaseFolder() {
 		uploadDocuments(fileArr)
 			.then((res) => {
 				if (Array.isArray(res)) {
-					setFilesForUpload((prev) => [
+					setUploadFiles((prev) => [
 						...prev,
 						...fileArr.map((_file, i) => ({
-							id: nanoid(8),
+							id: uuid.newShort(),
 							data: fileList[i],
 						})),
 					]);
@@ -236,14 +229,14 @@ function CreateCaseFolder() {
 					id="case-name"
 					className="text-3xl font-bold text-white cursor-pointer"
 					title="Click to edit case name"
-					contentEditable={caseFolderNameEditable}
+					contentEditable={isCaseNameEditable}
 					suppressContentEditableWarning={true}
-					ref={caseFolderNameRef}
+					ref={caseNameRef}
 					onClick={handeClickOnCaseName}
 					onBlur={handleCaseNameBlur}
 					onKeyDown={handleEnterKeyPress}
 				>
-					{caseFolderName}
+					{caseName}
 				</h1>
 			</PageHeader>
 
@@ -262,31 +255,23 @@ function CreateCaseFolder() {
 				</div>
 			</SortBarWithButtons>
 
-			{filesForUpload.length > 0 && (
-				<FileForUploadCards
-					filesForUpload={filesForUpload}
-					removeFromFilesForUploadArray={removeFromFilesForUploadArray}
-				/>
+			{uploadFiles.length > 0 && (
+				<FileForUploadCards uploadFiles={uploadFiles} removeFromUploadFilesArray={removeFromUploadFilesArray} />
 			)}
 
 			<DropArea
 				ref={dropAreaRef}
 				style={{
-					zIndex: filesForUpload.length > 0 ? -5 : 5,
-					display: filesForUpload.length > 0 ? "none" : "flex",
+					zIndex: uploadFiles.length > 0 ? -5 : 5,
+					display: uploadFiles.length > 0 ? "none" : "flex",
 				}}
 				handleOpenFileBrowser={handleOpenFileBrowser}
 				// addToFilesForUploadArray={addToFilesForUploadArray}
-				addToFilesForUploadArray={handleUpload}
+				addToUploadFilesArray={handleUpload}
 			/>
 
 			{clientModalOpen && (
-				<ClientInfoModal
-					client={client}
-					setClient={setClient}
-					closeModal={closeClientModal}
-					createCase={createNewCase}
-				/>
+				<ClientModal client={client} setClient={setClient} closeModal={closeClientModal} createCase={createNewCase} />
 			)}
 		</SidebarLayout>
 	);

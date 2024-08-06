@@ -1,4 +1,4 @@
-import { UserDTO } from "../../../utils/dtos/UserDTO";
+import { UserDTO } from "../dtos/UserDTO";
 import { User } from "./user";
 
 export class UserMapper {

@@ -1,5 +1,5 @@
 import { SORT_OPTION } from "./constants/sort-options";
-import { DashboardFolderCardObj } from "./types";
+import { Case } from "../types/api";
 
 export class CaseUtils {
 	private static CASE_FOLDER_COUNT_KEY = "case-folder-count";
@@ -24,7 +24,7 @@ export class CaseUtils {
 	/**
 	 * Sorts alphabetically from A to Z.
 	 */
-	private static sortByName(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
+	private static sortByName(array: Case[]): Case[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.name.toLowerCase();
 			const lb = b.name.toLowerCase();
@@ -42,7 +42,7 @@ export class CaseUtils {
 	/**
 	 * Sorts from youngest to oldest.
 	 */
-	private static sortByDateCreated(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
+	private static sortByDateCreated(array: Case[]): Case[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.createdDate;
 			const lb = b.createdDate;
@@ -60,7 +60,7 @@ export class CaseUtils {
 	/**
 	 * Sorts from most recent to least recent date.
 	 */
-	private static sortByLastOpened(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
+	private static sortByLastOpened(array: Case[]): Case[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.lastOpenedDate;
 			const lb = b.lastOpenedDate;
@@ -78,7 +78,7 @@ export class CaseUtils {
 	/**
 	 * Sorts from open cases to closed cases.
 	 */
-	private static sortByOpenCases(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
+	private static sortByOpenCases(array: Case[]): Case[] {
 		const sortedArray = array.sort((a, b) => {
 			const la = a.isOpen;
 			const lb = b.isOpen;
@@ -97,7 +97,7 @@ export class CaseUtils {
 	 * Sorts from closest to furthest deadline.
 	 * Places folders without a deadline at the end.
 	 */
-	private static sortByDeadline(array: DashboardFolderCardObj[]): DashboardFolderCardObj[] {
+	private static sortByDeadline(array: Case[]): Case[] {
 		const foldersWithoutDeadlines = array.filter((folder) => {
 			const deadline = new Date(folder.urgentDocumentDeadline).getTime();
 			return deadline === 0;
@@ -120,11 +120,11 @@ export class CaseUtils {
 		return [...sortedArray, ...foldersWithoutDeadlines];
 	}
 
-	private static sortByCaseLabel(array: DashboardFolderCardObj[], caseLabel: string): DashboardFolderCardObj[] {
-		const withMatchLabel: DashboardFolderCardObj[] = [];
-		const noMatchLabel: DashboardFolderCardObj[] = [];
-		const noLabels: DashboardFolderCardObj[] = [];
-		const caseSet = new Set<DashboardFolderCardObj>();
+	private static sortByCaseLabel(array: Case[], caseLabel: string): Case[] {
+		const withMatchLabel: Case[] = [];
+		const noMatchLabel: Case[] = [];
+		const noLabels: Case[] = [];
+		const caseSet = new Set<Case>();
 		for (let i = 0, n = array.length; i < n; i++) {
 			// syntax is ugly but its the only way it works
 			if (array[i].labels.length === 0) {
@@ -151,10 +151,10 @@ export class CaseUtils {
 	}
 
 	public static sortByOption = (
-		array: DashboardFolderCardObj[],
+		array: Case[],
 		option: string,
 		label?: string
-	): DashboardFolderCardObj[] => {
+	): Case[] => {
 		switch (option) {
 			case SORT_OPTION.NAME:
 				return CaseUtils.sortByName(array);
@@ -182,7 +182,7 @@ export class CaseUtils {
 	/************************************************************/
 
 	// revisit later, might not need this method
-	public static getCaseOrder(caseFolders: DashboardFolderCardObj[]): Map<string, number> | null {
+	public static getCaseOrder(caseFolders: Case[]): Map<string, number> | null {
 		if (!caseFolders) return null;
 		let caseOrder = new Map<string, number>();
 		for (let i = 0, n = caseFolders.length; i < n; i++) {

@@ -1,7 +1,6 @@
 import { DOCUMENT_STATUS } from "../../../utils/constants/document-status";
-import { CaseFileObj, DocumentStatus } from "../../../utils/types";
 import { DatabaseConnection } from "../../local-database/database-connection";
-import { DocumentEntity } from "../../local-database/entities";
+import { document_status, DocumentEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
 
 export class DocumentDAO {
@@ -12,73 +11,73 @@ export class DocumentDAO {
 		this.dbConn = new DatabaseConnection();
 	}
 
-	public async getAllByCaseId(caseId: string): Promise<CaseFileObj[]> {
-		const caseDocuments: CaseFileObj[] = [];
+	public async getUrgentDeadline(caseUuid: string): Promise<number> {
+		const documents: DocumentEntity[] = await this.getAllByCaseId(caseUuid);
+		if (documents.length === 0) return 0;
+		const placeholderDate = Infinity;
+		const currentDate = Date.now();
+		let mostUrgentDeadline = placeholderDate;
+		for (let i = 0, n = documents.length; i < n; i++) {
+			if (documents[i].deadline === 0) continue;
+			if (documents[i].deadline < currentDate) continue;
+			if (documents[i].deadline > mostUrgentDeadline) continue;
+			mostUrgentDeadline = documents[i].deadline;
+		}
+		if (mostUrgentDeadline === placeholderDate) return 0;
+		return mostUrgentDeadline;
+	}
+
+	public async getAllByCaseId(caseUuid: string): Promise<DocumentEntity[]> {
+		const caseDocuments: DocumentEntity[] = [];
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId) {
-				caseDocuments.push({
-					id: documents[i].document_id,
-					name: documents[i].document_name,
-					createdDate: documents[i].created_date,
-					lastOpenedDate: documents[i].last_opened_date,
-					status: documents[i].status,
-					deadline: documents[i].deadline,
-					url: documents[i].url,
-				});
+			if (documents[i].fk_case_id === caseUuid) {
+				caseDocuments.push(documents[i]);
 			}
 		}
 		return caseDocuments;
 	}
 
-	public async getById(caseId: string, documentId: string): Promise<CaseFileObj | null> {
+	public async get(documentUuid: string): Promise<DocumentEntity | null> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
-				const caseFile: CaseFileObj = {
-					id: documents[i].document_id,
-					name: documents[i].document_name,
-					createdDate: documents[i].created_date,
-					lastOpenedDate: documents[i].last_opened_date,
-					status: documents[i].status,
-					deadline: documents[i].deadline,
-					url: documents[i].url,
-				};
-				return caseFile;
+			if (documents[i].document_id === documentUuid) {
+				return documents[i];
 			}
 		}
 		return null;
 	}
 
-	public async add(
-		documentId: string,
+	public async save(
+		documentUuid: string,
 		documentName: string,
 		documentUrl: string,
-		caseId: string
-	): Promise<DocumentEntity | null> {
+		caseUuid: string
+	): Promise<string | null> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
+		const currentDateUnixMilliseconds = Date.now();
 		const newDocument: DocumentEntity = {
-			document_id: documentId,
+			document_id: documentUuid,
 			document_name: documentName,
-			created_date: Date.now(),
-			last_opened_date: Date.now(),
+			created_date: currentDateUnixMilliseconds,
+			last_opened_date: currentDateUnixMilliseconds,
 			status: DOCUMENT_STATUS.IN_PROGRESS,
 			deadline: 0,
 			url: documentUrl,
-			fk_case_id: caseId,
+			fk_case_id: caseUuid,
 		};
 		const newDocumentsArr = [...documents, newDocument];
 		const success = await this.dbConn.setArray(this.DOCUMENT_KEY, newDocumentsArr);
 		if (success) {
-			return newDocument;
+			return newDocument.document_id;
 		}
 		return null;
 	}
 
-	public async updateStatus(caseId: string, documentId: string, newStatus: DocumentStatus): Promise<boolean> {
+	public async updateStatus(documentUuid: string, newStatus: document_status): Promise<boolean> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
+			if (documents[i].document_id === documentUuid) {
 				documents[i].status = newStatus;
 			}
 		}
@@ -89,10 +88,10 @@ export class DocumentDAO {
 		return false;
 	}
 
-	public async updateName(caseId: string, documentId: string, newName: string): Promise<boolean> {
+	public async updateName(documentUuid: string, newName: string): Promise<boolean> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
+			if (documents[i].document_id === documentUuid) {
 				documents[i].document_name = newName;
 			}
 		}
@@ -103,10 +102,10 @@ export class DocumentDAO {
 		return false;
 	}
 
-	public async updateDeadline(caseId: string, documentId: string, newDeadline: number): Promise<boolean> {
+	public async updateDeadline(documentUuid: string, newDeadline: number): Promise<boolean> {
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
+			if (documents[i].document_id === documentUuid) {
 				documents[i].deadline = newDeadline;
 			}
 		}
@@ -117,11 +116,11 @@ export class DocumentDAO {
 		return false;
 	}
 
-	public async deleteAllByCaseId(caseId: string): Promise<boolean> {
+	public async deleteAllByCaseId(caseUuid: string): Promise<boolean> {
 		const newDocumentsArr: DocumentEntity[] = [];
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId) {
+			if (documents[i].fk_case_id === caseUuid) {
 				continue;
 			}
 			newDocumentsArr.push(documents[i]);
@@ -133,11 +132,11 @@ export class DocumentDAO {
 		return false;
 	}
 
-	public async deleteById(caseId: string, documentId: string): Promise<boolean> {
+	public async delete(documentUuid: string): Promise<boolean> {
 		const newDocumentsArr: DocumentEntity[] = [];
 		const documents: DocumentEntity[] = await this.dbConn.getArray(this.DOCUMENT_KEY);
 		for (let i = 0, n = documents.length; i < n; i++) {
-			if (documents[i].fk_case_id === caseId && documents[i].document_id === documentId) {
+			if (documents[i].document_id === documentUuid) {
 				continue;
 			}
 			newDocumentsArr.push(documents[i]);

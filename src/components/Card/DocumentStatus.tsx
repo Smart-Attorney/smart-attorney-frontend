@@ -1,12 +1,12 @@
+import { DocumentStatus as DocStatus } from "../../types/api";
 import { DOCUMENT_STATUS } from "../../utils/constants/document-status";
-import { DocumentStatus as DocStatus } from "../../utils/types";
 
-interface FileStatusProps {
+interface DocumentStatusProps {
 	id?: string;
 	text: DocStatus;
 }
 
-function DocumentStatus({ id, text }: FileStatusProps) {
+function DocumentStatus({ id, text }: DocumentStatusProps) {
 	let statusColor: string;
 	switch (text) {
 		case DOCUMENT_STATUS.IN_REVIEW:

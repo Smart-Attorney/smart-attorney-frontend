@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CloseIcon } from "../../assets/misc";
 import { DOCUMENT_STATUS } from "../../utils/constants/document-status";
-import { DocumentStatus } from "../../utils/types";
+import { DocumentStatus } from "../../types/api";
 
 interface KebabMenuProps {
 	fileName: string;

@@ -1,8 +1,8 @@
 import { SearchIcon } from "../../assets/smart-attorney-figma/global";
-import { CaseFileObj, DashboardFolderCardObj } from "../../utils/types";
+import { Document, Case } from "../../types/api";
 
 interface SearchBarProps {
-	cards?: DashboardFolderCardObj[] | CaseFileObj[] | null;
+	cards?: Case[] | Document[] | null;
 }
 
 function SearchBar({ cards }: SearchBarProps) {

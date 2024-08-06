@@ -2,33 +2,24 @@ import { useEffect, useState } from "react";
 import { UserIcon } from "../../../assets/smart-attorney-figma/global";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
+import { ClientForm } from "../../../types/form";
 import { COUNTRIES } from "../../../utils/constants/countries";
 import { LANGUAGES } from "../../../utils/constants/languages";
 import { SEX } from "../../../utils/constants/sex";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 
-export interface ClientInfoForm {
-	firstName: string;
-	middleName: string;
-	lastName: string;
-	dateOfBirth: string;
-	sex: string;
-	countryOfCitizenship: string;
-	primaryLanguage: string;
-}
-
-interface ClientInfoModalProps {
-	client: ClientInfoForm;
+interface ClientModalProps {
+	client: ClientForm;
 	closeModal: () => void;
 }
 
-function ClientModal({ client, closeModal }: ClientInfoModalProps) {
+function ClientModal({ client, closeModal }: ClientModalProps) {
 	useEffect(() => {
 		setClientForm(client);
 	}, []);
 
-	const [clientForm, setClientForm] = useState<ClientInfoForm>({
+	const [clientForm, setClientForm] = useState<ClientForm>({
 		firstName: "",
 		middleName: "",
 		lastName: "",

@@ -1,4 +1,4 @@
-import { CaseDTO } from "../../../utils/dtos/CaseDTO";
+import { CaseDTO } from "../dtos/CaseDTO";
 import { Cases } from "./cases";
 
 export class CasesMapper {

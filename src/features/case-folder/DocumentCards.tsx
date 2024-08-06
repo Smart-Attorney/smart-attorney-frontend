@@ -10,8 +10,9 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { CaseFileObj, DocumentStatus as DocStatus } from "../../utils/types";
+import { DocumentStatus as DocStatus, Document } from "../../types/api";
 import KebabMenu from "./KebabMenu";
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 import { deleteCaseFileById } from "./api/delete-case-file";
 import { updateDeadline } from "./api/update-case-file-deadline";
 import { updateCaseFileName } from "./api/update-case-file-name";
@@ -24,13 +25,20 @@ import translateDoc from "../translateDocuments/translateDocuments";
 import { useState } from "react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
+=======
+import { deleteDocument } from "./api/delete-document";
+import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
+import { updateDocumentName, UpdateDocumentNameDTO } from "./api/update-document-name";
+import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-document-status";
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 
-interface CaseFileCardsProps {
-	files: CaseFileObj[] | undefined;
+interface DocumentCardsProps {
+	documents: Document[] | undefined;
 	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
-	updateCaseFiles: (newCaseFileArray: CaseFileObj[]) => void;
+	updateDocuments: (newDocuments: Document[]) => void;
 }
 
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 function CaseFileCards({
 	files,
 	onClick,
@@ -46,6 +54,15 @@ function CaseFileCards({
 		currentDocumentArr: CaseFileObj[]
 	): CaseFileObj[] => {
 		const updatedDocumentArr: CaseFileObj[] = [...currentDocumentArr];
+=======
+function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsProps) {
+	const { id: caseId } = useParams();
+
+	/************************************************************/
+
+	const replaceDocumentInArray = (updatedDocument: Document, currentDocumentArr: Document[]): Document[] => {
+		const updatedDocumentArr: Document[] = [...currentDocumentArr];
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 		for (let i = 0, n = updatedDocumentArr.length; i < n; i++) {
 			if (updatedDocument.id === updatedDocumentArr[i].id) {
 				updatedDocumentArr[i] = updatedDocument;
@@ -55,11 +72,16 @@ function CaseFileCards({
 		return updatedDocumentArr;
 	};
 
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 	const removeDocumentFromArray = (
 		deletedDocument: CaseFileObj,
 		currentDocumentArr: CaseFileObj[]
 	): CaseFileObj[] => {
 		const updatedDocumentArr: CaseFileObj[] = [];
+=======
+	const removeDocumentFromArray = (deletedDocument: Document, currentDocumentArr: Document[]): Document[] => {
+		const updatedDocumentArr: Document[] = [];
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 		for (let i = 0, n = currentDocumentArr.length; i < n; i++) {
 			if (deletedDocument.id !== currentDocumentArr[i].id) {
 				updatedDocumentArr.push(currentDocumentArr[i]);
@@ -71,6 +93,7 @@ function CaseFileCards({
 	/************************************************************/
 
 	// curried function
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 	const handleUpdateFileStatus =
 		(fileId: string) => async (newFileStatus: DocStatus) => {
 			try {
@@ -89,10 +112,21 @@ function CaseFileCards({
 				}
 			} catch (error) {
 				alert(error);
+=======
+	const handleUpdateDocumentStatus = (documentId: string) => async (newDocumentStatus: DocStatus) => {
+		const data: UpdateDocumentStatusDTO = { id: documentId, status: newDocumentStatus };
+		try {
+			const response = await updateDocumentStatus(caseId!, documentId, data);
+			if (response.ok) {
+				const updatedDocument: Document = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 			}
 		};
 
 	// curried function
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 	const handleUpdateFileName =
 		(fileId: string) => async (newFileName: string) => {
 			try {
@@ -111,16 +145,32 @@ function CaseFileCards({
 				}
 			} catch (error) {
 				alert(error);
+=======
+	const handleUpdateDocumentName = (documentId: string) => async (newDocumentName: string) => {
+		const data: UpdateDocumentNameDTO = { id: documentId, name: newDocumentName };
+		try {
+			const response = await updateDocumentName(caseId!, documentId, data);
+			if (response.ok) {
+				const updatedDocument: Document = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 			}
 		};
 
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 	const handleSetFileDeadline = async (
 		fileId: string,
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
+=======
+	const handleUpdateDocumentDeadline = async (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 		const { value } = event.target;
-		const deadlineInUnixTime = Date.parse(value);
+		const deadlineUnixMilliseconds = Date.parse(value);
+		const data: UpdateDocumentDeadlineDTO = { id: documentId, deadline: deadlineUnixMilliseconds };
 		try {
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 			const response = await updateDeadline(
 				folderId!,
 				fileId,
@@ -133,22 +183,35 @@ function CaseFileCards({
 					files!
 				);
 				updateCaseFiles(updatedDocumentArray);
+=======
+			const response = await updateDocumentDeadline(caseId!, documentId, data);
+			if (response.ok) {
+				const updatedDocument: Document = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
 
-	const handleDeleteFile = async (fileId: string) => {
+	const handleDeleteDocument = async (documentId: string) => {
 		try {
-			const response = await deleteCaseFileById(folderId!, fileId);
+			const response = await deleteDocument(caseId!, documentId);
 			if (response.ok) {
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 				const deletedDocument: CaseFileObj = await response.json();
 				const updatedDocumentArray = removeDocumentFromArray(
 					deletedDocument,
 					files!
 				);
 				updateCaseFiles(updatedDocumentArray);
+=======
+				const deletedDocument: Document = await response.json();
+				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 			}
 		} catch (error) {
 			alert(error);
@@ -175,18 +238,25 @@ function CaseFileCards({
 
 	return (
 		<CardGrid>
-			{files?.map((file) => {
+			{documents?.map((file) => {
 				return (
 					<CardContainer key={file.id} id={file.id}>
 						{/* Kebab Menu */}
 						<KebabMenuContainer>
 							<KebabMenu
 								fileName={file.name}
+<<<<<<< HEAD:src/features/case-folder/CaseFileCards.tsx
 								updateFileStatus={handleUpdateFileStatus(file.id)}
 								updateFileName={handleUpdateFileName(file.id)}
 								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
 								deleteFile={() => handleDeleteFile(file.id)}
 								translateFile={() => handleTranslate(file.name)}
+=======
+								updateFileStatus={handleUpdateDocumentStatus(file.id)}
+								updateFileName={handleUpdateDocumentName(file.id)}
+								setDeadline={(event) => handleUpdateDocumentDeadline(file.id, event)}
+								deleteFile={() => handleDeleteDocument(file.id)}
+>>>>>>> f556b09414fa1cf00d3c8e8febde87da69d39279:src/features/case-folder/DocumentCards.tsx
 							/>
 						</KebabMenuContainer>
 
@@ -217,4 +287,4 @@ function CaseFileCards({
 	);
 }
 
-export default CaseFileCards;
+export default DocumentCards;

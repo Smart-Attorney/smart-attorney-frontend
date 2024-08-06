@@ -4,33 +4,24 @@ import { UserIcon } from "../../../assets/smart-attorney-figma/global";
 import ModalButton from "../../../components/Buttons/ModalButton";
 import PillSpecialButton from "../../../components/Buttons/PillSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
+import { ClientForm } from "../../../types/form";
 import { COUNTRIES } from "../../../utils/constants/countries";
 import { LANGUAGES } from "../../../utils/constants/languages";
 import { SEX } from "../../../utils/constants/sex";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 
-export interface ClientInfoForm {
-	firstName: string;
-	middleName: string;
-	lastName: string;
-	dateOfBirth: string;
-	sex: string;
-	countryOfCitizenship: string;
-	primaryLanguage: string;
-}
-
-interface ClientInfoModalProps {
-	client: ClientInfoForm;
-	setClient: React.Dispatch<React.SetStateAction<ClientInfoForm>>;
+interface ClientModalProps {
+	client: ClientForm;
+	setClient: React.Dispatch<React.SetStateAction<ClientForm>>;
 	closeModal: () => void;
 	createCase: () => void;
 }
 
-function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientInfoModalProps) {
+function ClientModal({ client, setClient, closeModal, createCase }: ClientModalProps) {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const [clientFormInput, setClientFormInput] = useState<ClientInfoForm>({
+	const [clientForm, setClientForm] = useState<ClientForm>({
 		firstName: "",
 		middleName: "",
 		lastName: "",
@@ -40,30 +31,30 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 		primaryLanguage: "",
 	});
 
-	const [disableCreateButton, setDisableCreateButton] = useState(false);
+	const [isCreateButtonDisabled, setIsCreateButtonDisabled] = useState(false);
 
 	useEffect(() => {
-		setClientFormInput(client);
+		setClientForm(client);
 	}, []);
 
 	useEffect(() => {
-		setClient(clientFormInput);
-	}, [clientFormInput]);
+		setClient(clientForm);
+	}, [clientForm]);
 
 	const handleInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
 		const { id, value } = event.target as HTMLInputElement;
-		setClientFormInput((prev) => ({ ...prev, [id]: value }));
+		setClientForm((prev) => ({ ...prev, [id]: value }));
 	};
 
 	const handleSelectChange = (event: React.FormEvent<HTMLSelectElement>) => {
 		const { id, value } = event.target as HTMLSelectElement;
-		setClientFormInput((prev) => ({ ...prev, [id]: value }));
+		setClientForm((prev) => ({ ...prev, [id]: value }));
 	};
 
 	// allows user to exit out of the client modal before filling it out
 	// saves any input that user has already provided
 	const handleCloseIconClick = () => {
-		setClient(clientFormInput);
+		setClient(clientForm);
 		closeModal();
 	};
 
@@ -74,7 +65,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 			return;
 		}
 		// prevents repeated clicks of the create button which results in duplicate folders
-		setDisableCreateButton(true);
+		setIsCreateButtonDisabled(true);
 		createCase();
 	};
 
@@ -114,24 +105,18 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								id="firstName"
 								name="First Name"
 								type="text"
-								value={clientFormInput.firstName}
+								value={clientForm.firstName}
 								onChange={handleInputChange}
 								required={true}
 							/>
 
-							<SelectField
-								id="sex"
-								name="Sex"
-								options={SEX}
-								value={clientFormInput.sex}
-								onChange={handleSelectChange}
-							/>
+							<SelectField id="sex" name="Sex" options={SEX} value={clientForm.sex} onChange={handleSelectChange} />
 
 							<InputField
 								id="middleName"
 								name="Middle Name"
 								type="text"
-								value={clientFormInput.middleName}
+								value={clientForm.middleName}
 								onChange={handleInputChange}
 								required={false}
 							/>
@@ -139,7 +124,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								id="countryOfCitizenship"
 								name="Country of Citizenship"
 								options={COUNTRIES}
-								value={clientFormInput.countryOfCitizenship}
+								value={clientForm.countryOfCitizenship}
 								onChange={handleSelectChange}
 							/>
 
@@ -147,7 +132,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								id="lastName"
 								name="Last Name"
 								type="text"
-								value={clientFormInput.lastName}
+								value={clientForm.lastName}
 								onChange={handleInputChange}
 								required={true}
 							/>
@@ -156,7 +141,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								id="primaryLanguage"
 								name="Primary Language"
 								options={LANGUAGES}
-								value={clientFormInput.primaryLanguage}
+								value={clientForm.primaryLanguage}
 								onChange={handleSelectChange}
 							/>
 
@@ -164,7 +149,7 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 								id="dateOfBirth"
 								name="Date of Birth"
 								type="date"
-								value={clientFormInput.dateOfBirth}
+								value={clientForm.dateOfBirth}
 								onChange={handleInputChange}
 								required={true}
 							/>
@@ -179,8 +164,8 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 							title="Click Save to create the case folder"
 							name="Save"
 							type="button"
-							style={{ cursor: disableCreateButton ? "not-allowed" : "pointer" }}
-							isDisabled={disableCreateButton}
+							style={{ cursor: isCreateButtonDisabled ? "not-allowed" : "pointer" }}
+							isDisabled={isCreateButtonDisabled}
 							className="h-[52px] border-[3px]"
 							onClick={handleCreateButtonClick}
 						/>
@@ -191,4 +176,4 @@ function ClientInfoModal({ client, setClient, closeModal, createCase }: ClientIn
 	);
 }
 
-export default ClientInfoModal;
+export default ClientModal;

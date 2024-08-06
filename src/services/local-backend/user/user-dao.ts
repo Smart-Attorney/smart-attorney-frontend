@@ -1,5 +1,4 @@
-import { RegisterCredentialsDTO } from "../../../features/register/api/register";
-import { nanoid } from "../../../lib/nanoid";
+import { Uuid } from "../../../lib/uuid";
 import { DatabaseConnection } from "../../local-database/database-connection";
 import { UserEntity } from "../../local-database/entities";
 import { SqlTables } from "../../local-database/sql-tables";
@@ -7,9 +6,11 @@ import { SqlTables } from "../../local-database/sql-tables";
 export class UserDAO {
 	private USER_KEY = SqlTables.TABLE.USER;
 	private dbConn: DatabaseConnection;
+	private uuid: Uuid;
 
 	constructor() {
 		this.dbConn = new DatabaseConnection();
+		this.uuid = new Uuid();
 	}
 
 	public async getIdByCompanyEmail(companyEmail: string): Promise<string | null> {
@@ -22,51 +23,34 @@ export class UserDAO {
 		return null;
 	}
 
-	public async getIdByPassword(password: string): Promise<string | null> {
+	public async get(userUuid: string): Promise<UserEntity | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].password === password) {
-				return users[i].user_id;
-			}
-		}
-		return null;
-	}
-
-	public async getByCompanyEmailAndPassword(companyEmail: string, password: string): Promise<UserEntity | null> {
-		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
-		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].company_email === companyEmail && users[i].password === password) {
+			if (users[i].user_id === userUuid) {
 				return users[i];
 			}
 		}
 		return null;
 	}
 
-	public async getById(userId: string): Promise<UserEntity | null> {
-		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
-		for (let i = 0, n = users.length; i < n; i++) {
-			if (users[i].user_id === userId) {
-				return users[i];
-			}
-		}
-		return null;
-	}
-
-	public async add(data: RegisterCredentialsDTO): Promise<UserEntity | null> {
+	public async save(
+		firstName: string,
+		lastName: string,
+		firmName: string,
+		companyEmail: string
+	): Promise<string | null> {
 		const users: UserEntity[] = await this.dbConn.getArray(this.USER_KEY);
 		const newUser: UserEntity = {
-			user_id: nanoid(16),
-			first_name: data.firstName,
-			last_name: data.lastName,
-			firm_name: data.firmName,
-			company_email: data.companyEmail,
-			email: "",
-			password: data.password,
+			user_id: this.uuid.generate(),
+			first_name: firstName,
+			last_name: lastName,
+			firm_name: firmName,
+			company_email: companyEmail,
 		};
 		const newUsersArr = [...users, newUser];
 		const success = await this.dbConn.setArray(this.USER_KEY, newUsersArr);
 		if (success) {
-			return newUser;
+			return newUser.user_id;
 		}
 		return null;
 	}

@@ -1,7 +1,7 @@
 // @ts-ignore
 import axios from "axios";
 // @ts-ignore
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useState } from "react";
 // @ts-ignore
 import styled from "styled-components";
 // @ts-ignore
@@ -63,6 +63,15 @@ const Container = (props: { heading: string; index: number; children: React.Reac
 		</div>
 	);
 };
+
+interface BasicInfoForm extends HTMLFormElement {
+	fullName: HTMLInputElement;
+	age: HTMLInputElement;
+	address1: HTMLInputElement;
+	city: HTMLInputElement;
+	state: HTMLInputElement;
+	zip: HTMLInputElement;
+}
 
 const ChatGPT = () => {
 	const [res, setRes] = useState<string>();
@@ -194,12 +203,3 @@ const ChatGPT = () => {
 };
 
 export default ChatGPT;
-
-interface BasicInfoForm extends HTMLFormElement {
-	fullName: HTMLInputElement;
-	age: HTMLInputElement;
-	address1: HTMLInputElement;
-	city: HTMLInputElement;
-	state: HTMLInputElement;
-	zip: HTMLInputElement;
-}

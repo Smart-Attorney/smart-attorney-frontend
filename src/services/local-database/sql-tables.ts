@@ -1,5 +1,6 @@
 export class SqlTables {
 	public static TABLE = Object.freeze({
+		USER_AUTH: "user_auth",
 		USER: "user",
 		CASES: "cases",
 		DOCUMENT: "document",
@@ -29,6 +30,12 @@ export class SqlTables {
 	}
 
 	/************************************************************/
+
+	private static createUserAuthTable() {
+		const userAuthTableExists = this.exists(this.TABLE.USER_AUTH);
+		if (userAuthTableExists) return;
+		this.set(this.TABLE.USER_AUTH);
+	}
 
 	private static createUserTable() {
 		const userTableExists = this.exists(this.TABLE.USER);
@@ -66,6 +73,7 @@ export class SqlTables {
 		for (let i = 0, n = localStorage.length; i < n; i++) {
 			const key = localStorage.key(i);
 			if (key === null) continue;
+			if (key === this.TABLE.USER_AUTH) continue;
 			if (key === this.TABLE.USER) continue;
 			if (key === this.TABLE.CASES) continue;
 			if (key === this.TABLE.DOCUMENT) continue;
@@ -76,13 +84,15 @@ export class SqlTables {
 	}
 
 	public static create() {
+		const user_auth = this.exists(this.TABLE.USER_AUTH);
 		const user = this.exists(this.TABLE.USER);
 		const cases = this.exists(this.TABLE.CASES);
 		const document = this.exists(this.TABLE.DOCUMENT);
 		const case_label = this.exists(this.TABLE.CASE_LABEL);
 		const client = this.exists(this.TABLE.CLIENT);
-		if (user && cases && document && case_label && client) return;
+		if (user_auth && user && cases && document && case_label && client) return;
 		this.removeDeprecated();
+		this.createUserAuthTable();
 		this.createUserTable();
 		this.createCasesTable();
 		this.createDocumentTable();

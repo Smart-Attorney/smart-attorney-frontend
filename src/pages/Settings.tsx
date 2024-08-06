@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../features/settings/api/get-user-info";
 import SidebarLayout from "../layouts/SidebarLayout";
+import { User } from "../types/api";
 
 /************************************************************/
 
@@ -23,17 +24,13 @@ function AccountSection({ title, info }: AccountSectionProps) {
 
 /************************************************************/
 
-export interface UserProfile {
-	firstName: string;
-	lastName: string;
-	firmName: string;
-	companyEmail: string;
-}
+export type UserProfile = Omit<User, "password" | "email">;
 
 function Settings() {
 	const navigate = useNavigate();
 
 	const [user, setUser] = useState<UserProfile>({
+		id: "",
 		firstName: "",
 		lastName: "",
 		firmName: "",
@@ -48,13 +45,8 @@ function Settings() {
 		try {
 			const response = await getUserInfo();
 			if (response.ok) {
-				const data = await response.json();
-				setUser({
-					firstName: data.first_name,
-					lastName: data.last_name,
-					firmName: data.firm_name,
-					companyEmail: data.company_email,
-				});
+				const data: UserProfile = await response.json();
+				setUser(data);
 			}
 		} catch (error) {
 			alert(error);

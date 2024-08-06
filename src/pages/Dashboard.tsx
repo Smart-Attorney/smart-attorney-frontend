@@ -4,40 +4,47 @@ import { FolderPurple } from "../assets/smart-attorney-figma/buttons";
 import { DashboardIcon } from "../assets/smart-attorney-figma/global";
 import SearchBar from "../components/SearchBar/SearchBar";
 import SortBar from "../components/SortBar/SortBar";
-import CaseFolderCards from "../features/dashboard/CaseFolderCards";
-import { getUserCaseFolders } from "../features/dashboard/api/get-case-folders";
+import CaseCards from "../features/dashboard/CaseCards";
+import { getCases } from "../features/dashboard/api/get-cases";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
+import { Case } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
-import { DashboardFolderCardObj } from "../utils/types";
 
 function Dashboard() {
 	const navigate = useNavigate();
 
-	const [caseFolders, setCaseFolders] = useState<DashboardFolderCardObj[] | null>([]);
+	const [caseFolders, setCaseFolders] = useState<Case[] | null>([]);
 
 	// retrieves all user case folders on initial page load
 	useEffect(() => {
-		handleGetUserCaseFolders();
+		handleGetUserCases();
 	}, []);
+
+	// updates case count whenever the number of cases change on dashboard
+	useEffect(() => {
+		if (caseFolders) {
+			CaseUtils.setCaseCount(caseFolders.length);
+		} else {
+			CaseUtils.setCaseCount(0);
+		}
+	}, [caseFolders]);
 
 	/************************************************************/
 
-	const handleGetUserCaseFolders = async () => {
+	const handleGetUserCases = async () => {
 		try {
-			const response = await getUserCaseFolders();
+			const response = await getCases();
 			switch (response.status) {
 				case 200:
-					const data: DashboardFolderCardObj[] = await response.json();
+					const data: Case[] = await response.json();
 					setCaseFolders(data);
-					CaseUtils.setCaseCount(data.length);
 					break;
 				case 204:
 					console.log(response.statusText);
 					setCaseFolders([]);
-					CaseUtils.setCaseCount(0);
 					break;
 				default:
 					break;
@@ -85,7 +92,7 @@ function Dashboard() {
 				</button>
 			</SortBarWithButtons>
 
-			<CaseFolderCards caseFolders={caseFolders} setCaseFolders={setCaseFolders} />
+			<CaseCards caseFolders={caseFolders} setCaseFolders={setCaseFolders} />
 		</SidebarLayout>
 	);
 }

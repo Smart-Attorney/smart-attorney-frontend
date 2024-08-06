@@ -11,28 +11,29 @@ import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import type { DashboardFolderCardObj } from "../../utils/types";
+import type { Case } from "../../types/api";
 import KebabMenu from "./KebabMenu";
-import { createFolderLabel } from "./api/create-folder-label";
-import { deleteCaseFolder } from "./api/delete-case-folder";
-import { deleteFolderLabel } from "./api/delete-folder-label";
-import { UpdateCaseFolderStatusDTO, updateOpenState } from "./api/update-status";
+import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-case-label";
+import { deleteCase } from "./api/delete-case";
+import { deleteCaseLabel } from "./api/delete-case-label";
+import { getCase } from "./api/get-case";
+import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-case-is-open";
 
-interface CaseFolderCardProps {
-	caseFolders: DashboardFolderCardObj[] | null;
-	setCaseFolders: React.Dispatch<React.SetStateAction<DashboardFolderCardObj[] | null>>;
+interface CaseCardProps {
+	caseFolders: Case[] | null;
+	setCaseFolders: React.Dispatch<React.SetStateAction<Case[] | null>>;
 }
 
-function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
+function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 	const navigate = useNavigate();
 
 	/************************************************************/
 
 	const replaceCaseInArray = (
-		updatedCase: DashboardFolderCardObj,
-		currentCaseArr: DashboardFolderCardObj[]
-	): DashboardFolderCardObj[] => {
-		const updatedCaseArr: DashboardFolderCardObj[] = [...currentCaseArr];
+		updatedCase: Case,
+		currentCaseArr: Case[]
+	): Case[] => {
+		const updatedCaseArr: Case[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
 				updatedCaseArr[i] = updatedCase;
@@ -43,10 +44,10 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	};
 
 	const removeCaseFromArray = (
-		deletedCase: DashboardFolderCardObj,
-		currentCaseArr: DashboardFolderCardObj[]
-	): DashboardFolderCardObj[] => {
-		const updatedCaseArr: DashboardFolderCardObj[] = [];
+		deletedCase: Case,
+		currentCaseArr: Case[]
+	): Case[] => {
+		const updatedCaseArr: Case[] = [];
 		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
 			if (deletedCase.id !== currentCaseArr[i].id) {
 				updatedCaseArr.push(currentCaseArr[i]);
@@ -57,18 +58,34 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 
 	/************************************************************/
 
-	const handleUpdateFolderStatus = async (folderId: string, currentStatus: boolean): Promise<void> => {
-		// changes previously stored string or number values into correct boolean type
-		let newStatus: UpdateCaseFolderStatusDTO;
-		if (typeof currentStatus != "boolean") {
-			newStatus = true;
-		} else {
-			newStatus = currentStatus;
-		}
+	const handleGetUpdatedCase = async (caseId: string): Promise<Case | null> => {
 		try {
-			const response = await updateOpenState(folderId, newStatus);
+			const response = await getCase(caseId);
 			if (response.ok) {
-				const updatedCase: DashboardFolderCardObj = await response.json();
+				const updatedCase: Case = await response.json();
+				return updatedCase;
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return null;
+	};
+
+	const handleUpdateCaseIsOpen = async (caseId: string, isOpen: boolean): Promise<void> => {
+		// changes previously stored string or number values into correct boolean type
+		let newIsOpen: boolean;
+		if (typeof isOpen != "boolean") {
+			newIsOpen = true;
+		} else {
+			newIsOpen = isOpen;
+		}
+		const data: UpdateCaseIsOpenDTO = {
+			isOpen: newIsOpen,
+		};
+		try {
+			const response = await updateCaseIsOpen(caseId, data);
+			if (response.ok) {
+				const updatedCase: Case = await response.json();
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -77,7 +94,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleAddFolderLabel = async (folderId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+	const handleAddCaseLabel = async (caseId: string, event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		const { value: newLabel } = (event.target as HTMLFormElement)[0] as HTMLInputElement;
 		// checks for empty inputs and null errors
@@ -86,12 +103,17 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 			((event.target as HTMLFormElement)[0] as HTMLInputElement).value = "";
 			return;
 		}
+		const data: CreateCaseLabelDTO = {
+			name: newLabel,
+		};
 		try {
-			const response = await createFolderLabel(folderId, newLabel);
+			const response = await createCaseLabel(caseId, data);
 			if (response.ok) {
-				const updatedCase: DashboardFolderCardObj = await response.json();
-				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
-				setCaseFolders(updatedCaseArray);
+				const updatedCase = await handleGetUpdatedCase(caseId);
+				if (updatedCase) {
+					const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+					setCaseFolders(updatedCaseArray);
+				}
 			}
 		} catch (error) {
 			alert(error);
@@ -101,28 +123,30 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 		}
 	};
 
-	const handleDeleteFolderLabel = async (
-		folderId: string,
+	const handleDeleteCaseLabel = async (
+		caseId: string,
 		event: React.MouseEvent<HTMLParagraphElement>
 	): Promise<void> => {
 		const { id: labelId } = event.target as HTMLParagraphElement;
 		try {
-			const response = await deleteFolderLabel(folderId, labelId);
+			const response = await deleteCaseLabel(caseId, labelId);
 			if (response.ok) {
-				const updatedCase: DashboardFolderCardObj = await response.json();
-				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
-				setCaseFolders(updatedCaseArray);
+				const updatedCase = await handleGetUpdatedCase(caseId);
+				if (updatedCase) {
+					const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
+					setCaseFolders(updatedCaseArray);
+				}
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
 
-	const handleDeleteFolder = async (folderId: string): Promise<void> => {
+	const handleDeleteCase = async (caseId: string): Promise<void> => {
 		try {
-			const response = await deleteCaseFolder(folderId);
+			const response = await deleteCase(caseId);
 			if (response.ok) {
-				const deletedCase: DashboardFolderCardObj = await response.json();
+				const deletedCase: Case = await response.json();
 				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -162,9 +186,9 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 						<KebabMenuContainer>
 							<KebabMenu
 								id="kebab-menu"
-								updateStatus={() => handleUpdateFolderStatus(caseFolder.id, caseFolder.isOpen)}
-								addLabel={(event) => handleAddFolderLabel(caseFolder.id, event)}
-								deleteFolder={() => handleDeleteFolder(caseFolder.id)}
+								updateStatus={() => handleUpdateCaseIsOpen(caseFolder.id, caseFolder.isOpen)}
+								addLabel={(event) => handleAddCaseLabel(caseFolder.id, event)}
+								deleteFolder={() => handleDeleteCase(caseFolder.id)}
 							/>
 						</KebabMenuContainer>
 
@@ -175,7 +199,7 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 									<CardLabels
 										navLabel={navigationString}
 										labels={caseFolder.labels}
-										deleteLabel={(event) => handleDeleteFolderLabel(caseFolder.id, event)}
+										deleteLabel={(event) => handleDeleteCaseLabel(caseFolder.id, event)}
 									/>
 								</PillLabelContainer>
 								<CardName navLabel={navigationString} name={caseFolder.name} />
@@ -201,4 +225,4 @@ function CaseFolderCards({ caseFolders, setCaseFolders }: CaseFolderCardProps) {
 	);
 }
 
-export default CaseFolderCards;
+export default CaseCards;

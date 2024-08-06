@@ -2,22 +2,23 @@ import { useLocalBackend } from "../../../config/use-local-backend";
 import { fetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
 import { UserController } from "../../../services/local-backend/user/user-controller";
+import { User } from "../../../types/api";
 
-export interface SignInCredentialsDTO {
-	companyEmail: string;
-	password: string;
-}
+export type SignInUserDTO = Pick<User, "companyEmail" | "password">;
 
-const mockApi = async (data: SignInCredentialsDTO) => {
-	const request = mockRequest.post("/signin", data);
-	return await new UserController().verifyUser(request);
+const baseUrl = "http://localhost:8080";
+const endpoint = "/auth/signin";
+
+const mockApi = async (data: SignInUserDTO) => {
+	const request = mockRequest.post(endpoint, data);
+	return await new UserController().verifyUserHandler(request);
 };
 
-const fetchApi = async (data: SignInCredentialsDTO) => {
-	const url = "http://localhost:8080/signin";
-	return await fetchWrapper.post(url, data);
+const fetchApi = async (data: SignInUserDTO) => {
+	const absoluteUrl = baseUrl + endpoint;
+	return await fetchWrapper.post(absoluteUrl, data);
 };
 
-export const signInWithEmailAndPassword = async (data: SignInCredentialsDTO) => {
+export const signIn = async (data: SignInUserDTO) => {
 	return useLocalBackend ? await mockApi(data) : await fetchApi(data);
 };

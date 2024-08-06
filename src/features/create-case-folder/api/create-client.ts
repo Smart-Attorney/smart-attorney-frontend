@@ -1,23 +1,15 @@
 import { mockRequest } from "../../../lib/mock-request";
 import { ClientController } from "../../../services/local-backend/client/client-controller";
-import { SexOption } from "../../../utils/types";
+import { Client } from "../../../types/api";
 
-export interface CreateClientDTO {
-	firstName: string;
-	middleName: string;
-	lastName: string;
-	dateOfBirth: number;
-	sex: SexOption;
-	countryOfCitizenship: string;
-	primaryLanguage: string;
-	caseFolderId: string;
-}
+export type CreateClientDTO = Omit<Client, "id">;
 
-const mockApi = async (data: CreateClientDTO) => {
-	const request = mockRequest.post("/create-case", data);
-	return await new ClientController().createClient(request);
+const mockApi = async (caseId: string, data: CreateClientDTO) => {
+	const endpoint = `/users/cases/${caseId}/clients`;
+	const request = mockRequest.post(endpoint, data);
+	return await new ClientController().postClientHandler(request);
 };
 
-export const createClient = async (data: CreateClientDTO) => {
-	return await mockApi(data);
+export const createClient = async (caseId: string, data: CreateClientDTO) => {
+	return await mockApi(caseId, data);
 };
