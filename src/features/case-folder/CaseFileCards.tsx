@@ -16,6 +16,14 @@ import { deleteCaseFileById } from "./api/delete-case-file";
 import { updateDeadline } from "./api/update-case-file-deadline";
 import { updateCaseFileName } from "./api/update-case-file-name";
 import { updateCaseFileStatus } from "./api/update-case-file-status";
+import * as pdfjs from "pdfjs-dist";
+import { Document, Page } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import translateDoc from "../translateDocuments/translateDocuments";
+import { useState } from "react";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 interface CaseFileCardsProps {
 	files: CaseFileObj[] | undefined;
@@ -23,12 +31,20 @@ interface CaseFileCardsProps {
 	updateCaseFiles: (newCaseFileArray: CaseFileObj[]) => void;
 }
 
-function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) {
+function CaseFileCards({
+	files,
+	onClick,
+	updateCaseFiles,
+}: CaseFileCardsProps) {
 	const { id: folderId } = useParams();
+	const [translatedDocUrl, setTranslatedDocUrl] = useState<null | string>(null);
 
 	/************************************************************/
 
-	const replaceDocumentInArray = (updatedDocument: CaseFileObj, currentDocumentArr: CaseFileObj[]): CaseFileObj[] => {
+	const replaceDocumentInArray = (
+		updatedDocument: CaseFileObj,
+		currentDocumentArr: CaseFileObj[]
+	): CaseFileObj[] => {
 		const updatedDocumentArr: CaseFileObj[] = [...currentDocumentArr];
 		for (let i = 0, n = updatedDocumentArr.length; i < n; i++) {
 			if (updatedDocument.id === updatedDocumentArr[i].id) {
@@ -39,7 +55,10 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 		return updatedDocumentArr;
 	};
 
-	const removeDocumentFromArray = (deletedDocument: CaseFileObj, currentDocumentArr: CaseFileObj[]): CaseFileObj[] => {
+	const removeDocumentFromArray = (
+		deletedDocument: CaseFileObj,
+		currentDocumentArr: CaseFileObj[]
+	): CaseFileObj[] => {
 		const updatedDocumentArr: CaseFileObj[] = [];
 		for (let i = 0, n = currentDocumentArr.length; i < n; i++) {
 			if (deletedDocument.id !== currentDocumentArr[i].id) {
@@ -52,41 +71,67 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 	/************************************************************/
 
 	// curried function
-	const handleUpdateFileStatus = (fileId: string) => async (newFileStatus: DocStatus) => {
-		try {
-			const response = await updateCaseFileStatus(folderId!, fileId, newFileStatus);
-			if (response.ok) {
-				const updatedDocument: CaseFileObj = await response.json();
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
-				updateCaseFiles(updatedDocumentArray);
+	const handleUpdateFileStatus =
+		(fileId: string) => async (newFileStatus: DocStatus) => {
+			try {
+				const response = await updateCaseFileStatus(
+					folderId!,
+					fileId,
+					newFileStatus
+				);
+				if (response.ok) {
+					const updatedDocument: CaseFileObj = await response.json();
+					const updatedDocumentArray = replaceDocumentInArray(
+						updatedDocument,
+						files!
+					);
+					updateCaseFiles(updatedDocumentArray);
+				}
+			} catch (error) {
+				alert(error);
 			}
-		} catch (error) {
-			alert(error);
-		}
-	};
+		};
 
 	// curried function
-	const handleUpdateFileName = (fileId: string) => async (newFileName: string) => {
-		try {
-			const response = await updateCaseFileName(folderId!, fileId, newFileName);
-			if (response.ok) {
-				const updatedDocument: CaseFileObj = await response.json();
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
-				updateCaseFiles(updatedDocumentArray);
+	const handleUpdateFileName =
+		(fileId: string) => async (newFileName: string) => {
+			try {
+				const response = await updateCaseFileName(
+					folderId!,
+					fileId,
+					newFileName
+				);
+				if (response.ok) {
+					const updatedDocument: CaseFileObj = await response.json();
+					const updatedDocumentArray = replaceDocumentInArray(
+						updatedDocument,
+						files!
+					);
+					updateCaseFiles(updatedDocumentArray);
+				}
+			} catch (error) {
+				alert(error);
 			}
-		} catch (error) {
-			alert(error);
-		}
-	};
+		};
 
-	const handleSetFileDeadline = async (fileId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleSetFileDeadline = async (
+		fileId: string,
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
 		const { value } = event.target;
 		const deadlineInUnixTime = Date.parse(value);
 		try {
-			const response = await updateDeadline(folderId!, fileId, deadlineInUnixTime);
+			const response = await updateDeadline(
+				folderId!,
+				fileId,
+				deadlineInUnixTime
+			);
 			if (response.ok) {
 				const updatedDocument: CaseFileObj = await response.json();
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, files!);
+				const updatedDocumentArray = replaceDocumentInArray(
+					updatedDocument,
+					files!
+				);
 				updateCaseFiles(updatedDocumentArray);
 			}
 		} catch (error) {
@@ -99,12 +144,31 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 			const response = await deleteCaseFileById(folderId!, fileId);
 			if (response.ok) {
 				const deletedDocument: CaseFileObj = await response.json();
-				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, files!);
+				const updatedDocumentArray = removeDocumentFromArray(
+					deletedDocument,
+					files!
+				);
 				updateCaseFiles(updatedDocumentArray);
 			}
 		} catch (error) {
 			alert(error);
 		}
+	};
+
+	const handleTranslate = (fileName: string) => {
+		translateDoc(fileName)
+			.then((res) => {
+				setTranslatedDocUrl(res.translatedDocUrl);
+			})
+			.catch((err) => {
+				window.alert("Failed to Translate Files");
+				console.log(err);
+			});
+	};
+
+	const downloadTranslatedFile = (url: string) => {
+		window.location.href = url;
+		window.open(url);
 	};
 
 	/************************************************************/
@@ -122,6 +186,7 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 								updateFileName={handleUpdateFileName(file.id)}
 								setDeadline={(event) => handleSetFileDeadline(file.id, event)}
 								deleteFile={() => handleDeleteFile(file.id)}
+								translateFile={() => handleTranslate(file.name)}
 							/>
 						</KebabMenuContainer>
 
@@ -133,6 +198,12 @@ function CaseFileCards({ files, onClick, updateCaseFiles }: CaseFileCardsProps) 
 								</PillLabelContainer>
 
 								<CardName id={file.id} name={file.name} viewFile={onClick} />
+								{translatedDocUrl && (
+									<CardName
+										name="Download English Version"
+										viewFile={() => downloadTranslatedFile(translatedDocUrl)}
+									/>
+								)}
 							</CardHeaderContainer>
 
 							<CardImage imgSrc={""} id={file.id} viewFile={onClick} />

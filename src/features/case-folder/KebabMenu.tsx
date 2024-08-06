@@ -9,9 +9,17 @@ interface KebabMenuProps {
 	updateFileName: (newFileName: string) => void;
 	setDeadline: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	deleteFile: () => void;
+	translateFile: () => void;
 }
 
-function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, deleteFile }: KebabMenuProps) {
+function KebabMenu({
+	fileName,
+	updateFileStatus,
+	updateFileName,
+	setDeadline,
+	deleteFile,
+	translateFile,
+}: KebabMenuProps) {
 	const name = useRef<string>("");
 	const extension = useRef<string>("");
 
@@ -46,9 +54,12 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 		closeStatusModal();
 	};
 
-	const handleSaveButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleSaveButtonClick = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
 		const buttonElement = event.target as HTMLButtonElement;
-		const inputElement = buttonElement.parentNode?.previousSibling as HTMLInputElement;
+		const inputElement = buttonElement.parentNode
+			?.previousSibling as HTMLInputElement;
 		const { value: newName } = inputElement;
 		if (newName === fileName) {
 			closeEditModal();
@@ -74,16 +85,34 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 				style={{ display: menuIsOpen ? "block" : "none" }}
 				onMouseLeave={closeMenu}
 			>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleStatusModal}>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={translateFile}
+				>
+					Translate
+				</li>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={toggleStatusModal}
+				>
 					Update Status
 				</li>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleEditModal}>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={toggleEditModal}
+				>
 					Edit Name
 				</li>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDeadlineModal}>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={toggleDeadlineModal}
+				>
 					Set Deadline
 				</li>
-				<li className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm" onClick={toggleDeleteAlert}>
+				<li
+					className="px-1 cursor-pointer hover:bg-[#C0C0C0] hover:rounded-sm"
+					onClick={toggleDeleteAlert}
+				>
 					Delete
 				</li>
 			</ul>
@@ -128,7 +157,11 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 			>
 				<div className="flex flex-col items-center gap-3">
 					<h3 className="text-lg font-semibold w-max">Edit Document Name</h3>
-					<input type="text" className="w-full px-2 py-1 border border-black rounded-md" defaultValue={name.current} />
+					<input
+						type="text"
+						className="w-full px-2 py-1 border border-black rounded-md"
+						defaultValue={name.current}
+					/>
 					<div className="flex flex-row justify-between w-full">
 						<button
 							className="w-28 bg-[#77DD77] text-white rounded-md py-1"
@@ -137,7 +170,11 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 						>
 							Save
 						</button>
-						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeEditModal}>
+						<button
+							className="w-28 bg-[#c1c1c1] text-white rounded-md py-1"
+							type="button"
+							onClick={closeEditModal}
+						>
 							Cancel
 						</button>
 					</div>
@@ -174,10 +211,18 @@ function KebabMenu({ fileName, updateFileStatus, updateFileName, setDeadline, de
 					<h3 className="text-lg font-semibold w-max">Delete Case File?</h3>
 					<p className="w-[90%]">This process cannot be undone.</p>
 					<div className="flex flex-row justify-between w-full">
-						<button className="w-28 bg-[#c1c1c1] text-white rounded-md py-1" type="button" onClick={closeDeleteAlert}>
+						<button
+							className="w-28 bg-[#c1c1c1] text-white rounded-md py-1"
+							type="button"
+							onClick={closeDeleteAlert}
+						>
 							Cancel
 						</button>
-						<button className="w-28 bg-[#f15e5e] text-white rounded-md py-1" type="button" onClick={deleteFile}>
+						<button
+							className="w-28 bg-[#f15e5e] text-white rounded-md py-1"
+							type="button"
+							onClick={deleteFile}
+						>
 							Delete
 						</button>
 					</div>
