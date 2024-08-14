@@ -1,5 +1,7 @@
 // for local backend
 
+// type RequestBody = string | FormData;
+
 export class mockRequest {
 	private static POST = "POST";
 	private static GET = "GET";
@@ -8,12 +10,12 @@ export class mockRequest {
 	private static DELETE = "DELETE";
 
 	static getToken() {
+		let token = "";
 		const currentUser = sessionStorage.getItem("current_user");
 		if (currentUser) {
-			const token = currentUser;
-			return token;
+			token = currentUser;
 		}
-		return "";
+		return token;
 	}
 
 	static post(url: string, data: unknown): Request {

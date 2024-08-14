@@ -1,12 +1,11 @@
 import { useLocalBackend } from "../../../config/use-local-backend";
-import { fetchWrapper } from "../../../lib/fetch-wrapper";
+import { FetchWrapper } from "../../../lib/fetch-wrapper";
 import { mockRequest } from "../../../lib/mock-request";
 import { UserController } from "../../../services/local-backend/user/user-controller";
 import { User } from "../../../types/api";
 
 export type SignInUserDTO = Pick<User, "companyEmail" | "password">;
 
-const baseUrl = "http://localhost:8080";
 const endpoint = "/auth/signin";
 
 const mockApi = async (data: SignInUserDTO) => {
@@ -15,8 +14,8 @@ const mockApi = async (data: SignInUserDTO) => {
 };
 
 const fetchApi = async (data: SignInUserDTO) => {
-	const absoluteUrl = baseUrl + endpoint;
-	return await fetchWrapper.post(absoluteUrl, data);
+	const body = JSON.stringify(data);
+	return await FetchWrapper.post(endpoint, body);
 };
 
 export const signIn = async (data: SignInUserDTO) => {

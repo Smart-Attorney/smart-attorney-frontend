@@ -1,44 +1,68 @@
-export class fetchWrapper {
+type RequestBody = string | FormData;
+
+export class FetchWrapper {
+	private static POST = "POST";
+	private static GET = "GET";
+	private static PUT = "PUT";
+	private static PATCH = "PATCH";
+	private static DELETE = "DELETE";
+
+  private static baseUrl = process.env.LOCAL_HOST_PORT;
+
 	static getToken() {
+		let token = "";
 		const currentUser = sessionStorage.getItem("current_user");
 		if (currentUser) {
-			const token = currentUser;
-			return token;
+			token = currentUser;
 		}
-		return "";
+		return token;
 	}
 
-	static get(url: string) {
+	static get(endpoint: string) {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
-			method: "GET",
+			method: this.GET,
 			headers: { Authorization: this.getToken() },
 		};
-		return fetch(url, options);
+		return fetch(absoluteUrl, options);
 	}
 
-	static post(url: string, body: unknown) {
+	static post(endpoint: string, body: RequestBody) {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
-			method: "POST",
+			method: this.POST,
 			headers: { "Content-Type": "application/json", Authorization: this.getToken() },
-			body: JSON.stringify(body),
+			body: body,
 		};
-		return fetch(url, options);
+		return fetch(absoluteUrl, options);
 	}
 
-	static put(url: string, body: unknown) {
+	static put(endpoint: string, body: RequestBody) {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
-			method: "PUT",
+			method: this.PUT,
 			headers: { "Content-Type": "application/json", Authorization: this.getToken() },
-			body: JSON.stringify(body),
+			body: body,
 		};
-		return fetch(url, options);
+		return fetch(absoluteUrl, options);
 	}
 
-	static delete(url: string) {
+	static patch(endpoint: string, body: RequestBody) {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
-			method: "DELETE",
+			method: this.PATCH,
+			headers: { "Content-Type": "application/json", Authorization: this.getToken() },
+			body: body,
+		};
+		return fetch(absoluteUrl, options);
+	}
+
+	static delete(endpoint: string) {
+		const absoluteUrl = this.baseUrl + endpoint;
+		const options = {
+			method: this.DELETE,
 			headers: { Authorization: this.getToken() },
 		};
-		return fetch(url, options);
+		return fetch(absoluteUrl, options);
 	}
 }
