@@ -116,6 +116,12 @@ export class DocumentController {
 		}
 	}
 
+	// TODO
+	public async updateDocumentLastOpenedDateHandler(request: Request): Promise<Response> {
+		request;
+		return new Response();
+	}
+
 	public async deleteDocumentByIdHandler(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
