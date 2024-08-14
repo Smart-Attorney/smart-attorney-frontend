@@ -1,18 +1,22 @@
-import { mockRequest } from "../../../lib/mock-request";
+import { useLocalBackend } from "../../../config/use-local-backend";
+import { FetchWrapper } from "../../../lib/fetch-wrapper";
+import { MockRequest } from "../../../lib/mock-request";
 import { DocumentController } from "../../../services/local-backend/document/document-controller";
 import { CreateDocumentsDTO } from "../../case-folder/api/create-documents";
 
-const mockApi = async (caseId: string, data: CreateDocumentsDTO) => {
-	const options = {
-		method: "POST",
-		headers: { Authorization: mockRequest.getToken() },
-		body: data,
-	};
+const mockApi = async (caseId: string, data: CreateDocumentsDTO): Promise<Response> => {
 	const endpoint = `/users/cases/${caseId}/documents`;
-	const request = new Request(endpoint, options);
+	const body = data;
+	const request = new MockRequest().post(endpoint, body);
 	return await new DocumentController().postDocumentsHandler(request);
 };
 
-export const createDocuments = async (caseId: string, data: CreateDocumentsDTO) => {
-	return await mockApi(caseId, data);
+const fetchApi = async (caseId: string, data: CreateDocumentsDTO): Promise<Response> => {
+	const endpoint = `/users/cases/${caseId}/documents`;
+	const body = data;
+	return await new FetchWrapper().post(endpoint, body);
+};
+
+export const createDocuments = async (caseId: string, data: CreateDocumentsDTO): Promise<Response> => {
+	return useLocalBackend ? await mockApi(caseId, data) : await fetchApi(caseId, data);
 };
