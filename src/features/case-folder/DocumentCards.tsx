@@ -19,11 +19,11 @@ import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-docu
 
 interface DocumentCardsProps {
 	documents: Document[] | undefined;
-	onClick: (event: React.MouseEvent<HTMLParagraphElement>) => void;
+	viewDocument: (event: React.MouseEvent<HTMLParagraphElement>) => void;
 	updateDocuments: (newDocuments: Document[]) => void;
 }
 
-function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsProps) {
+function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCardsProps) {
 	const { id: caseId } = useParams();
 
 	/************************************************************/
@@ -135,10 +135,10 @@ function DocumentCards({ documents, onClick, updateDocuments }: DocumentCardsPro
 									<CardDeadline deadline={file.deadline} />
 								</PillLabelContainer>
 
-								<CardName id={file.id} name={file.name} viewFile={onClick} />
+								<CardName id={file.id} name={file.name} viewFile={viewDocument} />
 							</CardHeaderContainer>
 
-							<CardImage imgSrc={""} id={file.id} viewFile={onClick} />
+							<CardImage imgSrc={""} id={file.id} viewFile={viewDocument} />
 
 							<CardFooter hasFooter={false} />
 						</CardBody>

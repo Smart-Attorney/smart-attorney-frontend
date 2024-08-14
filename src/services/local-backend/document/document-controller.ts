@@ -119,7 +119,10 @@ export class DocumentController {
 	// TODO
 	public async updateDocumentLastOpenedDateHandler(request: Request): Promise<Response> {
 		request;
-		return new Response();
+		const emptyJson = {};
+		const body = JSON.stringify(emptyJson);
+		const options = { status: 200 };
+		return new Response(body, options);
 	}
 
 	public async deleteDocumentByIdHandler(request: Request): Promise<Response> {

@@ -277,7 +277,7 @@ function CaseFolder() {
 
 			<DocumentCards
 				documents={caseFolder.documents}
-				onClick={(event) => handleGetDocument(event)}
+				viewDocument={(event) => handleGetDocument(event)}
 				updateDocuments={updateDocumentArray}
 			/>
 
@@ -291,6 +291,7 @@ function CaseFolder() {
 
 			{isDocumentModalOpen && (
 				<ViewDocumentModal
+					caseId={caseId.current!}
 					documentName={documentName.current}
 					documentId={documentId.current}
 					documentUrl={documentUrl.current}
