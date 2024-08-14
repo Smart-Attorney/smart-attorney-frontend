@@ -29,10 +29,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 
 	/************************************************************/
 
-	const replaceCaseInArray = (
-		updatedCase: Case,
-		currentCaseArr: Case[]
-	): Case[] => {
+	const replaceCaseInArray = (updatedCase: Case, currentCaseArr: Case[]): Case[] => {
 		const updatedCaseArr: Case[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
@@ -43,10 +40,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		return updatedCaseArr;
 	};
 
-	const removeCaseFromArray = (
-		deletedCase: Case,
-		currentCaseArr: Case[]
-	): Case[] => {
+	const removeCaseFromArray = (deletedCase: Case, currentCaseArr: Case[]): Case[] => {
 		const updatedCaseArr: Case[] = [];
 		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
 			if (deletedCase.id !== currentCaseArr[i].id) {
@@ -80,6 +74,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 			newIsOpen = isOpen;
 		}
 		const data: UpdateCaseIsOpenDTO = {
+			id: caseId,
 			isOpen: newIsOpen,
 		};
 		try {

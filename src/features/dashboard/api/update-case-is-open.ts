@@ -4,7 +4,7 @@ import { MockRequest } from "../../../lib/mock-request";
 import { CasesController } from "../../../services/local-backend/cases/cases-controller";
 import { Case } from "../../../types/api";
 
-export type UpdateCaseIsOpenDTO = Pick<Case, "isOpen">;
+export type UpdateCaseIsOpenDTO = Pick<Case, "id" | "isOpen">;
 
 const mockApi = async (caseId: string, data: UpdateCaseIsOpenDTO): Promise<Response> => {
 	const endpoint = `/users/cases/${caseId}`;

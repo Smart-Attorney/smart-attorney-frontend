@@ -22,7 +22,7 @@ import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { Client, Case, Document } from "../types/api";
+import { Case, Client, Document } from "../types/api";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { DateUtils } from "../utils/date-utils";
 
@@ -198,7 +198,10 @@ function CaseFolder() {
 	/************************************************************/
 
 	const handleUpdateCaseLastOpenedDate = async (): Promise<void> => {
-		const data: UpdateCaseLastOpenedDateDTO = { id: caseId.current! };
+		const data: UpdateCaseLastOpenedDateDTO = {
+			id: caseId.current!,
+			lastOpenedDate: Date.now(), // unix milliseconds
+		};
 		try {
 			const response = await updateCaseLastOpenedDate(caseId.current!, data);
 			if (response.ok) {
