@@ -1,15 +1,17 @@
 type RequestBody = string | FormData;
 
 export class FetchWrapper {
-	private static POST = "POST";
-	private static GET = "GET";
-	private static PUT = "PUT";
-	private static PATCH = "PATCH";
-	private static DELETE = "DELETE";
+	private GET = "GET";
+	private POST = "POST";
+	private PUT = "PUT";
+	private PATCH = "PATCH";
+	private DELETE = "DELETE";
 
-  private static baseUrl = process.env.LOCAL_HOST_PORT;
+	private baseUrl = process.env.LOCAL_HOST_PORT;
 
-	static getToken() {
+	constructor() {}
+
+	private getToken(): string {
 		let token = "";
 		const currentUser = sessionStorage.getItem("current_user");
 		if (currentUser) {
@@ -18,7 +20,7 @@ export class FetchWrapper {
 		return token;
 	}
 
-	static get(endpoint: string) {
+	public get(endpoint: string): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.GET,
@@ -27,7 +29,7 @@ export class FetchWrapper {
 		return fetch(absoluteUrl, options);
 	}
 
-	static post(endpoint: string, body: RequestBody) {
+	public post(endpoint: string, body: RequestBody): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.POST,
@@ -37,7 +39,7 @@ export class FetchWrapper {
 		return fetch(absoluteUrl, options);
 	}
 
-	static put(endpoint: string, body: RequestBody) {
+	public put(endpoint: string, body: RequestBody): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.PUT,
@@ -47,7 +49,7 @@ export class FetchWrapper {
 		return fetch(absoluteUrl, options);
 	}
 
-	static patch(endpoint: string, body: RequestBody) {
+	public patch(endpoint: string, body: RequestBody): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.PATCH,
@@ -57,7 +59,7 @@ export class FetchWrapper {
 		return fetch(absoluteUrl, options);
 	}
 
-	static delete(endpoint: string) {
+	public delete(endpoint: string): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.DELETE,

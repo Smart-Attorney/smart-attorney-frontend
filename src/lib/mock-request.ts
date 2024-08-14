@@ -3,13 +3,16 @@
 // type RequestBody = string | FormData;
 
 export class mockRequest {
-	private static POST = "POST";
 	private static GET = "GET";
-	private static PUT = "PUT";
+	private static POST = "POST";
 	private static PATCH = "PATCH";
 	private static DELETE = "DELETE";
 
-	static getToken() {
+	private static baseUrl = "http://localhost:8080";
+
+	constructor() {}
+
+	static getToken(): string {
 		let token = "";
 		const currentUser = sessionStorage.getItem("current_user");
 		if (currentUser) {
@@ -18,53 +21,43 @@ export class mockRequest {
 		return token;
 	}
 
-	static post(url: string, data: unknown): Request {
+	// get requests cannot have a body
+	static get(endpoint: string): Request {
+		const absoluteUrl = this.baseUrl + endpoint;
+		const options = {
+			method: this.GET,
+			headers: { Authorization: this.getToken() },
+		};
+		return new Request(absoluteUrl, options);
+	}
+
+	static post(endpoint: string, data: unknown): Request {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.POST,
 			headers: { Authorization: this.getToken() },
 			body: JSON.stringify(data),
 		};
-		const request = new Request(url, options);
-		return request;
+		return new Request(absoluteUrl, options);
 	}
 
-	// get requests cannot have a body
-	static get(url: string): Request {
-		const options = {
-			method: this.GET,
-			headers: { Authorization: this.getToken() },
-		};
-		const request = new Request(url, options);
-		return request;
-	}
-
-	static put(url: string, data: unknown): Request {
-		const options = {
-			method: this.PUT,
-			headers: { Authorization: this.getToken() },
-			body: JSON.stringify(data),
-		};
-		const request = new Request(url, options);
-		return request;
-	}
-
-	static patch(url: string, data: unknown): Request {
+	static patch(endpoint: string, data: unknown): Request {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.PATCH,
 			headers: { Authorization: this.getToken() },
 			body: JSON.stringify(data),
 		};
-		const request = new Request(url, options);
-		return request;
+		return new Request(absoluteUrl, options);
 	}
 
 	// delete requests cannot have a body
-	static delete(url: string): Request {
+	static delete(endpoint: string): Request {
+		const absoluteUrl = this.baseUrl + endpoint;
 		const options = {
 			method: this.DELETE,
 			headers: { Authorization: this.getToken() },
 		};
-		const request = new Request(url, options);
-		return request;
+		return new Request(absoluteUrl, options);
 	}
 }

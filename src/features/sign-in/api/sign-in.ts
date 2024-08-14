@@ -8,16 +8,16 @@ export type SignInUserDTO = Pick<User, "companyEmail" | "password">;
 
 const endpoint = "/auth/signin";
 
-const mockApi = async (data: SignInUserDTO) => {
+const mockApi = async (data: SignInUserDTO): Promise<Response> => {
 	const request = mockRequest.post(endpoint, data);
 	return await new UserController().verifyUserHandler(request);
 };
 
-const fetchApi = async (data: SignInUserDTO) => {
+const fetchApi = async (data: SignInUserDTO): Promise<Response> => {
 	const body = JSON.stringify(data);
-	return await FetchWrapper.post(endpoint, body);
+	return await new FetchWrapper().post(endpoint, body);
 };
 
-export const signIn = async (data: SignInUserDTO) => {
+export const signIn = async (data: SignInUserDTO): Promise<Response> => {
 	return useLocalBackend ? await mockApi(data) : await fetchApi(data);
 };

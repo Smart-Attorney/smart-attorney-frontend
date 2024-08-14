@@ -8,16 +8,16 @@ export type RegisterUserDTO = Omit<User, "id" | "email">;
 
 const endpoint = "/auth/register";
 
-const mockApi = async (data: RegisterUserDTO) => {
+const mockApi = async (data: RegisterUserDTO): Promise<Response> => {
 	const request = mockRequest.post(endpoint, data);
 	return await new UserController().postUserHandler(request);
 };
 
-const fetchApi = async (data: RegisterUserDTO) => {
+const fetchApi = async (data: RegisterUserDTO): Promise<Response> => {
 	const body = JSON.stringify(data);
-	return await FetchWrapper.post(endpoint, body);
+	return await new FetchWrapper().post(endpoint, body);
 };
 
-export const register = async (data: RegisterUserDTO) => {
+export const register = async (data: RegisterUserDTO): Promise<Response> => {
 	return useLocalBackend ? await mockApi(data) : await fetchApi(data);
 };
