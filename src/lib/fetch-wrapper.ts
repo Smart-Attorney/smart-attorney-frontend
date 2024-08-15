@@ -7,7 +7,7 @@ export class FetchWrapper {
 	private PATCH = "PATCH";
 	private DELETE = "DELETE";
 
-	private baseUrl = process.env.LOCAL_HOST_PORT;
+	private baseUrl = process.env.LOCAL_SERVER_HOST;
 
 	constructor() {}
 

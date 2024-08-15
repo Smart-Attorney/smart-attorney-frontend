@@ -8,7 +8,7 @@ export class MockRequest {
 	private PATCH = "PATCH";
 	private DELETE = "DELETE";
 
-	private baseUrl = "http://localhost:8080";
+	private baseUrl = "";
 
 	constructor() {}
 
