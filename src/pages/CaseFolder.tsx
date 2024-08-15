@@ -277,7 +277,7 @@ function CaseFolder() {
 
 			<DocumentCards
 				documents={caseFolder.documents}
-				viewDocument={(event) => handleGetDocument(event)}
+				viewDocument={handleGetDocument}
 				updateDocuments={updateDocumentArray}
 			/>
 

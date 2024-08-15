@@ -14,6 +14,7 @@ import { DocumentStatus as DocStatus, Document } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
 import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
+import { updateDocumentLastOpenedDate, UpdateDocumentLastOpenedDateDTO } from "./api/update-document-last-opened-date";
 import { updateDocumentName, UpdateDocumentNameDTO } from "./api/update-document-name";
 import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-document-status";
 
@@ -97,6 +98,23 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		}
 	};
 
+	const handleUpdateDocumentLastOpenedDate = async (documentId: string) => {
+		const data: UpdateDocumentLastOpenedDateDTO = {
+			id: documentId,
+			lastOpenedDate: Date.now(), // unix milliseconds
+		};
+		try {
+			const response = await updateDocumentLastOpenedDate(caseId!, documentId, data);
+			if (response.ok) {
+				const updatedDocument: Document = await response.json();
+				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				updateDocuments(updatedDocumentArray);
+			}
+		} catch (error) {
+			alert(error);
+		}
+	};
+
 	const handleDeleteDocument = async (documentId: string) => {
 		try {
 			const response = await deleteDocument(caseId!, documentId);
@@ -108,6 +126,11 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		} catch (error) {
 			alert(error);
 		}
+	};
+
+	const handleViewDocument = (documentId: string, event: React.MouseEvent<HTMLParagraphElement>) => {
+		viewDocument(event);
+		handleUpdateDocumentLastOpenedDate(documentId);
 	};
 
 	/************************************************************/
@@ -135,10 +158,10 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 									<CardDeadline deadline={file.deadline} />
 								</PillLabelContainer>
 
-								<CardName id={file.id} name={file.name} viewFile={viewDocument} />
+								<CardName id={file.id} name={file.name} viewFile={(event) => handleViewDocument(file.id, event)} />
 							</CardHeaderContainer>
 
-							<CardImage imgSrc={""} id={file.id} viewFile={viewDocument} />
+							<CardImage imgSrc={""} id={file.id} viewFile={(event) => handleViewDocument(file.id, event)} />
 
 							<CardFooter hasFooter={false} />
 						</CardBody>

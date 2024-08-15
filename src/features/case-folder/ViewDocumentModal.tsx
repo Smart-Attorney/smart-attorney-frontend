@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import ModalButton from "../../components/Buttons/ModalButton";
 import ModalDialog from "../../components/Modal/ModalDialog";
-import { updateDocumentLastOpenedDate, UpdateDocumentLastOpenedDateDTO } from "./api/update-document-last-opened-date";
 
 interface ViewDocumentModalProps {
 	caseId: string;
@@ -12,28 +10,7 @@ interface ViewDocumentModalProps {
 }
 
 function ViewDocumentModal(props: ViewDocumentModalProps) {
-	const { caseId, documentName, documentId, documentUrl } = props;
-
-	useEffect(() => {
-		return () => {
-			handleUpdateDocumentLastOpenedDate();
-		};
-	}, []);
-
-	const handleUpdateDocumentLastOpenedDate = async (): Promise<void> => {
-		const data: UpdateDocumentLastOpenedDateDTO = {
-			id: documentId,
-			lastOpenedDate: Date.now(), // unix milliseconds
-		};
-		try {
-			const response = await updateDocumentLastOpenedDate(caseId, documentId, data);
-			if (response.ok) {
-				// for the future, maybe add a toast or something to confirm successful update
-			}
-		} catch (error) {
-			alert(error);
-		}
-	};
+	const { documentName, documentUrl } = props;
 
 	/*
 	 * TODO:
