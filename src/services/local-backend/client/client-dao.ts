@@ -13,6 +13,17 @@ export class ClientDAO {
 		this.uuid = new Uuid();
 	}
 
+	public async getAllByCaseId(caseUuid: string): Promise<ClientEntity[]> {
+		const caseClients: ClientEntity[] = [];
+		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
+		for (let i = 0, n = clients.length; i < n; i++) {
+			if (clients[i].fk_case_id === caseUuid) {
+				caseClients.push(clients[i]);
+			}
+		}
+		return caseClients;
+	}
+
 	public async getByCaseId(caseUuid: string): Promise<ClientEntity | null> {
 		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
 		for (let i = 0, n = clients.length; i < n; i++) {
@@ -61,6 +72,22 @@ export class ClientDAO {
 			return newClient.client_id;
 		}
 		return null;
+	}
+
+	public async deleteAllByCaseId(caseUuid: string): Promise<boolean> {
+		const newClientsArr: ClientEntity[] = [];
+		const clients: ClientEntity[] = await this.dbConn.getArray(this.CLIENT_KEY);
+		for (let i = 0, n = clients.length; i < n; i++) {
+			if (clients[i].fk_case_id === caseUuid) {
+				continue;
+			}
+			newClientsArr.push(clients[i]);
+		}
+		const success = await this.dbConn.setArray(this.CLIENT_KEY, newClientsArr);
+		if (success) {
+			return true;
+		}
+		return false;
 	}
 
 	public async deleteByCaseId(caseUuid: string): Promise<boolean> {

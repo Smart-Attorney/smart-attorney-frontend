@@ -136,6 +136,25 @@ export class DocumentController {
 		}
 	}
 
+	public async deleteAllDocumentsByCaseIdHandler(request: Request): Promise<Response> {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId = authToken.id as string;
+		const urlArray = request.url.split("/");
+		const caseId = urlArray[urlArray.length - 2];
+		const deletedDocuments = await this.documentService.deleteAllDocumentByCaseId(userId, caseId);
+		if (deletedDocuments !== null) {
+			const body = JSON.stringify(deletedDocuments);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with deleting the case documents.");
+		}
+	}
+
 	public async deleteDocumentByIdHandler(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {

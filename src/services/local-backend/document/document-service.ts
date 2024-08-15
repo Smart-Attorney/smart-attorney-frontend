@@ -149,6 +149,27 @@ export class DocumentService {
 		return null;
 	}
 
+	public async deleteAllDocumentByCaseId(userShortId: string, caseShortId: string): Promise<Document[] | null> {
+		if (!userShortId || !caseShortId) return null;
+		const userUuid = this.shortUuid.toUUID(userShortId);
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(userUuid) || !this.uuid.isValid(caseUuid)) return null;
+		const deletedDocuments = await this.getAllDocumentsByCaseId(caseShortId);
+		if (!deletedDocuments) {
+			const emptyArray: Document[] = [];
+			return emptyArray;
+		}
+		for (let i = 0, n = deletedDocuments.length; i < n; i++) {
+			const documentShortId = deletedDocuments[i].id;
+			this.deleteDocument(userShortId, caseShortId, documentShortId);
+		}
+		const areDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseUuid);
+		if (areDocumentsDeleted) {
+			return deletedDocuments;
+		}
+		return null;
+	}
+
 	public async deleteDocument(
 		userShortId: string,
 		caseShortId: string,

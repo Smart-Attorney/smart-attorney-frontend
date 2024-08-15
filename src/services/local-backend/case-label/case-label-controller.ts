@@ -46,6 +46,23 @@ export class CaseLabelController {
 		}
 	}
 
+	public async deleteAllCaseLabelsByCaseIdHandler(request: Request): Promise<Response> {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const urlArray = request.url.split("/");
+		const caseId = urlArray[urlArray.length - 2];
+		const deletedCaseLabels = await this.caseLabelService.deleteAllCaseLabelsByCaseId(caseId);
+		if (deletedCaseLabels !== null) {
+			const body = JSON.stringify(deletedCaseLabels);
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with deleting the case labels.");
+		}
+	}
+
 	public async deleteCaseLabelByIdHandler(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {

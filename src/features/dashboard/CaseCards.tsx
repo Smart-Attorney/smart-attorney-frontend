@@ -14,7 +14,10 @@ import CardGrid from "../../layouts/CardGrid";
 import type { Case } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-case-label";
-import { deleteCase } from "./api/delete-case";
+import { deleteAllCaseLabelsByCaseId } from "./api/delete-all-case-labels";
+import { deleteAllClientsByCaseId } from "./api/delete-all-clients";
+import { deleteAllDocumentsByCaseId } from "./api/delete-all-documents";
+import { deleteCaseById } from "./api/delete-case";
 import { deleteCaseLabel } from "./api/delete-case-label";
 import { getCase } from "./api/get-case";
 import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-case-is-open";
@@ -137,11 +140,61 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		}
 	};
 
-	const handleDeleteCase = async (caseId: string): Promise<void> => {
+	/************************************************************/
+
+	const deleteAllCaseLabels = async (caseId: string): Promise<boolean> => {
 		try {
-			const response = await deleteCase(caseId);
+			const response = await deleteAllCaseLabelsByCaseId(caseId);
+			if (response.ok) return true;
+		} catch (error) {
+			alert(error);
+		}
+		return false;
+	};
+
+	const deleteAllClients = async (caseId: string): Promise<boolean> => {
+		try {
+			const response = await deleteAllClientsByCaseId(caseId);
+			if (response.ok) return true;
+		} catch (error) {
+			alert(error);
+		}
+		return false;
+	};
+
+	const deleteAllDocuments = async (caseId: string): Promise<boolean> => {
+		try {
+			const response = await deleteAllDocumentsByCaseId(caseId);
+			if (response.ok) return true;
+		} catch (error) {
+			alert(error);
+		}
+		return false;
+	};
+
+	const deleteCase = async (caseId: string): Promise<Case | null> => {
+		let deletedCase: Case | null = null;
+		try {
+			const response = await deleteCaseById(caseId);
 			if (response.ok) {
-				const deletedCase: Case = await response.json();
+				deletedCase = await response.json();
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return deletedCase;
+	};
+
+	const handleDeleteCase = async (caseId: string): Promise<void> => {
+		let deletedCase: Case | null = null;
+		try {
+			const areCaseLabelsDeleted = await deleteAllCaseLabels(caseId);
+			const areClientsDeleted = await deleteAllClients(caseId);
+			const areDocumentsDeleted = await deleteAllDocuments(caseId);
+			if (areCaseLabelsDeleted && areClientsDeleted && areDocumentsDeleted) {
+				deletedCase = await deleteCase(caseId);
+			}
+			if (deletedCase !== null) {
 				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -149,6 +202,8 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 			alert(error);
 		}
 	};
+
+	/************************************************************/
 
 	// to identify which parts of the card allows navigation when clicked
 	const navigationString = "allow-nav";

@@ -15,6 +15,24 @@ export class ClientService {
 		this.uuid = new Uuid();
 	}
 
+	public async getAllClientsByCaseId(caseShortId: string): Promise<Client[] | null> {
+		if (!caseShortId) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const clients = await this.clientDao.getAllByCaseId(caseUuid);
+		const retrievedClients: Client[] = clients.map((client) => ({
+			id: this.shortUuid.toShort(client.client_id),
+			firstName: client.first_name,
+			middleName: client.middle_name,
+			lastName: client.last_name,
+			dateOfBirth: client.date_of_birth,
+			sex: client.sex,
+			countryOfCitizenship: client.country_of_citizenship,
+			primaryLanguage: client.primary_language,
+		}));
+		return retrievedClients;
+	}
+
 	public async getClientByCaseId(caseShortId: string): Promise<Client | null> {
 		if (!caseShortId) return null;
 		const caseUuid = this.shortUuid.toUUID(caseShortId);
@@ -84,6 +102,18 @@ export class ClientService {
 		if (newClientUuid !== null) {
 			const newClientShortId = this.shortUuid.toShort(newClientUuid);
 			return this.getClient(newClientShortId);
+		}
+		return null;
+	}
+
+	public async deleteAllClientsByCaseId(caseShortId: string): Promise<Client[] | null> {
+		if (!caseShortId) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const deletedClients = await this.getAllClientsByCaseId(caseShortId);
+		const areClientsDeleted = await this.clientDao.deleteAllByCaseId(caseUuid);
+		if (areClientsDeleted) {
+			return deletedClients;
 		}
 		return null;
 	}
