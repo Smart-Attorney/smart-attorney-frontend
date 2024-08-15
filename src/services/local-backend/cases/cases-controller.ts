@@ -1,3 +1,4 @@
+import { UpdateCaseLastOpenedDateDTO } from "../../../features/case-folder/api/update-case-last-opened-date";
 import { UpdateCaseNameDTO } from "../../../features/case-folder/api/update-case-name";
 import { CreateCaseDTO } from "../../../features/create-case-folder/api/create-case";
 import { UpdateCaseIsOpenDTO } from "../../../features/dashboard/api/update-case-is-open";
@@ -61,22 +62,20 @@ export class CasesController {
 		}
 	}
 
-	// TODO
 	public async updateLastOpenedDateHandler(request: Request): Promise<Response> {
 		const authHeader = request.headers.get("Authorization");
 		if (!authHeader) {
 			throw new Error("User is not authorized/signed in.");
 		}
-		const authToken = JSON.parse(authHeader);
-		const userId = authToken.id as string;
+		// const authToken = JSON.parse(authHeader);
+		// const userId = authToken.id as string;
 		const urlArray = request.url.split("/");
 		const caseId = urlArray[urlArray.length - 1];
-		// const body: UpdateCaseLastOpenedDateDTO = await request.json();
-		// const { id } = body;
-		const updatedDate = await this.casesService.updateCaseLastOpenedDate(caseId);
-		if (updatedDate !== null) {
-			const updatedCaseFolders = await this.casesService.getAllCasesByUserId(userId);
-			const body = JSON.stringify(updatedCaseFolders);
+		const body: UpdateCaseLastOpenedDateDTO = await request.json();
+		const { lastOpenedDate } = body;
+		const caseWithUpdatedLastOpenedDate = await this.casesService.updateCaseLastOpenedDate(caseId, lastOpenedDate);
+		if (caseWithUpdatedLastOpenedDate !== null) {
+			const body = JSON.stringify(caseWithUpdatedLastOpenedDate);
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

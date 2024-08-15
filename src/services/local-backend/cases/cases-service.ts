@@ -111,11 +111,11 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateCaseLastOpenedDate(caseShortId: string): Promise<Case | null> {
-		if (!caseShortId) return null;
+	public async updateCaseLastOpenedDate(caseShortId: string, newLastOpenedDate: number): Promise<Case | null> {
+		if (!caseShortId || !newLastOpenedDate) return null;
 		const caseUuid = this.shortUuid.toUUID(caseShortId);
 		if (!this.uuid.isValid(caseUuid)) return null;
-		const isDateUpdated = await this.casesDao.updateLastOpenedDate(caseUuid);
+		const isDateUpdated = await this.casesDao.updateLastOpenedDate(caseUuid, newLastOpenedDate);
 		if (isDateUpdated !== null) {
 			return await this.getCase(caseShortId);
 		}
