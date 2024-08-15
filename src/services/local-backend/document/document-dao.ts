@@ -79,6 +79,7 @@ export class DocumentDAO {
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].document_id === documentUuid) {
 				documents[i].status = newStatus;
+				break;
 			}
 		}
 		const success = await this.dbConn.setArray(this.DOCUMENT_KEY, documents);
@@ -93,6 +94,7 @@ export class DocumentDAO {
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].document_id === documentUuid) {
 				documents[i].document_name = newName;
+				break;
 			}
 		}
 		const success = await this.dbConn.setArray(this.DOCUMENT_KEY, documents);
@@ -107,6 +109,7 @@ export class DocumentDAO {
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].document_id === documentUuid) {
 				documents[i].deadline = newDeadline;
+				break;
 			}
 		}
 		const success = await this.dbConn.setArray(this.DOCUMENT_KEY, documents);
@@ -121,6 +124,7 @@ export class DocumentDAO {
 		for (let i = 0, n = documents.length; i < n; i++) {
 			if (documents[i].document_id === documentUuid) {
 				documents[i].last_opened_date = newLastOpenedDate;
+				break;
 			}
 		}
 		const success = await this.dbConn.setArray(this.DOCUMENT_KEY, documents);
