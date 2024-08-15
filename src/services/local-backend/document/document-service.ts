@@ -135,6 +135,20 @@ export class DocumentService {
 		return null;
 	}
 
+	public async updateDocumentLastOpenedDate(
+		documentShortId: string,
+		newLastOpenedDate: number
+	): Promise<Document | null> {
+		if (!documentShortId || !newLastOpenedDate) return null;
+		const documentUuid = this.shortUuid.toUUID(documentShortId);
+		if (!this.uuid.isValid(documentUuid)) return null;
+		const isUpdated = await this.documentDao.updateLastOpenedDate(documentUuid, newLastOpenedDate);
+		if (isUpdated) {
+			return await this.getDocument(documentShortId);
+		}
+		return null;
+	}
+
 	public async deleteDocument(
 		userShortId: string,
 		caseShortId: string,
