@@ -80,9 +80,7 @@ function CaseFolder() {
 		}
 		handleGetCase();
 		handleGetClient();
-		return () => {
-			handleUpdateCaseLastOpenedDate();
-		};
+		handleUpdateCaseLastOpenedDate();
 	}, []);
 
 	/************************************************************/

@@ -74,7 +74,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		if (typeof isOpen != "boolean") {
 			newIsOpen = true;
 		} else {
-			newIsOpen = isOpen;
+			newIsOpen = !isOpen; // converts current isOpen state
 		}
 		const data: UpdateCaseIsOpenDTO = {
 			id: caseId,

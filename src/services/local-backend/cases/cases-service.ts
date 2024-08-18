@@ -129,11 +129,11 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateCaseIsOpen(caseShortId: string, currentState: boolean): Promise<Case | null> {
-		if (!caseShortId || typeof currentState !== "boolean") return null;
+	public async updateCaseIsOpen(caseShortId: string, newIsOpen: boolean): Promise<Case | null> {
+		if (!caseShortId || typeof newIsOpen !== "boolean") return null;
 		const caseUuid = this.shortUuid.toUUID(caseShortId);
 		if (!this.uuid.isValid(caseUuid)) return null;
-		const isStatusUpdated = await this.casesDao.updateOpenState(caseUuid, currentState);
+		const isStatusUpdated = await this.casesDao.updateOpenState(caseUuid, newIsOpen);
 		if (isStatusUpdated) {
 			return await this.getCase(caseShortId);
 		}
