@@ -123,7 +123,7 @@ function CreateCaseFolder() {
 		if (uploadFiles.length === 0) return true;
 		const filesData = new FormData();
 		for (let i = 0, n = uploadFiles.length; i < n; i++) {
-			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
+			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].data.name}`);
 		}
 		try {
 			const response = await createDocuments(caseId, filesData);
