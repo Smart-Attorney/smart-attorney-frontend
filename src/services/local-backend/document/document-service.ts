@@ -88,8 +88,7 @@ export class DocumentService {
 		for (let i = 0, n = files.length; i < n; i++) {
 			const documentUuid = this.uuid.generate(); // uuid to store as document id in database
 			const documentShortId = this.shortUuid.toShort(documentUuid); // short uuid to store as id in firebase
-			const { name } = files[i];
-			const documentName = name.split("/")[1];
+			const documentName = files[i].name;
 			const documentUrl = await Firebase.uploadFile(userShortId, caseShortId, documentShortId, files[i]);
 			if (documentUrl === null) return null;
 			const newDocumentUuid = await this.documentDao.save(documentUuid, documentName, documentUrl, caseUuid);

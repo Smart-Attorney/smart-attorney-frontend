@@ -20,7 +20,7 @@ export class DocumentController {
 		const userId = authToken.id as string;
 		const retrievedDeadlines = await this.documentService.getAllDocumentsByUserId(userId);
 		if (retrievedDeadlines != null) {
-			const body = JSON.stringify(retrievedDeadlines);
+			const body = JSON.stringify({ data: retrievedDeadlines });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -40,7 +40,7 @@ export class DocumentController {
 		const documentId = urlArray[urlArray.length - 1];
 		const retrievedDocument = await this.documentService.getDocument(documentId);
 		if (retrievedDocument !== null) {
-			const body = JSON.stringify(retrievedDocument);
+			const body = JSON.stringify({ data: retrievedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -61,7 +61,7 @@ export class DocumentController {
 		const files = formData.getAll("files[]") as File[];
 		const newDocuments = await this.documentService.addDocument(userId, caseId, files);
 		if (newDocuments !== null) {
-			const body = JSON.stringify(newDocuments);
+			const body = JSON.stringify({ data: newDocuments });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -77,7 +77,7 @@ export class DocumentController {
 		const { status } = body;
 		const updatedDocument = await this.documentService.updateDocumentStatus(documentId, status);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -93,7 +93,7 @@ export class DocumentController {
 		const { name } = body;
 		const updatedDocument = await this.documentService.updateDocumentName(documentId, name);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -109,7 +109,7 @@ export class DocumentController {
 		const { deadline } = body;
 		const updatedDocument = await this.documentService.updateDocumentDeadline(documentId, deadline);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -128,7 +128,7 @@ export class DocumentController {
 		const { lastOpenedDate } = body;
 		const updatedDocument = await this.documentService.updateDocumentLastOpenedDate(documentId, lastOpenedDate);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -147,7 +147,7 @@ export class DocumentController {
 		const caseId = urlArray[urlArray.length - 2];
 		const deletedDocuments = await this.documentService.deleteAllDocumentByCaseId(userId, caseId);
 		if (deletedDocuments !== null) {
-			const body = JSON.stringify(deletedDocuments);
+			const body = JSON.stringify({ data: deletedDocuments });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -167,7 +167,7 @@ export class DocumentController {
 		const documentId = urlArray[urlArray.length - 1];
 		const deletedFile = await this.documentService.deleteDocument(userId, caseId, documentId);
 		if (deletedFile !== null) {
-			const body = JSON.stringify(deletedFile);
+			const body = JSON.stringify({ data: deletedFile });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

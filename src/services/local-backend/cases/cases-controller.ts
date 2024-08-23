@@ -20,11 +20,11 @@ export class CasesController {
 		const userId = authToken.id as string;
 		const userCases = await this.casesService.getAllCasesByUserId(userId);
 		if (userCases !== null) {
-			const body = JSON.stringify(userCases);
+			const body = JSON.stringify({ data: userCases });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			const body = null;
+			const body = JSON.stringify({ data: null });
 			const options = { status: 204, statusText: "No case folders exist for this user." };
 			return new Response(body, options);
 		}
@@ -35,7 +35,7 @@ export class CasesController {
 		const caseId = urlArray[urlArray.length - 1];
 		const retrievedCase = await this.casesService.getCase(caseId);
 		if (retrievedCase !== null) {
-			const body = JSON.stringify(retrievedCase);
+			const body = JSON.stringify({ data: retrievedCase });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -54,7 +54,7 @@ export class CasesController {
 		const caseName = body.name;
 		const createdCase = await this.casesService.addCase(userId, caseName);
 		if (createdCase !== null) {
-			const body = JSON.stringify(createdCase);
+			const body = JSON.stringify({ data: createdCase });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -75,7 +75,7 @@ export class CasesController {
 		const { lastOpenedDate } = body;
 		const caseWithUpdatedLastOpenedDate = await this.casesService.updateCaseLastOpenedDate(caseId, lastOpenedDate);
 		if (caseWithUpdatedLastOpenedDate !== null) {
-			const body = JSON.stringify(caseWithUpdatedLastOpenedDate);
+			const body = JSON.stringify({ data: caseWithUpdatedLastOpenedDate });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -96,7 +96,7 @@ export class CasesController {
 		const { name } = body;
 		const caseWithUpdatedName = await this.casesService.updateCaseName(caseId, name);
 		if (caseWithUpdatedName !== null) {
-			const body = JSON.stringify(caseWithUpdatedName);
+			const body = JSON.stringify({ data: caseWithUpdatedName });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -117,7 +117,7 @@ export class CasesController {
 		const { isOpen } = body;
 		const caseWithUpdatedStatus = await this.casesService.updateCaseIsOpen(caseId, isOpen);
 		if (caseWithUpdatedStatus !== null) {
-			const body = JSON.stringify(caseWithUpdatedStatus);
+			const body = JSON.stringify({ data: caseWithUpdatedStatus });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -136,7 +136,7 @@ export class CasesController {
 		const caseId: string = urlArray[urlArray.length - 1];
 		const deletedCase = await this.casesService.deleteCase(userId, caseId);
 		if (deletedCase !== null) {
-			const body = JSON.stringify(deletedCase);
+			const body = JSON.stringify({ data: deletedCase });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

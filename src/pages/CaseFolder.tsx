@@ -22,7 +22,7 @@ import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { Case, Client, Document } from "../types/api";
+import { Case, Client, Document, ResponseBody } from "../types/api";
 import { CASE_FOLDER } from "../utils/constants/sort-options";
 import { DateUtils } from "../utils/date-utils";
 
@@ -88,10 +88,13 @@ function CaseFolder() {
 	const handleGetCase = async () => {
 		try {
 			const response = await getCase(caseId.current!);
+			const body: ResponseBody<Case> = await response.json();
 			if (response.ok) {
-				const data: Case = await response.json();
+				const { data } = body;
 				setCaseFolder(data);
 				newCaseName.current = data.name;
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -101,9 +104,12 @@ function CaseFolder() {
 	const handleGetClient = async () => {
 		try {
 			const response = await getClient(caseId.current!);
+			const body: ResponseBody<Client> = await response.json();
 			if (response.ok) {
-				const data: Client = await response.json();
+				const { data } = body;
 				setClient(data);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -114,12 +120,15 @@ function CaseFolder() {
 		const { id } = event.target as HTMLParagraphElement;
 		try {
 			const response = await getDocument(caseId.current!, id);
+			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
-				const document: Document = await response.json();
+				const document: Document = body.data;
 				documentName.current = document.name;
 				documentId.current = document.id;
 				documentUrl.current = document.url;
 				setIsDocumentModalOpen(true);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -162,9 +171,12 @@ function CaseFolder() {
 		const data: UpdateCaseNameDTO = { id: caseId, name: newCaseName };
 		try {
 			const response = await updateCaseName(caseId, data);
+			const body: ResponseBody<Case> = await response.json();
 			if (response.ok) {
-				const data: Case = await response.json();
+				const { data } = body;
 				setCaseFolder(data);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -202,8 +214,11 @@ function CaseFolder() {
 		};
 		try {
 			const response = await updateCaseLastOpenedDate(caseId.current!, data);
+			const body: ResponseBody<Case> = await response.json();
 			if (response.ok) {
 				// for the future, maybe add a toast or something to confirm successful update
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

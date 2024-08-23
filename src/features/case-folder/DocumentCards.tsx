@@ -10,7 +10,7 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { DocumentStatus as DocStatus, Document } from "../../types/api";
+import { DocumentStatus as DocStatus, Document, ResponseBody } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
 import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
@@ -57,10 +57,13 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		const data: UpdateDocumentStatusDTO = { id: documentId, status: newDocumentStatus };
 		try {
 			const response = await updateDocumentStatus(caseId!, documentId, data);
+			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
-				const updatedDocument: Document = await response.json();
+				const updatedDocument: Document = body.data;
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -72,10 +75,13 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		const data: UpdateDocumentNameDTO = { id: documentId, name: newDocumentName };
 		try {
 			const response = await updateDocumentName(caseId!, documentId, data);
+			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
-				const updatedDocument: Document = await response.json();
+				const updatedDocument: Document = body.data;
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -88,10 +94,13 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		const data: UpdateDocumentDeadlineDTO = { id: documentId, deadline: deadlineUnixMilliseconds };
 		try {
 			const response = await updateDocumentDeadline(caseId!, documentId, data);
+			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
-				const updatedDocument: Document = await response.json();
+				const updatedDocument: Document = body.data;
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -105,10 +114,13 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		};
 		try {
 			const response = await updateDocumentLastOpenedDate(caseId!, documentId, data);
+			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
-				const updatedDocument: Document = await response.json();
+				const updatedDocument: Document = body.data;
 				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -118,10 +130,13 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 	const handleDeleteDocument = async (documentId: string) => {
 		try {
 			const response = await deleteDocument(caseId!, documentId);
+			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
-				const deletedDocument: Document = await response.json();
+				const deletedDocument: Document = body.data;
 				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, documents!);
 				updateDocuments(updatedDocumentArray);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

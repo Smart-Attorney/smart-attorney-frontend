@@ -1,3 +1,10 @@
+export type ResponseBody<T> = {
+	success: boolean;
+	message: string;
+	data: T;
+	status: number;
+};
+
 export type User = {
 	id: string; // short uuid
 	firstName: string;

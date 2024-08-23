@@ -21,7 +21,7 @@ export class UserController {
 		const userId: string = authToken.id;
 		const retrievedUser = await this.userService.getUser(userId);
 		if (retrievedUser !== null) {
-			const body = JSON.stringify(retrievedUser);
+			const body = JSON.stringify({ data: retrievedUser });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -39,7 +39,7 @@ export class UserController {
 			}
 			const registeredUser = await this.userService.addUser(firstName, lastName, firmName, companyEmail, password);
 			if (registeredUser !== null) {
-				const body = JSON.stringify(registeredUser);
+				const body = JSON.stringify({ data: registeredUser });
 				const options = { status: 200 };
 				return new Response(body, options);
 			} else {
@@ -59,7 +59,7 @@ export class UserController {
 		}
 		const token = await this.userService.getToken(companyEmail);
 		if (token !== null) {
-			const body = JSON.stringify(token);
+			const body = JSON.stringify({ data: token });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

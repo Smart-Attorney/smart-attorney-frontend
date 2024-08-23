@@ -5,6 +5,7 @@ import InputField from "../features/register/InputField";
 import TermsOfService from "../features/register/TermsOfService";
 import { RegisterUserDTO, register } from "../features/register/api/register";
 import StyledBackground from "../layouts/StyledBackground";
+import { ResponseBody } from "../types/api";
 
 // keep these consistent with credentials object property names
 const INPUT = Object.freeze({
@@ -68,8 +69,11 @@ function Register() {
 
 		try {
 			const response = await register(newUser);
+			const body: ResponseBody<{}> = await response.json();
 			if (response.ok) {
 				navigate("/signin");
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

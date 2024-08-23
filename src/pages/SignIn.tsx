@@ -4,6 +4,7 @@ import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import { SignInUserDTO, signIn } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
 import { CurrenUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
+import { ResponseBody } from "../types/api";
 
 function SignIn() {
 	const navigate = useNavigate();
@@ -26,10 +27,12 @@ function SignIn() {
 		}
 		try {
 			const response = await signIn(credentials);
+			const body: ResponseBody<CurrentUser> = await response.json();
 			if (response.ok) {
-				const data: CurrentUser = await response.json();
-				setCurrentUser(data);
+				setCurrentUser(body.data);
 				navigate(`/dashboard`);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

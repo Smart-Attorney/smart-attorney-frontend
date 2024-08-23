@@ -17,7 +17,7 @@ export class ClientController {
 		const caseId = urlArray[urlArray.length - 2];
 		const retrievedClient = await this.clientService.getClientByCaseId(caseId);
 		if (retrievedClient !== null) {
-			const body = JSON.stringify(retrievedClient);
+			const body = JSON.stringify({ data: retrievedClient });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -45,7 +45,7 @@ export class ClientController {
 			primaryLanguage
 		);
 		if (createdClient !== null) {
-			const body = JSON.stringify(createdClient);
+			const body = JSON.stringify({ data: createdClient });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -62,7 +62,7 @@ export class ClientController {
 		const caseId = urlArray[urlArray.length - 2];
 		const deletedClients = await this.clientService.deleteAllClientsByCaseId(caseId);
 		if (deletedClients !== null) {
-			const body = JSON.stringify(deletedClients);
+			const body = JSON.stringify({ data: deletedClients });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
