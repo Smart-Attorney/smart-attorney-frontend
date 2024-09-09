@@ -1,14 +1,18 @@
+import { useContext } from "react";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import fileExtractor from "../../../components/Pdf/FileExtractor";
+import { CurrentUserContext, CurrentUserContextType } from "../../../providers/CurrentUserProvider";
+import { Firebase } from "../../../services/cloud-storage/firebase";
 import { Document } from "../../../types/api";
 
 interface GenerateModalProps {
 	closeModal: () => void;
 	documents: Document[];
+	caseId: string;
 }
 
-function GenerateModal({ closeModal }: GenerateModalProps) {
+function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 	// @ts-ignore
 	const parseSelectedFiles = (files: FileList): string => {
 		let chatGptInput = "";
@@ -22,10 +26,26 @@ function GenerateModal({ closeModal }: GenerateModalProps) {
 	};
 
 	/* 
-    workaround ¯\_(ツ)_/¯
-    link opens new tab to jun's deployed app
+	workaround ¯\_(ツ)_/¯
+	link opens new tab to jun's deployed app
 	*/
 	const handleLinkToJunCode = (): void => {
+		// handle empty documents arr
+		if (documents.length === 0) {
+			alert("empty documents array, cannot use this without a document")
+			return;
+		}
+		// arr of docID, 
+		// go through arr take first doc if arr is not empty
+		// get doc from firebase 
+		const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
+		const { id } = getCurrentUser();
+
+		const docURL = Firebase.getFileById(id, caseId, documents[0].id);
+		docURL;
+
+		// send doc to chatGPT wrapper
+		// display resp
 		const url =
 			"https://astonishing-speculoos-022482.netlify.app/build/?fbclid=IwAR0WX0m2AIq2B9_6SqCbUZptki9w_TGw-CGJSeh443nOtDes8TTX_0yOwSk";
 		window.open(url, "_blank");

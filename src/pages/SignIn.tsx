@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import { SignInUserDTO, signIn } from "../features/sign-in/api/sign-in";
 import StyledBackground from "../layouts/StyledBackground";
-import { CurrenUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
+import { CurrentUserContextType, CurrentUser, CurrentUserContext } from "../providers/CurrentUserProvider";
 import { ResponseBody } from "../types/api";
 
 function SignIn() {
 	const navigate = useNavigate();
 
-	const { setCurrentUser } = useContext(CurrentUserContext) as CurrenUserContextType;
+	const { setCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
 	const [credentials, setCredentials] = useState<SignInUserDTO>({ companyEmail: "", password: "" });
 
 	/************************************************************/

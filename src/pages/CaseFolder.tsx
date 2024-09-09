@@ -312,7 +312,7 @@ function CaseFolder() {
 				/>
 			)}
 
-			{isGenerateModalOpen && <GenerateModal closeModal={closeGenerateModal} documents={caseFolder.documents} />}
+			{isGenerateModalOpen && <GenerateModal closeModal={closeGenerateModal} documents={caseFolder.documents} caseId={idFromParams!}/>}
 
 			{isClientModalOpen && (
 				<ClientModal

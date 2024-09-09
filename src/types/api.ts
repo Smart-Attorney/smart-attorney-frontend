@@ -49,7 +49,7 @@ export type Document = {
 	lastOpenedDate: number; // unix time ms
 	status: DocumentStatus;
 	deadline: number;
-	url: string;
+	url: string; // deprecated hoa pls remove
 };
 
 export type Sex = "Male" | "Female" | "Other";
