@@ -6,9 +6,9 @@ import { CurrentUserContext, CurrentUserContextType } from "../../../providers/C
 import { Firebase } from "../../../services/cloud-storage/firebase";
 import { Document } from "../../../types/api";
 import { IncomingMessage } from 'http';
-var https = require("https");
-var path = require("path");
-var fs = require("fs");
+import https from 'https';
+import path from 'path';
+import fs from 'fs';
 
 const API_KEY = "cyang8980@gmail.com_FN61U0MTApIUqCJmEmYrGgxiIoS6DFQ2bJswNZrQR4a8II18JxYOIMsIz58lmomS";
 
