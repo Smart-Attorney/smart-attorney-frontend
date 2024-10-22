@@ -34,6 +34,18 @@ export class CaseLabelService {
 		return userCaseLabels;
 	}
 
+	public async getAllCaseLabelsByCaseId(caseShortId: string): Promise<CaseLabel[] | null> {
+		if (!caseShortId) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const caseLabels = await this.caseLabelDao.getAllByCaseId(caseUuid);
+		const retrievedCaseLabels: CaseLabel[] = caseLabels.map((label) => ({
+			id: this.shortUuid.toShort(label.label_id),
+			name: label.label_name,
+		}));
+		return retrievedCaseLabels;
+	}
+
 	public async getCaseLabel(labelShortId: string): Promise<CaseLabel | null> {
 		if (!labelShortId) return null;
 		const labelUuid = this.shortUuid.toUUID(labelShortId);
@@ -57,6 +69,18 @@ export class CaseLabelService {
 		if (newLabelUuid !== null) {
 			const newLabelShortId = this.shortUuid.toShort(newLabelUuid);
 			return this.getCaseLabel(newLabelShortId);
+		}
+		return null;
+	}
+
+	public async deleteAllCaseLabelsByCaseId(caseShortId: string): Promise<CaseLabel[] | null> {
+		if (!caseShortId) return null;
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(caseUuid)) return null;
+		const deletedCaseLabels = await this.getAllCaseLabelsByCaseId(caseShortId);
+		const areCaseLabelsDeleted = await this.caseLabelDao.deleteAllByCaseId(caseUuid);
+		if (areCaseLabelsDeleted) {
+			return deletedCaseLabels;
 		}
 		return null;
 	}

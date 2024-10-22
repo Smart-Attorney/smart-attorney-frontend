@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../features/settings/api/get-user-info";
 import SidebarLayout from "../layouts/SidebarLayout";
-import { User } from "../types/api";
+import { ResponseBody, User } from "../types/api";
 
 /************************************************************/
 
@@ -44,9 +44,11 @@ function Settings() {
 	const handleGetUserInfo = async () => {
 		try {
 			const response = await getUserInfo();
+			const body: ResponseBody<UserProfile> = await response.json();
 			if (response.ok) {
-				const data: UserProfile = await response.json();
-				setUser(data);
+				setUser(body.data);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

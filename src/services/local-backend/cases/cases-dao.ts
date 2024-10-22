@@ -53,12 +53,11 @@ export class CasesDAO {
 		return null;
 	}
 
-	public async updateLastOpenedDate(caseUuid: string): Promise<boolean | null> {
+	public async updateLastOpenedDate(caseUuid: string, newLastOpenedDate: number): Promise<boolean | null> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
-		const currentDateUnixMilliseconds = Date.now();
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].case_id === caseUuid) {
-				cases[i].last_opened_date = currentDateUnixMilliseconds;
+				cases[i].last_opened_date = newLastOpenedDate;
 				break;
 			}
 		}
@@ -84,11 +83,11 @@ export class CasesDAO {
 		return false;
 	}
 
-	public async updateOpenState(caseUuid: string, currentState: boolean): Promise<boolean> {
+	public async updateOpenState(caseUuid: string, newIsOpen: boolean): Promise<boolean> {
 		const cases: CasesEntity[] = await this.dbConn.getArray(this.CASES_KEY);
 		for (let i = 0, n = cases.length; i < n; i++) {
 			if (cases[i].case_id === caseUuid) {
-				cases[i].is_open = !currentState;
+				cases[i].is_open = newIsOpen;
 				break;
 			}
 		}

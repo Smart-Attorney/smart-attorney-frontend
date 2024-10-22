@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CaseLabel, Case } from "../../types/api";
+import { Case, CaseLabel, ResponseBody } from "../../types/api";
 import { CaseLabelUtils } from "../../utils/case-label-utils";
 import LabelsDropdownMenuOptions from "./LabelsDropdownMenuOptions";
 import { getCaseLabels } from "./api/get-case-labels";
@@ -47,12 +47,15 @@ function SortByLabelButton(props: SortByLabelButtonProps) {
 	const handleGetUserCaseLabels = async () => {
 		try {
 			const response = await getCaseLabels();
+			const body: ResponseBody<CaseLabel[]> = await response.json();
 			if (response.ok) {
-				const data: CaseLabel[] = await response.json();
+				const data: CaseLabel[] = body.data;
 				const sortedLabels = CaseLabelUtils.alphabetize(data);
 				const uniqueLabels = CaseLabelUtils.unique(sortedLabels);
 				const menuOptions = formatLabels(uniqueLabels);
 				setMenuOptions(menuOptions);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

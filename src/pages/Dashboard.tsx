@@ -9,7 +9,7 @@ import { getCases } from "../features/dashboard/api/get-cases";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
-import { Case } from "../types/api";
+import { Case, ResponseBody } from "../types/api";
 import { CaseUtils } from "../utils/case-utils";
 import { DASHBOARD } from "../utils/constants/sort-options";
 
@@ -37,17 +37,22 @@ function Dashboard() {
 	const handleGetUserCases = async () => {
 		try {
 			const response = await getCases();
-			switch (response.status) {
-				case 200:
-					const data: Case[] = await response.json();
-					setCaseFolders(data);
-					break;
-				case 204:
-					console.log(response.statusText);
-					setCaseFolders([]);
-					break;
-				default:
-					break;
+			const body: ResponseBody<Case[]> = await response.json();
+			if (response.ok) {
+				switch (response.status) {
+					case 200:
+						const { data } = body;
+						setCaseFolders(data);
+						break;
+					case 204:
+						console.log(response.statusText);
+						setCaseFolders([]);
+						break;
+					default:
+						break;
+				}
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			navigate("/signin");

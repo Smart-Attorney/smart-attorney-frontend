@@ -88,8 +88,7 @@ export class DocumentService {
 		for (let i = 0, n = files.length; i < n; i++) {
 			const documentUuid = this.uuid.generate(); // uuid to store as document id in database
 			const documentShortId = this.shortUuid.toShort(documentUuid); // short uuid to store as id in firebase
-			const { name } = files[i];
-			const documentName = name.split("/")[1];
+			const documentName = files[i].name;
 			const documentUrl = await Firebase.uploadFile(userShortId, caseShortId, documentShortId, files[i]);
 			if (documentUrl === null) return null;
 			const newDocumentUuid = await this.documentDao.save(documentUuid, documentName, documentUrl, caseUuid);
@@ -131,6 +130,41 @@ export class DocumentService {
 		const isUpdated = await this.documentDao.updateDeadline(documentUuid, newDeadline);
 		if (isUpdated) {
 			return await this.getDocument(documentShortId);
+		}
+		return null;
+	}
+
+	public async updateDocumentLastOpenedDate(
+		documentShortId: string,
+		newLastOpenedDate: number
+	): Promise<Document | null> {
+		if (!documentShortId || !newLastOpenedDate) return null;
+		const documentUuid = this.shortUuid.toUUID(documentShortId);
+		if (!this.uuid.isValid(documentUuid)) return null;
+		const isUpdated = await this.documentDao.updateLastOpenedDate(documentUuid, newLastOpenedDate);
+		if (isUpdated) {
+			return await this.getDocument(documentShortId);
+		}
+		return null;
+	}
+
+	public async deleteAllDocumentByCaseId(userShortId: string, caseShortId: string): Promise<Document[] | null> {
+		if (!userShortId || !caseShortId) return null;
+		const userUuid = this.shortUuid.toUUID(userShortId);
+		const caseUuid = this.shortUuid.toUUID(caseShortId);
+		if (!this.uuid.isValid(userUuid) || !this.uuid.isValid(caseUuid)) return null;
+		const deletedDocuments = await this.getAllDocumentsByCaseId(caseShortId);
+		if (!deletedDocuments) {
+			const emptyArray: Document[] = [];
+			return emptyArray;
+		}
+		for (let i = 0, n = deletedDocuments.length; i < n; i++) {
+			const documentShortId = deletedDocuments[i].id;
+			this.deleteDocument(userShortId, caseShortId, documentShortId);
+		}
+		const areDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseUuid);
+		if (areDocumentsDeleted) {
+			return deletedDocuments;
 		}
 		return null;
 	}

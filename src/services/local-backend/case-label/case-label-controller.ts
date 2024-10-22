@@ -17,7 +17,7 @@ export class CaseLabelController {
 		const userId = authToken.id as string;
 		const userCaseLabels = await this.caseLabelService.getAllCaseLabelsByUserId(userId);
 		if (userCaseLabels !== null) {
-			const body = JSON.stringify(userCaseLabels);
+			const body = JSON.stringify({ data: userCaseLabels });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -38,11 +38,28 @@ export class CaseLabelController {
 		const { name } = body;
 		const newLabel = await this.caseLabelService.addCaseLabel(caseId, name);
 		if (newLabel !== null) {
-			const body = JSON.stringify(newLabel);
+			const body = JSON.stringify({ data: newLabel });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
 			throw new Error("There was an issue with creating the case label.");
+		}
+	}
+
+	public async deleteAllCaseLabelsByCaseIdHandler(request: Request): Promise<Response> {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const urlArray = request.url.split("/");
+		const caseId = urlArray[urlArray.length - 2];
+		const deletedCaseLabels = await this.caseLabelService.deleteAllCaseLabelsByCaseId(caseId);
+		if (deletedCaseLabels !== null) {
+			const body = JSON.stringify({ data: deletedCaseLabels });
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with deleting the case labels.");
 		}
 	}
 
@@ -58,7 +75,7 @@ export class CaseLabelController {
 		const labelId: string = urlArray[urlArray.length - 1];
 		const deletedLabel = await this.caseLabelService.deleteCaseLabel(labelId);
 		if (deletedLabel !== null) {
-			const body = JSON.stringify(deletedLabel);
+			const body = JSON.stringify({ data: deletedLabel });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {

@@ -2,6 +2,7 @@ import ModalButton from "../../components/Buttons/ModalButton";
 import ModalDialog from "../../components/Modal/ModalDialog";
 
 interface ViewDocumentModalProps {
+	caseId: string;
 	documentName: string;
 	documentId: string;
 	documentUrl: string;

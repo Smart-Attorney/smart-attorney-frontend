@@ -6,8 +6,8 @@ import EventCalendar from "../features/calendar/EventCalendar";
 import { getUserDocuments } from "../features/calendar/api/get-document-deadlines";
 import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
+import { Document, ResponseBody } from "../types/api";
 import { DateUtils } from "../utils/date-utils";
-import { Document } from "../types/api";
 
 function Calendar() {
 	const [events, setEvents] = useState<Event[]>();
@@ -19,8 +19,9 @@ function Calendar() {
 	const getDocumentDeadlines = async () => {
 		try {
 			const response = await getUserDocuments();
+			const body: ResponseBody<Document[]> = await response.json();
 			if (response.ok) {
-				const data: Document[] = await response.json();
+				const { data } = body;
 				const deadlines: Event[] = [];
 				for (let i = 0, n = data.length; i < n; i++) {
 					const stringDate = DateUtils.formatToYMD(data[i].deadline);
@@ -31,6 +32,8 @@ function Calendar() {
 					});
 				}
 				setEvents(deadlines);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

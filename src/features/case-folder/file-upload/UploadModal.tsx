@@ -3,13 +3,13 @@ import ModalButton from "../../../components/Buttons/ModalButton";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import { ShortUuid } from "../../../lib/short-uuid";
-import { Document } from "../../../types/api";
+import { Document, ResponseBody } from "../../../types/api";
 import { UploadFile } from "../../../types/file";
 import { createDocuments, CreateDocumentsDTO } from "../api/create-documents";
 import DropZone from "./modal-components/DropZone";
 import Header from "./modal-components/Header";
 import UploadedFileCards from "./modal-components/UploadedFileCards";
-import uploadDocuments from "../../uploadDocument/uploadDocuments";
+
 interface UploadModalProps {
 	caseId: string;
 	closeUploadModal: () => void;
@@ -22,50 +22,32 @@ function UploadModal({
 	addNewDocumentToArray,
 }: UploadModalProps) {
 	const uuid = new ShortUuid();
+
 	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
 	const [isUploadDone, setIsUploadDone] = useState(false);
-	const [fileList, setFileList] = useState<FileList>();
-
-	const uploadToCloudBucket = (fileList: FileList): Promise<any> => {
-		const fileArr = Array.from(fileList);
-		return uploadDocuments(fileArr)
-			.then((res) => {
-				// returns arr of uploaded file paths
-				if (Array.isArray(res)) {
-					return Promise.resolve(res);
-				}
-			})
-			.catch((err) => {
-				alert("Failed to Upload Files");
-				console.log(err);
-				return Promise.reject(err);
-			});
-	};
 
 	const handleUploadFiles = async (): Promise<void> => {
 		if (uploadFiles === null) return;
 		if (uploadFiles.length < 1) return;
-		if (!fileList) return;
-
-		const fileSrcArr = await uploadToCloudBucket(fileList);
-		if (!Array.isArray(fileSrcArr) || fileSrcArr.length < 1) return;
-
 		const filesData: CreateDocumentsDTO = new FormData();
 		for (let i = 0, n = uploadFiles.length; i < n; i++) {
 			filesData.append(
 				"files[]",
 				uploadFiles[i].data,
-				`${uploadFiles[i].id}/${uploadFiles[i].data.name}`
+				`${uploadFiles[i].data.name}`
 			);
 		}
 		try {
 			const response = await createDocuments(caseId, filesData);
+			const body: ResponseBody<Document[]> = await response.json();
 			if (response.ok) {
-				const createdDocuments: Document[] = await response.json();
+				const createdDocuments: Document[] = body.data;
 				for (let i = 0, n = createdDocuments.length; i < n; i++) {
 					addNewDocumentToArray(createdDocuments[i]);
 				}
 				setIsUploadDone(true);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -76,8 +58,6 @@ function UploadModal({
 	};
 
 	const addToUploadFilesArray = (files: FileList): void => {
-		setFileList(files);
-
 		for (let i = 0, n = files.length; i < n; i++) {
 			setUploadFiles((prev) => [
 				...prev,

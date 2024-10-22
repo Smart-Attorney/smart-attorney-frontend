@@ -11,10 +11,13 @@ import CardName from "../../components/Card/CardName";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import type { Case } from "../../types/api";
+import type { Case, CaseLabel, Client, Document, ResponseBody } from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { createCaseLabel, CreateCaseLabelDTO } from "./api/create-case-label";
-import { deleteCase } from "./api/delete-case";
+import { deleteAllCaseLabelsByCaseId } from "./api/delete-all-case-labels";
+import { deleteAllClientsByCaseId } from "./api/delete-all-clients";
+import { deleteAllDocumentsByCaseId } from "./api/delete-all-documents";
+import { deleteCaseById } from "./api/delete-case";
 import { deleteCaseLabel } from "./api/delete-case-label";
 import { getCase } from "./api/get-case";
 import { updateCaseIsOpen, UpdateCaseIsOpenDTO } from "./api/update-case-is-open";
@@ -29,10 +32,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 
 	/************************************************************/
 
-	const replaceCaseInArray = (
-		updatedCase: Case,
-		currentCaseArr: Case[]
-	): Case[] => {
+	const replaceCaseInArray = (updatedCase: Case, currentCaseArr: Case[]): Case[] => {
 		const updatedCaseArr: Case[] = [...currentCaseArr];
 		for (let i = 0, n = updatedCaseArr.length; i < n; i++) {
 			if (updatedCase.id === updatedCaseArr[i].id) {
@@ -43,10 +43,7 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		return updatedCaseArr;
 	};
 
-	const removeCaseFromArray = (
-		deletedCase: Case,
-		currentCaseArr: Case[]
-	): Case[] => {
+	const removeCaseFromArray = (deletedCase: Case, currentCaseArr: Case[]): Case[] => {
 		const updatedCaseArr: Case[] = [];
 		for (let i = 0, n = currentCaseArr.length; i < n; i++) {
 			if (deletedCase.id !== currentCaseArr[i].id) {
@@ -59,16 +56,17 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 	/************************************************************/
 
 	const handleGetUpdatedCase = async (caseId: string): Promise<Case | null> => {
+		let updatedCase: Case | null = null;
 		try {
 			const response = await getCase(caseId);
+			const body: ResponseBody<Case> = await response.json();
 			if (response.ok) {
-				const updatedCase: Case = await response.json();
-				return updatedCase;
+				updatedCase = body.data;
 			}
 		} catch (error) {
 			alert(error);
 		}
-		return null;
+		return updatedCase;
 	};
 
 	const handleUpdateCaseIsOpen = async (caseId: string, isOpen: boolean): Promise<void> => {
@@ -77,17 +75,21 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		if (typeof isOpen != "boolean") {
 			newIsOpen = true;
 		} else {
-			newIsOpen = isOpen;
+			newIsOpen = !isOpen; // converts current isOpen state
 		}
 		const data: UpdateCaseIsOpenDTO = {
+			id: caseId,
 			isOpen: newIsOpen,
 		};
 		try {
 			const response = await updateCaseIsOpen(caseId, data);
+			const body: ResponseBody<Case> = await response.json();
 			if (response.ok) {
-				const updatedCase: Case = await response.json();
+				const updatedCase = body.data;
 				const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -108,12 +110,15 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		};
 		try {
 			const response = await createCaseLabel(caseId, data);
+			const body: ResponseBody<CaseLabel> = await response.json();
 			if (response.ok) {
 				const updatedCase = await handleGetUpdatedCase(caseId);
 				if (updatedCase) {
 					const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 					setCaseFolders(updatedCaseArray);
 				}
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -130,23 +135,94 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 		const { id: labelId } = event.target as HTMLParagraphElement;
 		try {
 			const response = await deleteCaseLabel(caseId, labelId);
+			const body: ResponseBody<CaseLabel> = await response.json();
 			if (response.ok) {
 				const updatedCase = await handleGetUpdatedCase(caseId);
 				if (updatedCase) {
 					const updatedCaseArray = replaceCaseInArray(updatedCase, caseFolders!);
 					setCaseFolders(updatedCaseArray);
 				}
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
 		}
 	};
 
-	const handleDeleteCase = async (caseId: string): Promise<void> => {
+	/************************************************************/
+
+	const deleteAllCaseLabels = async (caseId: string): Promise<boolean> => {
 		try {
-			const response = await deleteCase(caseId);
+			const response = await deleteAllCaseLabelsByCaseId(caseId);
+			const body: ResponseBody<CaseLabel[]> = await response.json();
 			if (response.ok) {
-				const deletedCase: Case = await response.json();
+				return true;
+			} else {
+				alert(body.message);
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return false;
+	};
+
+	const deleteAllClients = async (caseId: string): Promise<boolean> => {
+		try {
+			const response = await deleteAllClientsByCaseId(caseId);
+			const body: ResponseBody<Client[]> = await response.json();
+			if (response.ok) {
+				return true;
+			} else {
+				alert(body.message);
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return false;
+	};
+
+	const deleteAllDocuments = async (caseId: string): Promise<boolean> => {
+		try {
+			const response = await deleteAllDocumentsByCaseId(caseId);
+			const body: ResponseBody<Document[]> = await response.json();
+			if (response.ok) {
+				return true;
+			} else {
+				alert(body.message);
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return false;
+	};
+
+	const deleteCase = async (caseId: string): Promise<Case | null> => {
+		let deletedCase: Case | null = null;
+		try {
+			const response = await deleteCaseById(caseId);
+			const body: ResponseBody<Case> = await response.json();
+			if (response.ok) {
+				deletedCase = body.data;
+			} else {
+				alert(body.message);
+			}
+		} catch (error) {
+			alert(error);
+		}
+		return deletedCase;
+	};
+
+	const handleDeleteCase = async (caseId: string): Promise<void> => {
+		let deletedCase: Case | null = null;
+		try {
+			const areCaseLabelsDeleted = await deleteAllCaseLabels(caseId);
+			const areClientsDeleted = await deleteAllClients(caseId);
+			const areDocumentsDeleted = await deleteAllDocuments(caseId);
+			if (areCaseLabelsDeleted && areClientsDeleted && areDocumentsDeleted) {
+				deletedCase = await deleteCase(caseId);
+			}
+			if (deletedCase !== null) {
 				const updatedCaseArray = removeCaseFromArray(deletedCase, caseFolders!);
 				setCaseFolders(updatedCaseArray);
 			}
@@ -154,6 +230,8 @@ function CaseCards({ caseFolders, setCaseFolders }: CaseCardProps) {
 			alert(error);
 		}
 	};
+
+	/************************************************************/
 
 	// to identify which parts of the card allows navigation when clicked
 	const navigationString = "allow-nav";

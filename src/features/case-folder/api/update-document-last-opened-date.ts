@@ -4,25 +4,33 @@ import { MockRequest } from "../../../lib/mock-request";
 import { DocumentController } from "../../../services/local-backend/document/document-controller";
 import { Document } from "../../../types/api";
 
-export type UpdateDocumentNameDTO = Pick<Document, "id" | "name">;
+export type UpdateDocumentLastOpenedDateDTO = Pick<Document, "id" | "lastOpenedDate">;
 
-const mockApi = async (caseId: string, documentId: string, data: UpdateDocumentNameDTO): Promise<Response> => {
+const mockApi = async (
+	caseId: string,
+	documentId: string,
+	data: UpdateDocumentLastOpenedDateDTO
+): Promise<Response> => {
 	const endpoint = `/users/cases/${caseId}/documents/${documentId}`;
 	const body = JSON.stringify(data);
 	const request = new MockRequest().patch(endpoint, body);
-	return await new DocumentController().updateDocumentNameHandler(request);
+	return await new DocumentController().updateDocumentLastOpenedDateHandler(request);
 };
 
-const fetchApi = async (caseId: string, documentId: string, data: UpdateDocumentNameDTO): Promise<Response> => {
+const fetchApi = async (
+	caseId: string,
+	documentId: string,
+	data: UpdateDocumentLastOpenedDateDTO
+): Promise<Response> => {
 	const endpoint = `/users/cases/${caseId}/documents/${documentId}`;
 	const body = JSON.stringify(data);
 	return await new FetchWrapper().patch(endpoint, body);
 };
 
-export const updateDocumentName = async (
+export const updateDocumentLastOpenedDate = async (
 	caseId: string,
 	documentId: string,
-	data: UpdateDocumentNameDTO
+	data: UpdateDocumentLastOpenedDateDTO
 ): Promise<Response> => {
 	return useLocalBackend ? await mockApi(caseId, documentId, data) : await fetchApi(caseId, documentId, data);
 };

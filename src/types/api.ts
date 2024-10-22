@@ -1,3 +1,10 @@
+export type ResponseBody<T> = {
+	success: boolean;
+	message: string;
+	data: T;
+	status: number;
+};
+
 export type User = {
 	id: string; // short uuid
 	firstName: string;
@@ -42,11 +49,15 @@ export type Document = {
 	lastOpenedDate: number; // unix time ms
 	status: DocumentStatus;
 	deadline: number;
-	url: string;
+	url: string; // deprecated hoa pls remove
 };
 
 export type Sex = "Male" | "Female" | "Other";
 
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
 
-export type CaseLabelPreset = "Asylum" | "Employment" | "Family" | "Humanitarian";
+export type CaseLabelPreset =
+	| "Asylum"
+	| "Employment"
+	| "Family"
+	| "Humanitarian";

@@ -6,12 +6,12 @@ export interface CurrentUser {
 	lastName: string;
 }
 
-export interface CurrenUserContextType {
+export interface CurrentUserContextType {
 	getCurrentUser: () => CurrentUser;
 	setCurrentUser: (user: CurrentUser) => void;
 }
 
-export const CurrentUserContext = createContext<CurrenUserContextType | null>(null);
+export const CurrentUserContext = createContext<CurrentUserContextType | null>(null);
 
 export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
 	const CURRENT_USER_KEY = "current_user";

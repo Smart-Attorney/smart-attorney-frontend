@@ -1,4 +1,5 @@
 import { UpdateDocumentDeadlineDTO } from "../../../features/case-folder/api/update-document-deadline";
+import { UpdateDocumentLastOpenedDateDTO } from "../../../features/case-folder/api/update-document-last-opened-date";
 import { UpdateDocumentNameDTO } from "../../../features/case-folder/api/update-document-name";
 import { UpdateDocumentStatusDTO } from "../../../features/case-folder/api/update-document-status";
 import { DocumentService } from "./document-service";
@@ -19,7 +20,7 @@ export class DocumentController {
 		const userId = authToken.id as string;
 		const retrievedDeadlines = await this.documentService.getAllDocumentsByUserId(userId);
 		if (retrievedDeadlines != null) {
-			const body = JSON.stringify(retrievedDeadlines);
+			const body = JSON.stringify({ data: retrievedDeadlines });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -39,11 +40,11 @@ export class DocumentController {
 		const documentId = urlArray[urlArray.length - 1];
 		const retrievedDocument = await this.documentService.getDocument(documentId);
 		if (retrievedDocument !== null) {
-			const body = JSON.stringify(retrievedDocument);
+			const body = JSON.stringify({ data: retrievedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with retrieving the case file.");
+			throw new Error("There was an issue with retrieving the document.");
 		}
 	}
 
@@ -60,7 +61,7 @@ export class DocumentController {
 		const files = formData.getAll("files[]") as File[];
 		const newDocuments = await this.documentService.addDocument(userId, caseId, files);
 		if (newDocuments !== null) {
-			const body = JSON.stringify(newDocuments);
+			const body = JSON.stringify({ data: newDocuments });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
@@ -76,11 +77,11 @@ export class DocumentController {
 		const { status } = body;
 		const updatedDocument = await this.documentService.updateDocumentStatus(documentId, status);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with updating the case file status.");
+			throw new Error("There was an issue with updating the document status.");
 		}
 	}
 
@@ -92,11 +93,11 @@ export class DocumentController {
 		const { name } = body;
 		const updatedDocument = await this.documentService.updateDocumentName(documentId, name);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with updating the case file name.");
+			throw new Error("There was an issue with updating the document name.");
 		}
 	}
 
@@ -108,11 +109,49 @@ export class DocumentController {
 		const { deadline } = body;
 		const updatedDocument = await this.documentService.updateDocumentDeadline(documentId, deadline);
 		if (updatedDocument !== null) {
-			const body = JSON.stringify(updatedDocument);
+			const body = JSON.stringify({ data: updatedDocument });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with updating the case file deadline.");
+			throw new Error("There was an issue with updating the document deadline.");
+		}
+	}
+
+	public async updateDocumentLastOpenedDateHandler(request: Request): Promise<Response> {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const urlArray = request.url.split("/");
+		const documentId = urlArray[urlArray.length - 1];
+		const body: UpdateDocumentLastOpenedDateDTO = await request.json();
+		const { lastOpenedDate } = body;
+		const updatedDocument = await this.documentService.updateDocumentLastOpenedDate(documentId, lastOpenedDate);
+		if (updatedDocument !== null) {
+			const body = JSON.stringify({ data: updatedDocument });
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with updating the document last opened date.");
+		}
+	}
+
+	public async deleteAllDocumentsByCaseIdHandler(request: Request): Promise<Response> {
+		const authHeader = request.headers.get("Authorization");
+		if (!authHeader) {
+			throw new Error("User is not authorized/signed in.");
+		}
+		const authToken = JSON.parse(authHeader);
+		const userId = authToken.id as string;
+		const urlArray = request.url.split("/");
+		const caseId = urlArray[urlArray.length - 2];
+		const deletedDocuments = await this.documentService.deleteAllDocumentByCaseId(userId, caseId);
+		if (deletedDocuments !== null) {
+			const body = JSON.stringify({ data: deletedDocuments });
+			const options = { status: 200 };
+			return new Response(body, options);
+		} else {
+			throw new Error("There was an issue with deleting the case documents.");
 		}
 	}
 
@@ -128,11 +167,11 @@ export class DocumentController {
 		const documentId = urlArray[urlArray.length - 1];
 		const deletedFile = await this.documentService.deleteDocument(userId, caseId, documentId);
 		if (deletedFile !== null) {
-			const body = JSON.stringify(deletedFile);
+			const body = JSON.stringify({ data: deletedFile });
 			const options = { status: 200 };
 			return new Response(body, options);
 		} else {
-			throw new Error("There was an issue with deleting the case file.");
+			throw new Error("There was an issue with deleting the document.");
 		}
 	}
 }

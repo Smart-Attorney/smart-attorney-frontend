@@ -17,7 +17,7 @@ import PageHeader from "../layouts/PageHeader";
 import SidebarLayout from "../layouts/SidebarLayout";
 import SortBarWithButtons from "../layouts/SortBarWithButtons";
 import { ShortUuid } from "../lib/short-uuid";
-import { Case, Sex } from "../types/api";
+import { Case, Client, Document, ResponseBody, Sex } from "../types/api";
 import { UploadFile } from "../types/file";
 import { ClientForm } from "../types/form";
 import { CaseUtils } from "../utils/case-utils";
@@ -83,19 +83,23 @@ function CreateCaseFolder() {
 	};
 
 	const handleCreateCase = async (): Promise<string | null> => {
+		let newCaseId: string | null = null;
 		const newCase: CreateCaseDTO = {
 			name: caseName,
 		};
 		try {
 			const response = await createCase(newCase);
+			const body: ResponseBody<Case> = await response.json();
 			if (response.ok) {
-				const data: Case = await response.json();
-				return data.id;
+				const { data } = body;
+				newCaseId = data.id;
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
 		}
-		return null;
+		return newCaseId;
 	};
 
 	const handleCreateClient = async (caseId: string): Promise<boolean> => {
@@ -110,8 +114,11 @@ function CreateCaseFolder() {
 		};
 		try {
 			const response = await createClient(caseId, newClient);
+			const body: ResponseBody<Client> = await response.json();
 			if (response.ok) {
 				return true;
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);
@@ -123,12 +130,15 @@ function CreateCaseFolder() {
 		if (uploadFiles.length === 0) return true;
 		const filesData = new FormData();
 		for (let i = 0, n = uploadFiles.length; i < n; i++) {
-			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].id}/${uploadFiles[i].data.name}`);
+			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].data.name}`);
 		}
 		try {
 			const response = await createDocuments(caseId, filesData);
+			const body: ResponseBody<Document[]> = await response.json();
 			if (response.ok) {
 				return true;
+			} else {
+				alert(body.message);
 			}
 		} catch (error) {
 			alert(error);

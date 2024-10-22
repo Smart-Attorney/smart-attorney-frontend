@@ -109,7 +109,6 @@ function ClientModal({ client, setClient, closeModal, createCase }: ClientModalP
 								onChange={handleInputChange}
 								required={true}
 							/>
-
 							<SelectField id="sex" name="Sex" options={SEX} value={clientForm.sex} onChange={handleSelectChange} />
 
 							<InputField

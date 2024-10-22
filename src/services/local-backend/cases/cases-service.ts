@@ -1,16 +1,13 @@
 import { ShortUuid } from "../../../lib/short-uuid";
 import { Uuid } from "../../../lib/uuid";
 import { Case, CaseLabel, Document } from "../../../types/api";
-import { Firebase } from "../../cloud-storage/firebase";
 import { CaseLabelDAO } from "../case-label/case-label-dao";
-import { ClientDAO } from "../client/client-dao";
 import { DocumentDAO } from "../document/document-dao";
 import { CasesDAO } from "./cases-dao";
 
 export class CasesService {
 	private casesDao: CasesDAO;
 	private caseLabelDao: CaseLabelDAO;
-	private clientDao: ClientDAO;
 	private documentDao: DocumentDAO;
 	private shortUuid: ShortUuid;
 	private uuid: Uuid;
@@ -18,7 +15,6 @@ export class CasesService {
 	constructor() {
 		this.casesDao = new CasesDAO();
 		this.caseLabelDao = new CaseLabelDAO();
-		this.clientDao = new ClientDAO();
 		this.documentDao = new DocumentDAO();
 		this.shortUuid = new ShortUuid();
 		this.uuid = new Uuid();
@@ -111,11 +107,11 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateCaseLastOpenedDate(caseShortId: string): Promise<Case | null> {
-		if (!caseShortId) return null;
+	public async updateCaseLastOpenedDate(caseShortId: string, newLastOpenedDate: number): Promise<Case | null> {
+		if (!caseShortId || !newLastOpenedDate) return null;
 		const caseUuid = this.shortUuid.toUUID(caseShortId);
 		if (!this.uuid.isValid(caseUuid)) return null;
-		const isDateUpdated = await this.casesDao.updateLastOpenedDate(caseUuid);
+		const isDateUpdated = await this.casesDao.updateLastOpenedDate(caseUuid, newLastOpenedDate);
 		if (isDateUpdated !== null) {
 			return await this.getCase(caseShortId);
 		}
@@ -133,11 +129,11 @@ export class CasesService {
 		return null;
 	}
 
-	public async updateCaseIsOpen(caseShortId: string, currentState: boolean): Promise<Case | null> {
-		if (!caseShortId || typeof currentState !== "boolean") return null;
+	public async updateCaseIsOpen(caseShortId: string, newIsOpen: boolean): Promise<Case | null> {
+		if (!caseShortId || typeof newIsOpen !== "boolean") return null;
 		const caseUuid = this.shortUuid.toUUID(caseShortId);
 		if (!this.uuid.isValid(caseUuid)) return null;
-		const isStatusUpdated = await this.casesDao.updateOpenState(caseUuid, currentState);
+		const isStatusUpdated = await this.casesDao.updateOpenState(caseUuid, newIsOpen);
 		if (isStatusUpdated) {
 			return await this.getCase(caseShortId);
 		}
@@ -154,26 +150,26 @@ export class CasesService {
 		const deletedCase = await this.getCase(caseShortId);
 
 		// delete all documents from cloud storage associated with case id
-		const documents = await this.documentDao.getAllByCaseId(caseUuid);
-		const promiseArray = [];
-		for (let i = 0, n = documents.length; i < n; i++) {
-			const documentShortId = this.shortUuid.toShort(documents[i].document_id);
-			promiseArray.push(await Firebase.deleteFileById(userShortId, caseShortId, documentShortId));
-		}
-		const areCloudDocumentsDeleted = await Promise.all(promiseArray);
-		if (areCloudDocumentsDeleted.includes(false)) return null;
+		// const documents = await this.documentDao.getAllByCaseId(caseUuid);
+		// const promiseArray = [];
+		// for (let i = 0, n = documents.length; i < n; i++) {
+		// 	const documentShortId = this.shortUuid.toShort(documents[i].document_id);
+		// 	promiseArray.push(await Firebase.deleteFileById(userShortId, caseShortId, documentShortId));
+		// }
+		// const areCloudDocumentsDeleted = await Promise.all(promiseArray);
+		// if (areCloudDocumentsDeleted.includes(false)) return null;
 
 		// delete all documents associated with case id
-		const areDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseUuid);
-		if (!areDocumentsDeleted) return null;
+		// const areDocumentsDeleted = await this.documentDao.deleteAllByCaseId(caseUuid);
+		// if (!areDocumentsDeleted) return null;
 
 		// delete all labels associated with case id
-		const areLabelsDeleted = await this.caseLabelDao.deleteAllByCaseId(caseUuid);
-		if (!areLabelsDeleted) return null;
+		// const areLabelsDeleted = await this.caseLabelDao.deleteAllByCaseId(caseUuid);
+		// if (!areLabelsDeleted) return null;
 
 		// delete all clients associated with case id
-		const isClientDeleted = await this.clientDao.deleteByCaseId(caseUuid);
-		if (!isClientDeleted) return null;
+		// const isClientDeleted = await this.clientDao.deleteByCaseId(caseUuid);
+		// if (!isClientDeleted) return null;
 
 		// delete case after all associated entities have been deleted
 		const isCaseDeleted = await this.casesDao.delete(caseUuid);
