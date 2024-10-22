@@ -16,7 +16,11 @@ interface UploadModalProps {
 	addNewDocumentToArray: (newDocument: Document) => void;
 }
 
-function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: UploadModalProps) {
+function UploadModal({
+	caseId,
+	closeUploadModal,
+	addNewDocumentToArray,
+}: UploadModalProps) {
 	const uuid = new ShortUuid();
 
 	const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
@@ -27,7 +31,11 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 		if (uploadFiles.length < 1) return;
 		const filesData: CreateDocumentsDTO = new FormData();
 		for (let i = 0, n = uploadFiles.length; i < n; i++) {
-			filesData.append("files[]", uploadFiles[i].data, `${uploadFiles[i].data.name}`);
+			filesData.append(
+				"files[]",
+				uploadFiles[i].data,
+				`${uploadFiles[i].data.name}`
+			);
 		}
 		try {
 			const response = await createDocuments(caseId, filesData);
@@ -69,11 +77,21 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 	};
 
 	return (
-		<ModalDialog className="w-[768px]" closeModal={handleCloseUploadModal} enableBackdropClose={true}>
-			<div id="modal-body" className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4">
+		<ModalDialog
+			className="w-[768px]"
+			closeModal={handleCloseUploadModal}
+			enableBackdropClose={true}
+		>
+			<div
+				id="modal-body"
+				className="flex flex-col items-center justify-center gap-8 h-fit w-[624px] pb-4"
+			>
 				<Header />
 
-				<DropZone uploadFiles={uploadFiles} addToUploadFilesArray={addToUploadFilesArray} />
+				<DropZone
+					uploadFiles={uploadFiles}
+					addToUploadFilesArray={addToUploadFilesArray}
+				/>
 
 				{uploadFiles.length > 0 && (
 					<UploadedFileCards
@@ -90,7 +108,9 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 						className="border-[5px] h-[68px]"
 						onClick={handleUploadFiles}
 						isDisabled={uploadFiles.length < 1 ? true : false}
-						style={{ cursor: uploadFiles.length < 1 ? "not-allowed" : "pointer" }}
+						style={{
+							cursor: uploadFiles.length < 1 ? "not-allowed" : "pointer",
+						}}
 					/>
 					<ModalSpecialButton
 						name="Translate"
@@ -101,7 +121,9 @@ function UploadModal({ caseId, closeUploadModal, addNewDocumentToArray }: Upload
 				</div>
 
 				{isUploadDone && (
-					<p className="text-xl font-semibold text-green-600">Selected files have been successfully uploaded!</p>
+					<p className="text-xl font-semibold text-green-600">
+						Selected files have been successfully uploaded!
+					</p>
 				)}
 			</div>
 		</ModalDialog>

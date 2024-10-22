@@ -10,13 +10,29 @@ import DocumentStatus from "../../components/Card/DocumentStatus";
 import KebabMenuContainer from "../../components/Card/KebabMenuContainer";
 import PillLabelContainer from "../../components/Card/PillLabelContainer";
 import CardGrid from "../../layouts/CardGrid";
-import { DocumentStatus as DocStatus, Document, ResponseBody } from "../../types/api";
+import {
+	DocumentStatus as DocStatus,
+	Document,
+	ResponseBody,
+} from "../../types/api";
 import KebabMenu from "./KebabMenu";
 import { deleteDocument } from "./api/delete-document";
-import { updateDocumentDeadline, UpdateDocumentDeadlineDTO } from "./api/update-document-deadline";
-import { updateDocumentLastOpenedDate, UpdateDocumentLastOpenedDateDTO } from "./api/update-document-last-opened-date";
-import { updateDocumentName, UpdateDocumentNameDTO } from "./api/update-document-name";
-import { updateDocumentStatus, UpdateDocumentStatusDTO } from "./api/update-document-status";
+import {
+	updateDocumentDeadline,
+	UpdateDocumentDeadlineDTO,
+} from "./api/update-document-deadline";
+import {
+	updateDocumentLastOpenedDate,
+	UpdateDocumentLastOpenedDateDTO,
+} from "./api/update-document-last-opened-date";
+import {
+	updateDocumentName,
+	UpdateDocumentNameDTO,
+} from "./api/update-document-name";
+import {
+	updateDocumentStatus,
+	UpdateDocumentStatusDTO,
+} from "./api/update-document-status";
 
 interface DocumentCardsProps {
 	documents: Document[] | undefined;
@@ -24,12 +40,19 @@ interface DocumentCardsProps {
 	updateDocuments: (newDocuments: Document[]) => void;
 }
 
-function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCardsProps) {
+function DocumentCards({
+	documents,
+	viewDocument,
+	updateDocuments,
+}: DocumentCardsProps) {
 	const { id: caseId } = useParams();
 
 	/************************************************************/
 
-	const replaceDocumentInArray = (updatedDocument: Document, currentDocumentArr: Document[]): Document[] => {
+	const replaceDocumentInArray = (
+		updatedDocument: Document,
+		currentDocumentArr: Document[]
+	): Document[] => {
 		const updatedDocumentArr: Document[] = [...currentDocumentArr];
 		for (let i = 0, n = updatedDocumentArr.length; i < n; i++) {
 			if (updatedDocument.id === updatedDocumentArr[i].id) {
@@ -40,7 +63,10 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		return updatedDocumentArr;
 	};
 
-	const removeDocumentFromArray = (deletedDocument: Document, currentDocumentArr: Document[]): Document[] => {
+	const removeDocumentFromArray = (
+		deletedDocument: Document,
+		currentDocumentArr: Document[]
+	): Document[] => {
 		const updatedDocumentArr: Document[] = [];
 		for (let i = 0, n = currentDocumentArr.length; i < n; i++) {
 			if (deletedDocument.id !== currentDocumentArr[i].id) {
@@ -53,51 +79,74 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 	/************************************************************/
 
 	// curried function
-	const handleUpdateDocumentStatus = (documentId: string) => async (newDocumentStatus: DocStatus) => {
-		const data: UpdateDocumentStatusDTO = { id: documentId, status: newDocumentStatus };
-		try {
-			const response = await updateDocumentStatus(caseId!, documentId, data);
-			const body: ResponseBody<Document> = await response.json();
-			if (response.ok) {
-				const updatedDocument: Document = body.data;
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
-				updateDocuments(updatedDocumentArray);
-			} else {
-				alert(body.message);
+	const handleUpdateDocumentStatus =
+		(documentId: string) => async (newDocumentStatus: DocStatus) => {
+			const data: UpdateDocumentStatusDTO = {
+				id: documentId,
+				status: newDocumentStatus,
+			};
+			try {
+				const response = await updateDocumentStatus(caseId!, documentId, data);
+				const body: ResponseBody<Document> = await response.json();
+				if (response.ok) {
+					const updatedDocument: Document = body.data;
+					const updatedDocumentArray = replaceDocumentInArray(
+						updatedDocument,
+						documents!
+					);
+					updateDocuments(updatedDocumentArray);
+				} else {
+					alert(body.message);
+				}
+			} catch (error) {
+				alert(error);
 			}
-		} catch (error) {
-			alert(error);
-		}
-	};
+		};
 
 	// curried function
-	const handleUpdateDocumentName = (documentId: string) => async (newDocumentName: string) => {
-		const data: UpdateDocumentNameDTO = { id: documentId, name: newDocumentName };
-		try {
-			const response = await updateDocumentName(caseId!, documentId, data);
-			const body: ResponseBody<Document> = await response.json();
-			if (response.ok) {
-				const updatedDocument: Document = body.data;
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
-				updateDocuments(updatedDocumentArray);
-			} else {
-				alert(body.message);
+	const handleUpdateDocumentName =
+		(documentId: string) => async (newDocumentName: string) => {
+			const data: UpdateDocumentNameDTO = {
+				id: documentId,
+				name: newDocumentName,
+			};
+			try {
+				const response = await updateDocumentName(caseId!, documentId, data);
+				const body: ResponseBody<Document> = await response.json();
+				if (response.ok) {
+					const updatedDocument: Document = body.data;
+					const updatedDocumentArray = replaceDocumentInArray(
+						updatedDocument,
+						documents!
+					);
+					updateDocuments(updatedDocumentArray);
+				} else {
+					alert(body.message);
+				}
+			} catch (error) {
+				alert(error);
 			}
-		} catch (error) {
-			alert(error);
-		}
-	};
+		};
 
-	const handleUpdateDocumentDeadline = async (documentId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleUpdateDocumentDeadline = async (
+		documentId: string,
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
 		const { value } = event.target;
 		const deadlineUnixMilliseconds = Date.parse(value);
-		const data: UpdateDocumentDeadlineDTO = { id: documentId, deadline: deadlineUnixMilliseconds };
+		const data: UpdateDocumentDeadlineDTO = {
+			id: documentId,
+			deadline: deadlineUnixMilliseconds,
+		};
 		try {
 			const response = await updateDocumentDeadline(caseId!, documentId, data);
 			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
 				const updatedDocument: Document = body.data;
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				const updatedDocumentArray = replaceDocumentInArray(
+					updatedDocument,
+					documents!
+				);
 				updateDocuments(updatedDocumentArray);
 			} else {
 				alert(body.message);
@@ -113,11 +162,18 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 			lastOpenedDate: Date.now(), // unix milliseconds
 		};
 		try {
-			const response = await updateDocumentLastOpenedDate(caseId!, documentId, data);
+			const response = await updateDocumentLastOpenedDate(
+				caseId!,
+				documentId,
+				data
+			);
 			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
 				const updatedDocument: Document = body.data;
-				const updatedDocumentArray = replaceDocumentInArray(updatedDocument, documents!);
+				const updatedDocumentArray = replaceDocumentInArray(
+					updatedDocument,
+					documents!
+				);
 				updateDocuments(updatedDocumentArray);
 			} else {
 				alert(body.message);
@@ -133,7 +189,10 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 			const body: ResponseBody<Document> = await response.json();
 			if (response.ok) {
 				const deletedDocument: Document = body.data;
-				const updatedDocumentArray = removeDocumentFromArray(deletedDocument, documents!);
+				const updatedDocumentArray = removeDocumentFromArray(
+					deletedDocument,
+					documents!
+				);
 				updateDocuments(updatedDocumentArray);
 			} else {
 				alert(body.message);
@@ -143,7 +202,10 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 		}
 	};
 
-	const handleViewDocument = (documentId: string, event: React.MouseEvent<HTMLParagraphElement>) => {
+	const handleViewDocument = (
+		documentId: string,
+		event: React.MouseEvent<HTMLParagraphElement>
+	) => {
 		viewDocument(event);
 		handleUpdateDocumentLastOpenedDate(documentId);
 	};
@@ -161,8 +223,11 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 								fileName={file.name}
 								updateFileStatus={handleUpdateDocumentStatus(file.id)}
 								updateFileName={handleUpdateDocumentName(file.id)}
-								setDeadline={(event) => handleUpdateDocumentDeadline(file.id, event)}
+								setDeadline={(event) =>
+									handleUpdateDocumentDeadline(file.id, event)
+								}
 								deleteFile={() => handleDeleteDocument(file.id)}
+								translateFile={() => {}}
 							/>
 						</KebabMenuContainer>
 
@@ -173,10 +238,18 @@ function DocumentCards({ documents, viewDocument, updateDocuments }: DocumentCar
 									<CardDeadline deadline={file.deadline} />
 								</PillLabelContainer>
 
-								<CardName id={file.id} name={file.name} viewFile={(event) => handleViewDocument(file.id, event)} />
+								<CardName
+									id={file.id}
+									name={file.name}
+									viewFile={(event) => handleViewDocument(file.id, event)}
+								/>
 							</CardHeaderContainer>
 
-							<CardImage imgSrc={""} id={file.id} viewFile={(event) => handleViewDocument(file.id, event)} />
+							<CardImage
+								imgSrc={""}
+								id={file.id}
+								viewFile={(event) => handleViewDocument(file.id, event)}
+							/>
 
 							<CardFooter hasFooter={false} />
 						</CardBody>

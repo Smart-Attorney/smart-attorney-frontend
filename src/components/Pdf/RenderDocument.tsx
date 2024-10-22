@@ -19,7 +19,10 @@ interface RenderDocumentProps {
 	removeFromUploadFilesArray: (id: string) => void;
 }
 
-const RenderDocument = ({ file, removeFromUploadFilesArray }: RenderDocumentProps) => {
+const RenderDocument = ({
+	file,
+	removeFromUploadFilesArray,
+}: RenderDocumentProps) => {
 	const [translatedDocUrl, setTranslatedDocUrl] = useState<null | string>(null);
 
 	const handleTranslate = (fileName: string) => {
@@ -55,10 +58,17 @@ const RenderDocument = ({ file, removeFromUploadFilesArray }: RenderDocumentProp
 					</div>
 					<CardName name={file.data.name} />
 					{translatedDocUrl && (
-						<CardName name="Download English Version" viewFile={() => downloadTranslatedFile(translatedDocUrl)} />
+						<CardName
+							name="Download English Version"
+							viewFile={() => downloadTranslatedFile(translatedDocUrl)}
+						/>
 					)}
 
-					<Page className="self-center border border-black rounded-sm" pageNumber={1} height={125} />
+					<Page
+						className="self-center border border-black rounded-sm"
+						pageNumber={1}
+						height={125}
+					/>
 				</Document>
 			</CardBody>
 		</CardContainer>

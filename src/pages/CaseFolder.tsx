@@ -16,7 +16,10 @@ import {
 	updateCaseLastOpenedDate,
 	UpdateCaseLastOpenedDateDTO,
 } from "../features/case-folder/api/update-case-last-opened-date";
-import { updateCaseName, UpdateCaseNameDTO } from "../features/case-folder/api/update-case-name";
+import {
+	updateCaseName,
+	UpdateCaseNameDTO,
+} from "../features/case-folder/api/update-case-name";
 import ClientModal from "../features/case-folder/client-modal/ClientModal";
 import UploadModal from "../features/case-folder/file-upload/UploadModal";
 import PageHeader from "../layouts/PageHeader";
@@ -42,8 +45,10 @@ function CaseFolder() {
 
 	const [isClientModalOpen, setIsClientModalOpen] = useState<boolean>(false);
 	const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
-	const [isDocumentModalOpen, setIsDocumentModalOpen] = useState<boolean>(false);
-	const [isGenerateModalOpen, setIsGenerateModalOpen] = useState<boolean>(false);
+	const [isDocumentModalOpen, setIsDocumentModalOpen] =
+		useState<boolean>(false);
+	const [isGenerateModalOpen, setIsGenerateModalOpen] =
+		useState<boolean>(false);
 
 	const [caseFolder, setCaseFolder] = useState<Case>({
 		id: "",
@@ -116,7 +121,9 @@ function CaseFolder() {
 		}
 	};
 
-	const handleGetDocument = async (event: React.MouseEvent<HTMLParagraphElement>): Promise<void> => {
+	const handleGetDocument = async (
+		event: React.MouseEvent<HTMLParagraphElement>
+	): Promise<void> => {
 		const { id } = event.target as HTMLParagraphElement;
 		try {
 			const response = await getDocument(caseId.current!, id);
@@ -187,7 +194,9 @@ function CaseFolder() {
 		setIsCaseNameEditable(true);
 	};
 
-	const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLHeadingElement>): void => {
+	const handleEnterKeyPress = (
+		event: React.KeyboardEvent<HTMLHeadingElement>
+	): void => {
 		if (event.key !== "Enter") return;
 		const { innerHTML } = event.target as HTMLHeadingElement;
 		if (innerHTML.trim().length === 0) {
@@ -275,8 +284,17 @@ function CaseFolder() {
 
 				<div className="flex flex-row flex-wrap justify-end gap-3 w-fit">
 					<PillButton name="Create" type="button" img={BtnIcon.PenPurple} />
-					<PillButton name="Upload" type="button" img={BtnIcon.UploadPurple} onClick={toggleUploadModal} />
-					<PillButton name="Translate" type="button" img={BtnIcon.SphereLatticePurple} />
+					<PillButton
+						name="Upload"
+						type="button"
+						img={BtnIcon.UploadPurple}
+						onClick={toggleUploadModal}
+					/>
+					<PillButton
+						name="Translate"
+						type="button"
+						img={BtnIcon.SphereLatticePurple}
+					/>
 					<PillSpecialButton
 						name="Generate"
 						type="button"
@@ -312,7 +330,13 @@ function CaseFolder() {
 				/>
 			)}
 
-			{isGenerateModalOpen && <GenerateModal closeModal={closeGenerateModal} documents={caseFolder.documents} caseId={idFromParams!}/>}
+			{isGenerateModalOpen && (
+				<GenerateModal
+					closeModal={closeGenerateModal}
+					documents={caseFolder.documents}
+					caseId={idFromParams!}
+				/>
+			)}
 
 			{isClientModalOpen && (
 				<ClientModal
