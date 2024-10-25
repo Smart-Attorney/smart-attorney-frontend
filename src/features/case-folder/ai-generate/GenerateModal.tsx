@@ -31,7 +31,7 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 		return chatGptInput;
 	};
 
-	/* 
+	/*
 	workaround ¯\_(ツ)_/¯
 	link opens new tab to jun's deployed app
 	*/
@@ -126,8 +126,6 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 		postRequest.end();
 	}
 	
-	
-
 	const mockArray = ["abc", "def", "ghi", "jkl", "mno", "pqr"];
 
 	return (
