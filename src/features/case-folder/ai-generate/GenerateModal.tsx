@@ -20,14 +20,12 @@ interface GenerateModalProps {
 
 function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 	// @ts-ignore
-	const parseSelectedFiles = (files: FileList): string => {
+	const parseSelectedFiles = async (files: FileList): Promise<string> => {
 		let chatGptInput = "";
-		for (let i = 0, n = files.length; i < n; i++) {
-			const fileString = fileExtractor(files[i]);
-
-			fileString.then((res) => chatGptInput + res);
+		for (let i = 0; i < files.length; i++) {
+			const fileString = await fileExtractor(files[i]);  // Await the result of each Promise
+			chatGptInput += fileString;  // Concatenate each file's content to chatGptInput
 		}
-
 		return chatGptInput;
 	};
 
@@ -40,7 +38,6 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 			alert("Empty documents array, cannot use this without a document.");
 			return;
 		}
-	
 		const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
 		const { id } = getCurrentUser();
 	
