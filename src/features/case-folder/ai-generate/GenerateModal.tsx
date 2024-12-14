@@ -5,12 +5,14 @@ import fileExtractor from "../../../components/Pdf/FileExtractor";
 import { CurrentUserContext, CurrentUserContextType } from "../../../providers/CurrentUserProvider";
 import { Firebase } from "../../../services/cloud-storage/firebase";
 import { Document } from "../../../types/api";
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
 import { IncomingMessage } from 'http';
 import https from 'https';
 import path from 'path';
 import fs from 'fs';
-
-const API_KEY = "cyang8980@gmail.com_FN61U0MTApIUqCJmEmYrGgxiIoS6DFQ2bJswNZrQR4a8II18JxYOIMsIz58lmomS";
 
 interface GenerateModalProps {
 	closeModal: () => void;
@@ -48,13 +50,14 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 					alert("Could not retrieve document URL.");
 					return;
 				}
-				const pages = "";
-				// PDF document password. Leave empty for unprotected documents.
-				const password = "";
-				// Destination JSON file name
-				const destinationFile = "./result.json";
+				alert(docURL)
+				// const pages = "";
+				// // PDF document password. Leave empty for unprotected documents.
+				// const password = "";
+				// // Destination JSON file name
+				// const destinationFile = "./result.json";
 				// Pass the docURL to processDocument
-				processDocument(API_KEY, docURL, password, pages, destinationFile);
+				// processDocument(API_KEY, docURL, password, pages, destinationFile);
 	
 				// Optionally open an external link
 				const url = "https://astonishing-speculoos-022482.netlify.app/build/";
@@ -65,62 +68,62 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 			});
 	};
 	
-	async function processDocument(apiKey: string, docURL: string, password: string, pages: string, destinationFile: string) {
-		try {
-			// Step 1: Skip the upload and directly convert the file using the URL
-			convertPdfToJson(apiKey, docURL, password, pages, destinationFile);
-		} catch (error) {
-			console.error('Error processing document:', error);
-		}
-	}
+	// async function processDocument(apiKey: string, docURL: string, password: string, pages: string, destinationFile: string) {
+	// 	try {
+	// 		// Step 1: Skip the upload and directly convert the file using the URL
+	// 		convertPdfToJson(apiKey, docURL, password, pages, destinationFile);
+	// 	} catch (error) {
+	// 		console.error('Error processing document:', error);
+	// 	}
+	// }
 	
-	function convertPdfToJson(apiKey: string, uploadedFileUrl: string, password: string, pages: string, destinationFile: string): void {
-		const queryPath = '/v1/pdf/convert/to/json';
+	// function convertPdfToJson(apiKey: string, uploadedFileUrl: string, password: string, pages: string, destinationFile: string): void {
+	// 	const queryPath = '/v1/pdf/convert/to/json';
 	
-		const jsonPayload = JSON.stringify({
-			name: path.basename(destinationFile),
-			password,
-			pages,
-			url: uploadedFileUrl  // Use docURL directly
-		});
+	// 	const jsonPayload = JSON.stringify({
+	// 		name: path.basename(destinationFile),
+	// 		password,
+	// 		pages,
+	// 		url: uploadedFileUrl  // Use docURL directly
+	// 	});
 	
-		const reqOptions = {
-			host: 'api.pdf.co',
-			method: 'POST',
-			path: queryPath,
-			headers: {
-				'x-api-key': apiKey,
-				'Content-Type': 'application/json',
-				'Content-Length': Buffer.byteLength(jsonPayload, 'utf8')
-			}
-		};
+	// 	const reqOptions = {
+	// 		host: 'api.pdf.co',
+	// 		method: 'POST',
+	// 		path: queryPath,
+	// 		headers: {
+	// 			'x-api-key': apiKey,
+	// 			'Content-Type': 'application/json',
+	// 			'Content-Length': Buffer.byteLength(jsonPayload, 'utf8')
+	// 		}
+	// 	};
 		
-		const postRequest = https.request(reqOptions, (response: IncomingMessage) => {
-			let responseData = '';
-			response.on('data', (chunk) => {
-				responseData += chunk;
-			});
+	// 	const postRequest = https.request(reqOptions, (response: IncomingMessage) => {
+	// 		let responseData = '';
+	// 		response.on('data', (chunk) => {
+	// 			responseData += chunk;
+	// 		});
 	
-			response.on('end', () => {
-				const data = JSON.parse(responseData);
-				if (!data.error) {
-					const file = fs.createWriteStream(destinationFile);
-					https.get(data.url, (response2: IncomingMessage) => {
-						response2.pipe(file).on('close', () => {
-							console.log(`Generated JSON file saved as "${destinationFile}"`);
-						});
-					});
-				} else {
-					console.log(`convertPdfToJson(): ${data.message}`);
-				}
-			});
-		}).on('error', (e: Error) => {
-			console.log(`convertPdfToJson(): ${e.message}`);
-		});
+	// 		response.on('end', () => {
+	// 			const data = JSON.parse(responseData);
+	// 			if (!data.error) {
+	// 				const file = fs.createWriteStream(destinationFile);
+	// 				https.get(data.url, (response2: IncomingMessage) => {
+	// 					response2.pipe(file).on('close', () => {
+	// 						console.log(`Generated JSON file saved as "${destinationFile}"`);
+	// 					});
+	// 				});
+	// 			} else {
+	// 				console.log(`convertPdfToJson(): ${data.message}`);
+	// 			}
+	// 		});
+	// 	}).on('error', (e: Error) => {
+	// 		console.log(`convertPdfToJson(): ${e.message}`);
+	// 	});
 	
-		postRequest.write(jsonPayload);
-		postRequest.end();
-	}
+	// 	postRequest.write(jsonPayload);
+	// 	postRequest.end();
+	// }
 	
 	const mockArray = ["abc", "def", "ghi", "jkl", "mno", "pqr"];
 
