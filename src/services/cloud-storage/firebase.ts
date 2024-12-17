@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, getBlob } from "firebase/storage";
 import config from "../../config/firebase-config";
 
 const app = initializeApp(config);
@@ -35,7 +35,17 @@ export class Firebase {
 			return null;
 		}
 	}
-
+	public static async getFileByIdReturningBlob(userId: string, caseId: string, fileId: string) {
+		const filePath = `${userId}/${caseId}/${fileId}`;
+		const fileRef = ref(storage, filePath);
+		try {
+			const url = await getBlob(fileRef);
+			return url;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	}
 	public static async deleteFileById(userId: string, caseId: string, fileId: string) {
 		const filePath = `${userId}/${caseId}/${fileId}`;
 		const fileRef = ref(storage, filePath);
