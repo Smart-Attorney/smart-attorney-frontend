@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
 import fileExtractor from "../../../components/Pdf/FileExtractor";
@@ -13,7 +13,15 @@ import { IncomingMessage } from 'http';
 import https from 'https';
 import path from 'path';
 import fs from 'fs';
+import extractTextFromPdf from "../../../utils/pdfjs";
 
+
+// temp
+
+type Message = {
+	role: "User"  | "assistant";
+	content: string
+}
 interface GenerateModalProps {
 	closeModal: () => void;
 	documents: Document[];
@@ -44,13 +52,36 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 	
 		// Call Firebase.getFileById which returns a Promise
 		Firebase.getFileById(id, caseId, documents[0].id)
-			.then((docURL) => {
+			.then(async (docURL) => {
 				// Check if the URL was retrieved successfully
 				if (!docURL) {
 					alert("Could not retrieve document URL.");
 					return;
 				}
-				alert(docURL)
+				// extractTextFromPdf(docURL)
+				// 	.then((text) => {
+				// 		if (!text) {
+				// 		alert("Text variable is empty");
+				// 		}
+				// 		alert(text.toString());
+				// 	})
+				// 	.catch((error) => {
+				// 		console.error("Error extracting text from PDF", error);
+				// 		alert("Failed to extract text from PDF");
+				// 	});
+
+				// temporary fix
+				// ====================================================================================
+				const [message] = useState("")
+				const response = await fetch("/api/chat", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ message }),
+				})
+				alert(response)
+				// ====================================================================================
 				// const pages = "";
 				// // PDF document password. Leave empty for unprotected documents.
 				// const password = "";
