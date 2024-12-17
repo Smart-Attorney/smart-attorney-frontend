@@ -28,7 +28,7 @@ const RenderDocument = ({
 	const handleTranslate = (fileName: string) => {
 		translateDoc(fileName)
 			.then((res) => {
-				setTranslatedDocUrl(res);
+				setTranslatedDocUrl(res.translatedDocUrl);
 			})
 			.catch((err) => {
 				window.alert("Failed to Translate Files");
