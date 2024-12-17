@@ -20,14 +20,16 @@ interface GenerateModalProps {
 
 function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 	// @ts-ignore
-	const parseSelectedFiles = async (files: FileList): Promise<string> => {
-		let chatGptInput = "";
-		for (let i = 0; i < files.length; i++) {
-			const fileString = await fileExtractor(files[i]);  // Await the result of each Promise
-			chatGptInput += fileString;  // Concatenate each file's content to chatGptInput
-		}
-		return chatGptInput;
-	};
+	const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
+	const { id } = getCurrentUser();
+	// const parseSelectedFiles = async (files: FileList): Promise<string> => {
+	// 	let chatGptInput = "";
+	// 	for (let i = 0; i < files.length; i++) {
+	// 		const fileString = await fileExtractor(files[i]);  // Await the result of each Promise
+	// 		chatGptInput += fileString;  // Concatenate each file's content to chatGptInput
+	// 	}
+	// 	return chatGptInput;
+	// };
 
 	/*
 	workaround ¯\_(ツ)_/¯
@@ -38,9 +40,6 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 			alert("Empty documents array, cannot use this without a document.");
 			return;
 		}
-		const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
-		const { id } = getCurrentUser();
-	
 		// Call Firebase.getFileById which returns a Promise
 		Firebase.getFileById(id, caseId, documents[0].id)
 			.then((docURL) => {
