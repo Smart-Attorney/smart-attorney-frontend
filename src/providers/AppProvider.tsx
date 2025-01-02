@@ -1,4 +1,6 @@
+import { AuthProvider } from "react-oidc-context";
 import { BrowserRouter } from "react-router-dom";
+import { cognitoAuthConfig } from "../config/aws-cognito";
 import { CurrentUserProvider } from "./CurrentUserProvider";
 
 interface AppProviderProps {
@@ -7,9 +9,11 @@ interface AppProviderProps {
 
 function AppProvider({ children }: AppProviderProps) {
 	return (
-		<CurrentUserProvider>
-			<BrowserRouter>{children}</BrowserRouter>
-		</CurrentUserProvider>
+		<AuthProvider {...cognitoAuthConfig}>
+			<CurrentUserProvider>
+				<BrowserRouter>{children}</BrowserRouter>
+			</CurrentUserProvider>
+		</AuthProvider>
 	);
 }
 

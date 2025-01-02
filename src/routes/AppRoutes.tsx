@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import Auth from "../pages/Auth";
 import Calendar from "../pages/Calendar";
 import CaseFolder from "../pages/CaseFolder";
 import CreateCaseFolder from "../pages/CreateCaseFolder";
@@ -19,6 +20,7 @@ function AppRoutes() {
 			<RemoveTrailingSlash />
 			<Routes>
 				<Route path="/" element={<Root />} />
+				<Route path="/auth" element={<Auth />} />
 				<Route path="/home" element={<Home />} />
 				<Route path="/signin" element={<SignIn />} />
 				<Route path="/register" element={<Register />} />

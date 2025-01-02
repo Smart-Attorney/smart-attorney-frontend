@@ -1,14 +1,20 @@
+import { useAuth } from "react-oidc-context";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import StyledBackground from "../layouts/StyledBackground";
 
 function Home() {
+  const auth = useAuth();
+
 	/************************************************************/
 
+  const signInRedirect = "";
+  const signUpRedirect = "";
+
 	const signInUrl =
-		"https://us-east-2rzbg9wm8w.auth.us-east-2.amazoncognito.com/login?client_id=lkfl0igiketrigb6pk7r4di9f&redirect_uri=https%3A%2F%2Fd84l1y8p4kdic.cloudfront.net&response_type=token&scope=email+openid+phone";
+		`https://us-east-2rzbg9wm8w.auth.us-east-2.amazoncognito.com/login?client_id=lkfl0igiketrigb6pk7r4di9f&redirect_uri=https%3A%2F%2Fsmartattorney.netlify.app%2Fdashboard&response_type=token&scope=email+openid+phone`;
 
 	const createAnAccountUrl =
-		"https://us-east-2rzbg9wm8w.auth.us-east-2.amazoncognito.com/signup?client_id=lkfl0igiketrigb6pk7r4di9f&redirect_uri=https%3A%2F%2Fd84l1y8p4kdic.cloudfront.net&response_type=token&scope=email+openid+phone";
+		`https://us-east-2rzbg9wm8w.auth.us-east-2.amazoncognito.com/signup?client_id=lkfl0igiketrigb6pk7r4di9f&redirect_uri=https%3A%2F%2Fsmartattorney.netlify.app%2Fdashboard&response_type=token&scope=email+openid+phone`;
 
 	/************************************************************/
 
@@ -25,10 +31,11 @@ function Home() {
 			<div className="flex flex-col items-center py-20">
 				<img className="h-32" src={SmartAttorneyLogo} />
 			</div>
+
 			<div className="flex flex-col items-center">
-				<form className=" h-min w-[545px] rounded-3xl px-20 py-14 border border-[#302c7c]" style={formBackgroundStyle}>
+				<div className=" h-min w-[545px] rounded-3xl px-20 py-14 border border-[#302c7c]" style={formBackgroundStyle}>
 					<div className="flex flex-col items-center w-full h-full">
-						<div className="mb-16">
+						<div className="mb-14">
 							<h1 className="text-4xl font-normal text-white ">Welcome back!</h1>
 						</div>
 
@@ -48,7 +55,7 @@ function Home() {
 							Create an account
 						</a>
 					</div>
-				</form>
+				</div>
 			</div>
 		</StyledBackground>
 	);
