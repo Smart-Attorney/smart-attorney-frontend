@@ -58,29 +58,29 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 					alert("Could not retrieve document URL.");
 					return;
 				}
-				// extractTextFromPdf(docURL)
-				// 	.then((text) => {
-				// 		if (!text) {
-				// 		alert("Text variable is empty");
-				// 		}
-				// 		alert(text.toString());
-				// 	})
-				// 	.catch((error) => {
-				// 		console.error("Error extracting text from PDF", error);
-				// 		alert("Failed to extract text from PDF");
-				// 	});
+				extractTextFromPdf(docURL)
+					.then((text) => {
+						if (!text) {
+						alert("Text variable is empty");
+						}
+						alert(text.toString());
+					})
+					.catch((error) => {
+						console.error("Error extracting text from PDF", error);
+						alert("Failed to extract text from PDF");
+					});
 
 				// temporary fix
 				// ====================================================================================
-				const [message] = useState("")
-				const response = await fetch("/api/chat", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ message }),
-				})
-				alert(response)
+				// const [message] = useState("")
+				// const response = await fetch("/api/chat", {
+				// 	method: "POST",
+				// 	headers: {
+				// 		"Content-Type": "application/json",
+				// 	},
+				// 	body: JSON.stringify({ message }),
+				// })
+				// alert(response)
 				// ====================================================================================
 				// const pages = "";
 				// // PDF document password. Leave empty for unprotected documents.
