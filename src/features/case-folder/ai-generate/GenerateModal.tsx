@@ -5,6 +5,7 @@ import fileExtractor from "../../../components/Pdf/FileExtractor";
 import { CurrentUserContext, CurrentUserContextType } from "../../../providers/CurrentUserProvider";
 import { Firebase } from "../../../services/cloud-storage/firebase";
 import { Document } from "../../../types/api";
+import { gettext } from "./getText";
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
@@ -58,16 +59,12 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 					alert("Could not retrieve document URL.");
 					return;
 				}
-				extractTextFromPdf(docURL)
+				gettext(docURL)
 					.then((text) => {
-						if (!text) {
-						alert("Text variable is empty");
-						}
-						alert(text.toString());
+						console.log('Parsed:', text);
 					})
-					.catch((error) => {
-						console.error("Error extracting text from PDF", error);
-						alert("Failed to extract text from PDF");
+					.catch((reason) => {
+						console.error(reason);
 					});
 
 				// temporary fix
