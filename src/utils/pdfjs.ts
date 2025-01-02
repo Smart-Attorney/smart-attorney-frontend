@@ -1,6 +1,5 @@
 import { pdfjs } from 'react-pdf';
 import { TextContent, TextItem } from 'pdfjs-dist/types/src/display/api'; // pdf.js types
-import { GlobalWorkerOptions } from 'pdfjs-dist';
 
 // Function to extract text from PDF
 export const extractTextFromPdf = async (pdfUrl: string): Promise<string> => {

@@ -1,28 +1,28 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import fileExtractor from "../../../components/Pdf/FileExtractor";
+// import fileExtractor from "../../../components/Pdf/FileExtractor";
 import { CurrentUserContext, CurrentUserContextType } from "../../../providers/CurrentUserProvider";
 import { Firebase } from "../../../services/cloud-storage/firebase";
 import { Document } from "../../../types/api";
 import { gettext } from "./getText";
-import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+// import { initializeApp } from 'firebase/app';
+// import { getFirestore, doc, getDoc } from 'firebase/firestore';
+// import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-import { IncomingMessage } from 'http';
-import https from 'https';
-import path from 'path';
-import fs from 'fs';
-import extractTextFromPdf from "../../../utils/pdfjs";
+// import { IncomingMessage } from 'http';
+// import https from 'https';
+// import path from 'path';
+// import fs from 'fs';
+// import extractTextFromPdf from "../../../utils/pdfjs";
 
 
 // temp
 
-type Message = {
-	role: "User"  | "assistant";
-	content: string
-}
+// type Message = {
+// 	role: "User"  | "assistant";
+// 	content: string
+// }
 interface GenerateModalProps {
 	closeModal: () => void;
 	documents: Document[];
@@ -32,14 +32,14 @@ interface GenerateModalProps {
 function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
 	const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
 	const { id } = getCurrentUser();
-	const parseSelectedFiles = async (files: FileList): Promise<string> => {
-		let chatGptInput = "";
-		for (let i = 0; i < files.length; i++) {
-			const fileString = await fileExtractor(files[i]);  // Await the result of each Promise
-			chatGptInput += fileString;  // Concatenate each file's content to chatGptInput
-		}
-		return chatGptInput;
-	};
+	// const parseSelectedFiles = async (files: FileList): Promise<string> => {
+	// 	let chatGptInput = "";
+	// 	for (let i = 0; i < files.length; i++) {
+	// 		const fileString = await fileExtractor(files[i]);  // Await the result of each Promise
+	// 		chatGptInput += fileString;  // Concatenate each file's content to chatGptInput
+	// 	}
+	// 	return chatGptInput;
+	// };
 
 	/*
 	workaround ¯\_(ツ)_/¯
