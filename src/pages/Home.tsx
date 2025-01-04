@@ -1,20 +1,34 @@
-import { useAuth } from "react-oidc-context";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
+import { cognitoAuthConfig } from "../config/aws-cognito";
 import StyledBackground from "../layouts/StyledBackground";
 
 function Home() {
-  const auth = useAuth();
+	const isDevEnv = import.meta.env.DEV;
+	const { cognito_domain, client_id, response_type, scope, redirect_uri_local, redirect_uri_hosted } =
+		cognitoAuthConfig;
+	const redirectUri = isDevEnv ? redirect_uri_local : redirect_uri_hosted;
 
 	/************************************************************/
 
-  const signInRedirect = "";
-  const signUpRedirect = "";
+	const signInRedirect = () => {
+		window.location.href =
+			`${cognito_domain}` +
+			`/login` +
+			`?client_id=${client_id}` +
+			`&response_type=${response_type}` +
+			`&scope=${scope}` +
+			`&redirect_uri=${encodeURIComponent(redirectUri)}`;
+	};
 
-	const signInUrl =
-		`https://us-east-2rzbg9wm8w.auth.us-east-2.amazoncognito.com/login?client_id=lkfl0igiketrigb6pk7r4di9f&redirect_uri=https%3A%2F%2Fsmartattorney.netlify.app%2Fdashboard&response_type=token&scope=email+openid+phone`;
-
-	const createAnAccountUrl =
-		`https://us-east-2rzbg9wm8w.auth.us-east-2.amazoncognito.com/signup?client_id=lkfl0igiketrigb6pk7r4di9f&redirect_uri=https%3A%2F%2Fsmartattorney.netlify.app%2Fdashboard&response_type=token&scope=email+openid+phone`;
+	const signUpRedirect = () => {
+		window.location.href =
+			`${cognito_domain}` +
+			`/signup` +
+			`?client_id=${client_id}` +
+			`&response_type=${response_type}` +
+			`&scope=${scope}` +
+			`&redirect_uri=${encodeURIComponent(redirectUri)}`;
+	};
 
 	/************************************************************/
 
@@ -39,21 +53,23 @@ function Home() {
 							<h1 className="text-4xl font-normal text-white ">Welcome back!</h1>
 						</div>
 
-						<a
-							className="w-full mb-4 text-xl/[3.5rem] text-center bg-white rounded-lg font h-14 hover:bg-slate-300"
-							href={signInUrl}
+						<button
+							className="w-full mb-4 bg-white rounded-lg h-14 hover:bg-slate-300"
+							type="button"
+							onClick={signInRedirect}
 						>
-							Sign in
-						</a>
+							<span className="text-xl">Sign in</span>
+						</button>
 
 						<p className="mb-4 text-white">or</p>
 
-						<a
-							className="w-full text-xl/[3.5rem] text-center text-white border-2 border-white rounded-lg h-14 hover:bg-indigo-700"
-							href={createAnAccountUrl}
+						<button
+							className="w-full border-2 border-white rounded-lg h-14 hover:bg-indigo-700"
+							type="button"
+							onClick={signUpRedirect}
 						>
-							Create an account
-						</a>
+							<span className="text-xl text-white">Create an account</span>
+						</button>
 					</div>
 				</div>
 			</div>
