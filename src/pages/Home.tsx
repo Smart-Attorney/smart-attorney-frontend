@@ -1,33 +1,18 @@
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
-import { cognitoAuthConfig } from "../config/aws-cognito";
 import StyledBackground from "../layouts/StyledBackground";
+import { signInUrl, signOutUrl, signUpUrl } from "../services/aws/managed-login-endpoints";
 
 function Home() {
-	const isDevEnv = import.meta.env.DEV;
-	const { cognito_domain, client_id, response_type, scope, redirect_uri_local, redirect_uri_hosted } =
-		cognitoAuthConfig;
-	const redirectUri = isDevEnv ? redirect_uri_local : redirect_uri_hosted;
-
-	/************************************************************/
-
-	const signInRedirect = () => {
-		window.location.href =
-			`${cognito_domain}` +
-			`/login` +
-			`?client_id=${client_id}` +
-			`&response_type=${response_type}` +
-			`&scope=${scope}` +
-			`&redirect_uri=${encodeURIComponent(redirectUri)}`;
+	const signUpRedirect = () => {
+		window.location.href = signUpUrl;
 	};
 
-	const signUpRedirect = () => {
-		window.location.href =
-			`${cognito_domain}` +
-			`/signup` +
-			`?client_id=${client_id}` +
-			`&response_type=${response_type}` +
-			`&scope=${scope}` +
-			`&redirect_uri=${encodeURIComponent(redirectUri)}`;
+	const signInRedirect = () => {
+		window.location.href = signInUrl;
+	};
+
+	const signOutRedirect = () => {
+		window.location.href = signOutUrl;
 	};
 
 	/************************************************************/
@@ -64,11 +49,21 @@ function Home() {
 						<p className="mb-4 text-white">or</p>
 
 						<button
-							className="w-full border-2 border-white rounded-lg h-14 hover:bg-indigo-700"
+							className="w-full mb-4 border-2 border-white rounded-lg h-14 hover:bg-indigo-700"
 							type="button"
 							onClick={signUpRedirect}
 						>
 							<span className="text-xl text-white">Create an account</span>
+						</button>
+
+						<p className="mb-4 text-white">or</p>
+
+						<button
+							className="w-full bg-purple-700 border-2 border-white rounded-lg h-14 hover:bg-purple-500"
+							type="button"
+							onClick={signOutRedirect}
+						>
+							<span className="text-xl text-white">Sign out</span>
 						</button>
 					</div>
 				</div>

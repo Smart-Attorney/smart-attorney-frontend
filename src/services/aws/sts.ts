@@ -18,14 +18,14 @@ export const getCallerIdentity = async (credentials: Credentials) => {
 		sessionToken: credentials?.SessionToken,
 	};
 
-	const stsClientConfig: STSClientConfig = { region: region, credentials: stsCredentials };
-	const stsClient = new STSClient(stsClientConfig);
+	const clientConfig: STSClientConfig = { region: region, credentials: stsCredentials };
+	const client = new STSClient(clientConfig);
 
 	const getCallerIdentityInput: GetCallerIdentityCommandInput = {};
 	const getCallerIdentityCommand = new GetCallerIdentityCommand(getCallerIdentityInput);
 
 	try {
-		const response: GetCallerIdentityCommandOutput = await stsClient.send(getCallerIdentityCommand);
+		const response: GetCallerIdentityCommandOutput = await client.send(getCallerIdentityCommand);
 		return response;
 	} catch (error) {
 		console.log(error);

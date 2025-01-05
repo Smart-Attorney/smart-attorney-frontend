@@ -1,45 +1,54 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { cognitoAuthConfig } from "../config/aws-cognito";
-import { getCredentials, getIdentityId, LoginsMap } from "../services/aws/cognito-identity";
+import { getCredentials, getIdentityId } from "../services/aws/cognito-identity";
+import { getUser, globalSignOut } from "../services/aws/cognito-identity-provider";
+import { getTokens, revokeTokens, TokenEndpointResponseBody } from "../services/aws/federation-endpoints";
 import { getCallerIdentity } from "../services/aws/sts";
 
 function Auth() {
 	const location = useLocation();
-	const { identity_pool_id, identity_provider } = cognitoAuthConfig;
-
-	// get id_token returned from cognito user pool
-	const idToken = location.hash.match(/(?<=id_token=)(.*)(?=&access_token)/)?.[0];
-	const accessToken = location.hash.match(/(?<=access_token=)(.*)(?=&expires_in)/)?.[0];
-	const expiresIn = location.hash.match(/(?<=expires_in=)(.*)(?=&token_type)/)?.[0];
-	const tokenType = location.hash.match(/(?<=token_type=)(.*)(?=)/)?.[0];
 
 	/************************************************************/
 
-	const loginsObj: LoginsMap = { [identity_provider]: idToken! };
+	useEffect(() => {
+		testFlow();
+	}, []);
 
-	getIdentityId(identity_pool_id, loginsObj).then((id) => {
-		console.log("identity_id:", id);
+	const getAuthorizationCodeFromUrl = async () => {
+		const authorizationCode = await location.search.match(/(?<=code=)(.*)(?=)/)?.[0]!;
+		return authorizationCode;
+	};
 
-		getCredentials(id!, loginsObj).then((creds) => {
-			console.log("credentials:", creds);
+	const testFlow = async () => {
+		const authCode = await getAuthorizationCodeFromUrl();
+		console.log("auth code: ", authCode);
 
-			getCallerIdentity(creds!).then((info) => {
-				console.log("user_info:", info);
-			});
-		});
-	});
+		const tokensResponse = await getTokens(authCode);
+		const tokens: TokenEndpointResponseBody = await tokensResponse?.json();
+		console.log("tokens: ", tokens);
+
+		const revokeTokensResponse = await revokeTokens(tokens.refresh_token!);
+		const revokedToken = revokeTokensResponse;
+		console.log("revoked token: ", revokedToken);
+
+		const user = await getUser(tokens.access_token);
+		console.log("user: ", user);
+
+		const globalLogout = await globalSignOut(tokens.access_token);
+		console.log("global logout: ", globalLogout);
+
+		const identityId = await getIdentityId(tokens.id_token);
+		console.log("identity id: ", identityId);
+
+		const credentials = await getCredentials(identityId!, tokens.id_token);
+		console.log("credentials: ", credentials);
+
+		const callerIdentity = await getCallerIdentity(credentials!);
+		console.log("caller identity: ", callerIdentity);
+	};
 
 	/************************************************************/
-	return (
-		<>
-			<pre className="w-screen"> ID Token: {idToken} </pre>
-			<pre className="w-screen"> Access Token: {accessToken} </pre>
-			<pre className="w-screen"> Expires In: {expiresIn} </pre>
-			<pre className="w-screen"> Token Type: {tokenType} </pre>
-			<hr />
-			<pre className="w-screen"></pre>
-		</>
-	);
+	return <div className="w-screen h-screen bg-indigo-700"></div>;
 }
 
 export default Auth;
