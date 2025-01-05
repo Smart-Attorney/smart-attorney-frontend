@@ -47,7 +47,7 @@ export const getTokens = async (authorizationCode: string) => {
 	}
 };
 
-export const revokeTokens = async (refreshToken: string) => {
+export const revokeRefreshToken = async (refreshToken: string) => {
 	const endpoint = "/oauth2/revoke";
 
 	const data = `token=${refreshToken}&` + `client_id=${client_id}&`;

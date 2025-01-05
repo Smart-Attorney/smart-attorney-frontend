@@ -29,7 +29,7 @@ export const getUser = async (accessToken: string) => {
 	}
 };
 
-export const globalSignOut = async (accessToken: string) => {
+export const revokeAccessToken = async (accessToken: string) => {
 	const signOutInput: GlobalSignOutCommandInput = {
 		AccessToken: accessToken,
 	};
