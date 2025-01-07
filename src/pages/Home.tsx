@@ -1,20 +1,8 @@
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import StyledBackground from "../layouts/StyledBackground";
-import { signInUrl, signOutUrl, signUpUrl } from "../services/aws/managed-login-endpoints";
+import { signInUrl, signUpUrl } from "../services/aws/managed-login-endpoints";
 
 function Home() {
-	const signUpRedirect = () => {
-		window.location.href = signUpUrl;
-	};
-
-	const signInRedirect = () => {
-		window.location.href = signInUrl;
-	};
-
-	const signOutRedirect = () => {
-		window.location.href = signOutUrl;
-	};
-
 	/************************************************************/
 
 	/* TODO
@@ -33,38 +21,38 @@ function Home() {
 
 			<div className="flex flex-col items-center">
 				<div className=" h-min w-[545px] rounded-3xl px-20 py-14 border border-[#302c7c]" style={formBackgroundStyle}>
-					<div className="flex flex-col items-center w-full h-full">
+					<div className="flex flex-col items-center w-full h-full gap-y-4">
 						<div className="mb-14">
 							<h1 className="text-4xl font-normal text-white ">Welcome back!</h1>
 						</div>
 
-						<button
-							className="w-full mb-4 bg-white rounded-lg h-14 hover:bg-slate-300"
-							type="button"
-							onClick={signInRedirect}
+						<a
+							className="flex items-center justify-center w-full bg-white border-2 border-white rounded-lg hover:bg-slate-300 h-14"
+							href={signInUrl}
+							target="_self"
 						>
-							<span className="text-xl">Sign in</span>
-						</button>
+							<span className="text-xl text-black">Sign in</span>
+						</a>
 
-						<p className="mb-4 text-white">or</p>
+						<p className="text-white">or</p>
 
-						<button
-							className="w-full mb-4 border-2 border-white rounded-lg h-14 hover:bg-indigo-700"
-							type="button"
-							onClick={signUpRedirect}
+						<a
+							className="flex items-center justify-center w-full bg-transparent border-2 border-white rounded-lg hover:bg-indigo-700 h-14"
+							href={signUpUrl}
+							target="_self"
 						>
 							<span className="text-xl text-white">Create an account</span>
-						</button>
+						</a>
 
-						<p className="mb-4 text-white">or</p>
+						{/* <p className="text-white">or</p>
 
-						<button
-							className="w-full bg-purple-700 border-2 border-white rounded-lg h-14 hover:bg-purple-500"
-							type="button"
-							onClick={signOutRedirect}
+						<a
+							className="flex items-center justify-center w-full bg-purple-700 border-2 border-white rounded-lg h-14 hover:bg-purple-500"
+							href={signOutUrl}
+							target="_self"
 						>
-							<span className="text-xl text-white">Sign out</span>
-						</button>
+							<span className="text-xl text-white">Logout</span>
+						</a> */}
 					</div>
 				</div>
 			</div>
