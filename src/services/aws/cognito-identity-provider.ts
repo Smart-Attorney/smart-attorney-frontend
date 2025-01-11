@@ -15,6 +15,7 @@ const { region } = cognitoAuthConfig;
 const clientConfig: CognitoIdentityProviderClientConfig = { region: region };
 const client = new CognitoIdentityProviderClient(clientConfig);
 
+// https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_GetUser.html
 export const getUser = async (accessToken: string) => {
 	const getUserInput: GetUserCommandInput = {
 		AccessToken: accessToken,
@@ -29,7 +30,8 @@ export const getUser = async (accessToken: string) => {
 	}
 };
 
-export const revokeAccessToken = async (accessToken: string) => {
+// https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_GlobalSignOut.html
+export const globalSignOut = async (accessToken: string) => {
 	const signOutInput: GlobalSignOutCommandInput = {
 		AccessToken: accessToken,
 	};
@@ -41,4 +43,6 @@ export const revokeAccessToken = async (accessToken: string) => {
 	} catch (error) {
 		console.log(error);
 	}
+
+	// https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_RevokeToken.html
 };

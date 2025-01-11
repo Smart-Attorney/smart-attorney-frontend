@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getCredentials, getIdentityId } from "../services/aws/cognito-identity";
-import { getUser, revokeAccessToken } from "../services/aws/cognito-identity-provider";
-import { getTokens, revokeRefreshToken, TokenEndpointResponseBody } from "../services/aws/federation-endpoints";
-import { getCallerIdentity } from "../services/aws/sts";
+import { AuthzCodeDTO, getJwts } from "../features/auth/api/get-jwts";
 
 function Auth() {
 	const location = useLocation();
@@ -20,33 +17,18 @@ function Auth() {
 	};
 
 	const testFlow = async () => {
-		const authCode = await getAuthorizationCodeFromUrl();
+		const authzCode = await getAuthorizationCodeFromUrl();
 
-		const tokensResponse = await getTokens(authCode);
-		const tokens: TokenEndpointResponseBody = await tokensResponse?.json();
+		const data: AuthzCodeDTO = {
+			code: authzCode,
+		};
+		const response = await getJwts(data);
 
-		const user = await getUser(tokens.access_token);
+		console.log(response);
+		console.log(await response.json());
 
-		const identityId = await getIdentityId(tokens.id_token);
-
-		const credentials = await getCredentials(identityId!, tokens.id_token);
-
-		const callerIdentity = await getCallerIdentity(credentials!);
-
-		const revokeAccessResponse = await revokeAccessToken(tokens.access_token);
-		const isAccessRevoked = revokeAccessResponse?.$metadata.httpStatusCode;
-
-		const revokeRefreshResponse = await revokeRefreshToken(tokens.refresh_token!);
-		const isRefreshRevoked = revokeRefreshResponse?.status;
-
-		console.log("auth code__________", authCode);
-		console.log("tokens_____________", tokens);
-		console.log("user info__________", user);
-		console.log("identity id________", identityId);
-		console.log("credentials________", credentials);
-		console.log("caller identity____", callerIdentity);
-		console.log("access revoked?____", isAccessRevoked);
-		console.log("refresh revoked?___", isRefreshRevoked);
+		// globalSignOut and logout endpoint to end user session
+		// remove all tokens
 	};
 
 	/************************************************************/

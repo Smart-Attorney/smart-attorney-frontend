@@ -20,6 +20,7 @@ const { region, identity_pool_id, identity_provider } = cognitoAuthConfig;
 const clientConfig: CognitoIdentityClientConfig = { region: region };
 const client = new CognitoIdentityClient(clientConfig);
 
+// https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_GetId.html
 export const getIdentityId = async (idToken: string) => {
 	const loginsObj: LoginsMap = { [identity_provider]: idToken };
 	const getIdentityIdInput: GetIdCommandInput = {
@@ -36,6 +37,7 @@ export const getIdentityId = async (idToken: string) => {
 	}
 };
 
+// https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_GetCredentialsForIdentity.html
 export const getCredentials = async (identityId: string, idToken: string) => {
 	const loginsObj: LoginsMap = { [identity_provider]: idToken };
 	const getCredentialsInput: GetCredentialsForIdentityCommandInput = {

@@ -11,6 +11,7 @@ import { cognitoAuthConfig } from "../../config/aws-cognito";
 
 const { region } = cognitoAuthConfig;
 
+// https://docs.aws.amazon.com/STS/latest/APIReference/API_GetCallerIdentity.html
 export const getCallerIdentity = async (credentials: Credentials) => {
 	const stsCredentials: AwsCredentialIdentity = {
 		accessKeyId: credentials?.AccessKeyId!,

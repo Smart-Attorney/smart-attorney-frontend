@@ -15,6 +15,7 @@ export interface TokenEndpointResponseBody {
 	expires_in: number;
 }
 
+// https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
 export const getTokens = async (authorizationCode: string) => {
 	const endpoint = "/oauth2/token";
 
@@ -47,6 +48,7 @@ export const getTokens = async (authorizationCode: string) => {
 	}
 };
 
+// https://docs.aws.amazon.com/cognito/latest/developerguide/revocation-endpoint.html
 export const revokeRefreshToken = async (refreshToken: string) => {
 	const endpoint = "/oauth2/revoke";
 
