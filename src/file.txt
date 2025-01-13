@@ -1,0 +1,68 @@
+Calvin Yang 
+Brooklyn, New York |cyang8980@gmail.com | (718)-877-9121| http://www.calvin-yang.com | LinkedIn | GitHub 
+EDUCATION     
+Skidmore College           
+B.A. in Computer Science                                            
+Saratoga Springs, New York  
+May 2023 
+● Related Coursework: Data Structures & Algorithms, Computer Organization, Artificial Intelligence, Applied Data 
+Science, Digital Image Processing, Computer Vision, Complexity and Heuristics, Object Oriented Programming 
+EXPERIENCE     
+Headstarter AI             
+Software Engineer Resident     
+New York, New York 
+Jul 2024 – Present 
+● Improved DSA score from 40% to over 70% using AI mock interviews leading to more clear and concise planning. 
+● Learned new technologies such as Clerk, Stripe, GROQ, and more through project-based learning and hackathons hosted by 
+Headstarter. 
+Smart Attorney                          
+Freelance Software Engineer    
+● Implemented fine-tuning learning model with ChatGPT API for AI chat bot using ~50 datasets 
+New York, New York 
+Sep 2023 – Present 
+● Used React and Spring + MySQL backend to build a functional dashboard allowing users to upload documents 
+● Worked under an Agile development environment organized by Jira tickets and version controlled on GitHub 
+Skidmore College           
+CS106 TA                           
+New York, New York 
+Jan 2023 – May 2023 
+● Held regular office hours to answer student questions, clarify concepts, and provide additional academic support 
+● Supported students in group projects, promoting teamwork and effective collaboration in software development 
+● Guided students through hands-on coding exercises and debugged code to enhance their learning experience 
+PROJECTS      
+Discord Clone                         
+Personal Project                        
+New York, New York 
+Nov 2024 – Nov 2024 
+• Used React, Clerk, Convex to build a fake discord that allows users to message to each other, create servers, and join 
+voice chats 
+• Used Clerk and Convex APIs to expedite development. 
+AI Pokémon Flashcards & Stripe                        
+Personal Project                        
+New York, New York 
+Aug 2024 – Aug 2024 
+● Used Next.js, Clerk, Firebase, OpenAI, and Stripe to develop a SaaS Flashcard generation application with hosted on Vercel 
+that generated 200+ user interest through the waitlist 
+● Implemented OpenAI API with custom System prompt to generate flashcards to help users study effectively and efficiently 
+AI Rate My Professor                                                          
+Personal Project                         
+New York, New York 
+Aug 2024 – Aug 2024 
+● Utilized Next.js, OpenAI, and Pinecone, to develop an AI-powered rate my professor assistant enhancing the user 
+experience by providing intelligent professor evaluations and recommendations hosted on Vercel 
+● Integrated advanced natural language processing (NLP) models from OpenAI with a Pinecone-powered vector search 
+engine, delivering personalized and accurate professor ratings and reviews 
+● Optimized full-stack application for scalability and performance, leveraging server-side rendering in Next.js and 
+implementing efficient data retrieval and storage solutions with Pinecone 
+Chess Game with AI                                                         
+Personal Project                         
+Saratoga Springs, New York 
+Jan 2023 – May 2023 
+● In Java created a 2-player, terminal-based chess game with an AI opponent using the alpha-beta minimax algorithm and Q
+Learning RL algorithm 
+● Employed Object Oriented Programming to create classes of pieces, square, and board 
+● Experimented with training a reinforcement learning AI to play chess using the SARSA algorithm 
+INTERESTS & SKILLS    
+Programming:  Java, Python, JavaScript, SQL, Spring, NodeJS, Ruby on Rails, ExpressJS 
+Tools:  PyCharm, Eclipse, VS Code, Git, Agile, PEGA, MySQL, MongoDB 
+Interests: K-pop, Gaming, Anime, Chess 

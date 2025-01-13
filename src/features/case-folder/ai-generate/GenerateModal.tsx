@@ -1,22 +1,28 @@
 import { useContext } from "react";
 import ModalSpecialButton from "../../../components/Buttons/ModalSpecialButton";
 import ModalDialog from "../../../components/Modal/ModalDialog";
-import fileExtractor from "../../../components/Pdf/FileExtractor";
-import {
-  CurrentUserContext,
-  CurrentUserContextType,
-} from "../../../providers/CurrentUserProvider";
+// import fileExtractor from "../../../components/Pdf/FileExtractor";
+import { CurrentUserContext, CurrentUserContextType } from "../../../providers/CurrentUserProvider";
 import { Firebase } from "../../../services/cloud-storage/firebase";
 import { Document } from "../../../types/api";
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { gettext } from "./getText";
+// import { initializeApp } from 'firebase/app';
+// import { getFirestore, doc, getDoc } from 'firebase/firestore';
+// import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-import { IncomingMessage } from "http";
-import https from "https";
-import path from "path";
-import fs from "fs";
+// import { IncomingMessage } from 'http';
+// import https from 'https';
+// import path from 'path';
+// import fs from 'fs';
+// import extractTextFromPdf from "../../../utils/pdfjs";
 
+
+// temp
+
+// type Message = {
+// 	role: "User"  | "assistant";
+// 	content: string
+// }
 interface GenerateModalProps {
   closeModal: () => void;
   documents: Document[];
@@ -24,103 +30,130 @@ interface GenerateModalProps {
 }
 
 function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
-  /*
+	const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
+	const { id } = getCurrentUser();
+	// const parseSelectedFiles = async (files: FileList): Promise<string> => {
+	// 	let chatGptInput = "";
+	// 	for (let i = 0; i < files.length; i++) {
+	// 		const fileString = await fileExtractor(files[i]);  // Await the result of each Promise
+	// 		chatGptInput += fileString;  // Concatenate each file's content to chatGptInput
+	// 	}
+	// 	return chatGptInput;
+	// };
+
+	/*
 	workaround ¯\_(ツ)_/¯
 	link opens new tab to jun's deployed app
 	*/
-  const handleLinkToJunCode = (): void => {
-    const { getCurrentUser } = useContext(
-      CurrentUserContext
-    ) as CurrentUserContextType;
-    const { id } = getCurrentUser();
-    if (documents.length === 0) {
-      alert("Empty documents array, cannot use this without a document.");
-      return;
-    }
-    // Call Firebase.getFileById which returns a Promise
-    Firebase.getFileById(id, caseId, documents[0].id)
-      .then((docURL) => {
-        // Check if the URL was retrieved successfully
-        if (!docURL) {
-          alert("Could not retrieve document URL.");
-          return;
-        }
-        alert(docURL);
-        // const pages = "";
-        // // PDF document password. Leave empty for unprotected documents.
-        // const password = "";
-        // // Destination JSON file name
-        // const destinationFile = "./result.json";
-        // Pass the docURL to processDocument
-        // processDocument(API_KEY, docURL, password, pages, destinationFile);
+	const handleLinkToJunCode = (): void => {
+		if (documents.length === 0) {
+			alert("Empty documents array, cannot use this without a document.");
+			return;
+		}
+	
+		// Call Firebase.getFileById which returns a Promise
+		Firebase.getFileById(id, caseId, documents[0].id)
+			.then(async (docURL) => {
+				// Check if the URL was retrieved successfully
+				if (!docURL) {
+					alert("Could not retrieve document URL.");
+					return;
+				}
+				gettext(docURL)
+					.then((text) => {
+						console.log('Parsed:', text);
+					})
+					.catch((reason) => {
+						console.error(reason);
+					});
 
-        // Optionally open an external link
-        const url = "https://astonishing-speculoos-022482.netlify.app/build/";
-        window.open(url, "_blank");
-      })
-      .catch((error) => {
-        console.error("Error retrieving document URL:", error);
-      });
-  };
-
-  // async function processDocument(apiKey: string, docURL: string, password: string, pages: string, destinationFile: string) {
-  // 	try {
-  // 		// Step 1: Skip the upload and directly convert the file using the URL
-  // 		convertPdfToJson(apiKey, docURL, password, pages, destinationFile);
-  // 	} catch (error) {
-  // 		console.error('Error processing document:', error);
-  // 	}
-  // }
-
-  // function convertPdfToJson(apiKey: string, uploadedFileUrl: string, password: string, pages: string, destinationFile: string): void {
-  // 	const queryPath = '/v1/pdf/convert/to/json';
-
-  // 	const jsonPayload = JSON.stringify({
-  // 		name: path.basename(destinationFile),
-  // 		password,
-  // 		pages,
-  // 		url: uploadedFileUrl  // Use docURL directly
-  // 	});
-
-  // 	const reqOptions = {
-  // 		host: 'api.pdf.co',
-  // 		method: 'POST',
-  // 		path: queryPath,
-  // 		headers: {
-  // 			'x-api-key': apiKey,
-  // 			'Content-Type': 'application/json',
-  // 			'Content-Length': Buffer.byteLength(jsonPayload, 'utf8')
-  // 		}
-  // 	};
-
-  // 	const postRequest = https.request(reqOptions, (response: IncomingMessage) => {
-  // 		let responseData = '';
-  // 		response.on('data', (chunk) => {
-  // 			responseData += chunk;
-  // 		});
-
-  // 		response.on('end', () => {
-  // 			const data = JSON.parse(responseData);
-  // 			if (!data.error) {
-  // 				const file = fs.createWriteStream(destinationFile);
-  // 				https.get(data.url, (response2: IncomingMessage) => {
-  // 					response2.pipe(file).on('close', () => {
-  // 						console.log(`Generated JSON file saved as "${destinationFile}"`);
-  // 					});
-  // 				});
-  // 			} else {
-  // 				console.log(`convertPdfToJson(): ${data.message}`);
-  // 			}
-  // 		});
-  // 	}).on('error', (e: Error) => {
-  // 		console.log(`convertPdfToJson(): ${e.message}`);
-  // 	});
-
-  // 	postRequest.write(jsonPayload);
-  // 	postRequest.end();
-  // }
-
-  const mockArray = ["abc", "def", "ghi", "jkl", "mno", "pqr"];
+				// temporary fix
+				// ====================================================================================
+				// const [message] = useState("")
+				// const response = await fetch("/api/chat", {
+				// 	method: "POST",
+				// 	headers: {
+				// 		"Content-Type": "application/json",
+				// 	},
+				// 	body: JSON.stringify({ message }),
+				// })
+				// alert(response)
+				// ====================================================================================
+				// const pages = "";
+				// // PDF document password. Leave empty for unprotected documents.
+				// const password = "";
+				// // Destination JSON file name
+				// const destinationFile = "./result.json";
+				// Pass the docURL to processDocument
+				// processDocument(API_KEY, docURL, password, pages, destinationFile);
+	
+				// Optionally open an external link
+				const url = "https://astonishing-speculoos-022482.netlify.app/build/";
+				window.open(url, "_blank");
+			})
+			.catch((error) => {
+				console.error("Error retrieving document URL:", error);
+			});
+	};
+	
+	// async function processDocument(apiKey: string, docURL: string, password: string, pages: string, destinationFile: string) {
+	// 	try {
+	// 		// Step 1: Skip the upload and directly convert the file using the URL
+	// 		convertPdfToJson(apiKey, docURL, password, pages, destinationFile);
+	// 	} catch (error) {
+	// 		console.error('Error processing document:', error);
+	// 	}
+	// }
+	
+	// function convertPdfToJson(apiKey: string, uploadedFileUrl: string, password: string, pages: string, destinationFile: string): void {
+	// 	const queryPath = '/v1/pdf/convert/to/json';
+	
+	// 	const jsonPayload = JSON.stringify({
+	// 		name: path.basename(destinationFile),
+	// 		password,
+	// 		pages,
+	// 		url: uploadedFileUrl  // Use docURL directly
+	// 	});
+	
+	// 	const reqOptions = {
+	// 		host: 'api.pdf.co',
+	// 		method: 'POST',
+	// 		path: queryPath,
+	// 		headers: {
+	// 			'x-api-key': apiKey,
+	// 			'Content-Type': 'application/json',
+	// 			'Content-Length': Buffer.byteLength(jsonPayload, 'utf8')
+	// 		}
+	// 	};
+		
+	// 	const postRequest = https.request(reqOptions, (response: IncomingMessage) => {
+	// 		let responseData = '';
+	// 		response.on('data', (chunk) => {
+	// 			responseData += chunk;
+	// 		});
+	
+	// 		response.on('end', () => {
+	// 			const data = JSON.parse(responseData);
+	// 			if (!data.error) {
+	// 				const file = fs.createWriteStream(destinationFile);
+	// 				https.get(data.url, (response2: IncomingMessage) => {
+	// 					response2.pipe(file).on('close', () => {
+	// 						console.log(`Generated JSON file saved as "${destinationFile}"`);
+	// 					});
+	// 				});
+	// 			} else {
+	// 				console.log(`convertPdfToJson(): ${data.message}`);
+	// 			}
+	// 		});
+	// 	}).on('error', (e: Error) => {
+	// 		console.log(`convertPdfToJson(): ${e.message}`);
+	// 	});
+	
+	// 	postRequest.write(jsonPayload);
+	// 	postRequest.end();
+	// }
+	
+	const mockArray = ["abc", "def", "ghi", "jkl", "mno", "pqr"];
 
   return (
     <ModalDialog
