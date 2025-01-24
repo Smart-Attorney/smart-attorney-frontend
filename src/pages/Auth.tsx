@@ -1,6 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { AuthzCodeDTO, getJwts } from "../features/auth/api/get-jwts";
+import AlertErrorSvg from "../assets/misc/alert-error.svg";
+import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
+import { getCredentials } from "../features/auth/api/get-credentials";
+import { getIdentityId } from "../features/auth/api/get-identity-id";
+import { getJsonWebTokens } from "../features/auth/api/get-json-web-tokens";
+import StyledBackground from "../layouts/StyledBackground";
+import { signInUrl } from "../services/aws/managed-login-endpoints";
+import { AwsCredentials, ResponseBody } from "../types/api";
 
 function Auth() {
 	const location = useLocation();
@@ -8,31 +15,99 @@ function Auth() {
 	/************************************************************/
 
 	useEffect(() => {
-		testFlow();
+		signInFlow();
 	}, []);
 
-	const getAuthorizationCodeFromUrl = async () => {
+	const [isLoading, setIsLoading] = useState(true);
+
+	const signInFlow = async () => {
+		const authzCode = await getAuthorizationCodeFromUrl();
+
+		const hasJwts = await exchangeAuthzCodeForJsonWebTokens(authzCode);
+		if (!hasJwts) return;
+
+		const hasIdentityId = await getIdentityIdFromIdentityPool();
+		if (!hasIdentityId) return;
+
+		const awsCredentials = await getTemporaryAwsCredentials();
+		if (!awsCredentials) return;
+
+		setCurrentUserCredentials(awsCredentials);
+	};
+
+	const getAuthorizationCodeFromUrl = async (): Promise<string> => {
 		const authorizationCode = await location.search.match(/(?<=code=)(.*)(?=)/)?.[0]!;
 		return authorizationCode;
 	};
 
-	const testFlow = async () => {
-		const authzCode = await getAuthorizationCodeFromUrl();
+	const exchangeAuthzCodeForJsonWebTokens = async (authzCode: string): Promise<boolean> => {
+		if (!authzCode) return false;
+		if (authzCode.length === 0) return false;
 
-		const data: AuthzCodeDTO = {
-			code: authzCode,
-		};
-		const response = await getJwts(data);
+		const response = await getJsonWebTokens(authzCode);
+		if (!response.ok) {
+			setIsLoading(false);
+		}
 
-		console.log(response);
-		console.log(await response.json());
-
-		// globalSignOut and logout endpoint to end user session
-		// remove all tokens
+		return response.ok;
 	};
 
+	const getIdentityIdFromIdentityPool = async (): Promise<boolean> => {
+		const response = await getIdentityId();
+		if (!response.ok) {
+			setIsLoading(false);
+		}
+
+		return response.ok;
+	};
+
+	const getTemporaryAwsCredentials = async (): Promise<AwsCredentials | null> => {
+		let credentials: AwsCredentials | null;
+
+		const response = await getCredentials();
+		if (!response.ok) {
+			setIsLoading(false);
+			return (credentials = null);
+		}
+
+		const responseBody: ResponseBody<AwsCredentials> = await response.json();
+		return (credentials = responseBody.data);
+	};
+
+	const setCurrentUserCredentials = (credentials: AwsCredentials): void => {
+		console.log(credentials);
+	};
+
+	// globalSignOut and logout endpoint to end user session
+	// remove all tokens
+
 	/************************************************************/
-	return <div className="w-screen h-screen bg-indigo-700"></div>;
+	return (
+		<StyledBackground>
+			<div className="absolute flex flex-col items-center w-screen pt-10">
+				<img className="h-28" src={SmartAttorneyLogo} />
+			</div>
+
+			{isLoading ? (
+				<div className="flex flex-col items-center justify-center w-screen h-screen gap-y-4">
+					<div className="self-center loader"></div>
+					<h1 className="self-center text-3xl text-white w-fit">Signing in...</h1>
+				</div>
+			) : (
+				<div className="flex flex-col items-center justify-center w-screen h-screen gap-y-4">
+					<img className="h-20" src={AlertErrorSvg} />
+					<h1 className="self-center text-3xl text-white w-fit">Sign in failed. Please try again.</h1>
+					<a
+						className="flex items-center justify-center px-5 bg-white border-2 border-white rounded-lg w-it hover:bg-slate-300 h-14"
+						href={signInUrl}
+						target="_self"
+					>
+						<span className="text-xl text-black">Back to sign in</span>
+					</a>
+				</div>
+			)}
+		</StyledBackground>
+	);
 }
 
 export default Auth;

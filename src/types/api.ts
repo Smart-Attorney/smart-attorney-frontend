@@ -1,3 +1,10 @@
+export type AwsCredentials = {
+	AccessKeyId: string;
+	Expiration: string;
+	SecretKey: string;
+	SessionToken: string;
+};
+
 export type ResponseBody<T> = {
 	success: boolean;
 	message: string;
@@ -56,8 +63,4 @@ export type Sex = "Male" | "Female" | "Other";
 
 export type DocumentStatus = "In Progress" | "In Review" | "Submitted";
 
-export type CaseLabelPreset =
-	| "Asylum"
-	| "Employment"
-	| "Family"
-	| "Humanitarian";
+export type CaseLabelPreset = "Asylum" | "Employment" | "Family" | "Humanitarian";
