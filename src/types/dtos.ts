@@ -1,4 +1,4 @@
-import { DocumentStatus, Sex } from "../types/api";
+import { DocumentStatus, Sex } from "./api";
 
 export type UserDTO = {
 	id: string;
