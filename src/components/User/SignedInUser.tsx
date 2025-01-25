@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { NotificationWhite } from "../../assets/smart-attorney-figma/sidebar";
 import { UserHeadshot } from "../../assets/smart-attorney-figma/stock";
-import { CurrentUserContext, CurrentUserContextType } from "../../providers/CurrentUserProvider";
+import { CurrentUser, LS } from "../../utils/local-storage";
 
 function SignedInUser() {
 	const navigate = useNavigate();
 
-	const { getCurrentUser } = useContext(CurrentUserContext) as CurrentUserContextType;
-	const { firstName, lastName } = getCurrentUser();
+	const currentUser = LS.getCurrentUser();
+	const { firstName, lastName } = currentUser as CurrentUser;
 	const user = `${firstName} ${lastName}`;
 
 	return (

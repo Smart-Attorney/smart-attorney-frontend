@@ -1,5 +1,5 @@
 const fetchApi = async (authzCode: String): Promise<Response> => {
-	const absoluteUrl = process.env.LOCAL_SERVER_HOST + `/auth/oauth2/token/` + authzCode;
+	const absoluteUrl = process.env.LOCAL_SERVER_HOST + `/auth/oauth2/aws/token/` + authzCode;
 
 	const options: RequestInit = {
 		method: "GET",

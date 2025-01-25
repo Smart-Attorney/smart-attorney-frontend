@@ -8,14 +8,14 @@ export class CaseUtils {
 	 * Stores the current number of case folders.
 	 */
 	public static setCaseCount(count: number): void {
-		sessionStorage.setItem(this.CASE_FOLDER_COUNT_KEY, JSON.stringify(count));
+		localStorage.setItem(this.CASE_FOLDER_COUNT_KEY, JSON.stringify(count));
 	}
 
 	/**
 	 * Retrieves the current number of case folders.
 	 */
 	public static getCaseCount(): number {
-		const countAsString = JSON.parse(sessionStorage.getItem(this.CASE_FOLDER_COUNT_KEY) as string);
+		const countAsString = JSON.parse(localStorage.getItem(this.CASE_FOLDER_COUNT_KEY) as string);
 		return parseInt(countAsString);
 	}
 

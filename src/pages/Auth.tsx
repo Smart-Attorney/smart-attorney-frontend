@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AlertErrorSvg from "../assets/misc/alert-error.svg";
 import { SmartAttorneyLogo } from "../assets/smart-attorney-figma/global";
 import { getCredentials } from "../features/auth/api/get-credentials";
 import { getIdentityId } from "../features/auth/api/get-identity-id";
 import { getJsonWebTokens } from "../features/auth/api/get-json-web-tokens";
+import { getUser } from "../features/auth/api/get-user";
 import StyledBackground from "../layouts/StyledBackground";
 import { signInUrl } from "../services/aws/managed-login-endpoints";
 import { AwsCredentials, ResponseBody } from "../types/api";
-import { LS } from "../utils/local-storage";
+import { CurrentUser, LS } from "../utils/local-storage";
 
 function Auth() {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	/************************************************************/
 
@@ -27,16 +29,22 @@ function Auth() {
 		const hasJwts = await exchangeAuthzCodeForJsonWebTokens(authzCode);
 		if (!hasJwts) return;
 
+		const userInfo = await getUserInfoFromUserPool();
+		if (!userInfo) return;
+
+		const isUserInfoSet = setUserInfo(userInfo);
+		if (!isUserInfoSet) return;
+
 		const hasIdentityId = await getIdentityIdFromIdentityPool();
 		if (!hasIdentityId) return;
 
 		const awsCredentials = await getTemporaryAwsCredentials();
 		if (!awsCredentials) return;
 
-		const areCredentialsSet = setUserAwsCredentials(awsCredentials);
+		const areCredentialsSet = setAwsCredentials(awsCredentials);
 		if (!areCredentialsSet) return;
 
-		// navigate to dashboard
+		navigate("/dashboard");
 	};
 
 	const getAuthorizationCodeFromUrl = async (): Promise<string> => {
@@ -57,6 +65,32 @@ function Auth() {
 		}
 		setIsLoading(false);
 		return false;
+	};
+
+	const getUserInfoFromUserPool = async (): Promise<CurrentUser | null> => {
+		try {
+			const response = await getUser();
+			if (response.ok) {
+				const responseBody: ResponseBody<CurrentUser> = await response.json();
+				const currentUser: CurrentUser = responseBody.data;
+				return currentUser;
+			}
+		} catch (error) {
+			setIsLoading(false);
+		}
+		setIsLoading(false);
+		return null;
+	};
+
+	const setUserInfo = (userInfo: CurrentUser) => {
+		LS.setCurrentUser(userInfo);
+		const currentUser = LS.getCurrentUser();
+		if (currentUser) {
+			return true;
+		} else {
+			setIsLoading(false);
+			return false;
+		}
 	};
 
 	const getIdentityIdFromIdentityPool = async (): Promise<boolean> => {
@@ -83,10 +117,11 @@ function Auth() {
 		} catch (error) {
 			setIsLoading(false);
 		}
+		setIsLoading(false);
 		return null;
 	};
 
-	const setUserAwsCredentials = (awsCredentials: AwsCredentials): boolean => {
+	const setAwsCredentials = (awsCredentials: AwsCredentials): boolean => {
 		LS.setAwsCredentials(awsCredentials);
 		const credentials = LS.getAwsCredentials();
 		if (credentials) {
