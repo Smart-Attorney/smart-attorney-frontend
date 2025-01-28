@@ -11,27 +11,29 @@ export class FetchWrapper {
 
 	constructor() {}
 
-	private getToken(): string {
-		let token = "";
-		const currentUser = sessionStorage.getItem("current_user");
-		if (currentUser) {
-			token = currentUser;
-		}
-		return token;
-	}
+	// private getToken(): string {
+	// 	let token = "";
+	// 	const currentUser = sessionStorage.getItem("current_user");
+	// 	if (currentUser) {
+	// 		token = currentUser;
+	// 	}
+	// 	return token;
+	// }
 
 	public get(endpoint: string): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
-		const options = {
+		const myHeaders = new Headers({ Authorization: "Bearer " });
+		const options: RequestInit = {
 			method: this.GET,
-			headers: { Authorization: this.getToken() },
+			credentials: "include",
+			headers: myHeaders,
 		};
 		return fetch(absoluteUrl, options);
 	}
 
 	public post(endpoint: string, body: RequestBody): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
-		const myHeaders = new Headers();
+		const myHeaders = new Headers({ Authorization: "Bearer " });
 		// Sending formData using "fetch" from frontend with a "Content-Type" header set yourself
 		// results in request being parsed incorrectly in the backend.
 		// Sources:
@@ -39,9 +41,9 @@ export class FetchWrapper {
 		// https://stackoverflow.com/questions/39280438/fetch-missing-boundary-in-multipart-form-data-post
 		const isFormData = body instanceof FormData;
 		!isFormData && myHeaders.append("Content-Type", "application/json");
-		myHeaders.append("Authorization", this.getToken());
-		const options = {
+		const options: RequestInit = {
 			method: this.POST,
+			credentials: "include",
 			headers: myHeaders,
 			body: body,
 		};
@@ -50,9 +52,12 @@ export class FetchWrapper {
 
 	public put(endpoint: string, body: RequestBody): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
-		const options = {
+		const myHeaders = new Headers({ Authorization: "Bearer " });
+		myHeaders.append("Content-Type", "application/json");
+		const options: RequestInit = {
 			method: this.PUT,
-			headers: { "Content-Type": "application/json", Authorization: this.getToken() },
+			credentials: "include",
+			headers: myHeaders,
 			body: body,
 		};
 		return fetch(absoluteUrl, options);
@@ -60,9 +65,12 @@ export class FetchWrapper {
 
 	public patch(endpoint: string, body: RequestBody): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
-		const options = {
+		const myHeaders = new Headers({ Authorization: "Bearer " });
+		myHeaders.append("Content-Type", "application/json");
+		const options: RequestInit = {
 			method: this.PATCH,
-			headers: { "Content-Type": "application/json", Authorization: this.getToken() },
+			credentials: "include",
+			headers: myHeaders,
 			body: body,
 		};
 		return fetch(absoluteUrl, options);
@@ -70,9 +78,11 @@ export class FetchWrapper {
 
 	public delete(endpoint: string): Promise<Response> {
 		const absoluteUrl = this.baseUrl + endpoint;
-		const options = {
+		const myHeaders = new Headers({ Authorization: "Bearer " });
+		const options: RequestInit = {
 			method: this.DELETE,
-			headers: { Authorization: this.getToken() },
+			credentials: "include",
+			headers: myHeaders,
 		};
 		return fetch(absoluteUrl, options);
 	}
