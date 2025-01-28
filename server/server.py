@@ -4,11 +4,21 @@ import os
 from dotenv import load_dotenv
 import requests
 from groq import Groq
+from docx import Document
 
 # Load environment variables from .env
 load_dotenv()
 
 app = Flask(__name__)
+
+def extract_text(file_path):
+    """Extract text based on file type."""
+    if file_path.endswith(".pdf"):
+        return extract_text_from_pdf(file_path)
+    elif file_path.endswith(".docx"):
+        return extract_text_from_docx(file_path)
+    else:
+        raise ValueError("Unsupported file type. Please provide a .pdf or .docx file.")
 
 # Function to extract text from the PDF
 def extract_text_from_pdf(file_path):
@@ -28,9 +38,16 @@ def extract_text_from_pdf(file_path):
 
     return pdf_text
 
+def extract_text_from_docx(file_path):
+    doc = Document(file_path)
+    text = []
+    for paragraph in doc.paragraphs:
+        text.append(paragraph.text)
+    return "\n".join(text)
+
 # Function to get Groq response
 def get_groq_response():
-    pdf_text = extract_text_from_pdf("CalvinYangResume.pdf")  # Extract text from the PDF
+    text = extract_text('Calvin_Yang_Resume.docx')
     
     # Initialize Groq client
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -40,11 +57,11 @@ def get_groq_response():
         messages=[
             {
                 "role": "system",
-                "content": "You are a professional immigration lawyer. I want you to generate an accurate argument of why the client in question should be allowed to stay in the USA."
+                "content": "You are a professional immigration lawyer. In at MOST 2 sentences, I want you to generate an accurate argument of why the client in question should be allowed to stay in the USA."
             },
             {
                 "role": "user",
-                "content": f"Why should this person be allowed to stay in the USA? Here is the context: {pdf_text}"
+                "content": f"Why should this person be allowed to stay in the USA? Here is the context: {text}"
             }
         ],
         model="llama-3.3-70b-versatile",

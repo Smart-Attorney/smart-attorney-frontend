@@ -211,7 +211,7 @@ function GenerateModal({ closeModal, documents, caseId }: GenerateModalProps) {
         <div
           className="p-4 bg-gray-800 rounded-md text-white w-full max-h-40 overflow-y-auto"
           style={{
-            maxHeight: "10rem",
+            maxHeight: "15rem",
             overflowY: "auto",
           }}
         >
