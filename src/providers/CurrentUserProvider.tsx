@@ -17,11 +17,11 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
 	const CURRENT_USER_KEY = "current_user";
 
 	const getCurrentUser = (): CurrentUser => {
-		return JSON.parse(sessionStorage.getItem(CURRENT_USER_KEY) as string);
+		return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) as string);
 	};
 
 	const setCurrentUser = (user: CurrentUser): void => {
-		sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+		localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 	};
 
 	return (
