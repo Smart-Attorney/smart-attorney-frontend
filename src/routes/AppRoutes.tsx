@@ -11,7 +11,6 @@ import Register from "../pages/Register";
 import Root from "../pages/Root";
 import Settings from "../pages/Settings";
 import SignIn from "../pages/SignIn";
-import Test from "../pages/Test";
 import RemoveTrailingSlash from "./RemoveTrailingSlash";
 
 function AppRoutes() {
@@ -32,7 +31,7 @@ function AppRoutes() {
 				<Route path="/notifications" element={<Error />} />
 				<Route path="/settings" element={<Settings />} />
 				<Route path="/*" element={<NotFound />} />
-				<Route path="/test" element={<Test />} />
+				{/* <Route path="/test" element={<Test />} /> */}
 			</Routes>
 		</>
 	);

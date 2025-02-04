@@ -24,16 +24,16 @@ function AccountSection({ title, info }: AccountSectionProps) {
 
 /************************************************************/
 
-export type UserProfile = Omit<User, "password" | "email">;
+export type UserProfile = Omit<User, "password" | "email" | "firmName" | "id">;
 
 function Settings() {
 	const navigate = useNavigate();
 
 	const [user, setUser] = useState<UserProfile>({
-		id: "",
+		// id: "",
 		firstName: "",
 		lastName: "",
-		firmName: "",
+		// firmName: "",
 		companyEmail: "",
 	});
 
@@ -63,7 +63,7 @@ function Settings() {
 					<div className="flex flex-col w-full">
 						<AccountSection title="First Name" info={user.firstName} />
 						<AccountSection title="Last Name" info={user.lastName} />
-						<AccountSection title="Firm Name" info={user.firmName} />
+						{/* <AccountSection title="Firm Name" info={user.firmName} /> */}
 						<AccountSection title="Company Email" info={user.companyEmail} />
 					</div>
 					<button
