@@ -43,10 +43,10 @@ export class UserService {
 		const foundUser = await this.userDao.get(userUuid);
 		if (foundUser !== null) {
 			const userProfile: UserProfile = {
-				id: this.shortUuid.toShort(foundUser.user_id),
+				// id: this.shortUuid.toShort(foundUser.user_id),
 				firstName: foundUser.first_name,
 				lastName: foundUser.last_name,
-				firmName: foundUser.firm_name,
+				// firmName: foundUser.firm_name,
 				companyEmail: foundUser.company_email,
 			};
 			return userProfile;

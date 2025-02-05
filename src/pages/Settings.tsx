@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { getAwsGlobalSignOut } from "../features/settings/api/get-aws-global-sign-out";
 import { getUserInfo } from "../features/settings/api/get-user-info";
 import SidebarLayout from "../layouts/SidebarLayout";
+import { signOutUrl } from "../services/aws/managed-login-endpoints";
 import { ResponseBody, User } from "../types/api";
 
 /************************************************************/
@@ -27,14 +29,14 @@ function AccountSection({ title, info }: AccountSectionProps) {
 export type UserProfile = Omit<User, "password" | "email" | "firmName" | "id">;
 
 function Settings() {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const [user, setUser] = useState<UserProfile>({
 		// id: "",
 		firstName: "",
 		lastName: "",
-		// firmName: "",
 		companyEmail: "",
+		// firmName: "",
 	});
 
 	useEffect(() => {
@@ -55,6 +57,25 @@ function Settings() {
 		}
 	};
 
+	// DEPRECATED: old sign out flow
+	// const handleSignOutClick = async () => {
+	// 	localStorage.clear();
+	// 	navigate("/signin");
+	// };
+
+	const handleSignOutClick = async () => {
+		try {
+			const response = await getAwsGlobalSignOut();
+			if (response.ok) {
+				localStorage.clear();
+				console.log(response.status, response.statusText);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+		window.location.href = signOutUrl;
+	};
+
 	return (
 		<SidebarLayout>
 			<div className="flex flex-col items-center justify-center h-screen">
@@ -69,10 +90,7 @@ function Settings() {
 					<button
 						className="w-full h-12 bg-[rgba(250,50,50,250)] rounded-full"
 						type="button"
-						onClick={() => {
-							sessionStorage.clear();
-							navigate("/signin");
-						}}
+						onClick={handleSignOutClick}
 					>
 						<span className="text-lg font-bold text-white">Sign Out</span>
 					</button>
