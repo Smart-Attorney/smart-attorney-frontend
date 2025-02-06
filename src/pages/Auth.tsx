@@ -11,7 +11,11 @@ import { signInUrl } from "../services/aws/managed-login-endpoints";
 import { AwsCredentials, ResponseBody } from "../types/api";
 import { CurrentUser, LS } from "../utils/local-storage";
 
-function Auth() {
+type AuthProps = {
+	userLogin: () => void;
+};
+
+function Auth({ userLogin }: AuthProps) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -44,7 +48,11 @@ function Auth() {
 		const areCredentialsSet = setAwsCredentials(awsCredentials);
 		if (!areCredentialsSet) return;
 
-		navigate("/dashboard");
+		userLogin();
+
+		setTimeout(() => {
+			navigate("/dashboard");
+		}, 1000);
 	};
 
 	const getAuthorizationCodeFromUrl = async (): Promise<string> => {

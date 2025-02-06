@@ -15,7 +15,7 @@ function NotFound() {
 				<button
 					className=" bg-teal-500 rounded-lg w-[200px] h-[50px] flex justify-center items-center"
 					type="button"
-					onClick={() => navigate("/signin")}
+					onClick={() => navigate("/home")}
 				>
 					<p className="text-lg font-semibold text-white">Please Sign In</p>
 				</button>

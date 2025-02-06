@@ -11,25 +11,36 @@ import Register from "../pages/Register";
 import Root from "../pages/Root";
 import Settings from "../pages/Settings";
 import SignIn from "../pages/SignIn";
+import ProtectedRoutes from "./ProtectedRoutes";
 import RemoveTrailingSlash from "./RemoveTrailingSlash";
 
-function AppRoutes() {
+type AppRoutesProps = {
+	isAuthenticated: boolean;
+	userLogin: () => void;
+	userLogout: () => void;
+};
+
+function AppRoutes({ isAuthenticated, userLogin, userLogout }: AppRoutesProps) {
 	return (
 		<>
 			<RemoveTrailingSlash />
 			<Routes>
 				<Route path="/" element={<Root />} />
-				<Route path="/auth" element={<Auth />} />
 				<Route path="/home" element={<Home />} />
+				<Route path="/auth" element={<Auth userLogin={userLogin} />} />
 				<Route path="/signin" element={<SignIn />} />
 				<Route path="/register" element={<Register />} />
-				<Route path="/dashboard" element={<Dashboard />} />
-				<Route path="/case/:id" element={<CaseFolder />} />
-				<Route path="/create-case" element={<CreateCaseFolder />} />
-				<Route path="/calendar" element={<Calendar />} />
-				<Route path="/team" element={<Error />} />
-				<Route path="/notifications" element={<Error />} />
-				<Route path="/settings" element={<Settings />} />
+
+				<Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/case/:id" element={<CaseFolder />} />
+					<Route path="/create-case" element={<CreateCaseFolder />} />
+					<Route path="/calendar" element={<Calendar />} />
+					<Route path="/team" element={<Error />} />
+					<Route path="/notifications" element={<Error />} />
+					<Route path="/settings" element={<Settings userLogout={userLogout} />} />
+				</Route>
+
 				<Route path="/*" element={<NotFound />} />
 				{/* <Route path="/test" element={<Test />} /> */}
 			</Routes>

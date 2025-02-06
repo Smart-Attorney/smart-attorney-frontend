@@ -28,7 +28,11 @@ function AccountSection({ title, info }: AccountSectionProps) {
 
 export type UserProfile = Omit<User, "password" | "email" | "firmName" | "id">;
 
-function Settings() {
+type SettingsProps = {
+	userLogout: () => void;
+};
+
+function Settings({ userLogout }: SettingsProps) {
 	// const navigate = useNavigate();
 
 	const [user, setUser] = useState<UserProfile>({
@@ -72,8 +76,10 @@ function Settings() {
 			}
 		} catch (error) {
 			console.log(error);
+		} finally {
+			userLogout();
+			window.location.href = signOutUrl;
 		}
-		window.location.href = signOutUrl;
 	};
 
 	return (

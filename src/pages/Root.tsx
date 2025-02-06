@@ -8,7 +8,7 @@ function Root() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		navigate("home");
+		navigate("/home");
 	}, []);
 
 	return <></>;
