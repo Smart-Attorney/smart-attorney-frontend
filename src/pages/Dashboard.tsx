@@ -55,7 +55,7 @@ function Dashboard() {
 				alert(body.message);
 			}
 		} catch (error) {
-			navigate("/signin");
+			navigate("/");
 			alert(error);
 		}
 	};

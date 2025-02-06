@@ -29,6 +29,7 @@ function Auth({ userLogin }: AuthProps) {
 
 	const loginFlow = async () => {
 		const authzCode = await getAuthorizationCodeFromUrl();
+		if (!authzCode) navigate("/home");
 
 		const hasJwts = await exchangeAuthzCodeForJsonWebTokens(authzCode);
 		if (!hasJwts) return;

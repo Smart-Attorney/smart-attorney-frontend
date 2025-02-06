@@ -64,7 +64,7 @@ function Settings({ userLogout }: SettingsProps) {
 	// DEPRECATED: old sign out flow
 	// const handleSignOutClick = async () => {
 	// 	localStorage.clear();
-	// 	navigate("/signin");
+	// 	navigate("/");
 	// };
 
 	const handleSignOutClick = async () => {
