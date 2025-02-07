@@ -1,8 +1,8 @@
 export type AwsCredentials = {
-	AccessKeyId: string;
-	Expiration: string;
-	SecretKey: string;
-	SessionToken: string;
+	accessKeyId: string;
+	expiration: string;
+	secretKey: string;
+	sessionToken: string;
 };
 
 export type ResponseBody<T> = {
