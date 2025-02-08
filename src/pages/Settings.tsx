@@ -30,9 +30,10 @@ export type UserProfile = Omit<User, "password" | "email" | "firmName" | "id">;
 
 type SettingsProps = {
 	userLogout: () => void;
+	stopTokensRefresh: () => void;
 };
 
-function Settings({ userLogout }: SettingsProps) {
+function Settings({ userLogout, stopTokensRefresh }: SettingsProps) {
 	// const navigate = useNavigate();
 
 	const [user, setUser] = useState<UserProfile>({
@@ -78,6 +79,7 @@ function Settings({ userLogout }: SettingsProps) {
 			console.log(error);
 		} finally {
 			userLogout();
+			stopTokensRefresh();
 			window.location.href = signOutUrl;
 		}
 	};

@@ -13,9 +13,10 @@ import { CurrentUser, LS } from "../utils/local-storage";
 
 type AuthProps = {
 	userLogin: () => void;
+	startTokensRefresh: () => void;
 };
 
-function Auth({ userLogin }: AuthProps) {
+function Auth({ userLogin, startTokensRefresh }: AuthProps) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -50,6 +51,7 @@ function Auth({ userLogin }: AuthProps) {
 		if (!areCredentialsSet) return;
 
 		userLogin();
+		startTokensRefresh();
 
 		setTimeout(() => {
 			navigate("/dashboard");
