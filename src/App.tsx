@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AppProvider from "./providers/AppProvider";
 import AppRoutes from "./routes/AppRoutes";
-import { MockUser } from "./services/local-database/mock-user";
-import { SqlTables } from "./services/local-database/sql-tables";
 import { LS } from "./utils/local-storage";
 
 function App() {
@@ -27,14 +25,14 @@ function App() {
 		setIsAuthenticated(false);
 	};
 
-	const [isSetup, setIsSetup] = useState(false);
-
-	useEffect(() => {
-		if (isSetup) return;
-		SqlTables.create();
-		MockUser.create();
-		setIsSetup(true);
-	});
+	/* Deprecated: used in local backend */
+	// const [isSetup, setIsSetup] = useState(false);
+	// useEffect(() => {
+	// 	if (isSetup) return;
+	// 	SqlTables.create();
+	// 	MockUser.create();
+	// 	setIsSetup(true);
+	// });
 
 	return (
 		<AppProvider>
